@@ -8,13 +8,16 @@ import { ProtectedRoute } from "./services/ProtectedRoute";
 import StudentList from './components/StudentList';
 import InternshipOfferList from './components/InternshipOfferList';
 import InternshipOfferForm from './components/InternshipOfferForm'
+import SideBar from "../src/components/SideBar";
+import '../src/components/SideBarStyles.css'
 
 function App () {
 
   return (
     <Router>
-      <div className="App">
-        <Nav/>
+      <div className="App">             
+        <SideBar />
+        
         <Switch> 
           <Route path="/" exact component={Login}/>
           <Route path="/signUp" exact component={SignUp}/>
