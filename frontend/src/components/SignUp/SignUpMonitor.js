@@ -1,10 +1,10 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import { useFormFields } from "../lib/hooksLib";
-import "../App.css";
+import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
-import auth from "../services/Auth";
+import auth from "../../services/Auth";
+import { Form } from 'react-bootstrap';
 
 const SignUpMonitor = () => {
   let history = useHistory();
@@ -29,8 +29,6 @@ const SignUpMonitor = () => {
       return;
     }
 
-    console.log(fields)
-
     axios
       .post("http://localhost:9090/signUp/monitor", fields)
       .then((response) => {
@@ -48,76 +46,80 @@ const SignUpMonitor = () => {
   }
 
   return (
-    <div>
-        <form onSubmit={onCreatePost}>
-        <div className="cont_tabs_login">
-            <h2 className="pt-3">Inscription Moniteur</h2>
-        </div>
-        <div className="cont_text_inputs">
-          <label>Veuillez commencer votre nom d'utilisateur par "M"</label>
-          <input
-          id="username"
-          type="text"
+    <Form onSubmit={e => onCreatePost(e)}>
+      <div className="cont_inputs">
+      <Form.Group controlId="username">
+        <Form.Label className="discret mb-0">
+          Veuillez commencez votre nom d'utilisateur par "E"
+        </Form.Label>
+        <Form.Control
           value={fields.username}
           onChange={handleFieldChange}
+          type="text"
           placeholder="Entrer votre nom d'utilisateur"
-          className="input_form_sign d_block active_inp_sign_up"
+          className="input_form"
           required/>
-          <input
-          id="password"
-          type="password"
+      </Form.Group>
+      <Form.Group controlId="password">
+        <Form.Control
           value={fields.password}
           onChange={handleFieldChange}
+          type="password"
           placeholder="Entrer votre mot de passe"
-          className="input_form_sign d_block active_inp_sign_up"
+          className="input_form"
           required/>
-          <input
-          id="email"
-          type="email"
+      </Form.Group>
+      <Form.Group controlId="email">
+        <Form.Control
           value={fields.email}
           onChange={handleFieldChange}
+          type="email"
           placeholder="Entrer votre courriel"
-          className="input_form_sign d_block active_inp_sign_up"
+          className="input_form"
           required/>
-          <input
-          id="firstName"
-          type="text"
+      </Form.Group>
+      <Form.Group controlId="firstName">
+        <Form.Control
           value={fields.firstName}
           onChange={handleFieldChange}
-          placeholder="Entrer votre prénom"
-          className="input_form_sign d_block active_inp_sign_up"
-          required/>
-          <input
-          id="lastName"
           type="text"
+          placeholder="Entrer votre prénom"
+          className="input_form"
+          required/>
+      </Form.Group>
+      <Form.Group controlId="lastName">
+        <Form.Control
           value={fields.lastName}
           onChange={handleFieldChange}
-          placeholder="Entrer votre nom de famille"
-          className="input_form_sign d_block active_inp_sign_up"
-          required/>
-          <input
-          id="jobTitle"
           type="text"
+          placeholder="Entrer votre nom de famille"
+          className="input_form"
+          required/>
+      </Form.Group>
+      <Form.Group controlId="jobTitle">
+        <Form.Control
           value={fields.jobTitle}
           onChange={handleFieldChange}
-          placeholder="Entrer votre nom de poste"
-          className="input_form_sign d_block active_inp_sign_up"
-          required/>
-          <input
-          id="enterpriseName"
           type="text"
+          placeholder="Entrer votre nom de poste"
+          className="input_form"
+          required/>
+      </Form.Group>
+      <Form.Group controlId="enterpriseName">
+        <Form.Control
           value={fields.enterpriseName}
           onChange={handleFieldChange}
+          type="text"
           placeholder="Entrer votre nom d'entreprise"
-          className="input_form_sign d_block active_inp_sign_up"
+          className="input_form"
           required/>
-        </div>
-        <div className="cont_btn">
-          <p>{errorMessage}</p>
-            <button className="btn_sign">Confirmer</button>
-        </div>
-        </form>
+      </Form.Group>
+      <div className="cont_btn">
+        <p>{errorMessage}</p>
+        <button className="btn_submit">Confirmer</button>
+      </div>
     </div>
+  </Form>
   );
 };
 export default SignUpMonitor;
