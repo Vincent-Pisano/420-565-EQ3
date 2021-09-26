@@ -1,8 +1,7 @@
 import './App.css';
-import SignUp from './components/SignUp';
-import Nav from './components/Nav';
+import SignUp from './components/SignUp/SignUp';
 import Home from './components/Home';
-import Login from './components/Login';
+import Login from './components/Login/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
 import StudentList from './components/StudentList';
@@ -17,7 +16,6 @@ function App () {
     <Router>
       <div className="App">             
         <SideBar />
-        
         <Switch> 
           <Route path="/" exact component={Login}/>
           <Route path="/signUp" exact component={SignUp}/>

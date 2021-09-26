@@ -1,6 +1,6 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
-import "./SignUp.css";
+import "../Form.css"
 import SignUpStudent from "./SignUpStudent";
 import SignUpMonitor from "./SignUpMonitor";
 import SignUpSupervisor from "./SignUpSupervisor";
@@ -30,8 +30,7 @@ const SignUp = () => {
       }
 
     return (
-        <Container fluid className="d-flex justify-content-md-center 
-        align-items-center text-center min-vh-100">
+        <Container fluid className="cont_principal">
             <Row className="cont_central">
                 <Col md="auto">
                     <div className="cont_title_form">

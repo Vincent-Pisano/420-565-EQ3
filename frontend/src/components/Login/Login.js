@@ -5,6 +5,7 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import auth from "../../services/Auth";
 import { Container, Row, Col, Form } from 'react-bootstrap';
+import "../Form.css"
 
 const Login = () => {
     let history = useHistory()
@@ -61,8 +62,7 @@ const Login = () => {
 
 
     return (
-        <Container fluid className="d-flex justify-content-md-center 
-        align-items-center text-center min-vh-100">
+        <Container fluid className="cont_principal">
             <Row className="cont_central">
                 <Col md="auto">
                     <Row>
