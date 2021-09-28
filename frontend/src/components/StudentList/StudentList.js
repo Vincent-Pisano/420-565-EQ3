@@ -21,21 +21,6 @@ function ListStudents() {
     }, [students.length])
 
     return (
-        /*<div className="cont_principal">
-            <div className="cont_list_centrar">
-                <h2>Liste des étudiant dans votre département</h2>
-                <div className="cont_list">
-                    <p>{errorMessage}</p>
-                    <ul>
-                        {
-                            students.map(student => (
-                                <Student key={student.idUser} student={student} />
-                            ))
-                        }
-                    </ul>
-                </div>
-            </div>
-        </div>*/
         <div className="cont_principal">
             <div className="cont_list_centrar">
                 <h2 className="cont_title_form">
