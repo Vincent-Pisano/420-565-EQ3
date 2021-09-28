@@ -5,8 +5,8 @@ import Login from './components/Login/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
 import StudentList from './components/StudentList/StudentList';
-import InternshipOfferList from './components/InternshipOfferList';
 import InternshipOfferForm from './components/InternshipOffer/InternshipOfferForm'
+import InternshipOfferList from './components/IntershipOfferList/InternshipOfferList';
 import NavigationBar from "../src/components/Navbar/NavigationBar";
 
 function App () {
