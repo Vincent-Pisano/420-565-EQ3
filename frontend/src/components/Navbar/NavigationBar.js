@@ -47,7 +47,7 @@ function NavigationBar() {
               onClick={() => {
                 auth.logout(() => {
                   history.push({
-                    pathname: "/"
+                    pathname: `/home/${userStatus.user.username}`
                   });
                 });
               }}

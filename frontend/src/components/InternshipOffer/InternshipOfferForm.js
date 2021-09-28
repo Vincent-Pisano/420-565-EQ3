@@ -26,7 +26,7 @@ const InternshipOfferForm = () => {
           endDate: "",
           weeklyWorkTime: "",
           hourlySalary: "",
-          workDays: ["Monday"],
+          workDays: [],
           address: "",
           city: "",
           postalCode: "",
@@ -40,23 +40,37 @@ const InternshipOfferForm = () => {
     name: "",
   });
 
+  let isLoading = false;
+
   function onCreatePost(e) {
     e.preventDefault();
-
-    if (user.username.startsWith("G")) {
-      axios
-        .get(`http://localhost:9090/get/monitor/${monitor.name}/`)
-        .then((response) => {
-          fields.monitor = response.data;
-          saveInternshipOffer();
-        })
-        .catch((error) => {
-          console.log(error);
-          setErrorMessage("Erreur! Le moniteur est inexistant");
-        });
-    } else {
-      fields.monitor = user;
-      saveInternshipOffer();
+    if (!isLoading) {
+        if(fields.workDays.length > 0) {
+            if (new Date(fields.startDate) < new Date(fields.endDate)) {
+                isLoading = true;
+                if (user.username.startsWith("G")) {
+                    axios
+                      .get(`http://localhost:9090/get/monitor/${monitor.name}/`)
+                      .then((response) => {
+                        fields.monitor = response.data;
+                        saveInternshipOffer();
+                      })
+                      .catch((error) => {
+                        setErrorMessage("Erreur! Le moniteur est inexistant");
+                        isLoading = false;
+                      });
+                } else {
+                    fields.monitor = user;
+                    saveInternshipOffer();
+                }
+            }
+            else {
+                setErrorMessage("Erreur! Durée de stage invalide !");
+            }
+        }
+        else {
+            setErrorMessage("Erreur! Choisissez au moins une journée de travail !");
+        }
     }
   }
 
@@ -64,11 +78,15 @@ const InternshipOfferForm = () => {
     axios
       .post("http://localhost:9090/save/internshipOffer", fields)
       .then((response) => {
-        setErrorMessage("L'offre de stage a été sauvegardé");
-        console.log(response.data);
+        setErrorMessage("L'offre de stage a été sauvegardé, vous allez être redirigé");
+        setTimeout(() => {
+            history.push({
+                pathname: `/home/${user.username}`
+            });
+        }, 3000);
       })
       .catch((error) => {
-        console.log(error);
+        isLoading = false;
         setErrorMessage("Erreur! L'offre de stage est invalide");
       });
   }
@@ -189,19 +207,6 @@ const InternshipOfferForm = () => {
                       min="0"
                       max="100"
                       placeholder="Entrer le salaire par heure"
-                      className="input_form active_inp_form"
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="endDate">
-                    <Form.Label className="labelFields">
-                      Les jours de travail
-                    </Form.Label>
-                    <Form.Control
-                      value={fields.endDate}
-                      onChange={handleFieldChange}
-                      type="date"
-                      placeholder="Entrer la date de fin du stage"
                       className="input_form active_inp_form"
                       required
                     />
