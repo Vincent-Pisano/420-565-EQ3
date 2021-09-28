@@ -1,6 +1,5 @@
 import React from "react";
-import "./SideBarStyles.css";
-import {Nav} from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom"
 
 function SideBarUserSwitch({ userStatus }) {

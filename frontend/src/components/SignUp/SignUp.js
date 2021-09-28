@@ -1,9 +1,9 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
-import "../Form.css"
 import SignUpStudent from "./SignUpStudent";
 import SignUpMonitor from "./SignUpMonitor";
 import SignUpSupervisor from "./SignUpSupervisor";
+import "../../styles/Form.css"
 
 const SignUp = () => {
     const [currentSignUp, setCurrentSignUp] = useState(

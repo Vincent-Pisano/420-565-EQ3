@@ -1,9 +1,9 @@
 import {React, useState} from "react";
-import "../App.css"
+import auth from '../../services/Auth'
 import { Link } from "react-router-dom"
-import auth from '../services/Auth'
 import { useHistory } from "react-router";
 import NavUserSwitch from "./NavUserSwitch";
+import "../../App.css"
 
 function Nav() {
 

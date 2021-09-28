@@ -1,9 +1,9 @@
 import axios from "axios";
 import React from "react";
+import auth from "../../services/Auth";
 import { useState } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
-import auth from "../../services/Auth";
 import { Form } from 'react-bootstrap';
 
 const SignUpMonitor = () => {

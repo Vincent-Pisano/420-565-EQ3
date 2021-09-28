@@ -1,11 +1,11 @@
 import React from "react";
+import axios from "axios";
+import auth from "../../services/Auth";
 import { useFormFields } from "../../lib/hooksLib";
 import { useState } from "react";
-import axios from "axios";
 import { useHistory } from "react-router";
-import auth from "../../services/Auth";
 import { Container, Row, Col, Form } from 'react-bootstrap';
-import "../Form.css"
+import "../../styles/Form.css"
 
 const Login = () => {
     let history = useHistory()

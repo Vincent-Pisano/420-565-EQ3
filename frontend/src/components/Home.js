@@ -1,6 +1,6 @@
 import React from "react";
-import "../App.css"
 import auth from "../services/Auth";
+import "../App.css"
 
 function Home() {
 
