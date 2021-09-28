@@ -94,8 +94,20 @@ public class BackendService {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
+
     public Optional<Monitor> getMonitorByUsername(String username){
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);
+    }
+
+    public Optional<InternshipOffer> validateInternshipOffer(String username, InternshipOffer internshipOffer){
+        Optional<InternshipManager> internshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
+        if(internshipManager.isPresent()){
+            if (internshipOffer != null){
+                internshipOffer.setIsValid(true);
+                return Optional.of(internshipOfferRepository.save(internshipOffer));
+            }
+        }
+        return Optional.empty();
     }
 }
 

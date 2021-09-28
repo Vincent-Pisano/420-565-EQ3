@@ -217,4 +217,19 @@ class BackendServiceTest {
         //Assert
         assertThat(loginMonitor.isPresent()).isTrue();
     }
+
+    @Test
+    //@Disabled
+    public void testValidateIntershipOffer(){
+        //Arrange
+        expectedInternshipManager = getInternshipManager();
+        expectedInternshipOffer = getInternshipOffer();
+
+        //Act
+        final Optional<InternshipOffer> validatedInternshipOffer =
+                service.validateInternshipOffer(expectedInternshipManager.getUsername(), expectedInternshipOffer);
+
+        //Assert
+        assertThat(validatedInternshipOffer.isPresent() ? validatedInternshipOffer.get().getIsValid():true).isTrue();
+    }
 }

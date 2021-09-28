@@ -93,6 +93,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/validate/internshipOffer/{username}")
+    public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String username, @RequestBody InternshipOffer internshipOffer) {
+        return service.validateInternshipOffer(username, internshipOffer)
+                .map(_monitor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_monitor))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/get/monitor/{username}")
     public ResponseEntity<Monitor> getMonitorByUsername(@PathVariable String username) {
         return service.getMonitorByUsername(username)
