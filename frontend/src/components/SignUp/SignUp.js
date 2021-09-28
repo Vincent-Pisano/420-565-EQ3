@@ -37,7 +37,7 @@ const SignUp = () => {
                         <h2>Inscription</h2>
                     </div>
                     <Row className="cont_buttons_sign_up">
-                        <Col xs={4} className="px-0">
+                        <Col xs={3} className="px-0">
                             <button size="md"
                                 className={currentSignUp === "student" ? 'btn_link btn_link_selected' : 'btn_link'}
                                 onClick={handleClick("student")}>
@@ -51,7 +51,7 @@ const SignUp = () => {
                                 Superviseur
                             </button>
                         </Col>
-                        <Col xs={4} className="px-0">
+                        <Col xs={3} className="px-0">
                             <button size="md"
                                 className={currentSignUp === "monitor" ? 'btn_link btn_link_selected' : 'btn_link'}
                                 onClick={handleClick("monitor")}>

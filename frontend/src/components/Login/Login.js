@@ -67,7 +67,7 @@ const Login = () => {
                 <Col md="auto">
                     <Row>
                         <div className="cont_title_form">
-                            <h2>Inscription</h2>
+                            <h2>Connexion</h2>
                         </div>
                     </Row>
                     <Row>
@@ -75,7 +75,7 @@ const Login = () => {
                             <div className="cont_inputs">
                                 <Form.Group controlId="username">
                                     <Form.Label className="discret mb-0">
-                                    Veuillez commencez votre nom d'utilisateur par "E"
+                                    Veuillez rentrez vos informations d'utilisations
                                     </Form.Label>
                                     <Form.Control
                                     value={fields.username}

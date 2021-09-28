@@ -50,7 +50,7 @@ const SignUpMonitor = () => {
       <div className="cont_inputs">
       <Form.Group controlId="username">
         <Form.Label className="discret mb-0">
-          Veuillez commencez votre nom d'utilisateur par "E"
+          Veuillez commencez votre nom d'utilisateur par "M"
         </Form.Label>
         <Form.Control
           value={fields.username}

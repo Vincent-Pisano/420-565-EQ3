@@ -1,15 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom"
 import "../../App.css";
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function NavUserSwitch({ userStatus }) {
   function checkIfGS() {
     let user = userStatus.user;
     if (user.username.startsWith("G")) {
       return <>
-        <Link className="nav-links-header" to="/formInternshipOffer">
-          <li>Dépôt offres de stage</li>
-        </Link>
+        <NavDropdown title="Offre de stage" className="nav-dropdown">
+            <NavDropdown.Item>
+              <Link className="nav-links-header" to="/formInternshipOffer">
+                <li>Dépôt d'offres de stage</li>
+              </Link>
+            </NavDropdown.Item>
+        </NavDropdown>
       </>;
     }
   }
@@ -18,9 +23,13 @@ function NavUserSwitch({ userStatus }) {
     let user = userStatus.user;
     if (user.username.startsWith("E")) {
       return <>
-        <Link className="nav-links-header" to="/listInternshipOffer">
-          <li>Listes d'offres de stage</li>
-        </Link>
+      <NavDropdown title="Offre de stage" className="nav-dropdown">
+            <NavDropdown.Item>
+              <Link className="nav-links-header" to="/listInternshipOffer">
+                <li>Listes d'offres de stage</li>
+              </Link>
+            </NavDropdown.Item>
+        </NavDropdown>
       </>;
     }
   }
@@ -29,9 +38,13 @@ function NavUserSwitch({ userStatus }) {
     let user = userStatus.user;
     if (user.username.startsWith("S")) {
       return <>
-        <Link className="nav-links-header" to="/listStudents">
-          <li>Liste des étudiants</li>
-        </Link>
+        <NavDropdown title="Étudiant" className="nav-dropdown">
+          <NavDropdown.Item>
+            <Link className="nav-links-header" to="/listStudents">
+              <li>Liste des étudiants</li>
+            </Link>
+          </NavDropdown.Item>
+        </NavDropdown>
       </>;
     }
   }
@@ -40,9 +53,13 @@ function NavUserSwitch({ userStatus }) {
     let user = userStatus.user;
     if (user.username.startsWith("M")) {
       return <>
-      <Link className="nav-links-header" to="/formInternshipOffer">
-          <li>Dépôt offres de stage</li>
-        </Link>
+        <NavDropdown title="Offre de stage" className="nav-dropdown">
+            <NavDropdown.Item>
+              <Link className="nav-links-header" to="/formInternshipOffer">
+                <li>Dépôt d'offres de stage</li>
+              </Link>
+            </NavDropdown.Item>
+        </NavDropdown>
       </>;
     }
   }
