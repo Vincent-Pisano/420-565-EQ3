@@ -205,6 +205,26 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllInternshipOffer() throws Exception {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(service.getAllUnvalidatedInternshipOffer())
+                .thenReturn(Optional.of(expectedInternshipOfferList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/internshipOffer")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        var actualInternshipOffers = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipOffers).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudents() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -251,7 +271,7 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
         //Act
-        MvcResult result = mockMvc.perform(get("/validate/internshipOffer/" +
+        MvcResult result = mockMvc.perform(get("/save/internshipOffer/validate/" +
                 expectedInternshipManager.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();

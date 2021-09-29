@@ -187,6 +187,24 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllInternshipOffer() {
+        // Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(internshipOfferRepository.findAllByIsValidFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        // Act
+        final Optional<List<InternshipOffer>> internshipOffers =
+                service.getAllUnvalidatedInternshipOffer();
+
+        // Assert
+        assertThat(internshipOffers.isPresent()).isTrue();
+        assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudents() {
         // Arrange
         expectedStudentList = getListOfStudents();
@@ -201,6 +219,7 @@ class BackendServiceTest {
         assertThat(students.isPresent()).isTrue();
         assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
     }
+
 
     @Test
     //@Disabled

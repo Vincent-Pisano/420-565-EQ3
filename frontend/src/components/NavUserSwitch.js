@@ -10,6 +10,9 @@ function NavUserSwitch({ userStatus }) {
         <Link className="nav-links-header" to="/formInternshipOffer">
           <li>Dépôt offres de stage</li>
         </Link>
+        <Link className="nav-links-header" to="/listInternshipOffer">
+          <li>Liste offres de stage non validées</li>
+        </Link>
       </>;
     }
   }
@@ -19,7 +22,7 @@ function NavUserSwitch({ userStatus }) {
     if (user.username.startsWith("E")) {
       return <>
         <Link className="nav-links-header" to="/listInternshipOffer">
-          <li>Listes d'offres de stage</li>
+          <li>Liste d'offres de stage</li>
         </Link>
       </>;
     }
