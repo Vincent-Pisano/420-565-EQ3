@@ -66,13 +66,13 @@ const Login = () => {
             <Row className="cont_central">
                 <Col md="auto">
                     <Row>
-                        <div className="cont_title_form">
+                        <Container className="cont_title_form">
                             <h2>Connexion</h2>
-                        </div>
+                        </Container>
                     </Row>
                     <Row>
                         <Form onSubmit={e => onCreatePost(e)}>
-                            <div className="cont_inputs">
+                            <Container className="cont_inputs">
                                 <Form.Group controlId="username">
                                     <Form.Label className="discret mb-0">
                                     Veuillez rentrez vos informations d'utilisations
@@ -94,11 +94,11 @@ const Login = () => {
                                     className="input_form"
                                     required/>
                                 </Form.Group>
-                            </div>
-                            <div className="cont_btn">
+                            </Container>
+                            <Container className="cont_btn">
                                 <p>{errorMessage}</p>
                                     <button className="btn_submit">Confirmer</button>
-                            </div>
+                            </Container>
                         </Form>
                     </Row>
                 </Col>

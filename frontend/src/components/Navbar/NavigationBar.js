@@ -27,34 +27,30 @@ function NavigationBar() {
       return (
         <>
         <Nav.Link>
-          <Link className="nav-links-header">
-            <li
-              onClick={() => {
-                history.push({
-                  pathname: `/home/${userStatus.user.username}`,
-                  state: userStatus.user 
-                });
-              }}
-            >
-              Home
-            </li>
-          </Link>
+          <li
+            className="nav-links-header"
+            onClick={() => {
+              history.push({
+                pathname: `/home/${userStatus.user.username}`,
+                state: userStatus.user 
+              });
+            }}
+          >
+            Home
+          </li>
         </Nav.Link>
         <NavUserSwitch userStatus={userStatus}/>
         <Nav.Link>
-          <Link className="nav-links-header">
-            <li
+            <li 
+              className="nav-links-header"
               onClick={() => {
                 auth.logout(() => {
-                  history.push({
-                    pathname: `/home/${userStatus.user.username}`
-                  });
+                history.push("/");
                 });
               }}
             >
               Déconnexion
             </li>
-          </Link>
         </Nav.Link>
       </>
       );

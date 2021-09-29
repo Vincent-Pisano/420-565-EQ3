@@ -16,6 +16,8 @@ const InternshipOfferForm = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  let ColorT = 'red';
+
   const [fields, handleFieldChange] = useFormFields(
     internshipOffer !== undefined
       ? internshipOffer
@@ -78,12 +80,15 @@ const InternshipOfferForm = () => {
     axios
       .post("http://localhost:9090/save/internshipOffer", fields)
       .then((response) => {
-        setErrorMessage("L'offre de stage a été sauvegardé, vous allez être redirigé");
+        ColorT = 'blue'
+        console.log(ColorT)
+        
         setTimeout(() => {
             history.push({
                 pathname: `/home/${user.username}`
             });
         }, 3000);
+        setErrorMessage("L'offre de stage a été sauvegardé, vous allez être redirigé");
       })
       .catch((error) => {
         isLoading = false;
@@ -130,9 +135,9 @@ const InternshipOfferForm = () => {
       <Row className="cont_central">
         <Col md="auto" className="cont_form">
           <Row>
-            <div className="cont_title_form">
+            <Container className="cont_title_form">
               <h2>Offre de stage</h2>
-            </div>
+            </Container>
           </Row>
           <Row>
             <fieldset disabled={internshipOffer ? "disabled" : ""}>
@@ -170,7 +175,7 @@ const InternshipOfferForm = () => {
                       placeholder="Entrer la date de début du stage"
                       className="input_form active_inp_form"
                       required
-                    />
+                    />                    
                   </Form.Group>
                   <Form.Group controlId="endDate">
                     <Form.Label className="labelFields">
@@ -195,7 +200,7 @@ const InternshipOfferForm = () => {
                       max="40"
                       placeholder="Entrer la quantité d'heures par semaine"
                       className="input_form active_inp_form"
-                      required
+                      required                     
                     />
                   </Form.Group>
                   <Form.Group controlId="hourlySalary">
@@ -206,7 +211,7 @@ const InternshipOfferForm = () => {
                       step=".01"
                       min="0"
                       max="100"
-                      placeholder="Entrer le salaire par heure"
+                      placeholder="Entrer le salaire en dollars($) par heure"
                       className="input_form active_inp_form"
                       required
                     />
@@ -401,10 +406,10 @@ const InternshipOfferForm = () => {
                       <option value="NURSING">Infirmier</option>
                     </Form.Select>
                   </Form.Group>
-                  <div className="cont_btn">
-                    <p>{errorMessage}</p>
+                  <Container className="cont_btn">
+                    <p style={{color: ColorT}}>{errorMessage}</p>
                     <button className="btn_submit">Confirmer</button>
-                  </div>
+                  </Container>
                 </Container>
               </Form>
             </fieldset>

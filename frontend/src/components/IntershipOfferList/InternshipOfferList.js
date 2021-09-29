@@ -34,8 +34,8 @@ function InternshipOfferList() {
     }
 
     return (
-        <div className="cont_principal">
-            <div className="cont_list_centrar">
+        <Container className="cont_principal">
+            <Container className="cont_list_centrar">
                 <h2 className="cont_title_form">
                     Liste des offres de stages de votre département
                 </h2>
@@ -52,29 +52,9 @@ function InternshipOfferList() {
                         }
                     </ul>
                 </Container>
-            </div>
-        </div>
+            </Container>
+        </Container>
     )
-
-    /*
-            <div className="cont_principal">
-            <div className="cont_list_centrar">
-                <h2 className="cont_title_form">
-                    Étudiants de votre département
-                </h2>
-                <Container className="cont_list">
-                    <p>{errorMessage}</p>
-                    <ul>
-                        {
-                            students.map(student => (
-                                <Student key={student.idUser} student={student} />
-                            ))
-                        }
-                    </ul>
-                </Container>
-            </div>
-        </div>
-    */
 }
 
 export default InternshipOfferList;

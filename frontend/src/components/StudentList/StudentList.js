@@ -21,8 +21,8 @@ function ListStudents() {
     }, [students.length])
 
     return (
-        <div className="cont_principal">
-            <div className="cont_list_centrar">
+        <Container className="cont_principal">
+            <Container className="cont_list_centrar">
                 <h2 className="cont_title_form">
                     Étudiants de votre département
                 </h2>
@@ -36,63 +36,9 @@ function ListStudents() {
                         }
                     </ul>
                 </Container>
-            </div>
-        </div>
+            </Container>
+        </Container>
     )
 }
 
 export default ListStudents;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

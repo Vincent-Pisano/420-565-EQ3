@@ -33,9 +33,9 @@ const SignUp = () => {
         <Container fluid className="cont_principal">
             <Row className="cont_central">
                 <Col md="auto">
-                    <div className="cont_title_form">
+                    <Container className="cont_title_form">
                         <h2>Inscription</h2>
-                    </div>
+                    </Container>
                     <Row className="cont_buttons_sign_up">
                         <Col xs={3} className="px-0">
                             <button size="md"

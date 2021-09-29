@@ -4,7 +4,7 @@ import auth from "../../services/Auth";
 import { useState } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
-import { Form } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 
 const SignUpStudent = () => {
   let history = useHistory();
@@ -46,7 +46,7 @@ const SignUpStudent = () => {
 
   return (
     <Form onSubmit={e => onCreatePost(e)}>
-      <div className="cont_inputs">
+      <Container className="cont_inputs">
       <Form.Group controlId="username">
         <Form.Label className="discret mb-0">
           Veuillez commencez votre nom d'utilisateur par "E"
@@ -106,11 +106,11 @@ const SignUpStudent = () => {
           <option value="NURSING">Infirmier</option>
         </Form.Control>
       </Form.Group>
-      <div className="cont_btn">
+      <Container className="cont_btn">
         <p>{errorMessage}</p>
         <button className="btn_submit">Confirmer</button>
-      </div>
-    </div>
+      </Container>
+    </Container>
   </Form>
   )
 };
