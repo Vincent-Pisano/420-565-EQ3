@@ -103,9 +103,10 @@ const InternshipOfferForm = () => {
 
     function checkIfValidated() {
         if (user.username.startsWith('G') && internshipOffer !== undefined) {
-            return (
+            return (<>
+                <p>{errorMessage}</p>
                 <button className="btn_sign" onClick={() => validateInternshipOffer()}>Valider</button>
-            )
+            </>)
         }
     }
 
@@ -313,7 +314,6 @@ const InternshipOfferForm = () => {
                     </form>
                 </fieldset>
                 <div className="cont_btn" >
-                    <p>{errorMessage}</p>
                     {checkIfValidated()}
                 </div>
             </div>
