@@ -3,11 +3,8 @@ package com.eq3.backend.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -18,8 +15,7 @@ import java.util.List;
 public class InternshipOffer {
 
     @Id
-    @Field
-    private String idOffer;
+    private String id;
 
     @Field
     private String jobName;
@@ -61,7 +57,7 @@ public class InternshipOffer {
     private Monitor monitor;
 
     @Field
-    private Binary document;
+    private InternshipOfferDocument document;
 
     @Field
     @Builder.Default

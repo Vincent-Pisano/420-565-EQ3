@@ -152,7 +152,7 @@ class BackendServiceTest {
         assertThat(loginInternshipManager.isPresent()).isTrue();
     }
 
-    @Test
+    /*@Test
     //@Disabled
     public void testSaveInternshipOffer() {
         // Arrange
@@ -165,7 +165,7 @@ class BackendServiceTest {
 
         // Assert
         assertThat(internshipOffer.isPresent()).isTrue();
-    }
+    }*/
 
     @Test
     //@Disabled

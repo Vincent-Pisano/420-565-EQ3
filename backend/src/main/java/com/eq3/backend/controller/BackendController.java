@@ -1,16 +1,13 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
+import com.eq3.backend.repository.InternshipOfferRepository;
 import com.eq3.backend.service.BackendService;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,10 +22,8 @@ import java.util.List;
 public class BackendController {
 
     private final BackendService service;
-    private final Logger logger;
 
     public BackendController(BackendService service) {
-        this.logger = LoggerFactory.getLogger(BackendController.class);
         this.service = service;
     }
 
@@ -92,23 +86,17 @@ public class BackendController {
     @PostMapping(value = "/save/internshipOffer",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
-    public ResponseEntity<InternshipOffer> saveInternshipOffer(@RequestPart("document") MultipartFile document,
-                                                               @RequestPart("internshipOffer") String internshipOffer) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        InternshipOffer newInternshipOffer = null;
-        try {
-            newInternshipOffer = objectMapper.readValue(internshipOffer, InternshipOffer.class);
-            newInternshipOffer.setDocument(
-                    new Binary(BsonBinarySubType.BINARY, document.getBytes())
-            );
-        } catch (IOException e) {
-            logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at saveInternshipOffer in BackendController");
-        }
-        System.out.println(newInternshipOffer);
-        System.out.println(document.getOriginalFilename());
-        return service.saveInternshipOffer(newInternshipOffer)
+    public ResponseEntity<InternshipOffer> saveInternshipOffer(@RequestPart(name = "document", required=false) MultipartFile document,
+                                                               @RequestPart(name = "internshipOffer") String internshipOffer) {
+
+        return service.saveInternshipOffer(internshipOffer, document)
                     .map(_monitor -> ResponseEntity.status(HttpStatus.CREATED).body(_monitor))
                     .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
+        return service.downloadInternshipOfferDocument(id);
     }
 
     @GetMapping("/getAll/internshipOffer/{workField}")

@@ -3,13 +3,23 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,13 +99,55 @@ public class BackendService {
         return internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
 
-    public Optional<InternshipOffer> saveInternshipOffer(InternshipOffer internshipOffer){
-        return Optional.of(internshipOfferRepository.save(internshipOffer));
+    public Optional<InternshipOffer> saveInternshipOffer(String internshipOffer, MultipartFile document){
+        InternshipOffer newInternshipOffer = null;
+        try {
+            newInternshipOffer = mapInternshipOffer(internshipOffer, document);
+        } catch (IOException e) {
+            logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at saveInternshipOffer in BackendService");
+        }
+        return newInternshipOffer == null ? Optional.empty() :
+                Optional.of(internshipOfferRepository.save(newInternshipOffer));
+    }
+
+    private InternshipOffer mapInternshipOffer(String internshipOffer, MultipartFile document) throws IOException {
+        InternshipOffer newInternshipOffer;
+        ObjectMapper objectMapper = new ObjectMapper();
+        newInternshipOffer = objectMapper.readValue(internshipOffer, InternshipOffer.class);
+        if (document != null) {
+            InternshipOfferDocument newDocument = new InternshipOfferDocument();
+            newDocument.setName(document.getOriginalFilename());
+            newDocument.setContent(new Binary(BsonBinarySubType.BINARY, document.getBytes()));
+            newInternshipOffer.setDocument(newDocument);
+        }
+        return newInternshipOffer;
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+    }
+
+    public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(String id) {
+        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
+
+        if (optionalInternshipOffer.isEmpty() || optionalInternshipOffer.get().getDocument() == null)
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+        InternshipOfferDocument document = optionalInternshipOffer.get().getDocument();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        headers.add("Content-Disposition", "attachment; filename=" + document.getName());
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(document.getContent().length())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(new ByteArrayInputStream(document.getContent().getData())));
     }
     public Optional<Monitor> getMonitorByUsername(String username){
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);

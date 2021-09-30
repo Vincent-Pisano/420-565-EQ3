@@ -12,6 +12,8 @@ const InternshipOfferForm = () => {
   let history = useHistory();
   let internshipOffer = history.location.state;
 
+  console.log(internshipOffer)
+
   formatDates();
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -33,7 +35,6 @@ const InternshipOfferForm = () => {
           workShift: "DAY",
           workField: "COMPUTER_SCIENCE",
           monitor: {},
-          
         }
   );
 
@@ -48,51 +49,52 @@ const InternshipOfferForm = () => {
   function onCreatePost(e) {
     e.preventDefault();
     if (!isLoading) {
-        if(fields.workDays.length > 0) {
-            if (new Date(fields.startDate) < new Date(fields.endDate)) {
-                isLoading = true;
-                if (user.username.startsWith("G")) {
-                    axios
-                      .get(`http://localhost:9090/get/monitor/${monitor.name}/`)
-                      .then((response) => {
-                        fields.monitor = response.data;
-                        saveInternshipOffer();
-                      })
-                      .catch((error) => {
-                        setErrorMessage("Erreur! Le moniteur est inexistant");
-                        isLoading = false;
-                      });
-                } else {
-                    fields.monitor = user;
-                    saveInternshipOffer();
-                }
+      if (fields.workDays.length > 0) {
+        if (new Date(fields.startDate) < new Date(fields.endDate)) {
+          if (document.type === "application/pdf") {
+            isLoading = true;
+            if (user.username.startsWith("G")) {
+              axios
+                .get(`http://localhost:9090/get/monitor/${monitor.name}/`)
+                .then((response) => {
+                  fields.monitor = response.data;
+                  saveInternshipOffer();
+                })
+                .catch((error) => {
+                  setErrorMessage("Erreur! Le moniteur est inexistant");
+                  isLoading = false;
+                });
+            } else {
+              fields.monitor = user;
+              saveInternshipOffer();
             }
-            else {
-                setErrorMessage("Erreur! Durée de stage invalide !");
-            }
+          } else {
+            setErrorMessage("Erreur! Veuillez soumettre un document .pdf");
+          }
+        } else {
+          setErrorMessage("Erreur! Durée de stage invalide !");
         }
-        else {
-            setErrorMessage("Erreur! Choisissez au moins une journée de travail !");
-        }
+      } else {
+        setErrorMessage("Erreur! Choisissez au moins une journée de travail !");
+      }
     }
   }
 
   function saveInternshipOffer() {
-    //axios.defaults.headers.common['Content-Type'] = "multipart/form-data";
-    //axios.defaults.headers.post['Content-Type'] = 'application/form-data'
     let formData = new FormData();
     formData.append("internshipOffer", JSON.stringify(fields));
     formData.append("document", document);
     axios
       .post("http://localhost:9090/save/internshipOffer", formData)
       .then((response) => {
-        /*setTimeout(() => {
-            history.push({
-                pathname: `/home/${user.username}`
-            });
-        }, 3000);*/
-        isLoading = false;
-        setErrorMessage("L'offre de stage a été sauvegardé, vous allez être redirigé");
+        setTimeout(() => {
+          history.push({
+            pathname: `/home/${user.username}`,
+          });
+        }, 3000);
+        setErrorMessage(
+          "L'offre de stage a été sauvegardé, vous allez être redirigé"
+        );
       })
       .catch((error) => {
         isLoading = false;
@@ -145,8 +147,10 @@ const InternshipOfferForm = () => {
           </Row>
           <Row>
             <fieldset disabled={internshipOffer ? "disabled" : ""}>
-              <Form onSubmit={(e) => onCreatePost(e)}
-                    encType="multipart/form-data">
+              <Form
+                onSubmit={(e) => onCreatePost(e)}
+                encType="multipart/form-data"
+              >
                 <Container className="cont_inputs">
                   {checkIfGS()}
                   <Form.Group controlId="jobName">
@@ -180,7 +184,7 @@ const InternshipOfferForm = () => {
                       placeholder="Entrer la date de début du stage"
                       className="input_form active_inp_form"
                       required
-                    />                    
+                    />
                   </Form.Group>
                   <Form.Group controlId="endDate">
                     <Form.Label className="labelFields">
@@ -205,7 +209,7 @@ const InternshipOfferForm = () => {
                       max="40"
                       placeholder="Entrer la quantité d'heures par semaine"
                       className="input_form active_inp_form"
-                      required                     
+                      required
                     />
                   </Form.Group>
                   <Form.Group controlId="hourlySalary">
@@ -353,7 +357,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer l'adresse de l'entreprise"
-                      className="input_form active_inp_form"
+                      className="input_form"
                       required
                     />
                   </Form.Group>
@@ -363,7 +367,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer la ville de l'entreprise"
-                      className="input_form active_inp_form"
+                      className="input_form"
                       required
                     />
                   </Form.Group>
@@ -373,7 +377,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer le code postal de l'entreprise"
-                      className="input_form active_inp_form"
+                      className="input_form"
                       required
                       minLength="6"
                       maxLength="6"
@@ -387,7 +391,7 @@ const InternshipOfferForm = () => {
                       aria-label="Default select example"
                       defaultValue={fields.workShift}
                       onChange={handleFieldChange}
-                      className="select_form d_block active_select "
+                      className="select_form d_block "
                       required
                     >
                       <option value="DAY">Jour</option>
@@ -403,7 +407,7 @@ const InternshipOfferForm = () => {
                       aria-label="Default select example"
                       defaultValue={fields.workField}
                       onChange={handleFieldChange}
-                      className="select_form d_block active_select "
+                      className="select_form d_block"
                       required
                     >
                       <option value="ARCHITECTURE">Architecture</option>
@@ -411,14 +415,26 @@ const InternshipOfferForm = () => {
                       <option value="NURSING">Infirmier</option>
                     </Form.Select>
                   </Form.Group>
-                  <Form.Group controlId="document">
+                  <Form.Group controlId="document" className="cont_file_form">
                     <Form.Control
                       type="file"
-                      onChange={(e) => {setDocument(e.target.files[0])}}
-                      className="input_form active_file_form"/>
+                      onChange={(e) => {
+                        setDocument(e.target.files[0]);
+                      }}
+                      className="file_form"
+                      accept=".pdf"
+                    />
                   </Form.Group>
                   <Container className="cont_btn">
-                    <p style={ { color: errorMessage.startsWith("Erreur") ? 'red' : 'blue'} }>{errorMessage}</p>
+                    <p
+                      style={{
+                        color: errorMessage.startsWith("Erreur")
+                          ? "red"
+                          : "blue",
+                      }}
+                    >
+                      {errorMessage}
+                    </p>
                     <button className="btn_submit">Confirmer</button>
                   </Container>
                 </Container>
