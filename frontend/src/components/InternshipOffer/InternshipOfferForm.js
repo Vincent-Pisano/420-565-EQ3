@@ -33,12 +33,15 @@ const InternshipOfferForm = () => {
           workShift: "DAY",
           workField: "COMPUTER_SCIENCE",
           monitor: {},
+          
         }
   );
 
   const [monitor, setMonitor] = useFormFields({
     name: "",
   });
+
+  const [document, setDocument] = useState({});
 
   let isLoading = false;
 
@@ -75,14 +78,20 @@ const InternshipOfferForm = () => {
   }
 
   function saveInternshipOffer() {
+    //axios.defaults.headers.common['Content-Type'] = "multipart/form-data";
+    //axios.defaults.headers.post['Content-Type'] = 'application/form-data'
+    let formData = new FormData();
+    formData.append("internshipOffer", JSON.stringify(fields));
+    formData.append("document", document);
     axios
-      .post("http://localhost:9090/save/internshipOffer", fields)
+      .post("http://localhost:9090/save/internshipOffer", formData)
       .then((response) => {
-        setTimeout(() => {
+        /*setTimeout(() => {
             history.push({
                 pathname: `/home/${user.username}`
             });
-        }, 3000);
+        }, 3000);*/
+        isLoading = false;
         setErrorMessage("L'offre de stage a été sauvegardé, vous allez être redirigé");
       })
       .catch((error) => {
@@ -136,7 +145,8 @@ const InternshipOfferForm = () => {
           </Row>
           <Row>
             <fieldset disabled={internshipOffer ? "disabled" : ""}>
-              <Form onSubmit={(e) => onCreatePost(e)}>
+              <Form onSubmit={(e) => onCreatePost(e)}
+                    encType="multipart/form-data">
                 <Container className="cont_inputs">
                   {checkIfGS()}
                   <Form.Group controlId="jobName">
@@ -400,6 +410,12 @@ const InternshipOfferForm = () => {
                       <option value="COMPUTER_SCIENCE">Informatique</option>
                       <option value="NURSING">Infirmier</option>
                     </Form.Select>
+                  </Form.Group>
+                  <Form.Group controlId="document">
+                    <Form.Control
+                      type="file"
+                      onChange={(e) => {setDocument(e.target.files[0])}}
+                      className="input_form active_file_form"/>
                   </Form.Group>
                   <Container className="cont_btn">
                     <p style={ { color: errorMessage.startsWith("Erreur") ? 'red' : 'blue'} }>{errorMessage}</p>

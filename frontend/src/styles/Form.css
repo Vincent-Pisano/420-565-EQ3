@@ -171,6 +171,13 @@
   height: 5px;
 }
 
+.active_file_form {
+  margin: 5% 5%;
+  padding: 7% 0px;
+  opacity: 1;
+  height: 5px;
+}
+
 .checkboxes{
   display: inline-block;
   margin-top: 20px;

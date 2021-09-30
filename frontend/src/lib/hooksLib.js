@@ -24,6 +24,12 @@ export function useFormFields(initialState) {
             workDays: handleWorkDay(event)
           });
         }
+      else if (event.currentTarget.files != null){
+        setValues({
+          ...fields,
+          [event.currentTarget.id]: event.target.files[0]
+        });
+      }
       else {
         setValues({
           ...fields,
