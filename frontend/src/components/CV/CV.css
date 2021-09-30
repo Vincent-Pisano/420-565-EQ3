@@ -1,0 +1,8 @@
+/*Voir dans CV.js pour enlever le style, car react ne prend pas le classname en compte*/
+.btn_modal {
+    font-size: 23px;
+}
+
+.btn_sub {
+    margin-top: 16px;
+}
