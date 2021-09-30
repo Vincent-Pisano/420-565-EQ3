@@ -12,7 +12,7 @@ const InternshipOfferForm = () => {
   let history = useHistory();
   let internshipOffer = history.location.state;
 
-  console.log(internshipOffer)
+  console.log(internshipOffer);
 
   formatDates();
 
@@ -42,7 +42,7 @@ const InternshipOfferForm = () => {
     name: "",
   });
 
-  const [document, setDocument] = useState({});
+  const [document, setDocument] = useState(undefined);
 
   let isLoading = false;
 
@@ -51,7 +51,7 @@ const InternshipOfferForm = () => {
     if (!isLoading) {
       if (fields.workDays.length > 0) {
         if (new Date(fields.startDate) < new Date(fields.endDate)) {
-          if (document.type === "application/pdf") {
+          if (document === undefined || document.type === "application/pdf") {
             isLoading = true;
             if (user.username.startsWith("G")) {
               axios
@@ -115,6 +115,24 @@ const InternshipOfferForm = () => {
             required
           />
         </Form.Group>
+      );
+    }
+  }
+
+  function checkIfStudent() {
+    if (internshipOffer !== undefined && internshipOffer.document !== null) {
+      return (
+        <Container
+          className="cont_btn_file"
+        >
+          <a
+            className="btn_file"
+            href={"http://localhost:9090/get/internshipOffer/document/" +internshipOffer.id}
+            download
+          >
+            Télécharger le document
+          </a>
+        </Container>
       );
     }
   }
@@ -385,7 +403,7 @@ const InternshipOfferForm = () => {
                   </Form.Group>
                   <Form.Group controlId="workShift">
                     <Form.Label className="labelFields">
-                      Type d'offre de stage
+                      Type d'horaire
                     </Form.Label>
                     <Form.Select
                       aria-label="Default select example"
@@ -421,11 +439,14 @@ const InternshipOfferForm = () => {
                       onChange={(e) => {
                         setDocument(e.target.files[0]);
                       }}
-                      className="file_form"
+                      className="input_file_form"
                       accept=".pdf"
                     />
                   </Form.Group>
-                  <Container className="cont_btn">
+                  <Container
+                    className="cont_btn"
+                    style={{ display: internshipOffer ? "none" : "" }}
+                  >
                     <p
                       style={{
                         color: errorMessage.startsWith("Erreur")
@@ -440,7 +461,9 @@ const InternshipOfferForm = () => {
                 </Container>
               </Form>
             </fieldset>
+            {checkIfStudent()}
           </Row>
+          
         </Col>
       </Row>
     </Container>

@@ -125,6 +125,9 @@ public class BackendService {
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
+        internshipOffers.forEach(internshipOffer -> internshipOffer.setDocument(
+                internshipOffer.getDocument() != null ? new InternshipOfferDocument() : null)
+        );
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
