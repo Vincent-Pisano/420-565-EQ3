@@ -10,9 +10,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,24 +167,31 @@ class BackendControllerTest {
         assertThat(actualInternshipManager).isNotNull();
     }
 
-    /*@Test
+    @Test
+    //@Disabled
     public void testSaveInternshipOffer() throws Exception {
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        when(service.saveInternshipOffer(expectedInternshipOffer)).thenReturn(Optional.of(expectedInternshipOffer));
+
+        when(service.saveInternshipOffer(new ObjectMapper().writeValueAsString(expectedInternshipOffer), null)).thenReturn(Optional.of(expectedInternshipOffer));
 
         // Act
-        MvcResult result = mockMvc.perform(post("/save/internshipOffer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart("/save/internshipOffer")
+                        .file("internshipOffer", new ObjectMapper().writeValueAsString(expectedInternshipOffer).getBytes())
+                        .contentType(mediaType)).andReturn();
 
         // Assert
         var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
         System.out.println(expectedInternshipOffer.equals(internshipOffer));
         assertThat(expectedInternshipOffer).isEqualTo(internshipOffer);
-    }*/
+    }
 
     @Test
     //@Disabled

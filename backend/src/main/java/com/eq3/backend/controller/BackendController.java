@@ -86,8 +86,8 @@ public class BackendController {
     @PostMapping(value = "/save/internshipOffer",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
-    public ResponseEntity<InternshipOffer> saveInternshipOffer(@RequestPart(name = "document", required=false) MultipartFile document,
-                                                               @RequestPart(name = "internshipOffer") String internshipOffer) {
+    public ResponseEntity<InternshipOffer> saveInternshipOffer( @RequestPart(name = "internshipOffer") String internshipOffer,
+                                                                @RequestPart(name = "document", required=false) MultipartFile document) {
 
         return service.saveInternshipOffer(internshipOffer, document)
                     .map(_monitor -> ResponseEntity.status(HttpStatus.CREATED).body(_monitor))

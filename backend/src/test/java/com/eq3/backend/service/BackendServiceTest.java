@@ -3,6 +3,8 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 import static com.eq3.backend.utils.UtilsTest.*;
 
@@ -152,20 +155,28 @@ class BackendServiceTest {
         assertThat(loginInternshipManager.isPresent()).isTrue();
     }
 
-    /*@Test
+    @Test
     //@Disabled
-    public void testSaveInternshipOffer() {
+    public void testSaveInternshipOffer(){
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
         when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
 
         // Act
-        final Optional<InternshipOffer> internshipOffer = service.saveInternshipOffer(expectedInternshipOffer);
+        Optional<InternshipOffer> internshipOffer = Optional.empty();
+        try {
+            internshipOffer = service.saveInternshipOffer(
+                    new ObjectMapper().writeValueAsString(expectedInternshipOffer), null
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail("Couldn't write expectedInternshipOffer as a String");
+        }
 
         // Assert
         assertThat(internshipOffer.isPresent()).isTrue();
-    }*/
+    }
 
     @Test
     //@Disabled
