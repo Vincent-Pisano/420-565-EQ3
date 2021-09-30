@@ -16,8 +16,6 @@ const InternshipOfferForm = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  let ColorT = 'red';
-
   const [fields, handleFieldChange] = useFormFields(
     internshipOffer !== undefined
       ? internshipOffer
@@ -80,9 +78,6 @@ const InternshipOfferForm = () => {
     axios
       .post("http://localhost:9090/save/internshipOffer", fields)
       .then((response) => {
-        ColorT = 'blue'
-        console.log(ColorT)
-        
         setTimeout(() => {
             history.push({
                 pathname: `/home/${user.username}`
@@ -407,7 +402,7 @@ const InternshipOfferForm = () => {
                     </Form.Select>
                   </Form.Group>
                   <Container className="cont_btn">
-                    <p style={{color: ColorT}}>{errorMessage}</p>
+                    <p style={ { color: errorMessage.startsWith("Erreur") ? 'red' : 'blue'} }>{errorMessage}</p>
                     <button className="btn_submit">Confirmer</button>
                   </Container>
                 </Container>
