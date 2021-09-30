@@ -2,7 +2,6 @@ package com.eq3.backend.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -19,7 +18,7 @@ public class Student extends User {
     private Department department;
 
     @Field
-    private List<Binary> cvList;
+    private List<CV> CVList;
 
     @Override
     public String toString() {

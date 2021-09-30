@@ -57,7 +57,7 @@ public class InternshipOffer {
     private Monitor monitor;
 
     @Field
-    private InternshipOfferDocument document;
+    private Document document;
 
     @Field
     @Builder.Default

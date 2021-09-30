@@ -14,12 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,7 +113,7 @@ public class BackendService {
         ObjectMapper objectMapper = new ObjectMapper();
         newInternshipOffer = objectMapper.readValue(internshipOffer, InternshipOffer.class);
         if (document != null) {
-            InternshipOfferDocument newDocument = new InternshipOfferDocument();
+            Document newDocument = new Document();
             newDocument.setName(document.getOriginalFilename());
             newDocument.setContent(new Binary(BsonBinarySubType.BINARY, document.getBytes()));
             newInternshipOffer.setDocument(newDocument);
@@ -126,7 +124,7 @@ public class BackendService {
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
         internshipOffers.forEach(internshipOffer -> internshipOffer.setDocument(
-                internshipOffer.getDocument() != null ? new InternshipOfferDocument() : null)
+                internshipOffer.getDocument() != null ? new Document() : null)
         );
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
@@ -137,7 +135,7 @@ public class BackendService {
         if (optionalInternshipOffer.isEmpty() || optionalInternshipOffer.get().getDocument() == null)
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-        InternshipOfferDocument document = optionalInternshipOffer.get().getDocument();
+        Document document = optionalInternshipOffer.get().getDocument();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");

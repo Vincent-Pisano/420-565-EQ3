@@ -8,7 +8,7 @@ import org.bson.types.Binary;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InternshipOfferDocument {
+public class Document {
 
     private String name;
 
