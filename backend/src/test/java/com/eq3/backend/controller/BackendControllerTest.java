@@ -271,7 +271,7 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
         //Act
-        MvcResult result = mockMvc.perform(get("/save/internshipOffer/validate/" +
+        MvcResult result = mockMvc.perform(post("/save/internshipOffer/validate/" +
                 expectedInternshipManager.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();

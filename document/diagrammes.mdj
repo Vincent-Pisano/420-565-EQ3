@@ -2367,7 +2367,7 @@
 											"top": 494,
 											"width": 180.9853515625,
 											"height": 13,
-											"text": "-idOffer: String",
+											"text": "-id: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3911,7 +3911,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF7/y+uLCl4WbU="
 							},
-							"name": "idOffer",
+							"name": "id",
 							"visibility": "private",
 							"type": "String"
 						},

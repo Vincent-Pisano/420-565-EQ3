@@ -15,8 +15,7 @@ import java.util.List;
 public class InternshipOffer {
 
     @Id
-    @Field
-    private String idOffer;
+    private String id;
 
     @Field
     private String jobName;
