@@ -87,18 +87,16 @@ public class BackendController {
                                                                 @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
 
         return service.saveInternshipOffer(internshipOfferJson, multipartFile)
-                    .map(internshipOffer1 -> ResponseEntity.status(HttpStatus.CREATED).body(internshipOffer1))
+                    .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
                     .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PostMapping(value = "/save/CV",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
-    public ResponseEntity<Student> saveCV( @RequestPart(name = "student") String student,
-                                           @RequestPart(name = "document") MultipartFile document) {
-        System.out.println(document);
-
-        return service.saveCV(student, document)
+    public ResponseEntity<Student> saveCV( @RequestPart(name = "student") String studentJson,
+                                           @RequestPart(name = "document") MultipartFile multipartFile) {
+        return service.saveCV(studentJson, multipartFile)
                 .map(_student -> ResponseEntity.status(HttpStatus.CREATED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

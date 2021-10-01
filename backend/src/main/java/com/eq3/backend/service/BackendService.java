@@ -98,12 +98,10 @@ public class BackendService {
         return internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
 
-    public Optional<InternshipOffer> saveInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile){
+    public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile){
         InternshipOffer internshipOffer = null;
         try {
-            internshipOffer = mapInternshipOffer(InternshipOfferJson);
-            if (multipartFile != null)
-                internshipOffer.setDocument(extractDocument(multipartFile));
+            internshipOffer = getInternshipOffer(internshipOfferJson, multipartFile);
         } catch (IOException e) {
             logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at " +
                     "saveInternshipOffer in BackendService");
@@ -112,8 +110,39 @@ public class BackendService {
                 Optional.of(internshipOfferRepository.save(internshipOffer));
     }
 
+    public InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
+        InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
+        if (multipartFile != null)
+            internshipOffer.setDocument(extractDocument(multipartFile));
+        return internshipOffer;
+    }
+
     private InternshipOffer mapInternshipOffer(String InternshipOfferJson) throws IOException {
         return new ObjectMapper().readValue(InternshipOfferJson, InternshipOffer.class);
+    }
+
+    public Optional<Student> saveCV(String studentJson, MultipartFile multipartFile){
+        Student student = null;
+        try {
+            student = getStudent(studentJson, multipartFile);
+        } catch (IOException e) {
+            logger.error("Couldn't map the string student to Student.class at saveCV in BackendService");
+        }
+        return student == null ? Optional.empty() :
+                Optional.of(studentRepository.save(student));
+    }
+
+    private Student getStudent(String studentJson, MultipartFile multipartFile) throws IOException {
+        Student student = mapStudent(studentJson);
+
+        List<CV> listCV = student.getCVList();
+        listCV.add(new CV(extractDocument(multipartFile)));
+        student.setCVList(listCV);
+        return student;
+    }
+
+    private Student mapStudent(String studentJson) throws IOException {
+        return new ObjectMapper().readValue(studentJson, Student.class);
     }
 
     private Document extractDocument(MultipartFile multipartFile) throws IOException {
@@ -121,32 +150,6 @@ public class BackendService {
         document.setName(multipartFile.getOriginalFilename());
         document.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
         return document;
-    }
-
-    public Optional<Student> saveCV(String student, MultipartFile document){
-        Student newStudent = null;
-        try {
-            newStudent = addMapCV(student, document);
-        } catch (IOException e) {
-            logger.error("Couldn't map the string student to Student.class at saveCV in BackendService");
-        }
-        return newStudent == null ? Optional.empty() :
-                Optional.of(studentRepository.save(newStudent));
-    }
-
-    private Student addMapCV(String student, MultipartFile document) throws IOException {
-        Student newStudent = mapStudent(student);
-        Document cvPdf = extractDocument(document);
-
-        List<CV> listCV = newStudent.getCVList();
-        listCV.add(new CV(cvPdf));
-        newStudent.setCVList(listCV);
-
-        return newStudent;
-    }
-
-    private Student mapStudent(String studentJson) throws IOException {
-        return new ObjectMapper().readValue(studentJson, Student.class);
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
