@@ -85,7 +85,6 @@ public class BackendController {
             consumes = { "multipart/form-data" })
     public ResponseEntity<InternshipOffer> saveInternshipOffer( @RequestPart(name = "internshipOffer") String internshipOfferJson,
                                                                 @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
-
         return service.saveInternshipOffer(internshipOfferJson, multipartFile)
                     .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
                     .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
@@ -96,7 +95,6 @@ public class BackendController {
             consumes = { "multipart/form-data" })
     public ResponseEntity<Student> saveCV( @RequestPart(name = "document") MultipartFile multipartFile,
                                            @PathVariable String id) {
-
         return service.saveCV(id, multipartFile)
                 .map(_student -> ResponseEntity.status(HttpStatus.CREATED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
