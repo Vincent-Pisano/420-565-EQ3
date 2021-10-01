@@ -10,7 +10,6 @@ import java.util.List;
 
 @Data
 @SuperBuilder(toBuilder = true)
-@AllArgsConstructor
 @Document(collection = "student")
 public class Student extends User {
 
@@ -23,10 +22,5 @@ public class Student extends User {
     public Student() {
         super();
         CVList = new ArrayList<>();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 }

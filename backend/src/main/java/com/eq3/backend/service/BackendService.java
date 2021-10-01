@@ -97,28 +97,29 @@ public class BackendService {
         return internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
 
-    public Optional<InternshipOffer> saveInternshipOffer(String internshipOffer, MultipartFile document){
-        InternshipOffer newInternshipOffer = null;
+    public Optional<InternshipOffer> saveInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile){
+        InternshipOffer internshipOffer = null;
         try {
-            newInternshipOffer = mapInternshipOffer(internshipOffer, document);
+            internshipOffer = mapInternshipOffer(InternshipOfferJson);
+            if (multipartFile != null)
+                internshipOffer.setDocument(extractDocument(multipartFile));
         } catch (IOException e) {
-            logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at saveInternshipOffer in BackendService");
+            logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at " +
+                    "saveInternshipOffer in BackendService");
         }
-        return newInternshipOffer == null ? Optional.empty() :
-                Optional.of(internshipOfferRepository.save(newInternshipOffer));
+        return internshipOffer == null ? Optional.empty() :
+                Optional.of(internshipOfferRepository.save(internshipOffer));
     }
 
-    private InternshipOffer mapInternshipOffer(String internshipOffer, MultipartFile document) throws IOException {
-        InternshipOffer newInternshipOffer;
-        ObjectMapper objectMapper = new ObjectMapper();
-        newInternshipOffer = objectMapper.readValue(internshipOffer, InternshipOffer.class);
-        if (document != null) {
-            Document newDocument = new Document();
-            newDocument.setName(document.getOriginalFilename());
-            newDocument.setContent(new Binary(BsonBinarySubType.BINARY, document.getBytes()));
-            newInternshipOffer.setDocument(newDocument);
-        }
-        return newInternshipOffer;
+    private InternshipOffer mapInternshipOffer(String InternshipOfferJson) throws IOException {
+        return new ObjectMapper().readValue(InternshipOfferJson, InternshipOffer.class);
+    }
+
+    private Document extractDocument(MultipartFile multipartFile) throws IOException {
+        Document document = new Document();
+        document.setName(multipartFile.getOriginalFilename());
+        document.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
+        return document;
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {

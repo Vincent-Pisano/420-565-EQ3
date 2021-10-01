@@ -1,11 +1,8 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
-import com.eq3.backend.repository.InternshipOfferRepository;
 import com.eq3.backend.service.BackendService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -86,11 +83,11 @@ public class BackendController {
     @PostMapping(value = "/save/internshipOffer",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
-    public ResponseEntity<InternshipOffer> saveInternshipOffer( @RequestPart(name = "internshipOffer") String internshipOffer,
-                                                                @RequestPart(name = "document", required=false) MultipartFile document) {
+    public ResponseEntity<InternshipOffer> saveInternshipOffer( @RequestPart(name = "internshipOffer") String internshipOfferJson,
+                                                                @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
 
-        return service.saveInternshipOffer(internshipOffer, document)
-                    .map(_monitor -> ResponseEntity.status(HttpStatus.CREATED).body(_monitor))
+        return service.saveInternshipOffer(internshipOfferJson, multipartFile)
+                    .map(internshipOffer1 -> ResponseEntity.status(HttpStatus.CREATED).body(internshipOffer1))
                     .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 

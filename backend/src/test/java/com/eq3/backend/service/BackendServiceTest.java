@@ -5,12 +5,17 @@ import com.eq3.backend.repository.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +44,8 @@ class BackendServiceTest {
 
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
+
+
 
     //global variables
     private Student expectedStudent;
@@ -157,7 +164,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testSaveInternshipOffer(){
+    public void testSaveInternshipOfferWithoutDocument(){
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
@@ -176,6 +183,62 @@ class BackendServiceTest {
 
         // Assert
         assertThat(internshipOffer.isPresent()).isTrue();
+    }
+
+    @Test
+    @Disabled
+    public void testSaveInternshipOfferWithDocument() throws IOException {
+        // Arrange
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setMonitor(getMonitor());
+        var multipartFile = Mockito.mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn("Document.pdf");
+        when(multipartFile.getBytes()).thenReturn(new byte[50]);
+        //expectedInternshipOffer.setDocument(multipartFile);
+        when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
+
+        // Act
+        Optional<InternshipOffer> internshipOffer = Optional.empty();
+        try {
+            internshipOffer = service.saveInternshipOffer(
+                    new ObjectMapper().writeValueAsString(expectedInternshipOffer), multipartFile
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail("Couldn't write expectedInternshipOffer as a String in testSaveInternshipOfferWithDocument");
+        }
+
+        // Assert
+        assertThat(internshipOffer.isPresent()).isTrue();
+        internshipOffer.ifPresent(actualInternshipOffer -> {
+            assertThat(actualInternshipOffer.getDocument()).isNotNull();
+        });
+    }
+
+    @Test
+    //Disabled
+    public void testSaveInternshipOfferWithObjectNotMappable() {
+        // Arrange
+
+        // Act
+        Optional<InternshipOffer> internshipOffer = Optional.empty();
+        try {
+            internshipOffer = service.saveInternshipOffer(
+                    new ObjectMapper().writeValueAsString(expectedMonitor), null
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail("Couldn't write expectedMonitor as a String");
+        }
+
+        // Assert
+        assertThat(internshipOffer.isPresent()).isFalse();
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadInternshipOfferDocument() {
+
     }
 
     @Test

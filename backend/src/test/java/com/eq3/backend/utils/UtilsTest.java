@@ -1,6 +1,7 @@
 package com.eq3.backend.utils;
 
 import com.eq3.backend.model.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;

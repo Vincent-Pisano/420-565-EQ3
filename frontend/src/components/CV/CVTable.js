@@ -6,7 +6,7 @@ import CV from "./CV"
 const CVTable = ({cvlist}) => {
 
     return (
-        <Table striped bordered hover>
+        <Table responsive="md" striped bordered hover>
             <thead>
                 <tr>
                 <th>FileName</th>

@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Data
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "monitor")
 public class Monitor extends User {
 
