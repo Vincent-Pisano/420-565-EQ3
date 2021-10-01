@@ -117,8 +117,8 @@ public class BackendService {
         return internshipOffer;
     }
 
-    private InternshipOffer mapInternshipOffer(String InternshipOfferJson) throws IOException {
-        return new ObjectMapper().readValue(InternshipOfferJson, InternshipOffer.class);
+    private InternshipOffer mapInternshipOffer(String internshipOfferJson) throws IOException {
+        return new ObjectMapper().readValue(internshipOfferJson, InternshipOffer.class);
     }
 
     public Optional<Student> saveCV(String id, MultipartFile multipartFile){

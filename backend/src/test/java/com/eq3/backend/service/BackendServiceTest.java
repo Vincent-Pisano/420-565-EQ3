@@ -13,16 +13,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.quality.Strictness;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.eq3.backend.utils.UtilsTest.getCVList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 import static com.eq3.backend.utils.UtilsTest.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class BackendServiceTest {
@@ -55,6 +59,7 @@ class BackendServiceTest {
     private InternshipManager expectedInternshipManager;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
+    private CV expectedCV;
 
     @Test
     //@Disabled
@@ -171,9 +176,9 @@ class BackendServiceTest {
         when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
 
         // Act
-        Optional<InternshipOffer> internshipOffer = Optional.empty();
+        Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try {
-            internshipOffer = service.saveInternshipOffer(
+            optionalInternshipOffer = service.saveInternshipOffer(
                     new ObjectMapper().writeValueAsString(expectedInternshipOffer), null
             );
         } catch (JsonProcessingException e) {
@@ -182,37 +187,50 @@ class BackendServiceTest {
         }
 
         // Assert
-        assertThat(internshipOffer.isPresent()).isTrue();
+        assertThat(optionalInternshipOffer.isPresent()).isTrue();
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSaveInternshipOfferWithDocument() throws IOException {
         // Arrange
+        Document document = getDocument();
+        var multipartFile = Mockito.mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
+        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        var multipartFile = Mockito.mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn("Document.pdf");
-        when(multipartFile.getBytes()).thenReturn(new byte[50]);
-        //expectedInternshipOffer.setDocument(multipartFile);
-        when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
+        expectedInternshipOffer.setDocument(document);
+
+        lenient().when(internshipOfferRepository.save(any(InternshipOffer.class)))
+                .thenReturn(expectedInternshipOffer);
+
+        InternshipOffer givenInternshipOffer = getInternshipOffer();
+        givenInternshipOffer.setMonitor(getMonitor());
 
         // Act
-        Optional<InternshipOffer> internshipOffer = Optional.empty();
+        Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try {
-            internshipOffer = service.saveInternshipOffer(
-                    new ObjectMapper().writeValueAsString(expectedInternshipOffer), multipartFile
+            optionalInternshipOffer = service.saveInternshipOffer(
+                    new ObjectMapper().writeValueAsString(givenInternshipOffer), multipartFile
             );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            fail("Couldn't write expectedInternshipOffer as a String in testSaveInternshipOfferWithDocument");
+            fail("Couldn't write expectedInternshipOffer as a String");
         }
 
         // Assert
-        assertThat(internshipOffer.isPresent()).isTrue();
-        internshipOffer.ifPresent(actualInternshipOffer -> {
-            assertThat(actualInternshipOffer.getDocument()).isNotNull();
-        });
+        InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
+        assertThat(optionalInternshipOffer.isPresent()).isTrue();
+        assertThat(actualInternshipOffer.getDocument()).isNotNull();
+    }
+
+
+    @Test
+    //Disabled
+    public void testDownloadInternshipOfferDocument() {
+
     }
 
     @Test
@@ -236,10 +254,29 @@ class BackendServiceTest {
     }
 
     @Test
-    //Disabled
-    public void testDownloadInternshipOfferDocument() {
+    @Disabled
+    public void testSaveCV() throws IOException {
+        //Arrange
+        Document document = getDocument();
+        var multipartFile = Mockito.mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
+        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
 
+        expectedStudent = getStudent();
+        expectedStudent.setCVList(getCVList());
+        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+        when(studentRepository.findById(expectedStudent.getIdUser())).thenReturn(Optional.ofNullable(expectedStudent));
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.saveCV(expectedStudent.getIdUser(), multipartFile);
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
     }
+
 
     @Test
     //@Disabled

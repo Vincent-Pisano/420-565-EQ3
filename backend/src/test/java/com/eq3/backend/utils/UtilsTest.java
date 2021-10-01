@@ -1,13 +1,22 @@
 package com.eq3.backend.utils;
 
 import com.eq3.backend.model.*;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class UtilsTest {
+
+    public final static String PDF_FILEPATH =
+            System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
 
     public static Student getStudent(){
         return Student.builder()
@@ -147,6 +156,24 @@ public class UtilsTest {
         internshipOffers.add(internshipOffer1);
         internshipOffers.add(internshipOffer2);
         return internshipOffers;
+    }
+
+    public static Document getDocument() throws IOException {
+        Path pdfPath = Paths.get(PDF_FILEPATH);
+        return Document.builder()
+                .name("documentTest.pdf")
+                .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
+                .build();
+    }
+
+    public static CV getCV() throws IOException {
+        return new CV(getDocument());
+    }
+
+    public static List<CV> getCVList() throws IOException {
+        List<CV> cvList = new ArrayList<>();
+        cvList.add(new CV(getDocument()));
+        return cvList;
     }
 
 }
