@@ -24,7 +24,7 @@ const CVButtonDeposit = () => {
 
     function onCreatePost(e) {
         e.preventDefault();
-        if (document !== undefined && document.type === "application/pdf") {
+        if (document !== undefined && document.type === "application/pdf" && user.cvlist.length < 10) {
             let formData = new FormData();
             formData.append("document", document);
             axios
@@ -42,7 +42,12 @@ const CVButtonDeposit = () => {
             });
         }
         else{
-            setErrorMessage("Erreur! Aucun fichier est sélectionné");
+            if(!(user.cvlist.length < 10)){
+                setErrorMessage("Erreur! Taille maximale de fichiers atteinte(10)");
+            }
+            else{
+                setErrorMessage("Erreur! Aucun fichier est sélectionné");
+            }
         }
     }
 

@@ -6,7 +6,7 @@
 
 .App {
   text-align: center;
-  height: 120vh;
+  height: 100vh;
   /* Rectangle 3: */
   background-image: linear-gradient(-87deg, #F2F5F6 0%, #DDE5E8 100%);
 }

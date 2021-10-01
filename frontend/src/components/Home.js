@@ -32,7 +32,7 @@ function Home() {
     <>
       <Container className="cont_home">
         <Row className="cont_central">
-          <Col md="auto" className="cont_form">
+          <Col xs={12} md={3}>
             <h2>Bonjour {user.firstName}!</h2>
             <Row>
               <Card bg="secondary" text="white" className="pfp_card">
@@ -51,9 +51,12 @@ function Home() {
               </Card>
             </Row>
           </Col>
+          <Col xs={12} md={9}>
+          {checkIfStudent()}
+          </Col>
         </Row> 
       </Container>
-      {checkIfStudent()}
+      
     </>
   );
 }

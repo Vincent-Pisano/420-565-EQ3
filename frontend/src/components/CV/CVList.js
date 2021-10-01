@@ -5,7 +5,6 @@ import { Container } from 'react-bootstrap';
 import CVButtonDeposit from "./CVButtonDeposit"
 import CVTable from "./CVTable"
 
-
 const CVList = () => {
 
     let user = auth.user;
