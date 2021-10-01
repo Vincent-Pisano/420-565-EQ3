@@ -58,10 +58,10 @@ function InternshipOfferList() {
             <Container className="cont_principal">
                 <Container className="cont_list_centrar">
                     <h2 className="cont_title_form">
-                        Liste des offres de stages de votre département
+                        {pageTitle}
                     </h2>
                     <Container className="cont_list">
-                        <p>{errorMessage}</p>
+                        <p className="cont_title_form">{errorMessage}</p>
                         <ul>
                             {
                                 internshipOffers.map(internshipOffer => (

@@ -13,8 +13,10 @@ function NavUserSwitch({ userStatus }) {
             <Link className="nav-links-header" to="/formInternshipOffer">
               <li>Dépôt d'offres de stage</li>
             </Link>
-            <Link className="nav-links-header" to="/listInternshipOffer">
-              <li>Liste offres de stage non validées</li>
+          </Nav.Link>
+          <Nav.Link>
+          <Link className="nav-links-header" to="/listInternshipOffer">
+              <li>Liste des offres de stage non validées</li>
             </Link>
           </Nav.Link>
         </>

@@ -125,7 +125,7 @@ const InternshipOfferForm = () => {
     if (user.username.startsWith('G') && internshipOffer !== undefined) {
       return (<>
         <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
-        <button className="btn_sign" onClick={() => validateInternshipOffer()}>Valider</button>
+        <button className="btn_submit" onClick={() => validateInternshipOffer()}>Valider</button>
       </>)
     }
   }
@@ -406,7 +406,7 @@ const InternshipOfferForm = () => {
                   </Form.Group>
                   <Form.Group controlId="workShift">
                     <Form.Label className="labelFields">
-                      Type d'offre de stage
+                      Type d'horaire du stage
                     </Form.Label>
                     <Form.Select
                       aria-label="Default select example"
@@ -436,7 +436,7 @@ const InternshipOfferForm = () => {
                       <option value="NURSING">Infirmier</option>
                     </Form.Select>
                   </Form.Group>
-                  <Container className="cont_btn">
+                  <Container className="cont_btn" style={{ display : internshipOffer ? 'none' : 'inline-block'}}>
                     <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
                     <button className="btn_submit">Confirmer</button>
                   </Container>
