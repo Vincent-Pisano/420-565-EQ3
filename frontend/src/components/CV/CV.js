@@ -1,6 +1,9 @@
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import { useState } from "react";
-import "./CV.css"
+import "./CV.css";
+import auth from "../../services/Auth";
+import axios from "axios";
+import { useHistory } from "react-router";
 
 const CV = () => {
 
@@ -11,24 +14,31 @@ const CV = () => {
 
     const [document, setDocument] = useState(undefined);
 
+    let user = auth.user
+    let history = useHistory();
+
     function onCreatePost(e) {
         e.preventDefault();
         if (document !== undefined && document.type === "application/pdf") {
-            console.log("test")
-            /*axios
-              .get(`http://localhost:9090/get/monitor/${monitor.name}/`)
-              .then((response) => {
-                fields.monitor = response.data;
-                saveInternshipOffer();
-              })
-              .catch((error) => {
-                setErrorMessage("Erreur! Le moniteur est inexistant");
-                isLoading = false;
-            });*/
-
+            let formData = new FormData();
+            formData.append("student", JSON.stringify(user));
+            formData.append("document", document);
+            axios
+            .post("http://localhost:9090/save/CV", formData)
+            .then((response) => {
+                setTimeout(() => {
+                history.push({
+                    pathname: `/home/${user.username}`,
+                });
+                }, 3000);
+                
+            })
+            .catch((error) => {
+                console.log(error)
+            });
         }
         else{
-            console.log("erreur")
+            console.log("Erreur, il faut ajouteer un fichier")
         }
     }
 
