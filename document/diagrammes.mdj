@@ -8555,6 +8555,293 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAF8LYLS83om8z0="
 							}
+						},
+						{
+							"_type": "UMLUseCaseView",
+							"_id": "AAAAAAF8PPPBI9fe1Uc=",
+							"_parent": {
+								"$ref": "AAAAAAF72yKvXmhm+Cc="
+							},
+							"model": {
+								"$ref": "AAAAAAF8PPPBItfcwSM="
+							},
+							"subViews": [
+								{
+									"_type": "UMLNameCompartmentView",
+									"_id": "AAAAAAF8PPPBJNffTA0=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPPBI9fe1Uc="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPPBItfcwSM="
+									},
+									"subViews": [
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAF8PPPBJNfgM9M=",
+											"_parent": {
+												"$ref": "AAAAAAF8PPPBJNffTA0="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": -272,
+											"height": 13
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAF8PPPBJNfh//c=",
+											"_parent": {
+												"$ref": "AAAAAAF8PPPBJNffTA0="
+											},
+											"font": "Arial;13;1",
+											"left": 846,
+											"top": 451.5,
+											"width": 186,
+											"height": 13,
+											"text": "Appliquer à une offre de stage"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAF8PPPBJNfivZM=",
+											"_parent": {
+												"$ref": "AAAAAAF8PPPBJNffTA0="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": -272,
+											"width": 80.9072265625,
+											"height": 13,
+											"text": "(from Model1)"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAF8PPPBJNfjJpI=",
+											"_parent": {
+												"$ref": "AAAAAAF8PPPBJNffTA0="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": -272,
+											"height": 13,
+											"horizontalAlignment": 1
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 841,
+									"top": 444.5,
+									"width": 197.08447265625,
+									"height": 25,
+									"stereotypeLabel": {
+										"$ref": "AAAAAAF8PPPBJNfgM9M="
+									},
+									"nameLabel": {
+										"$ref": "AAAAAAF8PPPBJNfh//c="
+									},
+									"namespaceLabel": {
+										"$ref": "AAAAAAF8PPPBJNfivZM="
+									},
+									"propertyLabel": {
+										"$ref": "AAAAAAF8PPPBJNfjJpI="
+									}
+								},
+								{
+									"_type": "UMLAttributeCompartmentView",
+									"_id": "AAAAAAF8PPPBJNfkLvc=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPPBI9fe1Uc="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPPBItfcwSM="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": -136,
+									"width": 10,
+									"height": 10
+								},
+								{
+									"_type": "UMLOperationCompartmentView",
+									"_id": "AAAAAAF8PPPBJNflKvs=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPPBI9fe1Uc="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPPBItfcwSM="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": -136,
+									"width": 10,
+									"height": 10
+								},
+								{
+									"_type": "UMLReceptionCompartmentView",
+									"_id": "AAAAAAF8PPPBJNfm/eM=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPPBI9fe1Uc="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPPBItfcwSM="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": -136,
+									"width": 10,
+									"height": 10
+								},
+								{
+									"_type": "UMLTemplateParameterCompartmentView",
+									"_id": "AAAAAAF8PPPBJNfn1VA=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPPBI9fe1Uc="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPPBItfcwSM="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": -136,
+									"width": 10,
+									"height": 10
+								},
+								{
+									"_type": "UMLExtensionPointCompartmentView",
+									"_id": "AAAAAAF8PPPBJNfoXPU=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPPBI9fe1Uc="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPPBItfcwSM="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": -136,
+									"width": 10,
+									"height": 10
+								}
+							],
+							"font": "Arial;13;0",
+							"containerChangeable": true,
+							"left": 800,
+							"top": 440,
+							"width": 278,
+							"height": 35,
+							"nameCompartment": {
+								"$ref": "AAAAAAF8PPPBJNffTA0="
+							},
+							"suppressAttributes": true,
+							"suppressOperations": true,
+							"attributeCompartment": {
+								"$ref": "AAAAAAF8PPPBJNfkLvc="
+							},
+							"operationCompartment": {
+								"$ref": "AAAAAAF8PPPBJNflKvs="
+							},
+							"receptionCompartment": {
+								"$ref": "AAAAAAF8PPPBJNfm/eM="
+							},
+							"templateParameterCompartment": {
+								"$ref": "AAAAAAF8PPPBJNfn1VA="
+							},
+							"extensionPointCompartment": {
+								"$ref": "AAAAAAF8PPPBJNfoXPU="
+							}
+						},
+						{
+							"_type": "UMLExtendView",
+							"_id": "AAAAAAF8PPQHD9ipL0E=",
+							"_parent": {
+								"$ref": "AAAAAAF72yKvXmhm+Cc="
+							},
+							"model": {
+								"$ref": "AAAAAAF8PPQHDtind4w="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF8PPQHD9iqGgA=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPQHD9ipL0E="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPQHDtind4w="
+									},
+									"font": "Arial;13;0",
+									"left": 864,
+									"top": 416,
+									"width": 53.853515625,
+									"height": 13,
+									"alpha": 2.183113164472049,
+									"distance": 33.61547262794322,
+									"hostEdge": {
+										"$ref": "AAAAAAF8PPQHD9ipL0E="
+									},
+									"edgePosition": 1,
+									"text": "+étudiant"
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF8PPQHD9ir+Jk=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPQHD9ipL0E="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPQHDtind4w="
+									},
+									"font": "Arial;13;0",
+									"left": 853,
+									"top": 399,
+									"width": 53.49169921875,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 30,
+									"hostEdge": {
+										"$ref": "AAAAAAF8PPQHD9ipL0E="
+									},
+									"edgePosition": 1,
+									"text": "«extend»"
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF8PPQHD9isSzY=",
+									"_parent": {
+										"$ref": "AAAAAAF8PPQHD9ipL0E="
+									},
+									"model": {
+										"$ref": "AAAAAAF8PPQHDtind4w="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 920,
+									"top": 380,
+									"height": 13,
+									"alpha": -1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF8PPQHD9ipL0E="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF8DZONfjC4TQ0="
+							},
+							"tail": {
+								"$ref": "AAAAAAF8PPPBI9fe1Uc="
+							},
+							"lineStyle": 1,
+							"points": "929:439;886:347",
+							"showVisibility": true,
+							"nameLabel": {
+								"$ref": "AAAAAAF8PPQHD9iqGgA="
+							},
+							"stereotypeLabel": {
+								"$ref": "AAAAAAF8PPQHD9ir+Jk="
+							},
+							"propertyLabel": {
+								"$ref": "AAAAAAF8PPQHD9isSzY="
+							}
 						}
 					]
 				},
@@ -9153,6 +9440,30 @@
 							},
 							"target": {
 								"$ref": "AAAAAAF7/yDCqxc+y7Y="
+							}
+						}
+					]
+				},
+				{
+					"_type": "UMLUseCase",
+					"_id": "AAAAAAF8PPPBItfcwSM=",
+					"_parent": {
+						"$ref": "AAAAAAF72yKvXmhlZYc="
+					},
+					"name": "Appliquer à une offre de stage",
+					"ownedElements": [
+						{
+							"_type": "UMLExtend",
+							"_id": "AAAAAAF8PPQHDtind4w=",
+							"_parent": {
+								"$ref": "AAAAAAF8PPPBItfcwSM="
+							},
+							"name": "étudiant",
+							"source": {
+								"$ref": "AAAAAAF8PPPBItfcwSM="
+							},
+							"target": {
+								"$ref": "AAAAAAF8DZONfTC2zNk="
 							}
 						}
 					]
