@@ -91,12 +91,13 @@ public class BackendController {
                     .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping(value = "/save/CV",
+    @PostMapping(value = "/save/student/{id}/CV",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
-    public ResponseEntity<Student> saveCV( @RequestPart(name = "student") String studentJson,
-                                           @RequestPart(name = "document") MultipartFile multipartFile) {
-        return service.saveCV(studentJson, multipartFile)
+    public ResponseEntity<Student> saveCV( @RequestPart(name = "document") MultipartFile multipartFile,
+                                           @PathVariable String id) {
+
+        return service.saveCV(id, multipartFile)
                 .map(_student -> ResponseEntity.status(HttpStatus.CREATED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

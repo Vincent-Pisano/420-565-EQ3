@@ -121,28 +121,29 @@ public class BackendService {
         return new ObjectMapper().readValue(InternshipOfferJson, InternshipOffer.class);
     }
 
-    public Optional<Student> saveCV(String studentJson, MultipartFile multipartFile){
-        Student student = null;
-        try {
-            student = getStudent(studentJson, multipartFile);
-        } catch (IOException e) {
-            logger.error("Couldn't map the string student to Student.class at saveCV in BackendService");
+    public Optional<Student> saveCV(String id, MultipartFile multipartFile){
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+
+        updateListCV(multipartFile, optionalStudent);
+
+        return optionalStudent.isEmpty() ? Optional.empty() :
+                Optional.of(studentRepository.save(optionalStudent.get()));
+    }
+
+    private boolean updateListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
+        if(optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            List<CV> listCV = student.getCVList();
+            try {
+                listCV.add(new CV(extractDocument(multipartFile)));
+            } catch (IOException e) {
+                logger.error("Couldn't extract the document at updateListCV in BackendService");
+            }
+
+            student.setCVList(listCV);
+            return true;
         }
-        return student == null ? Optional.empty() :
-                Optional.of(studentRepository.save(student));
-    }
-
-    private Student getStudent(String studentJson, MultipartFile multipartFile) throws IOException {
-        Student student = mapStudent(studentJson);
-
-        List<CV> listCV = student.getCVList();
-        listCV.add(new CV(extractDocument(multipartFile)));
-        student.setCVList(listCV);
-        return student;
-    }
-
-    private Student mapStudent(String studentJson) throws IOException {
-        return new ObjectMapper().readValue(studentJson, Student.class);
+        return false;
     }
 
     private Document extractDocument(MultipartFile multipartFile) throws IOException {

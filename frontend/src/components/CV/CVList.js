@@ -12,7 +12,7 @@ const CVList = () => {
 
     function checkIfEmpty() {
         if (auth.user === undefined || user.cvlist.length === 0) {
-            return <p>Pas de CV couillon</p>
+            return <p>Pas de CV</p>
         }
         else {
             return <CVTable cvlist={user.cvlist}/>

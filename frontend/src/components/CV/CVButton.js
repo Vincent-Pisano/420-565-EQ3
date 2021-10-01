@@ -3,8 +3,6 @@ import { useState } from "react";
 import "./CV.css"
 import auth from "../../services/Auth";
 import axios from "axios";
-import { useHistory } from "react-router";
-
 
 const CVButton = () => {
 
@@ -21,13 +19,14 @@ const CVButton = () => {
         e.preventDefault();
         if (document !== undefined && document.type === "application/pdf") {
             let formData = new FormData();
-            formData.append("student", JSON.stringify(user));
             formData.append("document", document);
-            console.log(user);
             axios
-            .post("http://localhost:9090/save/CV", formData)
+            .post(`http://localhost:9090/save/student/${user.idUser}/CV`, formData)
             .then((response) => {
-                setShow = false;
+                user = response.data;
+                auth.user = user;
+                handleClose();
+                console.log(user);
             })
             .catch((error) => {
                 console.log(error)

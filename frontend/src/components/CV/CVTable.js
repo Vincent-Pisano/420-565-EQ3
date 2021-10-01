@@ -9,7 +9,7 @@ const CVTable = ({cvlist}) => {
         <Table responsive="md" striped bordered hover>
             <thead>
                 <tr>
-                <th>FileName</th>
+                <th>Nom de fichier</th>
                 </tr>
             </thead>
             <tbody>
