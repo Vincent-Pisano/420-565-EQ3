@@ -2,7 +2,7 @@ import React from 'react'
 import auth from "../../services/Auth"
 import "../../styles/List.css"
 import { Container } from 'react-bootstrap';
-import CVButton from "./CVButton"
+import CVButtonDeposit from "./CVButtonDeposit"
 import CVTable from "./CVTable"
 
 
@@ -25,7 +25,7 @@ const CVList = () => {
                 <h2 className="cont_title_form">
                     Liste de vos CVs
                 </h2>
-                <CVButton/>
+                <CVButtonDeposit/>
                 <Container className="cont_list">
                     {checkIfEmpty()}
                 </Container>

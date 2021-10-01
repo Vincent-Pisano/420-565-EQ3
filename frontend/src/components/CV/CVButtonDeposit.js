@@ -4,7 +4,7 @@ import "./CV.css"
 import auth from "../../services/Auth";
 import axios from "axios";
 
-const CVButton = () => {
+const CVButtonDeposit = () => {
 
     const [show, setShow] = useState(false);
 
@@ -77,4 +77,4 @@ const CVButton = () => {
     );
 }
 
-export default CVButton;
+export default CVButtonDeposit;
