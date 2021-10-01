@@ -35,7 +35,6 @@ const SignUpSupervisor = () => {
           
         }
         else {
-          console.log(response.data);
           auth.login(() => {
             history.push({
                 pathname: `/home/${response.data.username}`,

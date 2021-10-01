@@ -17,16 +17,13 @@ function InternshipOfferList() {
     useEffect(() => {
         axios.get(`http://localhost:9090/getAll/internshipOffer/${auth.user.department}`)
             .then(response => {
-                console.log(response.data)
                 setInternshipOffers(response.data)
             }).catch(err => {
                 setErrorMessage("Aucune Offre de stage n'a été validé pour le moment");
-                console.log(err)
             })
     }, [])
 
     function showInternshipOffer(internshipOffer) {
-        console.log(internshipOffer);
         history.push({
             pathname: "/formInternshipOffer",
             state: internshipOffer

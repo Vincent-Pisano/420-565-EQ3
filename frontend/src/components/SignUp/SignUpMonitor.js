@@ -32,7 +32,6 @@ const SignUpMonitor = () => {
     axios
       .post("http://localhost:9090/signUp/monitor", fields)
       .then((response) => {
-        console.log(response.data);
         auth.login(() => {
           history.push({
               pathname: `/home/${response.data.username}`,

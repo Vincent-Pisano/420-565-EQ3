@@ -1,6 +1,6 @@
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import { useState } from "react";
-import "./CV.css"
+import "./../../styles/CV.css"
 import auth from "../../services/Auth";
 import axios from "axios";
 
@@ -12,8 +12,15 @@ const CVButtonDeposit = () => {
     const handleShow = () => setShow(true);
 
     const [document, setDocument] = useState(undefined);
+    const [errorMessage, setErrorMessage] = useState('')
 
     let user = auth.user
+
+    function reset(){
+        handleShow();
+        setErrorMessage("");
+        setDocument(undefined)
+    }
 
     function onCreatePost(e) {
         e.preventDefault();
@@ -25,21 +32,23 @@ const CVButtonDeposit = () => {
             .then((response) => {
                 user = response.data;
                 auth.user = user;
-                handleClose();
-                console.log(user);
+                setErrorMessage("Le fichier a été déposé");
+                setTimeout(() => {
+                    handleClose();
+                }, 3000);
             })
             .catch((error) => {
-                console.log(error)
+                setErrorMessage("Erreur d'envoi de fichier");
             });
         }
         else{
-            console.log("Erreur, il faut ajouteer un fichier")
+            setErrorMessage("Erreur! Aucun fichier est sélectionné");
         }
     }
 
     return (
         <>
-        <Button variant="info" onClick={handleShow} className="btn_modal">
+        <Button variant="info" onClick={reset} className="btn_modal">
             Déposer un CV
         </Button>
 
@@ -64,6 +73,15 @@ const CVButtonDeposit = () => {
                         <Button variant="success" size="md" className="btn_sub" onClick={(e) => onCreatePost(e)}>
                             Déposer
                         </Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <p className="error_p" style={{
+                            color: errorMessage.startsWith("Erreur")
+                            ? "red"
+                            : "green",
+                            }}>{errorMessage}</p>
                     </Col>
                 </Row>
             </Modal.Body>

@@ -16,7 +16,6 @@ function ListStudents() {
                 setStudents(response.data)
             }).catch(err => {
                 setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
-                console.log(err)
             })
     }, [students.length])
 

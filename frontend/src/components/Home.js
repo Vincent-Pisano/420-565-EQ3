@@ -4,7 +4,7 @@ import "../App.css"
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import pfp from './../assets/img/pfp.png';
 import CVList from "../components/CV/CVList"
-import "./Home.css"
+import "./../styles/Home.css"
 
 function Home() {
 

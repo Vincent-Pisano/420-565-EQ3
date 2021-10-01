@@ -25,10 +25,10 @@ const CVList = () => {
                 <h2 className="cont_title_form">
                     Liste de vos CVs
                 </h2>
-                <CVButtonDeposit/>
                 <Container className="cont_list">
                     {checkIfEmpty()}
                 </Container>
+                <CVButtonDeposit/>
             </Container>
         </Container>
     )

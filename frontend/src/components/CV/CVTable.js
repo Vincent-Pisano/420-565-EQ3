@@ -2,7 +2,6 @@ import React from 'react'
 import { Table } from 'react-bootstrap';
 import CV from "./CV"
 
-
 const CVTable = ({cvlist}) => {
 
     return (
@@ -10,6 +9,7 @@ const CVTable = ({cvlist}) => {
             <thead>
                 <tr>
                 <th>Nom de fichier</th>
+                <th>Téléchargements</th>
                 </tr>
             </thead>
             <tbody>
