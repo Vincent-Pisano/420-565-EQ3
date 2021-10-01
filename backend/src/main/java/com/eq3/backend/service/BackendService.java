@@ -104,7 +104,7 @@ public class BackendService {
             internshipOffer = getInternshipOffer(internshipOfferJson, multipartFile);
         } catch (IOException e) {
             logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at " +
-                    "saveInternshipOffer in BackendService");
+                    "saveInternshipOffer in BackendService : " + e.getMessage());
         }
         return internshipOffer == null ? Optional.empty() :
                 Optional.of(internshipOfferRepository.save(internshipOffer));
@@ -124,32 +124,31 @@ public class BackendService {
     public Optional<Student> saveCV(String id, MultipartFile multipartFile){
         Optional<Student> optionalStudent = studentRepository.findById(id);
 
-        updateListCV(multipartFile, optionalStudent);
-
-        return optionalStudent.isEmpty() ? Optional.empty() :
-                Optional.of(studentRepository.save(optionalStudent.get()));
+        return updateListCV(multipartFile, optionalStudent)
+                ? Optional.of(studentRepository.save(optionalStudent.get()))
+                : Optional.empty();
     }
 
-    private boolean updateListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
-        if(optionalStudent.isPresent()) {
+    private Boolean updateListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
+        Boolean isPresent = optionalStudent.isPresent();
+        if(isPresent) {
             Student student = optionalStudent.get();
             List<CV> listCV = student.getCVList();
-            try {
-                listCV.add(new CV(extractDocument(multipartFile)));
-            } catch (IOException e) {
-                logger.error("Couldn't extract the document at updateListCV in BackendService");
-            }
-
+            listCV.add(new CV(extractDocument(multipartFile)));
             student.setCVList(listCV);
-            return true;
         }
-        return false;
+        return isPresent;
     }
 
-    private Document extractDocument(MultipartFile multipartFile) throws IOException {
+    private Document extractDocument(MultipartFile multipartFile) {
         Document document = new Document();
         document.setName(multipartFile.getOriginalFilename());
-        document.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
+        try {
+            document.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
+        } catch (IOException e) {
+            logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
+                    + " at extractDocument in BackendService : " + e.getMessage());
+        }
         return document;
     }
 
