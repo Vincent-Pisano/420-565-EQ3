@@ -2,8 +2,10 @@ package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,16 +16,21 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.eq3.backend.utils.UtilsTest.getInternshipOffer;
+import static com.eq3.backend.utils.UtilsTest.*;
+import static com.eq3.backend.utils.UtilsTest.getStudent;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static com.eq3.backend.utils.UtilsTest.*;
 
 @WebMvcTest(BackendController.class)
 class BackendControllerTest {
@@ -174,7 +181,8 @@ class BackendControllerTest {
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
 
-        when(service.saveInternshipOffer(new ObjectMapper().writeValueAsString(expectedInternshipOffer), null)).thenReturn(Optional.of(expectedInternshipOffer));
+        when(service.saveInternshipOffer(new ObjectMapper().writeValueAsString(expectedInternshipOffer), null))
+                .thenReturn(Optional.of(expectedInternshipOffer));
 
         // Act
         HashMap<String, String> contentTypeParams = new HashMap<>();
@@ -187,16 +195,74 @@ class BackendControllerTest {
                         .contentType(mediaType)).andReturn();
 
         // Assert
-        var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
+        var actualInternshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
-        System.out.println(expectedInternshipOffer.equals(internshipOffer));
-        assertThat(expectedInternshipOffer).isEqualTo(internshipOffer);
+        assertThat(expectedInternshipOffer).isEqualTo(actualInternshipOffer);
     }
 
     @Test
     //Disabled
-    public void testSaveInternshipOfferWithDocument() {
+    public void testSaveInternshipOfferWithDocument() throws Exception {
+        // Arrange
+        Document document = getDocument();
+        var multipartFile = Mockito.mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
+        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
 
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setDocument(document);
+
+        InternshipOffer givenInternshipOffer = getInternshipOffer();
+        givenInternshipOffer.setMonitor(getMonitor());
+
+        when(service.saveInternshipOffer(
+                Mockito.eq(new ObjectMapper().writeValueAsString(givenInternshipOffer)), any(MultipartFile.class))
+        ).thenReturn(Optional.of(expectedInternshipOffer));
+
+        // Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart("/save/internshipOffer")
+                        .file("internshipOffer", new ObjectMapper().writeValueAsString(givenInternshipOffer).getBytes())
+                        .file("document", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        // Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
+    }
+
+    @Test
+    //Disabled
+    public void testSaveCV() throws Exception {
+        //Arrange
+        Document document = getDocument();
+        var multipartFile = Mockito.mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
+        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+
+        expectedStudent = getStudent();
+        expectedStudent.setCVList(getCVList());
+
+        Student givenStudent = getStudent();
+        when(service.saveCV(Mockito.eq(givenStudent.getIdUser()), any(MultipartFile.class)))
+                .thenReturn(Optional.ofNullable(expectedStudent));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart("/save/student/"+ givenStudent.getIdUser() + "/CV")
+                        .file("document", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
     }
 
     @Test

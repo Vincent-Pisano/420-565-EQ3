@@ -254,7 +254,7 @@ class BackendServiceTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSaveCV() throws IOException {
         //Arrange
         Document document = getDocument();

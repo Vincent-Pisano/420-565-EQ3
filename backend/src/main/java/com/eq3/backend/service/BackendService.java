@@ -134,8 +134,12 @@ public class BackendService {
         if(isPresent) {
             Student student = optionalStudent.get();
             List<CV> listCV = student.getCVList();
-            listCV.add(new CV(extractDocument(multipartFile)));
-            student.setCVList(listCV);
+            if (listCV.size() < 10) {
+                listCV.add(new CV(extractDocument(multipartFile)));
+                student.setCVList(listCV);
+            } else {
+                isPresent = false;
+            }
         }
         return isPresent;
     }
@@ -181,6 +185,7 @@ public class BackendService {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(new ByteArrayInputStream(document.getContent().getData())));
     }
+
     public Optional<Monitor> getMonitorByUsername(String username){
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);
     }
