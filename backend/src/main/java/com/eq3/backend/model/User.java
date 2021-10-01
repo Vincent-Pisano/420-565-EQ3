@@ -11,7 +11,6 @@ import java.util.Date;
 
 @Data
 @SuperBuilder(toBuilder = true)
-@AllArgsConstructor
 public class User implements Serializable {
 
     @Id

@@ -169,7 +169,7 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testSaveInternshipOffer() throws Exception {
+    public void testSaveInternshipOfferWithoutDocument() throws Exception {
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
@@ -191,6 +191,18 @@ class BackendControllerTest {
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
         System.out.println(expectedInternshipOffer.equals(internshipOffer));
         assertThat(expectedInternshipOffer).isEqualTo(internshipOffer);
+    }
+
+    @Test
+    //Disabled
+    public void testSaveInternshipOfferWithDocument() {
+
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadInternshipOfferDocument() {
+
     }
 
     @Test

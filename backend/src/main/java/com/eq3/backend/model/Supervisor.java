@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Data
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
 @Document(collection = "supervisor")
 public class Supervisor extends User {
 
