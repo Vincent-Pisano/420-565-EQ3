@@ -58,15 +58,12 @@ function NavigationBar() {
     else {
       return (
         <>
-        <Nav.Link>
-          <Link className="nav-links-header" to="/signUp">
-              <li>Inscriptions</li>
-          </Link>
+        <Nav.Link as={Link} to="/signUp">   
+          <li className="nav-links-header">Inscriptions</li>   
         </Nav.Link>
-        <Nav.Link>
-          <Link className="nav-links-header" to="/connexion">
-              <li>Connexion</li>
-          </Link>
+
+        <Nav.Link as={Link} to="/connexion">
+          <li className="nav-links-header">Connexion</li>
         </Nav.Link>
         </>
       );

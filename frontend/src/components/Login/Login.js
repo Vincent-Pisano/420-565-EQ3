@@ -55,7 +55,6 @@ const Login = () => {
                 }, response.data);
             }
         ).catch((error) => {
-            console.log(error);
             setErrorMessage("Le nom d'utilisateur ou le mot de passe est incorrect.")
         });
     }

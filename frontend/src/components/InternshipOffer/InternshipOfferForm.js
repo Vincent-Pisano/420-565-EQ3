@@ -12,8 +12,6 @@ const InternshipOfferForm = () => {
   let history = useHistory();
   let internshipOffer = history.location.state;
 
-  console.log(internshipOffer);
-
   formatDates();
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -451,7 +449,7 @@ const InternshipOfferForm = () => {
                       style={{
                         color: errorMessage.startsWith("Erreur")
                           ? "red"
-                          : "blue",
+                          : "green",
                       }}
                     >
                       {errorMessage}

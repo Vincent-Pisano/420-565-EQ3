@@ -31,7 +31,6 @@ const SignUpStudent = () => {
     axios
       .post("http://localhost:9090/signUp/student", fields)
       .then((response) => {
-        console.log(response.data);
         auth.login(() => {
           history.push({
               pathname: `/home/${response.data.username}`,
