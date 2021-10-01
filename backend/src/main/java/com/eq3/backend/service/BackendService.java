@@ -121,16 +121,29 @@ public class BackendService {
         return newInternshipOffer;
     }
 
-    public Optional<CV> saveCV(String student, MultipartFile document){
-        CV cv = null;
+    /*public Optional<Student> saveCV(String cv, MultipartFile document){
+        CV newCV = null;
         try {
-            cv = mapInternshipOffer(student, document);
+            newCV = mapCV(cv, document);
         } catch (IOException e) {
-            logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at saveInternshipOffer in BackendService");
+            logger.error("Couldn't map the string student to CV.class at saveCV in BackendService");
         }
-        return newInternshipOffer == null ? Optional.empty() :
-                Optional.of(internshipOfferRepository.save(newInternshipOffer));
+        return newCV == null ? Optional.empty() :
+                Optional.of(studentRepository.save(newCV));
     }
+
+    private CV mapCV(String cv, MultipartFile document) throws IOException {
+        CV newCV;
+        ObjectMapper objectMapper = new ObjectMapper();
+        newCV = objectMapper.readValue(cv, CV.class);
+        if (document != null) {
+            Document newDocument = new Document();
+            newDocument.setName(document.getOriginalFilename());
+            newDocument.setContent(new Binary(BsonBinarySubType.BINARY, document.getBytes()));
+            newCV.setDocument(newDocument);
+        }
+        return newCV;
+    }*/
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);

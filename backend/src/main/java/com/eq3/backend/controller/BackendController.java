@@ -94,7 +94,7 @@ public class BackendController {
                     .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping(value = "/save/CV",
+    /*@PostMapping(value = "/save/CV",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
     public ResponseEntity<Student> saveCV( @RequestPart(name = "student") String student,
@@ -102,9 +102,9 @@ public class BackendController {
         System.out.println(document);
 
         return service.saveCV(student, document)
-                .map(_monitor -> ResponseEntity.status(HttpStatus.CREATED).body(_monitor))
+                .map(_student -> ResponseEntity.status(HttpStatus.CREATED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
+    }*/
 
     @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
