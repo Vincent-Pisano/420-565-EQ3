@@ -3,7 +3,7 @@ import auth from "../services/Auth";
 import "../App.css"
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import pfp from './../assets/img/pfp.png';
-import CV from "../components/CV/CV"
+import CVList from "../components/CV/CVList"
 import "./Home.css"
 
 function Home() {
@@ -22,37 +22,39 @@ function Home() {
     if (user.username.startsWith("E")) {
       return (
         <>
-          <CV />
+          <CVList />
         </>
       );
     }
   }
   
   return (
-    <Container className="cont_home">
-      <Row className="cont_central">
-        <Col md="auto" className="cont_form">
-          <h2>Bonjour {user.firstName}!</h2>
-          <Row>
-            <Card bg="secondary" text="white" className="pfp_card">
-              <br />
-              <Card.Img variant="top" src={pfp}/>
-              <Card.Body>
-                <Card.Title>
-                  <h4>Nom d'utilisateur: {user.username}</h4>
-                </Card.Title>
-                <h5>Prénom: {user.firstName}</h5>
-                <h5>Nom: {user.lastName}</h5>
-                <h5>Adresse courriel: {user.email}</h5>
-                <h5>Depuis {dateFormat}</h5>
-              </Card.Body>
-              {checkIfStudent()}
-              <br />
-            </Card>
-          </Row>
-        </Col>
-      </Row> 
-    </Container>
+    <>
+      <Container className="cont_home">
+        <Row className="cont_central">
+          <Col md="auto" className="cont_form">
+            <h2>Bonjour {user.firstName}!</h2>
+            <Row>
+              <Card bg="secondary" text="white" className="pfp_card">
+                <br />
+                <Card.Img variant="top" src={pfp}/>
+                <Card.Body>
+                  <Card.Title>
+                    <h4>Nom d'utilisateur: {user.username}</h4>
+                  </Card.Title>
+                  <h5>Prénom: {user.firstName}</h5>
+                  <h5>Nom: {user.lastName}</h5>
+                  <h5>Adresse courriel: {user.email}</h5>
+                  <h5>Depuis {dateFormat}</h5>
+                </Card.Body>
+                <br />
+              </Card>
+            </Row>
+          </Col>
+        </Row> 
+      </Container>
+      {checkIfStudent()}
+    </>
   );
 }
 
