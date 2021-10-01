@@ -45,7 +45,7 @@ function InternshipOfferList() {
                         {
                             internshipOffers.map(internshipOffer => (
                                 <InternshipOffer
-                                    key={internshipOffer.idOffer}
+                                    key={internshipOffers.indexOf(internshipOffer)}
                                     internshipOffer={internshipOffer}
                                     onToggle={showInternshipOffer} />
                             ))
