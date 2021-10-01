@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,25 +126,27 @@ public class BackendService {
     public Optional<Student> saveCV(String student, MultipartFile document){
         Student newStudent = null;
         try {
-            newStudent = mapCV(student, document);
+            newStudent = addMapCV(student, document);
         } catch (IOException e) {
-            logger.error("Couldn't map the string student to CV.class at saveCV in BackendService");
+            logger.error("Couldn't map the string student to Student.class at saveCV in BackendService");
         }
         return newStudent == null ? Optional.empty() :
                 Optional.of(studentRepository.save(newStudent));
     }
 
-    private Student mapCV(String student, MultipartFile document) throws IOException {
-        Student newStudent;
-        ObjectMapper objectMapper = new ObjectMapper();
-        newStudent = objectMapper.readValue(student, Student.class);
-        if (document != null) {
-            Document newDocument = new Document();
-            newDocument.setName(document.getOriginalFilename());
-            newDocument.setContent(new Binary(BsonBinarySubType.BINARY, document.getBytes()));
-            newStudent.getCVList().add.setDocument(newDocument);
-        }
+    private Student addMapCV(String student, MultipartFile document) throws IOException {
+        Student newStudent = mapStudent(student);
+        Document cvPdf = extractDocument(document);
+
+        List<CV> listCV = newStudent.getCVList();
+        listCV.add(new CV(cvPdf));
+        newStudent.setCVList(listCV);
+
         return newStudent;
+    }
+
+    private Student mapStudent(String studentJson) throws IOException {
+        return new ObjectMapper().readValue(studentJson, Student.class);
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {

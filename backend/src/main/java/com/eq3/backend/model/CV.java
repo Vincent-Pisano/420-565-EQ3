@@ -17,7 +17,14 @@ public class CV {
 
     public CV() {
         depositDate = new Date();
-        isActive = true;
+        isActive = false;
+        isValid = false;
+    }
+
+    public CV(Document document) {
+        this.document = document;
+        depositDate = new Date();
+        isActive = false;
         isValid = false;
     }
 
