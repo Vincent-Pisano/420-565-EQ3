@@ -92,7 +92,7 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfGS() {
-    if (user.username.startsWith("G")) {
+    if (user.username.startsWith("G") && internshipOffer === undefined) {
       return (
         <Form.Group controlId="name">
           <Form.Control
@@ -112,8 +112,12 @@ const InternshipOfferForm = () => {
     axios
       .post(`http://localhost:9090/save/internshipOffer/validate/${user.username}`, fields)
       .then((response) => {
-        setErrorMessage("L'offre de stage a été validé")
-        console.log(response.data);
+        setTimeout(() => {
+          history.push({
+            pathname: `/home/${user.username}`
+          });
+        }, 3000);
+        setErrorMessage("L'offre de stage a été validée, vous allez être redirigé");
       }
       ).catch((error) => {
         console.log(error)
@@ -121,11 +125,29 @@ const InternshipOfferForm = () => {
       });
   }
 
+  function applyInternshipOffer(){
+    console.log("Appliqué!")
+    setTimeout(() => {
+      history.push({
+        pathname: `/home/${user.username}`
+      });
+    }, 3000);
+  }
+
   function checkIfValidated() {
     if (user.username.startsWith('G') && internshipOffer !== undefined) {
       return (<>
         <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
         <button className="btn_submit" onClick={() => validateInternshipOffer()}>Valider</button>
+      </>)
+    }
+  }
+
+  function checkIfStudent() {
+    if (user.username.startsWith('E') && internshipOffer !== undefined) {
+      return (<>
+        <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
+        <button className="btn_submit" onClick={() => applyInternshipOffer()}>Valider</button>
       </>)
     }
   }
@@ -445,6 +467,7 @@ const InternshipOfferForm = () => {
             </fieldset>
             <Container className="cont_btn">
               {checkIfValidated()}
+              {checkIfStudent()}
             </Container>
           </Row>
         </Col>
