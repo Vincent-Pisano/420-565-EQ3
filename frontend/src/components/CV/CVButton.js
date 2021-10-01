@@ -16,7 +16,6 @@ const CVButton = () => {
     const [document, setDocument] = useState(undefined);
 
     let user = auth.user
-    let history = useHistory();
 
     function onCreatePost(e) {
         e.preventDefault();
@@ -24,15 +23,11 @@ const CVButton = () => {
             let formData = new FormData();
             formData.append("student", JSON.stringify(user));
             formData.append("document", document);
+            console.log(user);
             axios
             .post("http://localhost:9090/save/CV", formData)
             .then((response) => {
-                setTimeout(() => {
-                history.push({
-                    pathname: `/home/${user.username}`,
-                });
-                }, 3000);
-                
+                setShow = false;
             })
             .catch((error) => {
                 console.log(error)

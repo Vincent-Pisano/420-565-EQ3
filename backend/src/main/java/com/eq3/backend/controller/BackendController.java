@@ -96,7 +96,6 @@ public class BackendController {
             consumes = { "multipart/form-data" })
     public ResponseEntity<Student> saveCV( @RequestPart(name = "student") String student,
                                            @RequestPart(name = "document") MultipartFile document) {
-        System.out.println(document);
 
         return service.saveCV(student, document)
                 .map(_student -> ResponseEntity.status(HttpStatus.CREATED).body(_student))
