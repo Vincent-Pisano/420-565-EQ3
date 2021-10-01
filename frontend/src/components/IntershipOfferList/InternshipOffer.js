@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { Row, Col } from 'react-bootstrap';
 
-const Student = ({ internshipOffer, onToggle }) => {
+const InternshipOffer = ({ internshipOffer, onToggle }) => {
     return (
         <Row className="list_node_internship" onDoubleClick= {() => onToggle(internshipOffer)}>
             <Col xs={3} >
@@ -17,4 +17,4 @@ const Student = ({ internshipOffer, onToggle }) => {
     );
 }
 
-export default Student
+export default InternshipOffer

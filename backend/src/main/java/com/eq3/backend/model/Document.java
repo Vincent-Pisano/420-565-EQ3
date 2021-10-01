@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.Binary;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Document {
 
+    @Indexed(unique = true)
     private String name;
 
     private Binary content;
