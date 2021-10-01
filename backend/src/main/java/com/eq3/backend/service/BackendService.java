@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,18 +21,21 @@ public class BackendService {
     private final SupervisorRepository supervisorRepository;
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
+    private final InternshipApplicationRepository internshipApplicationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
-                   InternshipOfferRepository internshipOfferRepository) {
+                   InternshipOfferRepository internshipOfferRepository,
+                   InternshipApplicationRepository internshipApplicationRepository) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
+        this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
 
@@ -94,6 +98,18 @@ public class BackendService {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
+
+    public Optional<List<InternshipOffer>> getAllInternshipOfferByStudent(String studentUsername) {
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByStudentUsername(studentUsername);
+        List<InternshipOffer> internshipOffers = new ArrayList<>();
+        for (InternshipApplication internshipApplication : internshipApplications) {
+            if (internshipOfferRepository.findById(internshipApplication.getOfferId()).isPresent())
+                internshipOffers.add(internshipOfferRepository.findById(internshipApplication.getOfferId()).get());
+        }
+
+        return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+    }
+
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalse();
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
@@ -111,6 +127,19 @@ public class BackendService {
                 internshipOffer.setIsValid(true);
                 return Optional.of(internshipOfferRepository.save(internshipOffer));
             }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer){
+        InternshipApplication newInternshipApplication = new InternshipApplication();
+        newInternshipApplication.setOfferId(internshipOffer.getId());
+        newInternshipApplication.setStudentUsername(studentUsername);
+        Optional<InternshipApplication> internshipApplication =
+                internshipApplicationRepository.findByStudentUsernameAndOfferId(newInternshipApplication.getStudentUsername(),
+                        newInternshipApplication.getOfferId());
+        if(internshipApplication.isEmpty()) {
+            return Optional.of(internshipApplicationRepository.save(newInternshipApplication));
         }
         return Optional.empty();
     }

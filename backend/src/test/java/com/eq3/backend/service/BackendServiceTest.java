@@ -37,6 +37,9 @@ class BackendServiceTest {
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
+    @Mock
+    private InternshipApplicationRepository internshipApplicationRepository;
+
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
@@ -45,6 +48,7 @@ class BackendServiceTest {
     private InternshipManager expectedInternshipManager;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
+    private InternshipApplication expectedInternshipApplication;
 
     @Test
     //@Disabled
@@ -250,5 +254,40 @@ class BackendServiceTest {
 
         //Assert
         assertThat(validatedInternshipOffer.isPresent() ? validatedInternshipOffer.get().getIsValid():true).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testApplyIntershipOffer(){
+        //Arrange
+        expectedStudent = getStudent();
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipApplication = getInternshipApplication();
+        when(internshipApplicationRepository.save(expectedInternshipApplication)).thenReturn(expectedInternshipApplication);
+
+        //Act
+        final Optional<InternshipApplication> appliedInternshipOffer =
+                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
+
+        //Assert
+        assertThat(appliedInternshipOffer.isPresent()).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllInternshipOfferByStudent() {
+        // Arrange
+        expectedStudent = getStudent();
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(internshipApplicationRepository.save(expectedInternshipApplication)).thenReturn(expectedInternshipApplication);
+
+        // Act
+        final Optional<List<InternshipOffer>> internshipOffers =
+                service.getAllInternshipOfferByStudent(expectedStudent.getUsername());
+
+        // Assert
+        assertThat(internshipOffers.isPresent()).isTrue();
+        assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size() -1);
     }
 }

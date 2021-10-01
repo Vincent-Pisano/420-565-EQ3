@@ -126,12 +126,20 @@ const InternshipOfferForm = () => {
   }
 
   function applyInternshipOffer(){
-    console.log("Appliqué!")
-    setTimeout(() => {
-      history.push({
-        pathname: `/home/${user.username}`
+    axios
+      .post(`http://localhost:9090/apply/internshipOffer/${user.username}`, fields)
+      .then((response) => {
+        setTimeout(() => {
+          history.push({
+            pathname: `/home/${user.username}`
+          });
+        }, 3000);
+        setErrorMessage("Votre demande a été traitée");
+      }
+      ).catch((error) => {
+        console.log(error)
+        setErrorMessage("Erreur lors de l'application")
       });
-    }, 3000);
   }
 
   function checkIfValidated() {

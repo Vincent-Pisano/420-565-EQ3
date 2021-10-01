@@ -25,6 +25,16 @@ function InternshipOfferList() {
                     console.log(err)
                 })
         }
+        else if (auth.user.username.startsWith('E')) {
+            axios.get(`http://localhost:9090/getAll/internshipOfferByStudent/${auth.user.username}`)
+                .then(response => {
+                    console.log(response.data)
+                    setInternshipOffers(response.data)
+                }).catch(err => {
+                    setErrorMessage("Aucune Offre de stage n'a été validé pour le moment");
+                    console.log(err)
+                })
+        }
         else {
             axios.get(`http://localhost:9090/getAll/internshipOffer/${auth.user.department}`)
                 .then(response => {
@@ -35,7 +45,6 @@ function InternshipOfferList() {
                     console.log(err)
                 })
         }
-
     }, [])
 
     function showInternshipOffer(internshipOffer) {

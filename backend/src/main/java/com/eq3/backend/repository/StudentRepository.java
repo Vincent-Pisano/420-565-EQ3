@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface StudentRepository extends MongoRepository<Student, String> {
     Optional<Student> findByUsernameAndPasswordAndIsDisabledFalse(String username, String password);
 
+    Optional<Student> findStudentByUsernameAndIsDisabledFalse(String username);
+
     List<Student> findAllByIsDisabledFalseAndDepartment(Department department);
 }
 

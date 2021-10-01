@@ -39,6 +39,7 @@ class BackendControllerTest {
     private InternshipManager expectedInternshipManager;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
+    private InternshipApplication expectedIntershipApplication;
 
     @Test
     public void testSignUpStudent() throws Exception {
@@ -281,5 +282,28 @@ class BackendControllerTest {
         var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(internshipOffer).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testApplyInternshipOffer() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedInternshipOffer = getInternshipOffer();
+        expectedIntershipApplication = getInternshipApplication();
+        when(service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer))
+                .thenReturn(Optional.of(expectedIntershipApplication));
+
+        //Act
+        MvcResult result = mockMvc.perform(post("/apply/internshipOffer/" +
+                expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var internshipApplication = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipApplication.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(internshipApplication).isNotNull();
     }
 }
