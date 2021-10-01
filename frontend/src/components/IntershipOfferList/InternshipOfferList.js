@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory } from "react-router";
 import axios from 'axios'
+import auth from "../../services/Auth"
+import { useHistory } from "react-router";
 import InternshipOffer from './InternshipOffer'
-import auth from "../services/Auth"
-import "../App.css"
+import "../../styles/List.css"
+import { Container } from 'react-bootstrap';
 
 
 function InternshipOfferList() {
@@ -53,32 +54,35 @@ function InternshipOfferList() {
         else {
             pageTitle = "Liste des offres de stages de votre département";
         }
-            return (
-                <div className="cont_principal">
-                    <div className="cont_list_centrar">
-                        <h2>{pageTitle}</h2>
-                        <div className="cont_list">
-                            <p>{errorMessage}</p>
-                            <ul>
-                                {
-                                    internshipOffers.map(internshipOffer => (
-                                        <InternshipOffer
-                                            key={internshipOffer.idOffer}
-                                            internshipOffer={internshipOffer}
-                                            onToggle={showInternshipOffer} />
-                                    ))
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            );
+        return (
+            <Container className="cont_principal">
+                <Container className="cont_list_centrar">
+                    <h2 className="cont_title_form">
+                        Liste des offres de stages de votre département
+                    </h2>
+                    <Container className="cont_list">
+                        <p>{errorMessage}</p>
+                        <ul>
+                            {
+                                internshipOffers.map(internshipOffer => (
+                                    <InternshipOffer
+                                        key={internshipOffer.idOffer}
+                                        internshipOffer={internshipOffer}
+                                        onToggle={showInternshipOffer} />
+                                ))
+                            }
+                        </ul>
+                    </Container>
+                </Container>
+            </Container>
+
+        );
     }
 
     return (
         <>
-        {showList()}
-      </>
+            {showList()}
+        </>
     )
 }
 

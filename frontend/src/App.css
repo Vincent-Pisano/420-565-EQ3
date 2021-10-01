@@ -6,9 +6,13 @@
 
 .App {
   text-align: center;
-  min-height: 110vh;
+  min-height: 100vh;
   /* Rectangle 3: */
   background-image: linear-gradient(-87deg, #F2F5F6 0%, #DDE5E8 100%);
+}
+
+.App + div {
+  padding: 0;
 }
 
 .App-logo {
@@ -16,7 +20,76 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*@media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
@@ -46,9 +119,6 @@
   }
 }
 
-/*
-  Style for header
-*/
 .nav-header {
   display: flex;
   justify-content: space-around;
@@ -74,10 +144,6 @@
   display: inline-block;
   margin-left: 30px;
 }
-
-/*
-
-*/
 
 .center-screen {
   display: flex;
@@ -472,4 +538,4 @@ h2 {
   float: left;
   margin-left: 40px;
   margin-bottom: 15px;
-}
+}*/
