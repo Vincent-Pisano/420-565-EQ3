@@ -122,6 +122,30 @@ public class BackendService {
         return document;
     }
 
+    /*public Optional<Student> saveCV(String cv, MultipartFile document){
+        CV newCV = null;
+        try {
+            newCV = mapCV(cv, document);
+        } catch (IOException e) {
+            logger.error("Couldn't map the string student to CV.class at saveCV in BackendService");
+        }
+        return newCV == null ? Optional.empty() :
+                Optional.of(studentRepository.save(newCV));
+    }
+
+    private CV mapCV(String cv, MultipartFile document) throws IOException {
+        CV newCV;
+        ObjectMapper objectMapper = new ObjectMapper();
+        newCV = objectMapper.readValue(cv, CV.class);
+        if (document != null) {
+            Document newDocument = new Document();
+            newDocument.setName(document.getOriginalFilename());
+            newDocument.setContent(new Binary(BsonBinarySubType.BINARY, document.getBytes()));
+            newCV.setDocument(newDocument);
+        }
+        return newCV;
+    }*/
+
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
         internshipOffers.forEach(internshipOffer -> internshipOffer.setDocument(

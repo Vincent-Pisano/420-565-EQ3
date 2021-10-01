@@ -8,7 +8,7 @@ import CVTable from "./CVTable"
 
 const CVList = () => {
 
-    let user = auth.user ;
+    let user = auth.user;
 
     function checkIfEmpty() {
         if (auth.user === undefined || user.cvlist.length === 0) {
