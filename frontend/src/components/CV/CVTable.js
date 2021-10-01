@@ -16,7 +16,7 @@ const CVTable = ({cvlist}) => {
                 {
                     cvlist.map(cv => (
                         <CV
-                            key={cvlist.indexOf(cv.document.name)}
+                            key={cvlist.indexOf(cv)}
                             cv={cv} />
                     ))
                 }
