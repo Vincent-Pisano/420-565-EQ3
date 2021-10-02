@@ -10,7 +10,7 @@ function NavUserSwitch({ userStatus }) {
       return (
         <>
           <Nav.Link to="/formInternshipOffer">
-              <li className="nav-links-header">Dépôt d'offres de stage</li>
+            <li className="nav-links-header">Dépôt d'offres de stage</li>
           </Nav.Link>
         </>
       );
@@ -35,7 +35,7 @@ function NavUserSwitch({ userStatus }) {
     if (user.username.startsWith("S")) {
       return (
         <>
-          <Nav.Link as={Link} to="/listStudents"> 
+          <Nav.Link as={Link} to="/listStudents">
             <li className="nav-links-header">Liste des étudiants</li>
           </Nav.Link>
         </>

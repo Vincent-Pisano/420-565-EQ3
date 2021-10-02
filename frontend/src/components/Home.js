@@ -1,16 +1,15 @@
 import React from "react";
 import auth from "../services/Auth";
-import "../App.css"
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import pfp from './../assets/img/pfp.png';
-import CVList from "../components/CV/CVList"
-import "./../styles/Home.css"
+import "../App.css";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import pfp from "./../assets/img/pfp.png";
+import CVList from "../components/CV/CVList";
+import "./../styles/Home.css";
 
 function Home() {
+  let user = auth.user;
 
-  let user = auth.user
-
-  let dateFormat = formatDate(user.creationDate)
+  let dateFormat = formatDate(user.creationDate);
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -27,7 +26,7 @@ function Home() {
       );
     }
   }
-  
+
   return (
     <>
       <Container className="cont_home">
@@ -37,7 +36,7 @@ function Home() {
             <Row>
               <Card bg="secondary" text="white" className="pfp_card">
                 <br />
-                <Card.Img variant="top" src={pfp}/>
+                <Card.Img variant="top" src={pfp} />
                 <Card.Body>
                   <Card.Title>
                     <h4>Nom d'utilisateur: {user.username}</h4>
@@ -52,11 +51,10 @@ function Home() {
             </Row>
           </Col>
           <Col xs={12} md={9}>
-          {checkIfStudent()}
+            {checkIfStudent()}
           </Col>
-        </Row> 
+        </Row>
       </Container>
-      
     </>
   );
 }

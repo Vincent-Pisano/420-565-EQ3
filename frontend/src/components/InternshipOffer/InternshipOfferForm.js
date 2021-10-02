@@ -120,12 +120,13 @@ const InternshipOfferForm = () => {
   function checkIfStudent() {
     if (internshipOffer !== undefined && internshipOffer.document !== null) {
       return (
-        <Container
-          className="cont_btn_file"
-        >
+        <Container className="cont_btn_file">
           <a
             className="btn_file"
-            href={"http://localhost:9090/get/internshipOffer/document/" +internshipOffer.id}
+            href={
+              "http://localhost:9090/get/internshipOffer/document/" +
+              internshipOffer.id
+            }
             download
           >
             Télécharger le document
@@ -461,7 +462,6 @@ const InternshipOfferForm = () => {
             </fieldset>
             {checkIfStudent()}
           </Row>
-          
         </Col>
       </Row>
     </Container>
