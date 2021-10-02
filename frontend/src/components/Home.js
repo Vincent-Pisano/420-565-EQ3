@@ -32,7 +32,6 @@ function Home() {
       <Container className="cont_home">
         <Row className="cont_central">
           <Col xs={12} md={3}>
-            <h2>Bonjour {user.firstName}!</h2>
             <Row>
               <Card bg="secondary" text="white" className="pfp_card">
                 <br />
