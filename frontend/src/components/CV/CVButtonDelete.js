@@ -34,7 +34,7 @@ const CVButtonDelete = ({ documentId }) => {
           handleClose();
           history.push({
             pathname: `/home/${user.username}`,
-        });
+          });
         }, 1000);
       })
       .catch((error) => {

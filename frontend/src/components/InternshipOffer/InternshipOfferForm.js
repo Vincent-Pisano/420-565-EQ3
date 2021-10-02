@@ -432,7 +432,11 @@ const InternshipOfferForm = () => {
                       <option value="NURSING">Infirmier</option>
                     </Form.Select>
                   </Form.Group>
-                  <Form.Group controlId="document" className="cont_file_form">
+                  <Form.Group
+                    controlId="document"
+                    className="cont_file_form"
+                    style={{ display: internshipOffer ? "none" : "" }}
+                  >
                     <Form.Control
                       type="file"
                       onChange={(e) => {

@@ -46,7 +46,14 @@ const CVButtonActive = ({ documentId, documentActive }) => {
 
   return (
     <>
-      <button className={documentActive ? "btn btn-warning btn-sm disabled" : "btn btn-warning btn-sm "} onClick={reset}>
+      <button
+        className={
+          documentActive
+            ? "btn btn-warning btn-sm disabled"
+            : "btn btn-warning btn-sm "
+        }
+        onClick={reset}
+      >
         {documentActive ? "Déjà Actif" : "Mettre Actif"}
       </button>
 
