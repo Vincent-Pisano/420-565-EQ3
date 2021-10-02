@@ -7,8 +7,8 @@ import "./../../styles/CV.css"
 const CV = ({ cv }) => {
 
   return (
-    <tr style={{backgroundColor: "red" }}>
-      <td  className="table_row_active">{cv.document.name}</td>
+    <tr>
+      <td>{cv.document.name}</td>
       <td>
         <CVButtonDownload document={cv.document} />
       </td>
@@ -16,7 +16,7 @@ const CV = ({ cv }) => {
         <CVButtonDelete documentId={cv.id} />
       </td>
       <td>
-        <CVButtonActive documentId={cv.id} />
+        <CVButtonActive documentId={cv.id} documentActive={cv.isActive}/>
       </td>
     </tr>
   );

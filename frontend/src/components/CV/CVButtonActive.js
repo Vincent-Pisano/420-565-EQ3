@@ -5,7 +5,7 @@ import auth from "../../services/Auth";
 import axios from "axios";
 import { useHistory } from "react-router";
 
-const CVButtonActive = ({ documentId }) => {
+const CVButtonActive = ({ documentId, documentActive }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -46,8 +46,8 @@ const CVButtonActive = ({ documentId }) => {
 
   return (
     <>
-      <button className="btn btn-warning btn-sm" onClick={reset}>
-        Mettre Actif
+      <button className={documentActive ? "btn btn-warning btn-sm disabled" : "btn btn-warning btn-sm "} onClick={reset}>
+        {documentActive ? "Déjà Actif" : "Mettre Actif"}
       </button>
 
       <Modal show={show} onHide={handleClose}>
