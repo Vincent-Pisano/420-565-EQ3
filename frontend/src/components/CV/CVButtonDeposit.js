@@ -53,7 +53,7 @@ const CVButtonDeposit = () => {
 
     return (
         <>
-        <Button variant="info" onClick={reset} className="btn_modal">
+        <Button variant="secondary" onClick={reset} className="btn_modal">
             Déposer un CV
         </Button>
 

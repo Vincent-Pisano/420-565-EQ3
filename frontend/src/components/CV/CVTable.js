@@ -10,6 +10,7 @@ const CVTable = ({cvlist}) => {
                 <tr>
                 <th>Nom de fichier</th>
                 <th>Téléchargements</th>
+                <th>Suppressions</th>
                 </tr>
             </thead>
             <tbody>
