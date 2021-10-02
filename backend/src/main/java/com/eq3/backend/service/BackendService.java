@@ -7,18 +7,12 @@ import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,12 +118,12 @@ public class BackendService {
     public Optional<Student> saveCV(String id, MultipartFile multipartFile){
         Optional<Student> optionalStudent = studentRepository.findById(id);
 
-        return updateListCV(multipartFile, optionalStudent)
+        return addToListCV(multipartFile, optionalStudent)
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
                 : Optional.empty();
     }
 
-    private Boolean updateListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
+    private Boolean addToListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
         Boolean isPresent = optionalStudent.isPresent();
         if(isPresent) {
             Student student = optionalStudent.get();
@@ -140,6 +134,25 @@ public class BackendService {
             } else {
                 isPresent = false;
             }
+        }
+        return isPresent;
+    }
+
+    public Optional<Student> deleteCV (String idStudent, String idCV){
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+        System.out.println(optionalStudent.get());
+        return deleteCVFromListCV(optionalStudent, idCV)
+                ? Optional.of(studentRepository.save(optionalStudent.get()))
+                : Optional.empty();
+    }
+
+    private Boolean deleteCVFromListCV(Optional<Student> optionalStudent, String idCV) {
+        Boolean isPresent = optionalStudent.isPresent();
+        if(isPresent) {
+            Student student = optionalStudent.get();
+            List<CV> listCV = student.getCVList();
+            listCV.removeIf(cv -> cv.getId().equals(idCV));
+            student.setCVList(listCV);
         }
         return isPresent;
     }
@@ -177,7 +190,5 @@ public class BackendService {
     public Optional<Monitor> getMonitorByUsername(String username){
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);
     }
-
-    
 }
 

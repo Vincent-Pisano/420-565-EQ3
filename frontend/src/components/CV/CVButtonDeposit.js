@@ -28,14 +28,14 @@ const CVButtonDeposit = () => {
             let formData = new FormData();
             formData.append("document", document);
             axios
-            .post(`http://localhost:9090/save/student/${user.idUser}/CV`, formData)
+            .post(`http://localhost:9090/save/CV/${user.idUser}/`, formData)
             .then((response) => {
                 user = response.data;
                 auth.user = user;
                 setErrorMessage("Le fichier a été déposé");
                 setTimeout(() => {
                     handleClose();
-                }, 3000);
+                }, 1000);
             })
             .catch((error) => {
                 setErrorMessage("Erreur d'envoi de fichier");

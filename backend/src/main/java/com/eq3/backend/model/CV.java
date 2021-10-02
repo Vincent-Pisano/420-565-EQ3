@@ -1,11 +1,17 @@
 package com.eq3.backend.model;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
 @Data
+@org.springframework.data.mongodb.core.mapping.Document
 public class CV {
+
+    @Id
+    private String id;
 
     private Document document;
 
@@ -15,17 +21,12 @@ public class CV {
 
     private Boolean isValid;
 
-    public CV() {
-        depositDate = new Date();
-        isActive = false;
-        isValid = false;
-    }
-
     public CV(Document document) {
+        this.id = String.valueOf(new ObjectId());
         this.document = document;
-        depositDate = new Date();
-        isActive = false;
-        isValid = false;
+        this.depositDate = new Date();
+        this.isActive = false;
+        this.isValid = false;
     }
 
 }

@@ -68,8 +68,8 @@ public class InternshipOffer {
     protected Boolean isValid = false;
 
     public InternshipOffer() {
-        creationDate = new Date();
-        isValid = false;
+        this.creationDate = new Date();
+        this.isValid = false;
     }
 
 }

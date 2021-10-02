@@ -35,7 +35,7 @@ public class User implements Serializable {
     protected Boolean isDisabled = false;
 
     public User() {
-        creationDate = new Date();
-        isDisabled = false;
+        this.creationDate = new Date();
+        this.isDisabled = false;
     }
 }

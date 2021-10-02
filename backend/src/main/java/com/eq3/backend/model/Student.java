@@ -16,11 +16,10 @@ public class Student extends User {
     @Field
     private Department department;
 
-    @Field
     private List<CV> CVList;
 
     public Student() {
         super();
-        CVList = new ArrayList<>();
+        this.CVList = new ArrayList<>();
     }
 }
