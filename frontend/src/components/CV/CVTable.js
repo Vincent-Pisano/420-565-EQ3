@@ -29,6 +29,7 @@ const CVTable = ({ cvlist }) => {
           <th>Nom de fichier</th>
           <th>Téléchargements</th>
           <th>Suppressions</th>
+          <th>CV Actif</th>
         </tr>
       </thead>
       <tbody>{checkIfEmpty()}</tbody>

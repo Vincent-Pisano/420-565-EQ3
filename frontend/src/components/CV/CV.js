@@ -1,6 +1,7 @@
 import React from "react";
 import CVButtonDownload from "./CVButtonDownload";
 import CVButtonDelete from "./CVButtonDelete";
+import CVButtonActive from "./CVButtonActive";
 
 const CV = ({ cv }) => {
   return (
@@ -11,6 +12,9 @@ const CV = ({ cv }) => {
       </td>
       <td>
         <CVButtonDelete documentId={cv.id} />
+      </td>
+      <td>
+        <CVButtonActive documentId={cv.id} />
       </td>
     </tr>
   );

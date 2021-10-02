@@ -5,7 +5,7 @@ import auth from "../../services/Auth";
 import axios from "axios";
 import { useHistory } from "react-router";
 
-const CVButtonDelete = ({ documentId }) => {
+const CVButtonActive = ({ documentId }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -25,32 +25,34 @@ const CVButtonDelete = ({ documentId }) => {
   function onCreatePost(e) {
     e.preventDefault();
     axios
-      .delete(`http://localhost:9090/delete/CV/${user.idUser}/${documentId}`)
+      .post(
+        `http://localhost:9090/update/ActiveCV/${user.idUser}/${documentId}`
+      )
       .then((response) => {
         user = response.data;
         auth.user = user;
-        setErrorMessage("Le fichier a été supprimé");
+        setErrorMessage("Le CV est maintenant actif");
         setTimeout(() => {
           handleClose();
           history.push({
             pathname: `/home/${user.username}`,
-        });
+          });
         }, 1000);
       })
       .catch((error) => {
-        setErrorMessage("Erreur! Le fichier n'a pas été supprimé");
+        setErrorMessage("Erreur de traitement de CV!");
       });
   }
 
   return (
     <>
-      <button className="btn btn-danger btn-sm" onClick={reset}>
-        Supprimer
+      <button className="btn btn-warning btn-sm" onClick={reset}>
+        Mettre Actif
       </button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
-          <Modal.Title>Êtes-vous certain de supprimer ce fichier?</Modal.Title>
+          <Modal.Title>Êtes-vous certain de mettre ce CV actif?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
@@ -94,4 +96,4 @@ const CVButtonDelete = ({ documentId }) => {
     </>
   );
 };
-export default CVButtonDelete;
+export default CVButtonActive;
