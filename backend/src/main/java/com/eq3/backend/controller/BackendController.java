@@ -105,7 +105,7 @@ public class BackendController {
     @DeleteMapping("/delete/CV/{idStudent}/{idCV}")
     public ResponseEntity<Student> deleteCV(@PathVariable String idStudent, @PathVariable String idCV) {
         return service.deleteCV(idStudent, idCV)
-                .map(_student -> ResponseEntity.status(HttpStatus.CREATED).body(_student))
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 

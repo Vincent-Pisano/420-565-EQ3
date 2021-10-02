@@ -280,12 +280,39 @@ class BackendControllerTest {
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
 
         MvcResult result =  mockMvc
-                .perform(MockMvcRequestBuilders.multipart("/save/student/"+ givenStudent.getIdUser() + "/CV")
+                .perform(MockMvcRequestBuilders.multipart("/save/CV/"+ givenStudent.getIdUser())
                         .file("document", multipartFile.getBytes())
                         .contentType(mediaType)).andReturn();
 
         //Assert
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
+    }
+
+    @Test
+    //Disabled
+    public void testDeleteCV() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        List<CV> expectedListCV = getCVList();
+        expectedListCV.remove(0);
+        expectedStudent.setCVList(expectedListCV);
+
+        Student givenStudent = getStudent();
+        List<CV> givenListCV = getCVList();
+        givenStudent.setCVList(givenListCV);
+        CV givenCV = givenListCV.get(0);
+
+        when(service.deleteCV(givenStudent.getIdUser(), givenCV.getId()))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(delete("/delete/CV/" +
+                givenStudent.getIdUser() + "/" + givenCV.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
     }
 
     @Test

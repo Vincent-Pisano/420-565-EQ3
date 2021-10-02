@@ -140,7 +140,6 @@ public class BackendService {
 
     public Optional<Student> deleteCV (String idStudent, String idCV){
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
-        System.out.println(optionalStudent.get());
         return deleteCVFromListCV(optionalStudent, idCV)
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
                 : Optional.empty();

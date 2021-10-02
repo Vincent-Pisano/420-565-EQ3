@@ -301,6 +301,33 @@ class BackendServiceTest {
         assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
     }
 
+    @Test
+    //@Disabled
+    public void testDeleteCV() throws IOException {
+        //Arrange
+        expectedStudent = getStudent();
+        List<CV> expectedListCV = getCVList();
+        expectedListCV.remove(0);
+        expectedStudent.setCVList(expectedListCV);
+
+        Student givenStudent = getStudent();
+        List<CV> givenListCV = getCVList();
+        givenStudent.setCVList(givenListCV);
+        CV givenCV = givenListCV.get(0);
+
+        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+        when(studentRepository.findById(givenStudent.getIdUser()))
+                .thenReturn(Optional.of(givenStudent));
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.deleteCV(givenStudent.getIdUser(), givenCV.getId());
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
+    }
 
     @Test
     //@Disabled
