@@ -8,7 +8,7 @@ const CVTable = ({ cvlist }) => {
     if (auth.user === undefined || cvlist.length === 0) {
       return (
         <tr>
-          <td colspan="3">Pas de CV</td>
+          <td colspan="4">Pas de CV</td>
         </tr>
       );
     } else {
