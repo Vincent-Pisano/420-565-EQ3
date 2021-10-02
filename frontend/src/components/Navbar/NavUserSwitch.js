@@ -9,8 +9,13 @@ function NavUserSwitch({ userStatus }) {
     if (user.username.startsWith("G")) {
       return (
         <>
-          <Nav.Link to="/formInternshipOffer">
+          <Nav.Link as={Link} to="/formInternshipOffer">
             <li className="nav-links-header">Dépôt d'offres de stage</li>
+          </Nav.Link>
+          <Nav.Link as={Link} to="/listInternshipOffer">
+            <li className="nav-links-header">
+              Liste des offres de stage non validées
+            </li>
           </Nav.Link>
         </>
       );

@@ -12,4 +12,6 @@ public interface InternshipOfferRepository extends MongoRepository<InternshipOff
 
     List<InternshipOffer> findAllByWorkFieldAndIsValidTrue(Department workField);
 
+    List<InternshipOffer> findAllByIsValidFalse();
+
 }

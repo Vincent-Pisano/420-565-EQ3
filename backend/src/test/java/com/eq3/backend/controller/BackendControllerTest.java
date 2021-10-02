@@ -368,6 +368,26 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllUnvalidatedInternshipOffer() throws Exception {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(service.getAllUnvalidatedInternshipOffer())
+                .thenReturn(Optional.of(expectedInternshipOfferList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/internshipOffer/unvalidated")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        var actualInternshipOffers = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipOffers).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudents() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -402,5 +422,27 @@ class BackendControllerTest {
         var actualMonitor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Monitor.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualMonitor).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testValidateInternshipOffer() throws Exception {
+        //Arrange
+        expectedInternshipManager = getInternshipManager();
+        expectedInternshipOffer = getInternshipOffer();
+        when(service.validateInternshipOffer(expectedInternshipManager.getUsername(), expectedInternshipOffer))
+                .thenReturn(Optional.of(expectedInternshipOffer));
+
+        //Act
+        MvcResult result = mockMvc.perform(post("/save/internshipOffer/validate/" +
+                expectedInternshipManager.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(internshipOffer).isNotNull();
     }
 }

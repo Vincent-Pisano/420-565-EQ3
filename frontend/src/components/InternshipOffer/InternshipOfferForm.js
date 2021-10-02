@@ -101,7 +101,7 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfGS() {
-    if (user.username.startsWith("G")) {
+    if (user.username.startsWith("G") && internshipOffer === undefined) {
       return (
         <Form.Group controlId="name">
           <Form.Control
@@ -136,6 +136,55 @@ const InternshipOfferForm = () => {
     }
   }
 
+  function validateInternshipOffer() {
+    axios
+      .post(
+        `http://localhost:9090/save/internshipOffer/validate/${user.username}`,
+        fields
+      )
+      .then((response) => {
+        setErrorMessage("L'offre de stage a été validé");
+        setTimeout(() => {
+          history.push({
+            pathname: `/listInternshipOffer`,
+          });
+        }, 1000);
+      })
+      .catch((error) => {
+        setErrorMessage("Erreur lors de la validation");
+      });
+  }
+
+  function checkIfValidated() {
+    if (user.username.startsWith("G") && internshipOffer !== undefined) {
+      return (
+        <>
+          <p
+            style={{
+              color: errorMessage.startsWith("Erreur") ? "red" : "green",
+            }}
+          >
+            {errorMessage}
+          </p>
+          <button
+            className="btn_submit"
+            onClick={() => validateInternshipOffer()}
+          >
+            Valider
+          </button>
+        </>
+      );
+    }
+  }
+
+  function setPageTitle() {
+    if (internshipOffer === undefined) {
+      return <h2>Ajout d'offre de stages</h2>;
+    } else {
+      return <h2>Information sur l'offre de stage</h2>;
+    }
+  }
+
   function checkIfChecked(checkboxName) {
     return fields.workDays.some((workday) => checkboxName === workday);
   }
@@ -158,9 +207,7 @@ const InternshipOfferForm = () => {
       <Row className="cont_central">
         <Col md="auto" className="cont_form">
           <Row>
-            <Container className="cont_title_form">
-              <h2>Offre de stage</h2>
-            </Container>
+            <Container className="cont_title_form">{setPageTitle()}</Container>
           </Row>
           <Row>
             <fieldset disabled={internshipOffer ? "disabled" : ""}>
@@ -402,7 +449,7 @@ const InternshipOfferForm = () => {
                   </Form.Group>
                   <Form.Group controlId="workShift">
                     <Form.Label className="labelFields">
-                      Type d'horaire
+                      Type d'horaire du stage
                     </Form.Label>
                     <Form.Select
                       aria-label="Default select example"
@@ -465,6 +512,7 @@ const InternshipOfferForm = () => {
               </Form>
             </fieldset>
             {checkIfStudent()}
+            <Container className="cont_btn">{checkIfValidated()}</Container>
           </Row>
         </Col>
       </Row>

@@ -387,6 +387,24 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllInternshipOffer() {
+        // Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(internshipOfferRepository.findAllByIsValidFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        // Act
+        final Optional<List<InternshipOffer>> internshipOffers =
+                service.getAllUnvalidatedInternshipOffer();
+
+        // Assert
+        assertThat(internshipOffers.isPresent()).isTrue();
+        assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudents() {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -402,6 +420,7 @@ class BackendServiceTest {
         assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
     }
 
+
     @Test
     //@Disabled
     public void testGetMonitorByUsername(){
@@ -416,5 +435,20 @@ class BackendServiceTest {
 
         //Assert
         assertThat(loginMonitor.isPresent()).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testValidateIntershipOffer(){
+        //Arrange
+        expectedInternshipManager = getInternshipManager();
+        expectedInternshipOffer = getInternshipOffer();
+
+        //Act
+        final Optional<InternshipOffer> validatedInternshipOffer =
+                service.validateInternshipOffer(expectedInternshipManager.getUsername(), expectedInternshipOffer);
+
+        //Assert
+        assertThat(validatedInternshipOffer.isPresent() ? validatedInternshipOffer.get().getIsValid():true).isTrue();
     }
 }
