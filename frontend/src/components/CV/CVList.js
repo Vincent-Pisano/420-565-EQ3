@@ -8,19 +8,13 @@ import CVTable from "./CVTable";
 const CVList = () => {
   let user = auth.user;
 
-  function checkIfEmpty() {
-    if (auth.user === undefined || user.cvlist.length === 0) {
-      return <p>Pas de CV</p>;
-    } else {
-      return <CVTable cvlist={user.cvlist} />;
-    }
-  }
-
   return (
     <Container className="cont_list_cv">
       <Container className="cont_list_centrar">
         <h2 className="cont_title_form">Liste de vos CVs</h2>
-        <Container className="cont_list">{checkIfEmpty()}</Container>
+        <Container className="cont_list">
+            <CVTable cvlist={user.cvlist}/>
+        </Container>
         <CVButtonDeposit />
       </Container>
     </Container>
