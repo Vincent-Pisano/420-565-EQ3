@@ -109,6 +109,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @PostMapping("/update/ActiveCV/{idStudent}/{idCV}")
+    public ResponseEntity<Student> updateActiveCV(@PathVariable String idStudent, @PathVariable String idCV) {
+        return service.updateActiveCV(idStudent, idCV)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
         return service.downloadInternshipOfferDocument(id)

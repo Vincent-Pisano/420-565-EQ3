@@ -138,7 +138,19 @@ public class BackendService {
         return isPresent;
     }
 
-    public Optional<Student> deleteCV (String idStudent, String idCV){
+    private Document extractDocument(MultipartFile multipartFile) {
+        Document document = new Document();
+        document.setName(multipartFile.getOriginalFilename());
+        try {
+            document.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
+        } catch (IOException e) {
+            logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
+                    + " at extractDocument in BackendService : " + e.getMessage());
+        }
+        return document;
+    }
+
+    public Optional<Student> deleteCV (String idStudent, String idCV) {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
         return deleteCVFromListCV(optionalStudent, idCV)
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
@@ -156,16 +168,27 @@ public class BackendService {
         return isPresent;
     }
 
-    private Document extractDocument(MultipartFile multipartFile) {
-        Document document = new Document();
-        document.setName(multipartFile.getOriginalFilename());
-        try {
-            document.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
-        } catch (IOException e) {
-            logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
-                    + " at extractDocument in BackendService : " + e.getMessage());
+    public Optional<Student> updateActiveCV (String idStudent, String idCV){
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+        return updateActiveCVFromListCV(optionalStudent, idCV)
+                ? Optional.of(studentRepository.save(optionalStudent.get()))
+                : Optional.empty();
+    }
+
+    public Boolean updateActiveCVFromListCV(Optional<Student> optionalStudent, String idCV) {
+        Boolean isPresent = optionalStudent.isPresent();
+        if (isPresent) {
+            Student student = optionalStudent.get();
+            List<CV> listCV = student.getCVList();
+            for (CV cv : listCV) {
+                if (cv.getIsActive())
+                    cv.setIsActive(false);
+                if (cv.getId().equals(idCV))
+                    cv.setIsActive(true);
+            }
+            student.setCVList(listCV);
         }
-        return document;
+        return isPresent;
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {

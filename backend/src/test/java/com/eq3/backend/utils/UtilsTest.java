@@ -174,6 +174,7 @@ public class UtilsTest {
     public static List<CV> getCVList() throws IOException {
         List<CV> cvList = new ArrayList<>();
         cvList.add(new CV(getDocument()));
+        cvList.add(new CV(getDocument()));
         return cvList;
     }
 

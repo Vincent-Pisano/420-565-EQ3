@@ -316,6 +316,37 @@ class BackendControllerTest {
     }
 
     @Test
+    public void testUpdateActiveCV() throws Exception {
+        //Arrange
+        final int NEW_ACTIVE_CV_INDEX = 0;
+        final int OLD_ACTIVE_CV_INDEX = 1;
+
+        expectedStudent = getStudent();
+        List<CV> expectedListCV = getCVList();
+        CV newActiveCV = expectedListCV.get(NEW_ACTIVE_CV_INDEX);
+        newActiveCV.setIsActive(true);
+        expectedStudent.setCVList(expectedListCV);
+
+        Student givenStudent = getStudent();
+        List<CV> givenListCV = getCVList();
+        CV oldActiveCV = expectedListCV.get(OLD_ACTIVE_CV_INDEX);
+        oldActiveCV.setIsActive(true);
+        givenStudent.setCVList(givenListCV);
+        CV givenCV = givenListCV.get(NEW_ACTIVE_CV_INDEX);
+
+        when(service.updateActiveCV(givenStudent.getIdUser(), givenCV.getId()))
+                .thenReturn(Optional.ofNullable(expectedStudent));
+
+        //Act
+        MvcResult result =  mockMvc
+                .perform(post("/update/ActiveCV/" +
+                        givenStudent.getIdUser() + "/"+ givenCV.getId())).andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
+    }
+
+    @Test
     //@Disabled
     public void testGetAllInternshipOfferByWorkField() throws Exception {
         //Arrange

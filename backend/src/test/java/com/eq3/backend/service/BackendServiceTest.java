@@ -315,7 +315,7 @@ class BackendServiceTest {
         givenStudent.setCVList(givenListCV);
         CV givenCV = givenListCV.get(0);
 
-        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+        when(studentRepository.save(any(Student.class))).thenReturn(expectedStudent);
         when(studentRepository.findById(givenStudent.getIdUser()))
                 .thenReturn(Optional.of(givenStudent));
 
@@ -327,6 +327,44 @@ class BackendServiceTest {
         Student actualStudent = optionalStudent.orElse(null);
         assertThat(optionalStudent.isPresent()).isTrue();
         assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
+    }
+
+    @Test
+    //@Disabled
+    public void testUpdateActiveCV() throws IOException {
+        //Arrange
+        final int NEW_ACTIVE_CV_INDEX = 0;
+        final int OLD_ACTIVE_CV_INDEX = 1;
+
+        expectedStudent = getStudent();
+        List<CV> expectedListCV = getCVList();
+        CV newActiveCV = expectedListCV.get(NEW_ACTIVE_CV_INDEX);
+        newActiveCV.setIsActive(true);
+        expectedStudent.setCVList(expectedListCV);
+
+        Student givenStudent = getStudent();
+        List<CV> givenListCV = getCVList();
+        CV oldActiveCV = expectedListCV.get(OLD_ACTIVE_CV_INDEX);
+        oldActiveCV.setIsActive(true);
+        givenStudent.setCVList(givenListCV);
+        CV givenCV = givenListCV.get(NEW_ACTIVE_CV_INDEX);
+
+        when(studentRepository.save(any(Student.class))).thenReturn(expectedStudent);
+        when(studentRepository.findById(givenStudent.getIdUser()))
+                .thenReturn(Optional.of(givenStudent));
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.updateActiveCV(givenStudent.getIdUser(), givenCV.getId());
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        List<CV> actualCVList = actualStudent != null ? actualStudent.getCVList() : null;
+        CV actualCV = actualCVList != null ? actualCVList.get(NEW_ACTIVE_CV_INDEX) : null;
+
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualCV).isNotNull();
+        assertThat(actualCV.getIsActive()).isTrue();
     }
 
     @Test
