@@ -99,6 +99,7 @@ public class UtilsTest {
         allWeekDay.add("Thursday");
         allWeekDay.add("Friday");
         InternshipOffer internshipOffer =  InternshipOffer.builder()
+                .id("6146tf5eg8e00c02c85gt68dd5")
                 .jobName("stagiaire développement web")
                 .description("connaissance en REACT")
                 .startDate(new Date())

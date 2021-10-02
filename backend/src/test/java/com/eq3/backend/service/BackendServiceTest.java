@@ -14,6 +14,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.quality.Strictness;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -64,42 +67,42 @@ class BackendServiceTest {
     @Test
     //@Disabled
     public void testSignUpStudent() {
-        // Arrange
+        //Arrange
         expectedStudent = getStudent();
         when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
-        // Act
+        //Act
         final Optional<Student> student = service.signUp(expectedStudent);
 
-        // Assert
+        //Assert
         assertThat(student.isPresent()).isTrue();
     }
 
     @Test
     //@Disabled
     public void testSignUpMonitor() {
-        // Arrange
+        //Arrange
         expectedMonitor = getMonitor();
         when(monitorRepository.save(expectedMonitor)).thenReturn(expectedMonitor);
 
-        // Act
+        //Act
         final Optional<Monitor> monitor = service.signUp(expectedMonitor);
 
-        // Assert
+        //Assert
         assertThat(monitor.isPresent()).isTrue();
     }
 
     @Test
     //@Disabled
     public void testSignUpSupervisor() {
-        // Arrange
+        //Arrange
         expectedSupervisor = getSupervisor();
         when(supervisorRepository.save(expectedSupervisor)).thenReturn(expectedSupervisor);
 
-        // Act
+        //Act
         final Optional<Supervisor> supervisor = service.signUp(expectedSupervisor);
 
-        // Assert
+        //Assert
         assertThat(supervisor.isPresent()).isTrue();
     }
 
@@ -109,8 +112,9 @@ class BackendServiceTest {
         //Arrange
         expectedStudent = getStudent();
 
-        when(studentRepository.findByUsernameAndPasswordAndIsDisabledFalse(expectedStudent.getUsername(), expectedStudent.getPassword()))
-                .thenReturn(Optional.of(expectedStudent));
+        when(studentRepository.findByUsernameAndPasswordAndIsDisabledFalse(
+                expectedStudent.getUsername(), expectedStudent.getPassword()))
+            .thenReturn(Optional.of(expectedStudent));
         //Act
         final Optional<Student> loginStudent =
                 service.loginStudent(expectedStudent.getUsername(), expectedStudent.getPassword());
@@ -125,8 +129,9 @@ class BackendServiceTest {
         //Arrange
         expectedMonitor = getMonitor();
 
-        when(monitorRepository.findByUsernameAndPasswordAndIsDisabledFalse(expectedMonitor.getUsername(), expectedMonitor.getPassword()))
-                .thenReturn(Optional.of(expectedMonitor));
+        when(monitorRepository.findByUsernameAndPasswordAndIsDisabledFalse(
+                expectedMonitor.getUsername(), expectedMonitor.getPassword()))
+            .thenReturn(Optional.of(expectedMonitor));
         //Act
         final Optional<Monitor> loginMonitor =
                 service.loginMonitor(expectedMonitor.getUsername(), expectedMonitor.getPassword());
@@ -141,8 +146,9 @@ class BackendServiceTest {
         //Arrange
         expectedSupervisor = getSupervisor();
 
-        when(supervisorRepository.findByUsernameAndPasswordAndIsDisabledFalse(expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
-                .thenReturn(Optional.of(expectedSupervisor));
+        when(supervisorRepository.findByUsernameAndPasswordAndIsDisabledFalse(
+                expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
+            .thenReturn(Optional.of(expectedSupervisor));
         //Act
         final Optional<Supervisor> loginSupervisor =
                 service.loginSupervisor(expectedSupervisor.getUsername(), expectedSupervisor.getPassword());
@@ -157,11 +163,15 @@ class BackendServiceTest {
         //Arrange
         expectedInternshipManager = getInternshipManager();
 
-        when(internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(expectedInternshipManager.getUsername(), expectedInternshipManager.getPassword()))
-                .thenReturn(Optional.of(expectedInternshipManager));
+        when(internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(
+                expectedInternshipManager.getUsername(), expectedInternshipManager.getPassword()))
+            .thenReturn(Optional.of(expectedInternshipManager));
         //Act
         final Optional<InternshipManager> loginInternshipManager =
-                service.loginInternshipManager(expectedInternshipManager.getUsername(), expectedInternshipManager.getPassword());
+                service.loginInternshipManager(
+                        expectedInternshipManager.getUsername(),
+                        expectedInternshipManager.getPassword()
+                );
 
         //Assert
         assertThat(loginInternshipManager.isPresent()).isTrue();
@@ -170,12 +180,12 @@ class BackendServiceTest {
     @Test
     //@Disabled
     public void testSaveInternshipOfferWithoutDocument(){
-        // Arrange
+        //Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
         when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
 
-        // Act
+        //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try {
             optionalInternshipOffer = service.saveInternshipOffer(
@@ -186,14 +196,14 @@ class BackendServiceTest {
             fail("Couldn't write expectedInternshipOffer as a String");
         }
 
-        // Assert
+        //Assert
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
     }
 
     @Test
     //@Disabled
     public void testSaveInternshipOfferWithDocument() throws IOException {
-        // Arrange
+        //Arrange
         Document document = getDocument();
         var multipartFile = Mockito.mock(MultipartFile.class);
         when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
@@ -209,7 +219,7 @@ class BackendServiceTest {
         InternshipOffer givenInternshipOffer = getInternshipOffer();
         givenInternshipOffer.setMonitor(getMonitor());
 
-        // Act
+        //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try {
             optionalInternshipOffer = service.saveInternshipOffer(
@@ -220,25 +230,19 @@ class BackendServiceTest {
             fail("Couldn't write expectedInternshipOffer as a String");
         }
 
-        // Assert
+        //Assert
         InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
         assertThat(actualInternshipOffer.getDocument()).isNotNull();
     }
 
-
-    @Test
-    //Disabled
-    public void testDownloadInternshipOfferDocument() {
-
-    }
-
     @Test
     //Disabled
     public void testSaveInternshipOfferWithObjectNotMappable() {
-        // Arrange
+        //Arrange
+        expectedMonitor = getMonitor();
 
-        // Act
+        //Act
         Optional<InternshipOffer> internshipOffer = Optional.empty();
         try {
             internshipOffer = service.saveInternshipOffer(
@@ -249,8 +253,28 @@ class BackendServiceTest {
             fail("Couldn't write expectedMonitor as a String");
         }
 
-        // Assert
+        //Assert
         assertThat(internshipOffer.isPresent()).isFalse();
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadInternshipOfferDocument() throws IOException {
+        //Arrange
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setDocument(getDocument());
+
+        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
+
+        //Act
+        Optional<Document> optionalDocument = service.downloadInternshipOfferDocument(
+                expectedInternshipOffer.getId()
+        );
+
+        //Assert
+        assertThat(optionalDocument.isPresent()).isTrue();
     }
 
     @Test
@@ -281,17 +305,17 @@ class BackendServiceTest {
     @Test
     //@Disabled
     public void testGetAllInternshipOfferByWorkField() {
-        // Arrange
+        //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
         when(internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(Department.COMPUTER_SCIENCE))
                 .thenReturn(expectedInternshipOfferList);
 
-        // Act
+        //Act
         final Optional<List<InternshipOffer>> internshipOffers =
                 service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE);
 
-        // Assert
+        //Assert
         assertThat(internshipOffers.isPresent()).isTrue();
         assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
     }
@@ -299,16 +323,16 @@ class BackendServiceTest {
     @Test
     //@Disabled
     public void testGetAllStudents() {
-        // Arrange
+        //Arrange
         expectedStudentList = getListOfStudents();
         when(studentRepository.findAllByIsDisabledFalseAndDepartment(Department.COMPUTER_SCIENCE))
                 .thenReturn(expectedStudentList);
 
-        // Act
+        //Act
         final Optional<List<Student>> students =
                 service.getAllStudents(Department.COMPUTER_SCIENCE);
 
-        // Assert
+        //Assert
         assertThat(students.isPresent()).isTrue();
         assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
     }

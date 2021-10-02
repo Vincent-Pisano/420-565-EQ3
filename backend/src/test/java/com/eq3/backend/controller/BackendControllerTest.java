@@ -9,8 +9,10 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -237,6 +239,27 @@ class BackendControllerTest {
 
     @Test
     //Disabled
+    public void testDownloadInternshipOfferDocument() throws Exception {
+        // Arrange
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setDocument(getDocument());
+
+        when(service.downloadInternshipOfferDocument(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.of(expectedInternshipOffer.getDocument()));
+
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/internshipOffer/document/" +
+                expectedInternshipOffer.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
+    }
+
+    @Test
+    //Disabled
     public void testSaveCV() throws Exception {
         //Arrange
         Document document = getDocument();
@@ -263,12 +286,6 @@ class BackendControllerTest {
 
         //Assert
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
-    }
-
-    @Test
-    //Disabled
-    public void testDownloadInternshipOfferDocument() {
-
     }
 
     @Test

@@ -164,30 +164,20 @@ public class BackendService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(String id) {
+    public Optional<Document> downloadInternshipOfferDocument(String id) {
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
+        Optional<Document> optionalDocument = Optional.empty();
 
-        if (optionalInternshipOffer.isEmpty() || optionalInternshipOffer.get().getDocument() == null)
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        if (optionalInternshipOffer.isPresent() && optionalInternshipOffer.get().getDocument() != null)
+            optionalDocument = Optional.of(optionalInternshipOffer.get().getDocument());
 
-        Document document = optionalInternshipOffer.get().getDocument();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        headers.add("Content-Disposition", "attachment; filename=" + document.getName());
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentLength(document.getContent().length())
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(new ByteArrayInputStream(document.getContent().getData())));
+        return optionalDocument;
     }
 
     public Optional<Monitor> getMonitorByUsername(String username){
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);
     }
+
+    
 }
 

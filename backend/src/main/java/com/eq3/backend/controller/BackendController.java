@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:3006")
@@ -102,7 +104,24 @@ public class BackendController {
 
     @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
-        return service.downloadInternshipOfferDocument(id);
+        return service.downloadInternshipOfferDocument(id)
+                .map(_document -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+                    headers.add("Pragma", "no-cache");
+                    headers.add("Expires", "0");
+                    headers.add("Content-Disposition", "attachment; filename=" + _document.getName());
+
+                    return ResponseEntity
+                            .status(HttpStatus.ACCEPTED)
+                            .headers(headers)
+                            .contentLength(_document.getContent().length())
+                            .contentType(MediaType.APPLICATION_PDF)
+                            .body(new InputStreamResource(
+                                    new ByteArrayInputStream(_document.getContent().getData()))
+                            );
+                })
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @GetMapping("/getAll/internshipOffer/{workField}")
