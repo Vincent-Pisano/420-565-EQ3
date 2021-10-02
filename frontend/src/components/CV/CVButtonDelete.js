@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./../../styles/CV.css";
 import auth from "../../services/Auth";
 import axios from "axios";
+import { useHistory } from "react-router";
 
 const CVButtonDelete = ({ documentId }) => {
   const [show, setShow] = useState(false);
@@ -11,6 +12,8 @@ const CVButtonDelete = ({ documentId }) => {
   const handleShow = () => setShow(true);
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  let history = useHistory();
 
   let user = auth.user;
 
@@ -30,6 +33,9 @@ const CVButtonDelete = ({ documentId }) => {
         setErrorMessage("Le fichier a été supprimé");
         setTimeout(() => {
           handleClose();
+          history.push({
+            pathname: `/home/${user.username}`,
+          });
         }, 1000);
       })
       .catch((error) => {

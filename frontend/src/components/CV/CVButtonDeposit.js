@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./../../styles/CV.css";
 import auth from "../../services/Auth";
 import axios from "axios";
+import { useHistory } from "react-router";
 
 const CVButtonDeposit = () => {
   const [show, setShow] = useState(false);
@@ -12,6 +13,8 @@ const CVButtonDeposit = () => {
 
   const [document, setDocument] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState("");
+
+  let history = useHistory();
 
   let user = auth.user;
 
@@ -38,6 +41,9 @@ const CVButtonDeposit = () => {
           setErrorMessage("Le fichier a été déposé");
           setTimeout(() => {
             handleClose();
+            history.push({
+              pathname: `/home/${user.username}`,
+            });
           }, 1000);
         })
         .catch((error) => {
