@@ -5,11 +5,11 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @SuperBuilder(toBuilder = true)
-@NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "student")
 public class Student extends User {
@@ -17,11 +17,12 @@ public class Student extends User {
     @Field
     private Department department;
 
-    @Field
-    private List<InternshipOffer> internshipOffers;
+    @Builder.Default
+    private List<InternshipOffer> internshipOffers = new ArrayList<>();
 
-    public Student(List<InternshipOffer> internshipOffers) {
-        this.internshipOffers = internshipOffers;
+    public Student() {
+        super();
+        this.internshipOffers = new ArrayList<>();
     }
 
     @Override

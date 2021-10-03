@@ -93,13 +93,6 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/internshipOfferByStudent/{username}")
-    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferByStudent(@PathVariable String username) {
-        return service.getAllInternshipOfferByStudent(username)
-                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
     @GetMapping("/getAll/internshipOffer")
     public ResponseEntity<List<InternshipOffer>> getAllInternshipOffer() {
         return service.getAllUnvalidatedInternshipOffer()
@@ -115,7 +108,7 @@ public class BackendController {
     }
 
     @PostMapping("/apply/internshipOffer/{username}")
-    public ResponseEntity<List<InternshipOffer>> applyInternshipOffer(@PathVariable String username, @RequestBody InternshipOffer internshipOffer) {
+    public ResponseEntity<Student> applyInternshipOffer(@PathVariable String username, @RequestBody InternshipOffer internshipOffer) {
         return service.applyInternshipOffer(username, internshipOffer)
                 .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());

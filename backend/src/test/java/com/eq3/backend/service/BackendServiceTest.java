@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -37,8 +38,6 @@ class BackendServiceTest {
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
-    //@Mock
-    //private InternshipApplicationRepository internshipApplicationRepository;
 
     //global variables
     private Student expectedStudent;
@@ -243,17 +242,25 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testValidateIntershipOffer(){
+    public void testValidateInternshipOffer(){
         //Arrange
         expectedInternshipManager = getInternshipManager();
         expectedInternshipOffer = getInternshipOffer();
+
+        when(internshipManagerRepository.findByUsernameAndIsDisabledFalse(expectedInternshipManager.getUsername()))
+                .thenReturn(Optional.of(expectedInternshipManager));
+
+        when(internshipOfferRepository.save(expectedInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
 
         //Act
         final Optional<InternshipOffer> validatedInternshipOffer =
                 service.validateInternshipOffer(expectedInternshipManager.getUsername(), expectedInternshipOffer);
 
         //Assert
-        assertThat(validatedInternshipOffer.isPresent() ? validatedInternshipOffer.get().getIsValid():true).isTrue();
+        Boolean isValid = validatedInternshipOffer.isPresent() ? validatedInternshipOffer.get().getIsValid() : false;
+        assertThat(validatedInternshipOffer.isPresent()).isTrue();
+        assertThat(isValid).isTrue();
     }
 
     @Test
@@ -263,31 +270,14 @@ class BackendServiceTest {
         expectedStudent = getStudent();
         expectedInternshipOffer = getInternshipOffer();
 
-        //when(internshipApplicationRepository.save(expectedInternshipApplication)).thenReturn(expectedInternshipApplication);
+
+        when(expectedStudent.getInternshipOffers()).thenReturn(expectedStudent.getInternshipOffers());
 
         //Act
-        //inal Optional<InternshipApplication> appliedInternshipOffer =
+        final Optional<Student> appliedStudentInternship =
                 service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
 
         //Assert
-        //assertThat(appliedInternshipOffer.isPresent()).isTrue();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllInternshipOfferByStudent() {
-        // Arrange
-        expectedStudent = getStudent();
-        expectedInternshipOfferList = getListOfInternshipOffer();
-
-        //when(internshipApplicationRepository.save(expectedInternshipApplication)).thenReturn(expectedInternshipApplication);
-
-        // Act
-        final Optional<List<InternshipOffer>> internshipOffers =
-                service.getAllInternshipOfferByStudent(expectedStudent.getUsername());
-
-        // Assert
-        assertThat(internshipOffers.isPresent()).isTrue();
-        assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size() -1);
+        assertThat(appliedStudentInternship.get().getInternshipOffers().size());
     }
 }

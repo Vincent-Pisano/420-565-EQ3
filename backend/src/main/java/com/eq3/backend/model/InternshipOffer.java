@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,9 +63,14 @@ public class InternshipOffer {
 
     @Field
     @Builder.Default
+    protected List<Student> studentList = new ArrayList<>();
+
+    @Field
+    @Builder.Default
     protected Boolean isValid = false;
 
     public InternshipOffer() {
+        studentList = new ArrayList<>();
         creationDate = new Date();
         isValid = false;
     }

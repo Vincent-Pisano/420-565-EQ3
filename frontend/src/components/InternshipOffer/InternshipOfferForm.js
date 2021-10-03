@@ -152,11 +152,26 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfStudent() {
+    console.log(internshipOffer)
     if (user.username.startsWith('E') && internshipOffer !== undefined) {
-      return (<>
-        <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
-        <button className="btn_submit" onClick={() => applyInternshipOffer()}>Valider</button>
-      </>)
+      let studentList = internshipOffer.studentList;
+      let flag = false;
+      studentList.forEach(student => {
+        if(student.username === auth.user.username) {
+          flag = true;
+        }
+      });
+      if (!flag) {
+        return (<>
+          <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
+          <button className="btn_submit" onClick={() => applyInternshipOffer()}>Valider</button>
+        </>)
+      }
+      else {
+        return (
+           <p style={{ color:'red'}}>Vous avez déja appliqué à ce stage</p>
+        )
+      }
     }
   }
 
