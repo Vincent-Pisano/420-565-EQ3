@@ -1,6 +1,9 @@
 package com.eq3.backend.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
@@ -8,6 +11,9 @@ import java.util.Date;
 
 @Data
 @org.springframework.data.mongodb.core.mapping.Document
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CV {
 
     @Id
@@ -15,11 +21,14 @@ public class CV {
 
     private Document document;
 
-    private Date depositDate;
+    @Builder.Default
+    private Date depositDate = new Date();
 
-    private Boolean isActive;
+    @Builder.Default
+    private Boolean isActive = false;
 
-    private Boolean isValid;
+    @Builder.Default
+    private Boolean isValid = false;
 
     public CV(Document document) {
         this.id = String.valueOf(new ObjectId());

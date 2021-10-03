@@ -11,6 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -255,15 +256,12 @@ public class BackendService {
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);
     }
 
-    public Optional<InternshipOffer> validateInternshipOffer(String username, InternshipOffer internshipOffer){
-        Optional<InternshipManager> internshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
-        if(internshipManager.isPresent()){
-            if (internshipOffer != null){
-                internshipOffer.setIsValid(true);
-                return Optional.of(internshipOfferRepository.save(internshipOffer));
-            }
-        }
-        return Optional.empty();
+    public Optional<InternshipOffer> validateInternshipOffer(String id){
+        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
+        optionalInternshipOffer.ifPresent(internshipOffer -> {
+            internshipOffer.setIsValid(true);
+        });
+        return optionalInternshipOffer.map(internshipOfferRepository::save);
     }
 }
 
