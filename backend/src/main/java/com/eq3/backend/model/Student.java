@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder(toBuilder = true)
 @Document(collection = "student")
@@ -16,7 +17,8 @@ public class Student extends User {
     @Field
     private Department department;
 
-    private List<CV> CVList;
+    @Builder.Default
+    private List<CV> CVList = new ArrayList<>();
 
     public Student() {
         super();
