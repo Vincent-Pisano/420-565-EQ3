@@ -39,7 +39,6 @@ class BackendControllerTest {
     private InternshipManager expectedInternshipManager;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
-    private InternshipApplication expectedIntershipApplication;
 
     @Test
     public void testSignUpStudent() throws Exception {
@@ -284,9 +283,9 @@ class BackendControllerTest {
         assertThat(internshipOffer).isNotNull();
     }
 
-    @Test
+    //@Test
     //@Disabled
-    public void testApplyInternshipOffer() throws Exception {
+    /*public void testApplyInternshipOffer() throws Exception {
         //Arrange
         expectedStudent = getStudent();
         expectedInternshipOffer = getInternshipOffer();
@@ -305,5 +304,5 @@ class BackendControllerTest {
         var internshipApplication = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipApplication.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(internshipApplication).isNotNull();
-    }
+    }*/
 }

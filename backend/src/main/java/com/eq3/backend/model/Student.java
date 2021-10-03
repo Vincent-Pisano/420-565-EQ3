@@ -5,6 +5,8 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+
 @Data
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
@@ -15,8 +17,17 @@ public class Student extends User {
     @Field
     private Department department;
 
+    @Field
+    private List<InternshipOffer> internshipOffers;
+
+    public Student(List<InternshipOffer> internshipOffers) {
+        this.internshipOffers = internshipOffers;
+    }
+
     @Override
     public String toString() {
         return super.toString();
     }
+
+
 }

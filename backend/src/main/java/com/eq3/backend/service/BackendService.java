@@ -21,21 +21,20 @@ public class BackendService {
     private final SupervisorRepository supervisorRepository;
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
-    private final InternshipApplicationRepository internshipApplicationRepository;
+
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
-                   InternshipOfferRepository internshipOfferRepository,
-                   InternshipApplicationRepository internshipApplicationRepository) {
+                   InternshipOfferRepository internshipOfferRepository
+                   ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
-        this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
 
@@ -100,14 +99,24 @@ public class BackendService {
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByStudent(String studentUsername) {
-        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByStudentUsername(studentUsername);
-        List<InternshipOffer> internshipOffers = new ArrayList<>();
-        for (InternshipApplication internshipApplication : internshipApplications) {
-            if (internshipOfferRepository.findById(internshipApplication.getOfferId()).isPresent())
-                internshipOffers.add(internshipOfferRepository.findById(internshipApplication.getOfferId()).get());
+        Optional<Student> currentStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
+        if (currentStudent.get().getInternshipOffers() == null) {
+            List<InternshipOffer> internshipOfferList = new ArrayList<InternshipOffer>();
+            currentStudent.orElseThrow().setInternshipOffers(internshipOfferList);
+        }
+        List<InternshipOffer> interestedInternshipOffersList = currentStudent.get().getInternshipOffers();
+        List<InternshipOffer> notInterestedInternshipOfferList = new ArrayList<>();
+        List<InternshipOffer> internshipOffersByWorkField = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(currentStudent.get().getDepartment());
+
+        int i = 0;
+        for (InternshipOffer internshipOffer: interestedInternshipOffersList) {
+            if (internshipOffer.getId().equals(internshipOffersByWorkField.get(i).getId()))
+               continue;
+            notInterestedInternshipOfferList.add(internshipOffersByWorkField.get(i));
+            i++;
         }
 
-        return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+        return notInterestedInternshipOfferList.isEmpty() ? Optional.empty() : Optional.of(notInterestedInternshipOfferList);
     }
 
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
@@ -131,16 +140,11 @@ public class BackendService {
         return Optional.empty();
     }
 
-    public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer){
-        InternshipApplication newInternshipApplication = new InternshipApplication();
-        newInternshipApplication.setOfferId(internshipOffer.getId());
-        newInternshipApplication.setStudentUsername(studentUsername);
-        Optional<InternshipApplication> internshipApplication =
-                internshipApplicationRepository.findByStudentUsernameAndOfferId(newInternshipApplication.getStudentUsername(),
-                        newInternshipApplication.getOfferId());
-        if(internshipApplication.isEmpty()) {
-            return Optional.of(internshipApplicationRepository.save(newInternshipApplication));
-        }
+    public Optional<List<InternshipOffer>> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer){
+
+        Optional<Student> student = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
+        student.ifPresent(value -> value.getInternshipOffers().add(internshipOffer));
+
         return Optional.empty();
     }
 }

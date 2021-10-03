@@ -150,12 +150,12 @@ public class UtilsTest {
         return internshipOffers;
     }
 
-    public static InternshipApplication getInternshipApplication() {
+    /*public static InternshipApplication getInternshipApplication() {
 
         return InternshipApplication.builder()
                 .studentUsername("E1257896")
                 .offerId(getInternshipOffer().getId())
                 .build();
-    }
+    }*/
 
 }
