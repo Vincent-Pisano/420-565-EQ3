@@ -63,14 +63,9 @@ public class InternshipOffer {
 
     @Field
     @Builder.Default
-    protected List<Student> studentList = new ArrayList<>();
-
-    @Field
-    @Builder.Default
     protected Boolean isValid = false;
 
     public InternshipOffer() {
-        studentList = new ArrayList<>();
         creationDate = new Date();
         isValid = false;
     }

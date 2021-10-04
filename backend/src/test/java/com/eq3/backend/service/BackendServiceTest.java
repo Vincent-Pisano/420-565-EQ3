@@ -265,7 +265,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testApplyIntershipOffer(){
+    public void testApplyInternshipOffer(){
         //Arrange
         expectedStudent = getStudent();
         expectedInternshipOffer = getInternshipOffer();

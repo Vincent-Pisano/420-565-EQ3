@@ -126,11 +126,6 @@ public class BackendService {
             student.setInternshipOffers(internshipOffersList);
             studentRepository.save(student);
         });
-
-        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(internshipOffer.getId());
-        optionalInternshipOffer.get().getStudentList().add(optionalStudent.get());
-        internshipOfferRepository.save(optionalInternshipOffer.get());
-
         return optionalStudent;
     }
 }

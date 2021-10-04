@@ -120,7 +120,6 @@ const InternshipOfferForm = () => {
         setErrorMessage("L'offre de stage a été validée, vous allez être redirigé");
       }
       ).catch((error) => {
-        console.log(error)
         setErrorMessage("Erreur lors de la validation")
       });
   }
@@ -129,15 +128,15 @@ const InternshipOfferForm = () => {
     axios
       .post(`http://localhost:9090/apply/internshipOffer/${user.username}`, fields)
       .then((response) => {
+        auth.user = response.data;
         setTimeout(() => {
           history.push({
-            pathname: `/home/${user.username}`
+            pathname: `/listInternshipOffer`
           });
         }, 3000);
         setErrorMessage("Votre demande a été traitée");
       }
       ).catch((error) => {
-        console.log(error)
         setErrorMessage("Erreur lors de l'application")
       });
   }
@@ -152,12 +151,11 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfStudent() {
-    console.log(internshipOffer)
     if (user.username.startsWith('E') && internshipOffer !== undefined) {
-      let studentList = internshipOffer.studentList;
+      let internshipOffferList = user.internshipOffers;
       let flag = false;
-      studentList.forEach(student => {
-        if(student.username === auth.user.username) {
+      internshipOffferList.forEach(_internshipOffer => {
+        if(_internshipOffer.id === internshipOffer.id) {
           flag = true;
         }
       });
