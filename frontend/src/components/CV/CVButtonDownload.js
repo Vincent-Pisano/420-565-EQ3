@@ -1,9 +1,11 @@
-const CVButtonDownload = ({ document }) => {
+const CVButtonDownload = ( {user, cv}) => {
   return (
     <a
       className="btn btn-success btn-sm"
-      download={document.name}
-      href={"data:application/pdf;base64," + document.content.data}
+      download
+      href={
+        `http://localhost:9090/get/CV/document/${user.idUser}/${cv.id}`
+      }
     >
       Télécharger
     </a>

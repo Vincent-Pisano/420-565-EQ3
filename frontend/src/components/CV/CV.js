@@ -2,6 +2,7 @@ import React from "react";
 import CVButtonDownload from "./CVButtonDownload";
 import CVButtonDelete from "./CVButtonDelete";
 import CVButtonActive from "./CVButtonActive";
+import auth from "../../services/Auth";
 import "./../../styles/CV.css"
 
 const CV = ({ cv }) => {
@@ -10,7 +11,7 @@ const CV = ({ cv }) => {
     <tr>
       <td>{cv.document.name}</td>
       <td>
-        <CVButtonDownload document={cv.document} />
+        <CVButtonDownload user={auth.user} cv={cv} />
       </td>
       <td>
         <CVButtonDelete documentId={cv.id} />

@@ -168,13 +168,22 @@ public class UtilsTest {
     }
 
     public static CV getCV() throws IOException {
-        return new CV(getDocument());
+        return CV.builder()
+                .id("614662s17dfv9re02c85gt68dd5")
+                .document(getDocument())
+                .build();
     }
 
     public static List<CV> getCVList() throws IOException {
         List<CV> cvList = new ArrayList<>();
-        cvList.add(new CV(getDocument()));
-        cvList.add(new CV(getDocument()));
+        cvList.add(CV.builder()
+                    .id("614662s17dfv9re02c85gt68dd5")
+                    .document(getDocument())
+                    .build());
+        cvList.add(CV.builder()
+                .id("61eug62s17dfv9re02c85gt68dd5")
+                .document(getDocument())
+                .build());
         return cvList;
     }
 

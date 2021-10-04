@@ -23,12 +23,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.eq3.backend.utils.UtilsTest.getCVList;
+import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.lenient;
-import static com.eq3.backend.utils.UtilsTest.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -278,6 +277,26 @@ class BackendServiceTest {
     }
 
     @Test
+    //Disabled
+    public void testDownloadStudentCVDocument() throws IOException {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedStudent.setCVList(getCVList());
+        expectedCV = getCV();
+
+        when(studentRepository.findById(expectedStudent.getIdUser()))
+                .thenReturn(Optional.ofNullable(expectedStudent));
+
+        //Act
+        Optional<Document> optionalDocument = service.downloadStudentCVDocument(
+                expectedStudent.getIdUser(), expectedCV.getId()
+        );
+
+        //Assert
+        assertThat(optionalDocument.isPresent()).isTrue();
+    }
+
+    @Test
     //@Disabled
     public void testSaveCV() throws IOException {
         //Arrange
@@ -439,16 +458,23 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testValidateIntershipOffer(){
+    public void testValidateInternshipOffer(){
         //Arrange
-        expectedInternshipManager = getInternshipManager();
         expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setIsValid(true);
+
+        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
+        when(internshipOfferRepository.save(expectedInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
 
         //Act
-        final Optional<InternshipOffer> validatedInternshipOffer =
-                service.validateInternshipOffer(expectedInternshipManager.getUsername(), expectedInternshipOffer);
+        final Optional<InternshipOffer> actualInternshipOffer =
+                service.validateInternshipOffer(expectedInternshipOffer.getId());
 
         //Assert
-        assertThat(validatedInternshipOffer.isPresent() ? validatedInternshipOffer.get().getIsValid():true).isTrue();
+        Boolean isValid = actualInternshipOffer.isPresent() ? actualInternshipOffer.get().getIsValid() : false;
+        assertThat(actualInternshipOffer.isPresent()).isTrue();
+        assertThat(isValid).isTrue();
     }
 }

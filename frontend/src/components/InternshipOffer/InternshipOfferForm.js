@@ -139,8 +139,7 @@ const InternshipOfferForm = () => {
   function validateInternshipOffer() {
     axios
       .post(
-        `http://localhost:9090/save/internshipOffer/validate/${user.username}`,
-        fields
+        `http://localhost:9090/save/internshipOffer/validate/${internshipOffer.id}`
       )
       .then((response) => {
         setErrorMessage("L'offre de stage a été validé");
@@ -148,7 +147,7 @@ const InternshipOfferForm = () => {
           history.push({
             pathname: `/listInternshipOffer`,
           });
-        }, 1000);
+        }, 2000);
       })
       .catch((error) => {
         setErrorMessage("Erreur lors de la validation");

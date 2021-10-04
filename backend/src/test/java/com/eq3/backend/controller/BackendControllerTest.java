@@ -51,6 +51,7 @@ class BackendControllerTest {
     private InternshipManager expectedInternshipManager;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
+    private CV expectedCV;
 
     @Test
     public void testSignUpStudent() throws Exception {
@@ -260,6 +261,28 @@ class BackendControllerTest {
 
     @Test
     //Disabled
+    public void testDownloadStudentCVDocument() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedStudent.setCVList(getCVList());
+        expectedCV = getCV();
+
+        when(service.downloadStudentCVDocument(expectedStudent.getIdUser(), expectedCV.getId()))
+                .thenReturn(Optional.ofNullable(expectedCV.getDocument()));
+
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/CV/document/" +
+                expectedStudent.getIdUser() + "/" + expectedCV.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
+    }
+
+    @Test
+    //Disabled
     public void testSaveCV() throws Exception {
         //Arrange
         Document document = getDocument();
@@ -428,21 +451,23 @@ class BackendControllerTest {
     //@Disabled
     public void testValidateInternshipOffer() throws Exception {
         //Arrange
-        expectedInternshipManager = getInternshipManager();
         expectedInternshipOffer = getInternshipOffer();
-        when(service.validateInternshipOffer(expectedInternshipManager.getUsername(), expectedInternshipOffer))
+        expectedInternshipOffer.setIsValid(true);
+
+        when(service.validateInternshipOffer(expectedInternshipOffer.getId()))
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
         //Act
         MvcResult result = mockMvc.perform(post("/save/internshipOffer/validate/" +
-                expectedInternshipManager.getUsername())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();
+                expectedInternshipOffer.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
         var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(internshipOffer).isNotNull();
+        assertThat(internshipOffer.getIsValid()).isTrue();
     }
 }

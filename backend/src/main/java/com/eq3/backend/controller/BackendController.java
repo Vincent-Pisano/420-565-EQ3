@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:3006")
@@ -119,22 +118,14 @@ public class BackendController {
     @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
         return service.downloadInternshipOfferDocument(id)
-                .map(_document -> {
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-                    headers.add("Pragma", "no-cache");
-                    headers.add("Expires", "0");
-                    headers.add("Content-Disposition", "attachment; filename=" + _document.getName());
+                .map(this::getDownloadingDocument)
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 
-                    return ResponseEntity
-                            .status(HttpStatus.ACCEPTED)
-                            .headers(headers)
-                            .contentLength(_document.getContent().length())
-                            .contentType(MediaType.APPLICATION_PDF)
-                            .body(new InputStreamResource(
-                                    new ByteArrayInputStream(_document.getContent().getData()))
-                            );
-                })
+    @GetMapping(value = "/get/CV/document/{idStudent}/{idCV}", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> downloadStudentCVDocument(@PathVariable String idStudent, @PathVariable String idCV){
+        return service.downloadStudentCVDocument(idStudent, idCV)
+                .map(this::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
@@ -152,9 +143,9 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping("/save/internshipOffer/validate/{username}")
-    public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String username, @RequestBody InternshipOffer internshipOffer) {
-        return service.validateInternshipOffer(username, internshipOffer)
+    @PostMapping("/save/internshipOffer/validate/{id}")
+    public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String id) {
+        return service.validateInternshipOffer(id)
                 .map(_monitor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_monitor))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
@@ -164,5 +155,22 @@ public class BackendController {
         return service.getMonitorByUsername(username)
                 .map(_monitor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_monitor))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    private ResponseEntity<InputStreamResource> getDownloadingDocument(Document document) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        headers.add("Content-Disposition", "attachment; filename=" + document.getName());
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .headers(headers)
+                .contentLength(document.getContent().length())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(
+                        new ByteArrayInputStream(document.getContent().getData()))
+                );
     }
 }
