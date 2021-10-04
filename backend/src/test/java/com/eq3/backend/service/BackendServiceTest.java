@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -268,16 +269,23 @@ class BackendServiceTest {
     public void testApplyInternshipOffer(){
         //Arrange
         expectedStudent = getStudent();
+        Student givenStudent = getStudent();
         expectedInternshipOffer = getInternshipOffer();
 
+        List<InternshipOffer> internshipOffers = new ArrayList<>();
+        internshipOffers.add(expectedInternshipOffer);
+        expectedStudent.setInternshipOffers(internshipOffers);
 
-        when(expectedStudent.getInternshipOffers()).thenReturn(expectedStudent.getInternshipOffers());
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
+        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
         //Act
-        final Optional<Student> appliedStudentInternship =
+        final Optional<Student> optionalStudent =
                 service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
 
         //Assert
-        assertThat(appliedStudentInternship.get().getInternshipOffers().size());
+        Student actualStudent = optionalStudent.orElse(null);
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualStudent.getInternshipOffers()).isEqualTo(expectedStudent.getInternshipOffers());
     }
 }
