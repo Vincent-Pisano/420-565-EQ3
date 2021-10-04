@@ -301,8 +301,8 @@ class BackendControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
+        var student = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(internshipOffer).isNotNull();
+        assertThat(student).isNotNull();
     }
 }
