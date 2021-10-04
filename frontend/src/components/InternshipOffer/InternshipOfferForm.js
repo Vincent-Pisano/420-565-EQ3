@@ -131,13 +131,13 @@ const InternshipOfferForm = () => {
       .then((response) => {
         auth.user = response.data;
         setHasApplied(true)
-        setErrorMessage("Votre demande a été acceptée, vous allez être redirigé");
+        
         setTimeout(() => {
           history.push({
             pathname: `/listInternshipOffer`
           });
         }, 3000);
-        
+        setErrorMessage("Votre demande a été acceptée, vous allez être redirigé");
       }
       ).catch((error) => {
         setErrorMessage("Erreur lors de l'application de stage")
