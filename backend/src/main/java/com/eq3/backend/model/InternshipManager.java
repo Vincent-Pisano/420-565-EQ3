@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
 @Document
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)

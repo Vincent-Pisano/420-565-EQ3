@@ -46,7 +46,7 @@ public class BackendService {
     public Optional<Student> signUp(Student student) {
         Optional<Student> optionalStudent = Optional.empty();
         try {
-            optionalStudent = cleanUpStudentCVList(Optional.of(studentRepository.save(student)));
+            optionalStudent = cleanUpStudentDocuments(Optional.of(studentRepository.save(student)));
         } catch (DuplicateKeyException exception){
             logger.error("A duplicated key was found in signUp (Student) : " + exception.getMessage());
         }
@@ -74,12 +74,12 @@ public class BackendService {
     }
 
     public Optional<Student> loginStudent(String username, String password) {
-        return cleanUpStudentCVList(studentRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password));
+        return cleanUpStudentDocuments(studentRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password));
     }
 
     public Optional<List<Student>> getAllStudents(Department department) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartment(department);
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        students.forEach(student -> cleanUpStudentDocuments(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
@@ -125,7 +125,7 @@ public class BackendService {
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
                 : Optional.empty();
 
-        return cleanUpStudentCVList(optionalStudent);
+        return cleanUpStudentDocuments(optionalStudent);
     }
 
     private Boolean addToListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
@@ -160,7 +160,7 @@ public class BackendService {
         optionalStudent = deleteCVFromListCV(optionalStudent, idCV)
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
                 : Optional.empty();
-        return cleanUpStudentCVList(optionalStudent);
+        return cleanUpStudentDocuments(optionalStudent);
     }
 
     private Boolean deleteCVFromListCV(Optional<Student> optionalStudent, String idCV) {
@@ -179,7 +179,7 @@ public class BackendService {
         optionalStudent = updateActiveCVFromListCV(optionalStudent, idCV)
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
                 : Optional.empty();
-        return cleanUpStudentCVList(optionalStudent);
+        return cleanUpStudentDocuments(optionalStudent);
     }
 
     public Boolean updateActiveCVFromListCV(Optional<Student> optionalStudent, String idCV) {
@@ -198,7 +198,15 @@ public class BackendService {
         return isPresent;
     }
 
-    private Optional<Student> cleanUpStudentCVList(Optional<Student> optionalStudent) {
+    private Optional<Student> cleanUpStudentDocuments(Optional<Student> optionalStudent) {
+        if (optionalStudent.isPresent()) {
+            cleanUpStudentCVList(optionalStudent);
+            cleanUpStudentInternshipOffers(optionalStudent);
+        }
+        return optionalStudent;
+    }
+
+    private void cleanUpStudentCVList(Optional<Student> optionalStudent) {
         optionalStudent.ifPresent(student -> {
                 if (student.getCVList() != null) {
                     student.getCVList().forEach(cv -> {
@@ -208,7 +216,19 @@ public class BackendService {
                 }
             }
         );
-        return optionalStudent;
+    }
+
+    private void cleanUpStudentInternshipOffers(Optional<Student> optionalStudent) {
+        optionalStudent.ifPresent(student -> {
+                    if (student.getInternshipOffers() != null) {
+                        student.getInternshipOffers().forEach(internshipOffer -> {
+                            Document document = internshipOffer.getDocument();
+                            if (document != null)
+                                document.setContent(null);
+                        });
+                    }
+                }
+        );
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
@@ -274,7 +294,7 @@ public class BackendService {
             student.setInternshipOffers(internshipOffersList);
             studentRepository.save(student);
         });
-        return optionalStudent;
+        return cleanUpStudentDocuments(optionalStudent);
     }
 }
 

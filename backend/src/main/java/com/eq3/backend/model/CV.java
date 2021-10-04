@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 @org.springframework.data.mongodb.core.mapping.Document
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class CV {
 
