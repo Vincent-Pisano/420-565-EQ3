@@ -58,6 +58,9 @@ public class InternshipOffer {
     private Monitor monitor;
 
     @Field
+    private Document document;
+
+    @Field
     @Builder.Default
     protected Date creationDate = new Date();
 
@@ -66,8 +69,8 @@ public class InternshipOffer {
     protected Boolean isValid = false;
 
     public InternshipOffer() {
-        creationDate = new Date();
-        isValid = false;
+        this.creationDate = new Date();
+        this.isValid = false;
     }
 
 }

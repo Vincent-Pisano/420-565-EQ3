@@ -9,15 +9,13 @@ function NavUserSwitch({ userStatus }) {
     if (user.username.startsWith("G")) {
       return (
         <>
-          <Nav.Link>
-            <Link className="nav-links-header" to="/formInternshipOffer">
-              <li>Dépôt d'offres de stage</li>
-            </Link>
+          <Nav.Link as={Link} to="/formInternshipOffer">
+            <li className="nav-links-header">Dépôt d'offres de stage</li>
           </Nav.Link>
-          <Nav.Link>
-          <Link className="nav-links-header" to="/listInternshipOffer">
-              <li>Liste des offres de stage non validées</li>
-            </Link>
+          <Nav.Link as={Link} to="/listInternshipOffer">
+            <li className="nav-links-header">
+              Liste des offres de stage non validées
+            </li>
           </Nav.Link>
         </>
       );
@@ -29,10 +27,8 @@ function NavUserSwitch({ userStatus }) {
     if (user.username.startsWith("E")) {
       return (
         <>
-          <Nav.Link>
-            <Link className="nav-links-header" to="/listInternshipOffer">
-              <li>Listes d'offres de stage</li>
-            </Link>
+          <Nav.Link as={Link} to="/listInternshipOffer">
+            <li className="nav-links-header">Listes d'offres de stage</li>
           </Nav.Link>
         </>
       );
@@ -44,10 +40,8 @@ function NavUserSwitch({ userStatus }) {
     if (user.username.startsWith("S")) {
       return (
         <>
-          <Nav.Link>
-            <Link className="nav-links-header" to="/listStudents">
-              <li>Liste des étudiants</li>
-            </Link>
+          <Nav.Link as={Link} to="/listStudents">
+            <li className="nav-links-header">Liste des étudiants</li>
           </Nav.Link>
         </>
       );
@@ -59,10 +53,8 @@ function NavUserSwitch({ userStatus }) {
     if (user.username.startsWith("M")) {
       return (
         <>
-          <Nav.Link>
-            <Link className="nav-links-header" to="/formInternshipOffer">
-              <li>Dépôt d'offres de stage</li>
-            </Link>
+          <Nav.Link as={Link} to="/formInternshipOffer">
+            <li className="nav-links-header">Dépôt d'offres de stage</li>
           </Nav.Link>
         </>
       );

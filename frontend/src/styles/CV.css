@@ -1,0 +1,13 @@
+.btn_modal {
+    font-size: 23px;
+}
+
+.btn_sub {
+    margin-top: 16px;
+}
+
+.error_p {
+    display: flex;
+    justify-content: center;
+}
+

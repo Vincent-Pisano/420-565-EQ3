@@ -11,7 +11,6 @@ import java.util.Date;
 
 @Data
 @SuperBuilder(toBuilder = true)
-@AllArgsConstructor
 public class User implements Serializable {
 
     @Id
@@ -36,7 +35,7 @@ public class User implements Serializable {
     protected Boolean isDisabled = false;
 
     public User() {
-        creationDate = new Date();
-        isDisabled = false;
+        this.creationDate = new Date();
+        this.isDisabled = false;
     }
 }

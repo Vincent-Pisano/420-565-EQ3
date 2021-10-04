@@ -5,11 +5,10 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
 @Document(collection = "supervisor")
 public class Supervisor extends User {
 
