@@ -11,6 +11,7 @@ const InternshipOfferForm = () => {
   let user = auth.user;
   let history = useHistory();
   let internshipOffer = history.location.state;
+  const [hasApplied, setHasApplied] = useState(false);
 
   formatDates();
 
@@ -117,32 +118,13 @@ const InternshipOfferForm = () => {
     }
   }
 
-  function checkIfStudent() {
-    if (internshipOffer !== undefined && internshipOffer.document !== null) {
-      return (
-        <Container className="cont_btn_file">
-          <a
-            className="btn_file"
-            href={
-              "http://localhost:9090/get/internshipOffer/document/" +
-              internshipOffer.id
-            }
-            download
-          >
-            Télécharger le document
-          </a>
-        </Container>
-      );
-    }
-  }
-
   function validateInternshipOffer() {
     axios
       .post(
         `http://localhost:9090/save/internshipOffer/validate/${internshipOffer.id}`
       )
       .then((response) => {
-        setErrorMessage("L'offre de stage a été validé");
+        setErrorMessage("L'offre de stage a été validée, vous allez être redirigé");
         setTimeout(() => {
           history.push({
             pathname: `/listInternshipOffer`,
@@ -151,6 +133,25 @@ const InternshipOfferForm = () => {
       })
       .catch((error) => {
         setErrorMessage("Erreur lors de la validation");
+      });
+  }
+
+  function applyInternshipOffer(){
+    axios
+      .post(`http://localhost:9090/apply/internshipOffer/${user.username}`, fields)
+      .then((response) => {
+        auth.user = response.data;
+        setHasApplied(true)
+        
+        setTimeout(() => {
+          history.push({
+            pathname: `/listInternshipOffer`
+          });
+        }, 3000);
+        setErrorMessage("Votre demande a été acceptée, vous allez être redirigé");
+      }
+      ).catch((error) => {
+        setErrorMessage("Erreur lors de l'application de stage")
       });
   }
 
@@ -173,6 +174,55 @@ const InternshipOfferForm = () => {
           </button>
         </>
       );
+    }
+  }
+
+  function checkIfDocumentIsDownload() {
+    if (internshipOffer !== undefined && internshipOffer.document !== null) {
+      return (
+        <Container className="cont_btn_file">
+          <a
+            className="btn_file"
+            href={
+              "http://localhost:9090/get/internshipOffer/document/" +
+              internshipOffer.id
+            }
+            download
+          >
+            Télécharger le document
+          </a>
+        </Container>
+      );
+    }
+  }
+
+  function checkIfStudent() {
+    if (user.username.startsWith('E') && internshipOffer !== undefined) {
+      let internshipOffferList = user.internshipOffers;
+      let hasAlredayApplied = false;
+      internshipOffferList.forEach(_internshipOffer => {
+        if(_internshipOffer.id === internshipOffer.id) {
+          hasAlredayApplied = true;
+        }
+      });
+      if (!hasApplied) {
+        if (!hasAlredayApplied) {
+          return (<>
+            <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
+            <button className="btn_submit" onClick={() => applyInternshipOffer()}>Appliquer</button>
+          </>)
+        }
+        else {
+          return (
+             <p style={{ color:'red'}}>Vous avez déja appliqué à ce stage</p>
+          )
+        }
+      }
+      else{
+        return (<>
+          <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
+        </>)
+      }
     }
   }
 
@@ -510,8 +560,11 @@ const InternshipOfferForm = () => {
                 </Container>
               </Form>
             </fieldset>
-            {checkIfStudent()}
-            <Container className="cont_btn">{checkIfValidated()}</Container>
+            {checkIfDocumentIsDownload()}
+            <Container className="cont_btn">
+              {checkIfValidated()}
+              {checkIfStudent()}
+            </Container>
           </Row>
         </Col>
       </Row>

@@ -143,9 +143,15 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping("/save/internshipOffer/validate/{id}")
-    public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String id) {
-        return service.validateInternshipOffer(id)
+    @PostMapping("/apply/internshipOffer/{username}")
+    public ResponseEntity<Student> applyInternshipOffer(@PathVariable String username, @RequestBody InternshipOffer internshipOffer) {
+        return service.applyInternshipOffer(username, internshipOffer)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+    @PostMapping("/save/internshipOffer/validate/{idOffer}")
+    public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String idOffer) {
+        return service.validateInternshipOffer(idOffer)
                 .map(_monitor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_monitor))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

@@ -470,4 +470,27 @@ class BackendControllerTest {
         assertThat(internshipOffer).isNotNull();
         assertThat(internshipOffer.getIsValid()).isTrue();
     }
+
+    @Test
+    //@Disabled
+    public void testApplyInternshipOffer() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedInternshipOffer = getInternshipOffer();
+
+        when(service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(post("/apply/internshipOffer/" +
+                expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var student = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(student).isNotNull();
+    }
 }

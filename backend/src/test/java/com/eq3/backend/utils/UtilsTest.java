@@ -98,8 +98,8 @@ public class UtilsTest {
         allWeekDay.add("Wednesday");
         allWeekDay.add("Thursday");
         allWeekDay.add("Friday");
-        InternshipOffer internshipOffer =  InternshipOffer.builder()
-                .id("6146tf5eg8e00c02c85gt68dd5")
+        return InternshipOffer.builder()
+                .id("91448hkk58e00c02w02bjd4")
                 .jobName("stagiaire développement web")
                 .description("connaissance en REACT")
                 .startDate(new Date())
@@ -113,7 +113,6 @@ public class UtilsTest {
                 .city("Montréal")
                 .postalCode("JGH5E8")
                 .build();
-        return internshipOffer;
     }
 
     public static List<InternshipOffer> getListOfInternshipOffer() {
@@ -124,6 +123,7 @@ public class UtilsTest {
         allWeekDay.add("Thursday");
         allWeekDay.add("Friday");
         InternshipOffer internshipOffer1 = InternshipOffer.builder()
+                .id("91448hkk58e00c02w02bjd4")
                 .jobName("stagiaire développement web")
                 .description("connaissance en REACT")
                 .startDate(new Date())
@@ -139,6 +139,7 @@ public class UtilsTest {
                 .monitor(getMonitor())
                 .build();
         InternshipOffer internshipOffer2 = InternshipOffer.builder()
+                .id("51228hgg58e11c12w02bjd3")
                 .jobName("Stagiaire Technicien")
                 .description("Connaissance domaine technique")
                 .startDate(new Date())
@@ -186,5 +187,4 @@ public class UtilsTest {
                 .build());
         return cvList;
     }
-
 }

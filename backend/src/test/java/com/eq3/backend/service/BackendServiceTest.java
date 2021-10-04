@@ -5,20 +5,15 @@ import com.eq3.backend.repository.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.quality.Strictness;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +45,6 @@ class BackendServiceTest {
 
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
-
-
 
     //global variables
     private Student expectedStudent;
@@ -476,5 +469,30 @@ class BackendServiceTest {
         Boolean isValid = actualInternshipOffer.isPresent() ? actualInternshipOffer.get().getIsValid() : false;
         assertThat(actualInternshipOffer.isPresent()).isTrue();
         assertThat(isValid).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testApplyInternshipOffer(){
+        //Arrange
+        expectedStudent = getStudent();
+        Student givenStudent = getStudent();
+        expectedInternshipOffer = getInternshipOffer();
+
+        List<InternshipOffer> internshipOffers = new ArrayList<>();
+        internshipOffers.add(expectedInternshipOffer);
+        expectedStudent.setInternshipOffers(internshipOffers);
+
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
+        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
     }
 }

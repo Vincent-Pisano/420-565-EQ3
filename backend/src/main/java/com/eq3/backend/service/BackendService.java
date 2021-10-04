@@ -11,10 +11,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class BackendService {
@@ -27,11 +27,13 @@ public class BackendService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
 
+
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
-                   InternshipOfferRepository internshipOfferRepository) {
+                   InternshipOfferRepository internshipOfferRepository
+                   ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
@@ -256,12 +258,28 @@ public class BackendService {
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);
     }
 
-    public Optional<InternshipOffer> validateInternshipOffer(String id){
-        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
+    public Optional<InternshipOffer> validateInternshipOffer(String idOffer){
+        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
         optionalInternshipOffer.ifPresent(internshipOffer -> {
             internshipOffer.setIsValid(true);
         });
         return optionalInternshipOffer.map(internshipOfferRepository::save);
+    }
+
+    public Optional<Student> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer){
+        Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
+        optionalStudent.ifPresent(student -> {
+            List<InternshipOffer> internshipOffersList = student.getInternshipOffers();
+            if (internshipOffer.getDocument() != null) {
+                Document document = internshipOffer.getDocument();
+                document.setContent(null);
+                internshipOffer.setDocument(document);
+            }
+            internshipOffersList.add(internshipOffer);
+            student.setInternshipOffers(internshipOffersList);
+            studentRepository.save(student);
+        });
+        return cleanUpStudentCVList(optionalStudent);
     }
 }
 

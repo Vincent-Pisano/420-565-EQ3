@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder(toBuilder = true)
@@ -18,10 +19,22 @@ public class Student extends User {
     private Department department;
 
     @Builder.Default
+    private List<InternshipOffer> internshipOffers = new ArrayList<>();
+
+    @Builder.Default
     private List<CV> CVList = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
 
     public Student() {
         super();
         this.CVList = new ArrayList<>();
+        this.internshipOffers = new ArrayList<>();
     }
+
+
 }
