@@ -6,7 +6,6 @@ import { Container } from 'react-bootstrap';
 function Home() {
 
   let user = auth.user
-  console.log(user)
 
   return (
     <Container className="cont_home">

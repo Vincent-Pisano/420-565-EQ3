@@ -11,6 +11,7 @@ const InternshipOfferForm = () => {
   let user = auth.user;
   let history = useHistory();
   let internshipOffer = history.location.state;
+  const [hasApplied, setHasApplied] = useState(false);
 
   formatDates();
 
@@ -129,15 +130,17 @@ const InternshipOfferForm = () => {
       .post(`http://localhost:9090/apply/internshipOffer/${user.username}`, fields)
       .then((response) => {
         auth.user = response.data;
+        setHasApplied(true)
+        setErrorMessage("Votre demande a été acceptée, vous allez être redirigé");
         setTimeout(() => {
           history.push({
             pathname: `/listInternshipOffer`
           });
         }, 3000);
-        setErrorMessage("Votre demande a été traitée");
+        
       }
       ).catch((error) => {
-        setErrorMessage("Erreur lors de l'application")
+        setErrorMessage("Erreur lors de l'application de stage")
       });
   }
 
@@ -153,22 +156,29 @@ const InternshipOfferForm = () => {
   function checkIfStudent() {
     if (user.username.startsWith('E') && internshipOffer !== undefined) {
       let internshipOffferList = user.internshipOffers;
-      let flag = false;
+      let hasAlredayApplied = false;
       internshipOffferList.forEach(_internshipOffer => {
         if(_internshipOffer.id === internshipOffer.id) {
-          flag = true;
+          hasAlredayApplied = true;
         }
       });
-      if (!flag) {
+      if (!hasApplied) {
+        if (!hasAlredayApplied) {
+          return (<>
+            <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
+            <button className="btn_submit" onClick={() => applyInternshipOffer()}>Valider</button>
+          </>)
+        }
+        else {
+          return (
+             <p style={{ color:'red'}}>Vous avez déja appliqué à ce stage</p>
+          )
+        }
+      }
+      else{
         return (<>
           <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
-          <button className="btn_submit" onClick={() => applyInternshipOffer()}>Valider</button>
         </>)
-      }
-      else {
-        return (
-           <p style={{ color:'red'}}>Vous avez déja appliqué à ce stage</p>
-        )
       }
     }
   }
