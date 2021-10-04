@@ -2,25 +2,37 @@ package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.eq3.backend.utils.UtilsTest.getInternshipOffer;
+import static com.eq3.backend.utils.UtilsTest.*;
+import static com.eq3.backend.utils.UtilsTest.getStudent;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static com.eq3.backend.utils.UtilsTest.*;
 
 @WebMvcTest(BackendController.class)
 class BackendControllerTest {
@@ -39,6 +51,7 @@ class BackendControllerTest {
     private InternshipManager expectedInternshipManager;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
+    private CV expectedCV;
 
     @Test
     public void testSignUpStudent() throws Exception {
@@ -165,22 +178,195 @@ class BackendControllerTest {
     }
 
     @Test
-    public void testSaveInternshipOffer() throws Exception {
+    //@Disabled
+    public void testSaveInternshipOfferWithoutDocument() throws Exception {
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        when(service.saveInternshipOffer(expectedInternshipOffer)).thenReturn(Optional.of(expectedInternshipOffer));
+
+        when(service.saveInternshipOffer(new ObjectMapper().writeValueAsString(expectedInternshipOffer), null))
+                .thenReturn(Optional.of(expectedInternshipOffer));
 
         // Act
-        MvcResult result = mockMvc.perform(post("/save/internshipOffer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart("/save/internshipOffer")
+                        .file("internshipOffer", new ObjectMapper().writeValueAsString(expectedInternshipOffer).getBytes())
+                        .contentType(mediaType)).andReturn();
 
         // Assert
-        var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
+        var actualInternshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
-        System.out.println(expectedInternshipOffer.equals(internshipOffer));
-        assertThat(expectedInternshipOffer).isEqualTo(internshipOffer);
+        assertThat(expectedInternshipOffer).isEqualTo(actualInternshipOffer);
+    }
+
+    @Test
+    //Disabled
+    public void testSaveInternshipOfferWithDocument() throws Exception {
+        // Arrange
+        Document document = getDocument();
+        var multipartFile = Mockito.mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
+        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setDocument(document);
+
+        InternshipOffer givenInternshipOffer = getInternshipOffer();
+        givenInternshipOffer.setMonitor(getMonitor());
+
+        when(service.saveInternshipOffer(
+                Mockito.eq(new ObjectMapper().writeValueAsString(givenInternshipOffer)), any(MultipartFile.class))
+        ).thenReturn(Optional.of(expectedInternshipOffer));
+
+        // Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart("/save/internshipOffer")
+                        .file("internshipOffer", new ObjectMapper().writeValueAsString(givenInternshipOffer).getBytes())
+                        .file("document", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        // Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadInternshipOfferDocument() throws Exception {
+        // Arrange
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setDocument(getDocument());
+
+        when(service.downloadInternshipOfferDocument(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.of(expectedInternshipOffer.getDocument()));
+
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/internshipOffer/document/" +
+                expectedInternshipOffer.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadStudentCVDocument() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedStudent.setCVList(getCVList());
+        expectedCV = getCV();
+
+        when(service.downloadStudentCVDocument(expectedStudent.getIdUser(), expectedCV.getId()))
+                .thenReturn(Optional.ofNullable(expectedCV.getDocument()));
+
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/CV/document/" +
+                expectedStudent.getIdUser() + "/" + expectedCV.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
+    }
+
+    @Test
+    //Disabled
+    public void testSaveCV() throws Exception {
+        //Arrange
+        Document document = getDocument();
+        var multipartFile = Mockito.mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
+        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+
+        expectedStudent = getStudent();
+        expectedStudent.setCVList(getCVList());
+
+        Student givenStudent = getStudent();
+        when(service.saveCV(Mockito.eq(givenStudent.getIdUser()), any(MultipartFile.class)))
+                .thenReturn(Optional.ofNullable(expectedStudent));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart("/save/CV/"+ givenStudent.getIdUser())
+                        .file("document", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
+    }
+
+    @Test
+    //Disabled
+    public void testDeleteCV() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        List<CV> expectedListCV = getCVList();
+        expectedListCV.remove(0);
+        expectedStudent.setCVList(expectedListCV);
+
+        Student givenStudent = getStudent();
+        List<CV> givenListCV = getCVList();
+        givenStudent.setCVList(givenListCV);
+        CV givenCV = givenListCV.get(0);
+
+        when(service.deleteCV(givenStudent.getIdUser(), givenCV.getId()))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(delete("/delete/CV/" +
+                givenStudent.getIdUser() + "/" + givenCV.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+    }
+
+    @Test
+    public void testUpdateActiveCV() throws Exception {
+        //Arrange
+        final int NEW_ACTIVE_CV_INDEX = 0;
+        final int OLD_ACTIVE_CV_INDEX = 1;
+
+        expectedStudent = getStudent();
+        List<CV> expectedListCV = getCVList();
+        CV newActiveCV = expectedListCV.get(NEW_ACTIVE_CV_INDEX);
+        newActiveCV.setIsActive(true);
+        expectedStudent.setCVList(expectedListCV);
+
+        Student givenStudent = getStudent();
+        List<CV> givenListCV = getCVList();
+        CV oldActiveCV = expectedListCV.get(OLD_ACTIVE_CV_INDEX);
+        oldActiveCV.setIsActive(true);
+        givenStudent.setCVList(givenListCV);
+        CV givenCV = givenListCV.get(NEW_ACTIVE_CV_INDEX);
+
+        when(service.updateActiveCV(givenStudent.getIdUser(), givenCV.getId()))
+                .thenReturn(Optional.ofNullable(expectedStudent));
+
+        //Act
+        MvcResult result =  mockMvc
+                .perform(post("/update/ActiveCV/" +
+                        givenStudent.getIdUser() + "/"+ givenCV.getId())).andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
     }
 
     @Test
@@ -205,14 +391,14 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllInternshipOffer() throws Exception {
+    public void testGetAllUnvalidatedInternshipOffer() throws Exception {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
         when(service.getAllUnvalidatedInternshipOffer())
                 .thenReturn(Optional.of(expectedInternshipOfferList));
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/internshipOffer")
+        MvcResult result = mockMvc.perform(get("/getAll/internshipOffer/unvalidated")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -265,22 +451,24 @@ class BackendControllerTest {
     //@Disabled
     public void testValidateInternshipOffer() throws Exception {
         //Arrange
-        expectedInternshipManager = getInternshipManager();
         expectedInternshipOffer = getInternshipOffer();
-        when(service.validateInternshipOffer(expectedInternshipManager.getUsername(), expectedInternshipOffer))
+        expectedInternshipOffer.setIsValid(true);
+
+        when(service.validateInternshipOffer(expectedInternshipOffer.getId()))
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
         //Act
         MvcResult result = mockMvc.perform(post("/save/internshipOffer/validate/" +
-                expectedInternshipManager.getUsername())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(expectedInternshipOffer))).andReturn();
+                expectedInternshipOffer.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
         var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(internshipOffer).isNotNull();
+        assertThat(internshipOffer.getIsValid()).isTrue();
     }
 
     @Test
