@@ -8,17 +8,32 @@ import { Container } from "react-bootstrap";
 function ListStudents() {
   const [students, setStudents] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  let user = auth.user;
+  if (user == superviseur) {
+    useEffect(() => {
+      axios
+        .get(`http://localhost:9090/getAll/students/${user.department}`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
+        });
+    }, [students.length]);
+  }
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:9090/getAll/students/${auth.user.department}`)
-      .then((response) => {
-        setStudents(response.data);
-      })
-      .catch((err) => {
-        setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
-      });
-  }, [students.length]);
+  if(user == GS){
+    useEffect(() => {
+      axios
+        .get(`http://localhost:9090/getAll/students/cvNotActif`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Aucun étudiant a un CV actif pour le moment");
+        });
+    }, [students.length]);
+  }
 
   return (
     <Container className="cont_principal">
