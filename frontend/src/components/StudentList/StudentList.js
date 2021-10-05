@@ -61,7 +61,7 @@ function StudentList() {
       let supervisor = history.location.supervisor;
       if (supervisor !== undefined) {
         axios
-          .get(
+          .post(
             `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`
           )
           .then((response) => {

@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder(toBuilder = true)
@@ -27,11 +26,6 @@ public class Student extends User {
 
     @DBRef
     private Supervisor supervisor;
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 
 
     public Student() {

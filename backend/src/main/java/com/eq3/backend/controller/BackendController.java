@@ -63,10 +63,9 @@ public class BackendController {
     @GetMapping("/getAll/students/noSupervisor/{department}")
     public ResponseEntity<List<Student>> getAllStudentsWithoutSupervisor(@PathVariable Department department) {
         return service.getAllStudentsWithoutSupervisor(department)
-                .map(_students -> {
-                    System.out.println(_students);
-                    return ResponseEntity.status(HttpStatus.ACCEPTED).body(_students);
-                })
+                .map(_students ->
+                   ResponseEntity.status(HttpStatus.ACCEPTED).body(_students)
+                )
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
@@ -169,7 +168,7 @@ public class BackendController {
     @PostMapping("/save/internshipOffer/validate/{idOffer}")
     public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String idOffer) {
         return service.validateInternshipOffer(idOffer)
-                .map(_monitor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_monitor))
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
@@ -195,6 +194,13 @@ public class BackendController {
                 .body(new InputStreamResource(
                         new ByteArrayInputStream(document.getContent().getData()))
                 );
+    }
+
+    @PostMapping("/assign/supervisor/{idStudent}/{idSupervisor}")
+    public ResponseEntity<Student> assignSupervisorToStudent(@PathVariable String idStudent, @PathVariable String idSupervisor) {
+        return service.assignSupervisorToStudent(idStudent, idSupervisor)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
 }

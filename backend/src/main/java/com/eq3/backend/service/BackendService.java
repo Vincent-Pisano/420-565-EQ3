@@ -292,5 +292,18 @@ public class BackendService {
         });
         return cleanUpStudentCVList(optionalStudent);
     }
+
+    public Optional<Student> assignSupervisorToStudent(String idStudent, String idSupervisor) {
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+        Optional<Supervisor> optionalSupervisor = supervisorRepository.findById(idSupervisor);
+
+        optionalStudent.ifPresent(student -> {
+            student.setSupervisor(optionalSupervisor.orElse(null));
+            studentRepository.save(student);
+        });
+
+        return cleanUpStudentCVList(optionalStudent);
+
+    }
 }
 
