@@ -13,7 +13,7 @@ function InternshipOfferList() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (auth.user.username.startsWith("G")) {
+    if (auth.isInternshipManager()) {
       axios
         .get(`http://localhost:9090/getAll/internshipOffer/unvalidated`)
         .then((response) => {
@@ -49,7 +49,7 @@ function InternshipOfferList() {
 
   function showList() {
     let pageTitle;
-    if (auth.user.username.startsWith("G")) {
+    if (auth.isInternshipManager()) {
       pageTitle = "Liste des offres de stages non validées";
     } else {
       pageTitle = "Liste des offres de stages de votre département";

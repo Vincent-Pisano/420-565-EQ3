@@ -18,7 +18,7 @@ function Home() {
   }
 
   function checkIfStudent() {
-    if (user.username.startsWith("E")) {
+    if (auth.isStudent()) {
       return (
         <>
           <CVList />

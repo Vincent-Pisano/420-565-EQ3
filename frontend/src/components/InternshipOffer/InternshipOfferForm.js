@@ -52,7 +52,7 @@ const InternshipOfferForm = () => {
         if (new Date(fields.startDate) < new Date(fields.endDate)) {
           if (document === undefined || document.type === "application/pdf") {
             isLoading = true;
-            if (user.username.startsWith("G")) {
+            if (auth.isInternshipManager()) {
               axios
                 .get(`http://localhost:9090/get/monitor/${monitor.name}/`)
                 .then((response) => {
@@ -102,7 +102,7 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfGS() {
-    if (user.username.startsWith("G") && internshipOffer === undefined) {
+    if (auth.isInternshipManager() && internshipOffer === undefined) {
       return (
         <Form.Group controlId="name">
           <Form.Control
@@ -156,7 +156,7 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfValidated() {
-    if (user.username.startsWith("G") && internshipOffer !== undefined) {
+    if (auth.isInternshipManager() && internshipOffer !== undefined) {
       return (
         <>
           <p
@@ -197,7 +197,7 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfStudent() {
-    if (user.username.startsWith('E') && internshipOffer !== undefined) {
+    if (auth.isStudent() && internshipOffer !== undefined) {
       let internshipOffferList = user.internshipOffers;
       let hasAlredayApplied = false;
       internshipOffferList.forEach(_internshipOffer => {
