@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../../App.css";
 import Nav from "react-bootstrap/Nav";
+import auth from "../../services/Auth"
 
-function NavUserSwitch({ userStatus }) {
+function NavUserSwitch() {
   function checkIfGS() {
-    let user = userStatus.user;
-    if (user.username.startsWith("G")) {
+    if (auth.isInternshipManager()) {
       return (
         <>
           <Nav.Link as={Link} to="/formInternshipOffer">
@@ -23,8 +23,7 @@ function NavUserSwitch({ userStatus }) {
   }
 
   function checkIfStudent() {
-    let user = userStatus.user;
-    if (user.username.startsWith("E")) {
+    if (auth.isStudent()) {
       return (
         <>
           <Nav.Link as={Link} to="/listInternshipOffer">
@@ -36,8 +35,7 @@ function NavUserSwitch({ userStatus }) {
   }
 
   function checkIfSupervisor() {
-    let user = userStatus.user;
-    if (user.username.startsWith("S")) {
+    if (auth.isSupervisor()) {
       return (
         <>
           <Nav.Link as={Link} to="/listStudents">
@@ -49,8 +47,7 @@ function NavUserSwitch({ userStatus }) {
   }
 
   function checkIfMonitor() {
-    let user = userStatus.user;
-    if (user.username.startsWith("M")) {
+    if (auth.isMonitor()) {
       return (
         <>
           <Nav.Link as={Link} to="/formInternshipOffer">

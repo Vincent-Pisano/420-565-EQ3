@@ -1,34 +1,33 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Student from "./Student";
-import auth from "../../services/Auth";
 import "../../styles/List.css";
 import { Container } from "react-bootstrap";
+import Supervisor from "./Supervisor";
 
-function StudentList() {
-  const [students, setStudents] = useState([]);
+function ListStudents() {
+  const [supervisors, setSupervisors] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9090/getAll/students/${auth.user.department}`)
+      .get(`http://localhost:9090/getAll/supervisors`)
       .then((response) => {
-        setStudents(response.data);
+        setSupervisors(response.data);
       })
       .catch((err) => {
-        setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
+        setErrorMessage("Aucun Superviseur enregistré pour le moment");
       });
-  }, [students.length]);
+  }, [supervisors.length]);
 
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
-        <h2 className="cont_title_form">Étudiants de votre département</h2>
+        <h2 className="cont_title_form">Liste des superviseurs de stages</h2>
         <Container className="cont_list">
           <p>{errorMessage}</p>
           <ul>
-            {students.map((student) => (
-              <Student key={student.idUser} student={student} />
+            {supervisors.map((supervisor) => (
+              <Supervisor key={supervisor.idUser} supervisor={supervisor} />
             ))}
           </ul>
         </Container>
@@ -37,4 +36,4 @@ function StudentList() {
   );
 }
 
-export default StudentList;
+export default ListStudents;
