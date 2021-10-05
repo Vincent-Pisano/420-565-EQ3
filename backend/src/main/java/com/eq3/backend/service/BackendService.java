@@ -83,6 +83,11 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
+    public Optional<List<Supervisor>> getAllSupervisors() {
+        List<Supervisor> supervisors = supervisorRepository.findAllByIsDisabledFalse();
+        return supervisors.isEmpty() ? Optional.empty() : Optional.of(supervisors);
+    }
+
     public Optional<Supervisor> loginSupervisor(String username, String password) {
         return supervisorRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
