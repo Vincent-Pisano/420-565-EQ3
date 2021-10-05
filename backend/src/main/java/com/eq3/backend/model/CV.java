@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Date;
 
@@ -32,6 +33,13 @@ public class CV {
     public CV(Document document) {
         this.id = String.valueOf(new ObjectId());
         this.document = document;
+        this.depositDate = new Date();
+        this.isActive = false;
+        this.isValid = false;
+    }
+
+    public CV() {
+        this.id = String.valueOf(new ObjectId());
         this.depositDate = new Date();
         this.isActive = false;
         this.isValid = false;
