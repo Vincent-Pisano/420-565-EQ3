@@ -4,6 +4,8 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.bytebuddy.implementation.bind.annotation.Super;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,7 @@ class BackendControllerTest {
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
+    private List<Supervisor> expectedSupervisorList;
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
     private InternshipManager expectedInternshipManager;
@@ -86,7 +89,7 @@ class BackendControllerTest {
     }
 
     @Test
-        public void testSignUpSupervisor() throws Exception {
+    public void testSignUpSupervisor() throws Exception {
         // Arrange
         expectedSupervisor = getSupervisor();
         when(service.signUp(expectedSupervisor)).thenReturn(Optional.of(expectedSupervisor));
@@ -426,6 +429,42 @@ class BackendControllerTest {
         var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutSupervisor() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE))
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/students/noSupervisor/" +
+                Department.COMPUTER_SCIENCE)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSupervisors() throws Exception {
+        //Arrange
+        expectedSupervisorList = getListOfSupervisors();
+        when(service.getAllSupervisors())
+                .thenReturn(Optional.of(expectedSupervisorList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/supervisors/")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSupervisorList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSupervisorList).isNotNull();
     }
 
     @Test

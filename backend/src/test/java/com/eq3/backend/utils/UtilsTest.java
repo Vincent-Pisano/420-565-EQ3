@@ -80,6 +80,31 @@ public class UtilsTest {
                 .build();
     }
 
+    public static List<Supervisor> getListOfSupervisors(){
+        Supervisor monitor1 = Supervisor.builder()
+                .idUser("6144343k58e00c02c02bhd5")
+                .username("E1257896")
+                .password("DAJo90l")
+                .email("daniel.jolicoeur5@gmail.com")
+                .firstName("Daniel")
+                .lastName("Jolicoeur")
+                .department(Department.COMPUTER_SCIENCE)
+                .build();
+        Supervisor monitor2 = Supervisor.builder()
+                .idUser("61478hgk58e00c02c02bhd2432")
+                .username("E1257896")
+                .password("DAJo90l")
+                .email("daniel.jolicoeur5@gmail.com")
+                .firstName("Daniel")
+                .lastName("Jolicoeur")
+                .department(Department.COMPUTER_SCIENCE)
+                .build();
+        List<Supervisor> supervisorsList = new ArrayList();
+        supervisorsList.add(monitor1);
+        supervisorsList.add(monitor2);
+        return supervisorsList;
+    }
+
     public static InternshipManager getInternshipManager(){
         return InternshipManager.builder()
                 .idUser("6146tf5eg8e00c02c02bhd5")

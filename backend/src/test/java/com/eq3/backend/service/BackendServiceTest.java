@@ -49,6 +49,7 @@ class BackendServiceTest {
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
+    private List<Supervisor> expectedSupervisorList;
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
     private InternshipManager expectedInternshipManager;
@@ -432,6 +433,39 @@ class BackendServiceTest {
         assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
     }
 
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutSupervisor() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(Department.COMPUTER_SCIENCE))
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> students =
+                service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE);
+
+        //Assert
+        assertThat(students.isPresent()).isTrue();
+        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSupervisors() {
+        //Arrange
+        expectedSupervisorList = getListOfSupervisors();
+        when(supervisorRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedSupervisorList);
+
+        //Act
+        final Optional<List<Supervisor>> supervisors =
+                service.getAllSupervisors();
+
+        //Assert
+        assertThat(supervisors.isPresent()).isTrue();
+        assertThat(supervisors.get().size()).isEqualTo(expectedSupervisorList.size());
+    }
 
     @Test
     //@Disabled
