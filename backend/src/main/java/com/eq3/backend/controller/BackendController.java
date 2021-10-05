@@ -163,6 +163,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/CV/activeNotValid")
+    public ResponseEntity<List<CV>> getAllCVThatIsActiveAndNotValid() {
+        return service.getListOfAllCVThatIsActif()
+                .map(_cvs -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_cvs))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     private ResponseEntity<InputStreamResource> getDownloadingDocument(Document document) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");

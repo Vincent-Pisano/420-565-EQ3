@@ -17,6 +17,11 @@ function NavUserSwitch({ userStatus }) {
               Liste des offres de stage non validées
             </li>
           </Nav.Link>
+          <Nav.Link as={Link} to="/cvNotValidList">
+            <li className="nav-links-header">
+              Listes des CV à valider
+            </li>
+          </Nav.Link>
         </>
       );
     }

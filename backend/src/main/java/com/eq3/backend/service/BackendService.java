@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -252,6 +253,17 @@ public class BackendService {
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalse();
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+    }
+
+    public Optional<List<CV>> getListOfAllCVThatIsActif() {
+        List<Student> studentList = studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid();
+        List<CV> cvList = new ArrayList<>();
+
+        for (Student student: studentList) {
+            cvList.addAll(student.getCVList());
+        }
+
+        return cvList.isEmpty() ? Optional.empty() : Optional.of(cvList);
     }
 
     public Optional<Monitor> getMonitorByUsername(String username){
