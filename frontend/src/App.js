@@ -5,6 +5,7 @@ import Login from './components/Login/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
 import StudentList from './components/StudentList/StudentList';
+import SupervisorList from './components/SupervisorList/SupervisorList';
 import InternshipOfferForm from './components/InternshipOffer/InternshipOfferForm'
 import InternshipOfferList from './components/IntershipOfferList/InternshipOfferList';
 import NavigationBar from "../src/components/Navbar/NavigationBar";
@@ -22,6 +23,7 @@ function App () {
           <ProtectedRoute path="/formInternshipOffer" exact component={InternshipOfferForm}/>
           <ProtectedRoute path="/listStudents" exact component={StudentList}/>
           <ProtectedRoute path="/listInternshipOffer" exact component={InternshipOfferList}/>
+          <ProtectedRoute path="/listSupervisors" exact component={SupervisorList}/>
           <Route path="*" exact component={Login}/>
         </Switch>           
       </div>

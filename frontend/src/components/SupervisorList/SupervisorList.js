@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/List.css";
 import { Container } from "react-bootstrap";
+import { useHistory } from "react-router";
 import Supervisor from "./Supervisor";
 
 function ListStudents() {
+  let history = useHistory();
+
   const [supervisors, setSupervisors] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -19,6 +22,13 @@ function ListStudents() {
       });
   }, [supervisors.length]);
 
+  function showAssignableStudents(supervisor) {
+    history.push({
+      pathname: "/listStudents",
+      supervisor: supervisor,
+    });
+  }
+
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
@@ -27,7 +37,11 @@ function ListStudents() {
           <p>{errorMessage}</p>
           <ul>
             {supervisors.map((supervisor) => (
-              <Supervisor key={supervisor.idUser} supervisor={supervisor} />
+              <Supervisor
+                key={supervisor.idUser}
+                supervisor={supervisor}
+                onDoubleClick={showAssignableStudents}
+              />
             ))}
           </ul>
         </Container>

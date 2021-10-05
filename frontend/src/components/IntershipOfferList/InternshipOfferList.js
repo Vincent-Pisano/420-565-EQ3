@@ -65,7 +65,7 @@ function InternshipOfferList() {
                 <InternshipOffer
                   key={internshipOffers.indexOf(internshipOffer)}
                   internshipOffer={internshipOffer}
-                  onToggle={showInternshipOffer}
+                  onDoubleClick={showInternshipOffer}
                 />
               ))}
             </ul>

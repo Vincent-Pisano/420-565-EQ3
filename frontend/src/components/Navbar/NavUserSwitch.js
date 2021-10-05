@@ -10,12 +10,15 @@ function NavUserSwitch() {
       return (
         <>
           <Nav.Link as={Link} to="/formInternshipOffer">
-            <li className="nav-links-header">Dépôt d'offres de stage</li>
+            <li className="nav-links-header">Dépôt</li>
           </Nav.Link>
           <Nav.Link as={Link} to="/listInternshipOffer">
             <li className="nav-links-header">
-              Liste des offres de stage non validées
+              Liste
             </li>
+          </Nav.Link>
+          <Nav.Link as={Link} to="/listSupervisors">
+            <li className="nav-links-header">Assignation</li>
           </Nav.Link>
         </>
       );
@@ -27,7 +30,7 @@ function NavUserSwitch() {
       return (
         <>
           <Nav.Link as={Link} to="/listInternshipOffer">
-            <li className="nav-links-header">Listes d'offres de stage</li>
+            <li className="nav-links-header">Liste</li>
           </Nav.Link>
         </>
       );

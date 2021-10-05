@@ -30,6 +30,10 @@
   margin-top: 20px;
 }
 
+.cont_list > p {
+  color: red;
+}
+
 .jumbotron .btn {
   color: #ffffff;
   padding: 5px !important;

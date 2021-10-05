@@ -37,4 +37,11 @@ public class CV {
         this.isValid = false;
     }
 
+    public CV() {
+        this.id = String.valueOf(new ObjectId());
+        this.depositDate = new Date();
+        this.isActive = false;
+        this.isValid = false;
+    }
+
 }

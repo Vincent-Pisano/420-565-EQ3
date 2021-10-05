@@ -1,24 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Student from "./Student";
+import { useHistory } from "react-router";
 import auth from "../../services/Auth";
 import "../../styles/List.css";
 import { Container } from "react-bootstrap";
 
 function StudentList() {
+  let history = useHistory();
+
   const [students, setStudents] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:9090/getAll/students/${auth.user.department}`)
-      .then((response) => {
-        setStudents(response.data);
-      })
-      .catch((err) => {
-        setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
-      });
-  }, [students.length]);
+    if (auth.isSupervisor()) {
+      axios
+        .get(`http://localhost:9090/getAll/students/${auth.user.department}`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
+        });
+    } else if (auth.isInternshipManager()) {
+      let supervisor = history.location.supervisor;
+      console.log(history)
+      if (supervisor !== undefined) {
+        axios
+          .get(`/getAll/students/noSupervisor/${supervisor.department}`)
+          .then((response) => {
+            setStudents(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
+          });
+      } else {
+        setErrorMessage("Erreur durant la sélection du Superviseur");
+      }
+    }
+  }, [history]);
 
   return (
     <Container className="cont_principal">
