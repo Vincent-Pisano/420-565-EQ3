@@ -532,4 +532,29 @@ class BackendControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(student).isNotNull();
     }
+
+    @Test
+    //@Disabled
+    public void testAssignSupervisorToStudent() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedSupervisor = getSupervisor();
+        expectedStudent.setSupervisor(expectedSupervisor);
+
+        when(service.assignSupervisorToStudent(expectedStudent.getIdUser(), expectedSupervisor.getIdUser()))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(post("/assign/supervisor/" +
+                expectedStudent.getIdUser() + "/" + expectedSupervisor.getIdUser())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
+
+        // Assert
+        MockHttpServletResponse response = result.getResponse();
+        var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(student.getSupervisor()).isNotNull();
+
+    }
 }

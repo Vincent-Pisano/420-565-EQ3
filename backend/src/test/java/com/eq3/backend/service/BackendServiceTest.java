@@ -529,4 +529,26 @@ class BackendServiceTest {
         assertThat(actualStudent).isNotNull();
         assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
     }
+
+    @Test
+    //@Disabled
+    public void testAssignSupervisorToStudent() {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedSupervisor = getSupervisor();
+        expectedStudent.setSupervisor(expectedSupervisor);
+
+        when(service.assignSupervisorToStudent(expectedStudent.getIdUser(), expectedSupervisor.getIdUser())).
+                thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.assignSupervisorToStudent(expectedStudent.getIdUser(), expectedSupervisor.getIdUser());
+
+        //Assert
+        Student student = optionalStudent.orElse(null);
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(student.getSupervisor()).isNotNull();
+
+    }
 }

@@ -62,7 +62,10 @@ function StudentList() {
       if (supervisor !== undefined) {
         axios
           .post(
-            `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`
+            `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`,
+            history.push({
+              pathname: `/listSupervisors`,
+            })
           )
           .then((response) => {
             setStudents(response.data);
