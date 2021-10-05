@@ -28,7 +28,7 @@ function NavUserSwitch({ userStatus }) {
       return (
         <>
           <Nav.Link as={Link} to="/listInternshipOffer">
-            <li className="nav-links-header">Listes d'offres de stage</li>
+            <li className="nav-links-header">Liste d'offres de stage</li>
           </Nav.Link>
         </>
       );
