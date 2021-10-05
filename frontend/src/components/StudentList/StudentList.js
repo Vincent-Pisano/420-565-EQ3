@@ -18,8 +18,7 @@ function ListStudents() {
         .catch((err) => {
           setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
         });
-    }, [students.length]);
-
+    }, [students.length, user.department]);
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
