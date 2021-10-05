@@ -24,10 +24,11 @@ function StudentList() {
         });
     } else if (auth.isInternshipManager()) {
       let supervisor = history.location.supervisor;
-      console.log(history)
       if (supervisor !== undefined) {
         axios
-          .get(`/getAll/students/noSupervisor/${supervisor.department}`)
+          .get(
+            `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}`
+          )
           .then((response) => {
             setStudents(response.data);
           })
@@ -43,7 +44,11 @@ function StudentList() {
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
-        <h2 className="cont_title_form">Étudiants de votre département</h2>
+        <h2 className="cont_title_form">
+          {auth.isSupervisor()
+            ? "Étudiants de votre département"
+            : "Étudiants de ce département à assigner"}
+        </h2>
         <Container className="cont_list">
           <p>{errorMessage}</p>
           <ul>

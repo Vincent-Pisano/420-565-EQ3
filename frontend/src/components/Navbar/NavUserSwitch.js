@@ -10,15 +10,15 @@ function NavUserSwitch() {
       return (
         <>
           <Nav.Link as={Link} to="/formInternshipOffer">
-            <li className="nav-links-header">Dépôt</li>
+            <li className="nav-links-header">Dépôt Offre</li>
           </Nav.Link>
           <Nav.Link as={Link} to="/listInternshipOffer">
             <li className="nav-links-header">
-              Liste
+              Liste Offres
             </li>
           </Nav.Link>
           <Nav.Link as={Link} to="/listSupervisors">
-            <li className="nav-links-header">Assignation</li>
+            <li className="nav-links-header">Assignation Superviseur</li>
           </Nav.Link>
         </>
       );
