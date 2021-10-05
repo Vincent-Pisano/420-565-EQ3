@@ -2,9 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
-const Student = ({ student }) => {
+const Student = ({ student, onDoubleClick }) => {
   return (
-    <Row className="list_node">
+    <Row className="list_node"
+    onDoubleClick={() => onDoubleClick(student)}>
       <Col xs={3}>
         <FontAwesomeIcon className="fa-3x" icon={faUserCircle} />
       </Col>
