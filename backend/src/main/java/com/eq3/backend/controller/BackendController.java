@@ -60,6 +60,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/supervisors")
+    public ResponseEntity<List<Supervisor>> getAllSupervisors(){
+        return service.getAllSupervisors()
+                .map(_supervisor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisor))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/login/monitor/{username}/{password}")
     public ResponseEntity<Monitor> loginMonitor(@PathVariable String username, @PathVariable String password) {
         return service.loginMonitor(username, password)
@@ -179,4 +186,5 @@ public class BackendController {
                         new ByteArrayInputStream(document.getContent().getData()))
                 );
     }
+
 }

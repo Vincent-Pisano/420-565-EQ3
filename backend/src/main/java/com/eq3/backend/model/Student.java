@@ -2,6 +2,7 @@ package com.eq3.backend.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -23,6 +24,9 @@ public class Student extends User {
 
     @Builder.Default
     private List<CV> CVList = new ArrayList<>();
+
+    @DBRef
+    private Supervisor supervisor;
 
     @Override
     public String toString() {
