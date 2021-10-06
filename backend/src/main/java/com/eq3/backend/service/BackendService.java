@@ -312,5 +312,22 @@ public class BackendService {
         return cleanUpStudentCVList(optionalStudent);
 
     }
+
+    public Optional<Student> validateCVOfStudent(String idStudent) {
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+
+        optionalStudent.ifPresent(student -> {
+            List<CV> CVList = student.getCVList();
+            for(CV currentCV : CVList) {
+                if(currentCV.getIsActive()){
+                    currentCV.setIsValid(true);
+                }
+                break;
+            }
+            studentRepository.save(student);
+        });
+
+        return cleanUpStudentCVList(optionalStudent);
+    }
 }
 
