@@ -547,7 +547,6 @@ class BackendControllerTest {
         var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(student.getSupervisor()).isNotNull();
-
     }
 
     @Test
@@ -597,8 +596,7 @@ class BackendControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(student).isNotNull();
         assertThat(cvList).isNotNull();
+        assertThat(cv).isNotNull();
         assertThat(cv.getIsActive()).isTrue();
-
     }
-
 }
