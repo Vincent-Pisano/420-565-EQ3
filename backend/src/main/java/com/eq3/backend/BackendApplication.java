@@ -1,5 +1,6 @@
 package com.eq3.backend;
 
+import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.model.Student;
 import com.eq3.backend.repository.StudentRepository;
 import com.eq3.backend.service.BackendService;
