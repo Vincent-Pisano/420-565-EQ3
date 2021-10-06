@@ -101,7 +101,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testLoginStudent(){
+    public void testLoginStudent() {
         //Arrange
         expectedStudent = getStudent();
 
@@ -118,7 +118,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testLoginMonitor(){
+    public void testLoginMonitor() {
         //Arrange
         expectedMonitor = getMonitor();
 
@@ -135,7 +135,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testLoginSupervisor(){
+    public void testLoginSupervisor() {
         //Arrange
         expectedSupervisor = getSupervisor();
 
@@ -152,7 +152,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testLoginInternshipManager(){
+    public void testLoginInternshipManager() {
         //Arrange
         expectedInternshipManager = getInternshipManager();
 
@@ -172,7 +172,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testSaveInternshipOfferWithoutDocument(){
+    public void testSaveInternshipOfferWithoutDocument() {
         //Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
@@ -576,12 +576,33 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testValidateCVOfStudent() {
+    public void testValidateCVOfStudent() throws IOException {
         //Arrange
         expectedStudent = getStudent();
         expectedCV = getCV();
         expectedCV.getPDFDocument().setContent(null);
         expectedStudent.getCVList().add(expectedCV);
         expectedCV.setIsActive(true);
+        expectedCV.setIsValid(true);
+
+        Student givenStudent = getStudent();
+        CV givenCV = getCV();
+        givenCV.getPDFDocument().setContent(null);
+        givenStudent.getCVList().add(givenCV);
+        givenCV.setIsActive(true);
+
+        when(studentRepository.findById(expectedStudent.getIdUser())).thenReturn(Optional.of(givenStudent));
+        lenient().when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.validateCVOfStudent(givenStudent.getIdUser());
+
+        //Assert
+        Student student = optionalStudent.orElse(null);
+        CV cv = student.getCVList().get(0);
+        assertThat(student).isNotNull();
+        assertThat(cv.getIsValid()).isTrue();
+
     }
 }

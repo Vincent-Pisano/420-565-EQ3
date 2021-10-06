@@ -591,8 +591,14 @@ class BackendControllerTest {
         //Assert
         MockHttpServletResponse response = result.getResponse();
         var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
+        List<CV> cvList = (student != null ? student.getCVList() : null);
+        CV cv = (cvList != null ? cvList.get(0) : null);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(student.getCVList().get(0).getIsActive());
+        assertThat(student).isNotNull();
+        assertThat(cvList).isNotNull();
+        assertThat(cv.getIsActive()).isTrue();
+
     }
 
 }
