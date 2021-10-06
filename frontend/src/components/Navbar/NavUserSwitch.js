@@ -30,11 +30,7 @@ function NavUserSwitch() {
       return (
         <>
           <Nav.Link as={Link} to="/listInternshipOffer">
-<<<<<<< HEAD
-            <li className="nav-links-header">Liste</li>
-=======
             <li className="nav-links-header">Liste d'offres de stage</li>
->>>>>>> master
           </Nav.Link>
         </>
       );
