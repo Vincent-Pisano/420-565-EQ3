@@ -536,20 +536,22 @@ class BackendServiceTest {
         //Arrange
         expectedStudent = getStudent();
         expectedSupervisor = getSupervisor();
+        expectedStudent.setSupervisor(expectedSupervisor);
         Student givenStudent = getStudent();
-        givenStudent.setSupervisor(expectedSupervisor);
 
-        when(service.assignSupervisorToStudent(givenStudent.getIdUser(), expectedSupervisor.getIdUser()))
-                .thenReturn(Optional.of(givenStudent));
+
+        when(studentRepository.findById(givenStudent.getIdUser())).thenReturn(Optional.of(givenStudent));
+        when(supervisorRepository.findById(expectedSupervisor.getIdUser())).thenReturn(Optional.of(expectedSupervisor));
+        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
         //Act
         final Optional<Student> optionalStudent =
-                service.assignSupervisorToStudent(expectedStudent.getIdUser(), expectedSupervisor.getIdUser());
+                service.assignSupervisorToStudent(givenStudent.getIdUser(), expectedSupervisor.getIdUser());
 
         //Assert
         Student student = optionalStudent.orElse(null);
         assertThat(student).isNotNull();
-        //assertThat(student.getSupervisor()).isNotNull();
+        assertThat(student.getSupervisor()).isEqualTo(expectedSupervisor);
 
     }
 }
