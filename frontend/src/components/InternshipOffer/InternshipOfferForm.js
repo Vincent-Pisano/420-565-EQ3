@@ -178,7 +178,7 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfDocumentIsDownload() {
-    if (internshipOffer !== undefined && internshipOffer.document !== null) {
+    if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
       return (
         <Container className="cont_btn_file">
           <a

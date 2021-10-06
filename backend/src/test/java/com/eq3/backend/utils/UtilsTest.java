@@ -3,7 +3,6 @@ package com.eq3.backend.utils;
 import com.eq3.backend.model.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -185,9 +184,9 @@ public class UtilsTest {
         return internshipOffers;
     }
 
-    public static Document getDocument() throws IOException {
+    public static PDFDocument getDocument() throws IOException {
         Path pdfPath = Paths.get(PDF_FILEPATH);
-        return Document.builder()
+        return PDFDocument.builder()
                 .name("documentTest.pdf")
                 .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
                 .build();
@@ -196,7 +195,7 @@ public class UtilsTest {
     public static CV getCV() throws IOException {
         return CV.builder()
                 .id("614662s17dfv9re02c85gt68dd5")
-                .document(getDocument())
+                .PDFDocument(getDocument())
                 .build();
     }
 
@@ -204,11 +203,11 @@ public class UtilsTest {
         List<CV> cvList = new ArrayList<>();
         cvList.add(CV.builder()
                     .id("614662s17dfv9re02c85gt68dd5")
-                    .document(getDocument())
+                    .PDFDocument(getDocument())
                     .build());
         cvList.add(CV.builder()
                 .id("61eug62s17dfv9re02c85gt68dd5")
-                .document(getDocument())
+                .PDFDocument(getDocument())
                 .build());
         return cvList;
     }

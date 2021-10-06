@@ -197,14 +197,14 @@ class BackendServiceTest {
     //@Disabled
     public void testSaveInternshipOfferWithDocument() throws IOException {
         //Arrange
-        Document document = getDocument();
+        PDFDocument PDFDocument = getDocument();
         var multipartFile = Mockito.mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
-        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        expectedInternshipOffer.setDocument(document);
+        expectedInternshipOffer.setPDFDocument(PDFDocument);
 
         lenient().when(internshipOfferRepository.save(any(InternshipOffer.class)))
                 .thenReturn(expectedInternshipOffer);
@@ -226,7 +226,7 @@ class BackendServiceTest {
         //Assert
         InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
-        assertThat(actualInternshipOffer.getDocument()).isNotNull();
+        assertThat(actualInternshipOffer.getPDFDocument()).isNotNull();
     }
 
     @Test
@@ -256,13 +256,13 @@ class BackendServiceTest {
         //Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        expectedInternshipOffer.setDocument(getDocument());
+        expectedInternshipOffer.setPDFDocument(getDocument());
 
         when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
                 .thenReturn(Optional.ofNullable(expectedInternshipOffer));
 
         //Act
-        Optional<Document> optionalDocument = service.downloadInternshipOfferDocument(
+        Optional<PDFDocument> optionalDocument = service.downloadInternshipOfferDocument(
                 expectedInternshipOffer.getId()
         );
 
@@ -282,7 +282,7 @@ class BackendServiceTest {
                 .thenReturn(Optional.ofNullable(expectedStudent));
 
         //Act
-        Optional<Document> optionalDocument = service.downloadStudentCVDocument(
+        Optional<PDFDocument> optionalDocument = service.downloadStudentCVDocument(
                 expectedStudent.getIdUser(), expectedCV.getId()
         );
 
@@ -294,10 +294,10 @@ class BackendServiceTest {
     //@Disabled
     public void testSaveCV() throws IOException {
         //Arrange
-        Document document = getDocument();
+        PDFDocument PDFDocument = getDocument();
         var multipartFile = Mockito.mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
-        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedStudent = getStudent();
         expectedStudent.setCVList(getCVList());

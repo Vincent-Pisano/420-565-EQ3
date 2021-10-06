@@ -2,27 +2,20 @@ package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.bytebuddy.implementation.bind.annotation.Super;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +25,6 @@ import static com.eq3.backend.utils.UtilsTest.getStudent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -210,14 +202,14 @@ class BackendControllerTest {
     //Disabled
     public void testSaveInternshipOfferWithDocument() throws Exception {
         // Arrange
-        Document document = getDocument();
+        PDFDocument PDFDocument = getDocument();
         var multipartFile = Mockito.mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
-        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        expectedInternshipOffer.setDocument(document);
+        expectedInternshipOffer.setPDFDocument(PDFDocument);
 
         InternshipOffer givenInternshipOffer = getInternshipOffer();
         givenInternshipOffer.setMonitor(getMonitor());
@@ -246,10 +238,10 @@ class BackendControllerTest {
     public void testDownloadInternshipOfferDocument() throws Exception {
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setDocument(getDocument());
+        expectedInternshipOffer.setPDFDocument(getDocument());
 
         when(service.downloadInternshipOfferDocument(expectedInternshipOffer.getId()))
-                .thenReturn(Optional.of(expectedInternshipOffer.getDocument()));
+                .thenReturn(Optional.of(expectedInternshipOffer.getPDFDocument()));
 
         //Act
         MvcResult result = mockMvc.perform(get("/get/internshipOffer/document/" +
@@ -271,7 +263,7 @@ class BackendControllerTest {
         expectedCV = getCV();
 
         when(service.downloadStudentCVDocument(expectedStudent.getIdUser(), expectedCV.getId()))
-                .thenReturn(Optional.ofNullable(expectedCV.getDocument()));
+                .thenReturn(Optional.ofNullable(expectedCV.getPDFDocument()));
 
         //Act
         MvcResult result = mockMvc.perform(get("/get/CV/document/" +
@@ -288,10 +280,10 @@ class BackendControllerTest {
     //Disabled
     public void testSaveCV() throws Exception {
         //Arrange
-        Document document = getDocument();
+        PDFDocument PDFDocument = getDocument();
         var multipartFile = Mockito.mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
-        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedStudent = getStudent();
         expectedStudent.setCVList(getCVList());

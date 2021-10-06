@@ -179,20 +179,20 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    private ResponseEntity<InputStreamResource> getDownloadingDocument(Document document) {
+    private ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
-        headers.add("Content-Disposition", "attachment; filename=" + document.getName());
+        headers.add("Content-Disposition", "attachment; filename=" + PDFDocument.getName());
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .headers(headers)
-                .contentLength(document.getContent().length())
+                .contentLength(PDFDocument.getContent().length())
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(
-                        new ByteArrayInputStream(document.getContent().getData()))
+                        new ByteArrayInputStream(PDFDocument.getContent().getData()))
                 );
     }
 

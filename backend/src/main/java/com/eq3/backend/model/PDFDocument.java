@@ -7,7 +7,7 @@ import org.bson.types.Binary;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Document {
+public class PDFDocument {
 
     private String name;
 
