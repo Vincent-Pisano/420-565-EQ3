@@ -3,7 +3,6 @@ package com.eq3.backend.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -19,7 +18,7 @@ public class CV {
     @Id
     private String id;
 
-    private Document document;
+    private PDFDocument PDFDocument;
 
     @Builder.Default
     private Date depositDate = new Date();
@@ -30,9 +29,9 @@ public class CV {
     @Builder.Default
     private Boolean isValid = false;
 
-    public CV(Document document) {
+    public CV(PDFDocument PDFDocument) {
         this.id = String.valueOf(new ObjectId());
-        this.document = document;
+        this.PDFDocument = PDFDocument;
         this.depositDate = new Date();
         this.isActive = false;
         this.isValid = false;

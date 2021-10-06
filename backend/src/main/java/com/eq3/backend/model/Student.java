@@ -2,13 +2,13 @@ package com.eq3.backend.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder(toBuilder = true)
@@ -19,16 +19,14 @@ public class Student extends User {
     private Department department;
 
     @Builder.Default
+    @DBRef
     private List<InternshipOffer> internshipOffers = new ArrayList<>();
 
     @Builder.Default
     private List<CV> CVList = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
+    @DBRef
+    private Supervisor supervisor;
 
     public Student() {
         super();

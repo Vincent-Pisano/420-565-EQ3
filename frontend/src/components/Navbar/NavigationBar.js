@@ -10,14 +10,12 @@ import "../../styles/Navbar.css";
 function NavigationBar() {
   let history = useHistory();
   const [userStatus, setUserStatus] = useState({
-    isLoggedIn: auth.authenticated,
-    user: auth.user,
+    isLoggedIn: auth.authenticated
   });
 
   history.listen(() => {
     setUserStatus({
-      isLoggedIn: auth.authenticated,
-      user: auth.user,
+      isLoggedIn: auth.authenticated
     });
   });
 
@@ -30,15 +28,14 @@ function NavigationBar() {
               className="nav-links-header"
               onClick={() => {
                 history.push({
-                  pathname: `/home/${userStatus.user.username}`,
-                  state: userStatus.user,
+                  pathname: `/home/${auth.user.username}`,
                 });
               }}
             >
               Home
             </li>
           </Nav.Link>
-          <NavUserSwitch userStatus={userStatus} />
+          <NavUserSwitch/>
           <Nav.Link>
             <li
               className="nav-links-header"

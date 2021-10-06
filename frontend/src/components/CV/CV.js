@@ -9,7 +9,7 @@ const CV = ({ cv }) => {
 
   return (
     <tr>
-      <td>{cv.document.name}</td>
+      <td>{cv.pdfdocument.name}</td>
       <td>
         <CVButtonDownload user={auth.user} cv={cv} />
       </td>

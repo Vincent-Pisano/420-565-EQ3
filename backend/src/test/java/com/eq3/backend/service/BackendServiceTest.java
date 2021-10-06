@@ -49,6 +49,7 @@ class BackendServiceTest {
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
+    private List<Supervisor> expectedSupervisorList;
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
     private InternshipManager expectedInternshipManager;
@@ -196,14 +197,14 @@ class BackendServiceTest {
     //@Disabled
     public void testSaveInternshipOfferWithDocument() throws IOException {
         //Arrange
-        Document document = getDocument();
+        PDFDocument PDFDocument = getDocument();
         var multipartFile = Mockito.mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
-        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        expectedInternshipOffer.setDocument(document);
+        expectedInternshipOffer.setPDFDocument(PDFDocument);
 
         lenient().when(internshipOfferRepository.save(any(InternshipOffer.class)))
                 .thenReturn(expectedInternshipOffer);
@@ -225,7 +226,7 @@ class BackendServiceTest {
         //Assert
         InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
-        assertThat(actualInternshipOffer.getDocument()).isNotNull();
+        assertThat(actualInternshipOffer.getPDFDocument()).isNotNull();
     }
 
     @Test
@@ -255,13 +256,13 @@ class BackendServiceTest {
         //Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
-        expectedInternshipOffer.setDocument(getDocument());
+        expectedInternshipOffer.setPDFDocument(getDocument());
 
         when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
                 .thenReturn(Optional.ofNullable(expectedInternshipOffer));
 
         //Act
-        Optional<Document> optionalDocument = service.downloadInternshipOfferDocument(
+        Optional<PDFDocument> optionalDocument = service.downloadInternshipOfferDocument(
                 expectedInternshipOffer.getId()
         );
 
@@ -281,7 +282,7 @@ class BackendServiceTest {
                 .thenReturn(Optional.ofNullable(expectedStudent));
 
         //Act
-        Optional<Document> optionalDocument = service.downloadStudentCVDocument(
+        Optional<PDFDocument> optionalDocument = service.downloadStudentCVDocument(
                 expectedStudent.getIdUser(), expectedCV.getId()
         );
 
@@ -293,10 +294,10 @@ class BackendServiceTest {
     //@Disabled
     public void testSaveCV() throws IOException {
         //Arrange
-        Document document = getDocument();
+        PDFDocument PDFDocument = getDocument();
         var multipartFile = Mockito.mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn(document.getName());
-        when(multipartFile.getBytes()).thenReturn(document.getContent().getData());
+        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedStudent = getStudent();
         expectedStudent.setCVList(getCVList());
@@ -432,6 +433,39 @@ class BackendServiceTest {
         assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
     }
 
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutSupervisor() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(Department.COMPUTER_SCIENCE))
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> students =
+                service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE);
+
+        //Assert
+        assertThat(students.isPresent()).isTrue();
+        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSupervisors() {
+        //Arrange
+        expectedSupervisorList = getListOfSupervisors();
+        when(supervisorRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedSupervisorList);
+
+        //Act
+        final Optional<List<Supervisor>> supervisors =
+                service.getAllSupervisors();
+
+        //Assert
+        assertThat(supervisors.isPresent()).isTrue();
+        assertThat(supervisors.get().size()).isEqualTo(expectedSupervisorList.size());
+    }
 
     @Test
     //@Disabled
@@ -494,5 +528,30 @@ class BackendServiceTest {
         Student actualStudent = optionalStudent.orElse(null);
         assertThat(actualStudent).isNotNull();
         assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
+    }
+
+    @Test
+    //@Disabled
+    public void testAssignSupervisorToStudent() {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedSupervisor = getSupervisor();
+        expectedStudent.setSupervisor(expectedSupervisor);
+        Student givenStudent = getStudent();
+
+
+        when(studentRepository.findById(givenStudent.getIdUser())).thenReturn(Optional.of(givenStudent));
+        when(supervisorRepository.findById(expectedSupervisor.getIdUser())).thenReturn(Optional.of(expectedSupervisor));
+        lenient().when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.assignSupervisorToStudent(givenStudent.getIdUser(), expectedSupervisor.getIdUser());
+
+        //Assert
+        Student student = optionalStudent.orElse(null);
+        assertThat(student).isNotNull();
+        assertThat(student.getSupervisor()).isEqualTo(expectedSupervisor);
+
     }
 }

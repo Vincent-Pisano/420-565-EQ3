@@ -13,11 +13,6 @@ import java.util.List;
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
 
-    public BackendApplication(StudentRepository studentRepository) {
-
-    }
-
-
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }

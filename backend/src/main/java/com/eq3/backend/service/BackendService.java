@@ -84,6 +84,17 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
+    public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
+        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
+    public Optional<List<Supervisor>> getAllSupervisors() {
+        List<Supervisor> supervisors = supervisorRepository.findAllByIsDisabledFalse();
+        return supervisors.isEmpty() ? Optional.empty() : Optional.of(supervisors);
+    }
+
     public Optional<Supervisor> loginSupervisor(String username, String password) {
         return supervisorRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
@@ -111,7 +122,7 @@ public class BackendService {
     public InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
         if (multipartFile != null)
-            internshipOffer.setDocument(extractDocument(multipartFile));
+            internshipOffer.setPDFDocument(extractDocument(multipartFile));
         return internshipOffer;
     }
 
@@ -144,16 +155,16 @@ public class BackendService {
         return isPresent;
     }
 
-    private Document extractDocument(MultipartFile multipartFile) {
-        Document document = new Document();
-        document.setName(multipartFile.getOriginalFilename());
+    private PDFDocument extractDocument(MultipartFile multipartFile) {
+        PDFDocument PDFDocument = new PDFDocument();
+        PDFDocument.setName(multipartFile.getOriginalFilename());
         try {
-            document.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
+            PDFDocument.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
         } catch (IOException e) {
             logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
                     + " at extractDocument in BackendService : " + e.getMessage());
         }
-        return document;
+        return PDFDocument;
     }
 
     public Optional<Student> deleteCV (String idStudent, String idCV) {
@@ -203,8 +214,8 @@ public class BackendService {
         optionalStudent.ifPresent(student -> {
                 if (student.getCVList() != null) {
                     student.getCVList().forEach(cv -> {
-                        Document document = cv.getDocument();
-                        document.setContent(null);
+                        PDFDocument PDFDocument = cv.getPDFDocument();
+                        PDFDocument.setContent(null);
                     });
                 }
             }
@@ -214,36 +225,36 @@ public class BackendService {
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
-        internshipOffers.forEach(internshipOffer -> internshipOffer.setDocument(
-                internshipOffer.getDocument() != null ? new Document() : null)
+        internshipOffers.forEach(internshipOffer -> internshipOffer.setPDFDocument(
+                internshipOffer.getPDFDocument() != null ? new PDFDocument() : null)
         );
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<Document> downloadInternshipOfferDocument(String id) {
+    public Optional<PDFDocument> downloadInternshipOfferDocument(String id) {
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
-        Optional<Document> optionalDocument = Optional.empty();
+        Optional<PDFDocument> optionalDocument = Optional.empty();
 
-        if (optionalInternshipOffer.isPresent() && optionalInternshipOffer.get().getDocument() != null)
-            optionalDocument = Optional.of(optionalInternshipOffer.get().getDocument());
+        if (optionalInternshipOffer.isPresent() && optionalInternshipOffer.get().getPDFDocument() != null)
+            optionalDocument = Optional.of(optionalInternshipOffer.get().getPDFDocument());
 
         return optionalDocument;
     }
 
-    public Optional<Document> downloadStudentCVDocument(String idStudent, String idCV) {
+    public Optional<PDFDocument> downloadStudentCVDocument(String idStudent, String idCV) {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
         return getCVFromStudent(idCV, optionalStudent);
     }
 
-    private Optional<Document> getCVFromStudent(String idCV, Optional<Student> optionalStudent) {
-        Optional<Document> optionalDocument = Optional.empty();
+    private Optional<PDFDocument> getCVFromStudent(String idCV, Optional<Student> optionalStudent) {
+        Optional<PDFDocument> optionalDocument = Optional.empty();
 
         if (optionalStudent.isPresent() && optionalStudent.get().getCVList() != null) {
             Student student = optionalStudent.get();
             List<CV> listCV = student.getCVList();
             for (CV cv : listCV) {
                 if (cv.getId().equals(idCV))
-                    optionalDocument = Optional.of(cv.getDocument());
+                    optionalDocument = Optional.of(cv.getPDFDocument());
             }
             student.setCVList(listCV);
         }
@@ -282,16 +293,29 @@ public class BackendService {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         optionalStudent.ifPresent(student -> {
             List<InternshipOffer> internshipOffersList = student.getInternshipOffers();
-            if (internshipOffer.getDocument() != null) {
-                Document document = internshipOffer.getDocument();
-                document.setContent(null);
-                internshipOffer.setDocument(document);
+            if (internshipOffer.getPDFDocument() != null) {
+                PDFDocument PDFDocument = internshipOffer.getPDFDocument();
+                PDFDocument.setContent(null);
+                internshipOffer.setPDFDocument(PDFDocument);
             }
             internshipOffersList.add(internshipOffer);
             student.setInternshipOffers(internshipOffersList);
             studentRepository.save(student);
         });
         return cleanUpStudentCVList(optionalStudent);
+    }
+
+    public Optional<Student> assignSupervisorToStudent(String idStudent, String idSupervisor) {
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+        Optional<Supervisor> optionalSupervisor = supervisorRepository.findById(idSupervisor);
+
+        optionalStudent.ifPresent(student -> {
+            student.setSupervisor(optionalSupervisor.orElse(null));
+            studentRepository.save(student);
+        });
+
+        return cleanUpStudentCVList(optionalStudent);
+
     }
 }
 

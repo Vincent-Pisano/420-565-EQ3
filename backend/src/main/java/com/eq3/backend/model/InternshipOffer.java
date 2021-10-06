@@ -6,7 +6,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class InternshipOffer {
     private Monitor monitor;
 
     @Field
-    private Document document;
+    private PDFDocument PDFDocument;
 
     @Field
     @Builder.Default
