@@ -203,10 +203,10 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/get/studentEvaluation")
-    public ResponseEntity<PDFDocument> getStudentEvaluation(){
+    @GetMapping(value="/get/studentEvaluation", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> getStudentEvaluation(){
         return service.getStudentEvaluationForm()
-                .map(_pdfDocument -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_pdfDocument))
+                .map(this::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
