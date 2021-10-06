@@ -20,6 +20,11 @@ function StudentList() {
   const [currentStudent, setCurrentStudent] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorMessageModal, setErrorMessageModal] = useState("");
+  let title = !auth.isInternshipManager()
+    ? "Étudiants de votre département"
+    : supervisor !== undefined
+    ? "Étudiants de ce département à assigner"
+    : "Étudiants avec un CV à valider";
 
   useEffect(() => {
     if (auth.isSupervisor()) {
@@ -29,7 +34,9 @@ function StudentList() {
           setStudents(response.data);
         })
         .catch((err) => {
-          setErrorMessage("Erreur! Aucun étudiant ne s'est inscrit pour le moment");
+          setErrorMessage(
+            "Erreur! Aucun étudiant ne s'est inscrit pour le moment"
+          );
         });
     } else if (auth.isInternshipManager()) {
       if (supervisor !== undefined) {
@@ -44,7 +51,14 @@ function StudentList() {
             setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
           });
       } else {
-        setErrorMessage("Erreur durant la sélection du Superviseur");
+        axios
+          .get(`http://localhost:9090/getAll/Student/CVActiveNotValid`)
+          .then((response) => {
+            setStudents(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
+          });
       }
     }
   }, [history, supervisor]);
@@ -55,116 +69,193 @@ function StudentList() {
     setErrorMessageModal("");
   }
 
-  function AssignStudent(e) {
+  function onConfirmModal(e) {
     e.preventDefault();
     if (auth.isInternshipManager()) {
       if (supervisor !== undefined) {
-        axios
-          .post(
-            `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`
-          )
-          .then((response) => {
-            let assignedStudent = response.data;
-            setStudents(
-              students.filter((student) => {
-                return student.idUser !== assignedStudent.idUser;
-              })
-            );
-            if (students.length === 1) {
-              setTimeout(() => {
-                handleClose()
-                history.push({
-                  pathname: `/home/${auth.user.username}`,
-                });
-              }, 3000);
-              setErrorMessage(
-                "Plus aucun étudiant à assigner, vous allez être redirigé"
-              );
-            }
-            setTimeout(() => {
-              handleClose();
-            }, 1000);
-            setErrorMessageModal("Confirmation de l'assignation");
-          })
-          .catch((err) => {
-            setErrorMessageModal("Erreur durant l'assignation du Superviseur");
-          });
+        console.log(supervisor);
+        AssignStudent();
       } else {
-        setErrorMessageModal("Erreur durant l'assignation du Superviseur");
+        ValidCV();
       }
     }
   }
 
+  function AssignStudent() {
+    axios
+      .post(
+        `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`
+      )
+      .then((response) => {
+        let assignedStudent = response.data;
+        setStudents(
+          students.filter((student) => {
+            return student.idUser !== assignedStudent.idUser;
+          })
+        );
+        if (students.length === 1) {
+          setTimeout(() => {
+            handleClose();
+            history.push({
+              pathname: `/home/${auth.user.username}`,
+            });
+          }, 3000);
+          setErrorMessage(
+            "Plus aucun étudiant à assigner, vous allez être redirigé"
+          );
+        }
+        setTimeout(() => {
+          handleClose();
+        }, 1000);
+        setErrorMessageModal("Confirmation de l'assignation");
+      })
+      .catch((err) => {
+        setErrorMessageModal("Erreur durant l'assignation du Superviseur");
+      });
+  }
+
+  function ValidCV() {
+    console.log("valid");
+  }
+
   function checkIfGS() {
     if (auth.isInternshipManager()) {
-      return (
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header>
-            <Modal.Title style={{ textAlign: "center" }}>
-              Voulez-vous assigner le superviseur{" "}
-              {supervisor !== undefined
-                ? " " + supervisor.firstName + " " + supervisor.lastName
-                : " choisi"}{" "}
-              à l'étudiant
-              {currentStudent !== undefined
-                ? " " + currentStudent.firstName + " " + currentStudent.lastName
-                : " choisi"}{" "}
-              ?
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              <Col xs={6}>
-                <Button
-                  variant="success"
-                  size="lg"
-                  className="btn_sub"
-                  onClick={(e) => AssignStudent(e)}
-                >
-                  Oui
-                </Button>
-              </Col>
-              <Col xs={6}>
-                <Button
-                  variant="danger"
-                  size="lg"
-                  className="btn_sub"
-                  onClick={handleClose}
-                >
-                  Non
-                </Button>
-              </Col>
-            </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Row>
-              <Col>
-                <p
-                  className="error_p"
-                  style={{
-                    color: errorMessageModal.startsWith("Erreur")
-                      ? "red"
-                      : "green",
-                  }}
-                >
-                  {errorMessageModal}
-                </p>
-              </Col>
-            </Row>
-          </Modal.Footer>
-        </Modal>
-      );
+      if (supervisor !== undefined) {
+        return (
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header>
+              <Modal.Title style={{ textAlign: "center" }}>
+                Voulez-vous assigner le superviseur{" "}
+                {supervisor !== undefined
+                  ? " " + supervisor.firstName + " " + supervisor.lastName
+                  : " choisi"}{" "}
+                à l'étudiant
+                {currentStudent !== undefined
+                  ? " " +
+                    currentStudent.firstName +
+                    " " +
+                    currentStudent.lastName
+                  : " choisi"}{" "}
+                ?
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <Col xs={6}>
+                  <Button
+                    variant="success"
+                    size="lg"
+                    className="btn_sub"
+                    onClick={(e) => onConfirmModal(e)}
+                  >
+                    Oui
+                  </Button>
+                </Col>
+                <Col xs={6}>
+                  <Button
+                    variant="danger"
+                    size="lg"
+                    className="btn_sub"
+                    onClick={handleClose}
+                  >
+                    Non
+                  </Button>
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Row>
+                <Col>
+                  <p
+                    className="error_p"
+                    style={{
+                      color: errorMessageModal.startsWith("Erreur")
+                        ? "red"
+                        : "green",
+                    }}
+                  >
+                    {errorMessageModal}
+                  </p>
+                </Col>
+              </Row>
+            </Modal.Footer>
+          </Modal>
+        );
+      } else {
+        return (
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header>
+              <Modal.Title style={{ textAlign: "center" }}>
+                Voulez-vous confirmer le cv de l'étudiant choisi ?
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ margin: "0%" }}>
+              <Row style={{ textAlign: "center" }}>
+                <Col md={3}>
+                  <Button
+                    variant="success"
+                    size="lg"
+                    className="btn_sub"
+                    onClick={(e) => onConfirmModal(e)}
+                  >
+                    Oui
+                  </Button>
+                </Col>
+                <Col md={6}>
+                  <a
+                    className="btn btn-warning btn-lg mt-3"
+                    download
+                    href={`http://localhost:9090/get/CV/document/${
+                      currentStudent === undefined
+                        ?  "" :
+                        currentStudent.idUser +
+                          "/" +
+                          currentStudent.cvlist.filter(
+                            (cv) => cv.isActive === true
+                          )[0].id
+                    }`}
+                  >
+                    Télécharger
+                  </a>
+                </Col>
+                <Col md={3}>
+                  <Button
+                    variant="danger"
+                    size="lg"
+                    className="btn_sub"
+                    onClick={handleClose}
+                  >
+                    Non
+                  </Button>
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Row>
+                <Col>
+                  <p
+                    className="error_p"
+                    style={{
+                      color: errorMessageModal.startsWith("Erreur")
+                        ? "red"
+                        : "green",
+                    }}
+                  >
+                    {errorMessageModal}
+                  </p>
+                </Col>
+              </Row>
+            </Modal.Footer>
+          </Modal>
+        );
+      }
     }
   }
 
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
-        <h2 className="cont_title_form">
-          {auth.isSupervisor()
-            ? "Étudiants de votre département"
-            : "Étudiants de ce département à assigner"}
-        </h2>
+        <h2 className="cont_title_form">{title}</h2>
         <Container className="cont_list">
           <p
             className="error_p"

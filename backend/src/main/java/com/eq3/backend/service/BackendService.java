@@ -266,15 +266,10 @@ public class BackendService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<CV>> getListOfAllCVThatIsActif() {
+    public Optional<List<Student>> getListStudentWithCVActiveNotValid() {
         List<Student> studentList = studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid();
-        List<CV> cvList = new ArrayList<>();
-
-        for (Student student: studentList) {
-            cvList.addAll(student.getCVList());
-        }
-
-        return cvList.isEmpty() ? Optional.empty() : Optional.of(cvList);
+        studentList.forEach(student -> cleanUpStudentCVList(Optional.ofNullable(student)));
+        return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }
 
     public Optional<Monitor> getMonitorByUsername(String username){
