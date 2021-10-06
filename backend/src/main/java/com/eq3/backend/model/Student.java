@@ -19,6 +19,7 @@ public class Student extends User {
     private Department department;
 
     @Builder.Default
+    @DBRef
     private List<InternshipOffer> internshipOffers = new ArrayList<>();
 
     @Builder.Default
@@ -26,7 +27,6 @@ public class Student extends User {
 
     @DBRef
     private Supervisor supervisor;
-
 
     public Student() {
         super();

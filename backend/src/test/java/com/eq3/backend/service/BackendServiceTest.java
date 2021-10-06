@@ -542,7 +542,7 @@ class BackendServiceTest {
 
         when(studentRepository.findById(givenStudent.getIdUser())).thenReturn(Optional.of(givenStudent));
         when(supervisorRepository.findById(expectedSupervisor.getIdUser())).thenReturn(Optional.of(expectedSupervisor));
-        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+        lenient().when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
         //Act
         final Optional<Student> optionalStudent =
