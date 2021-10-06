@@ -115,7 +115,36 @@ function StudentList() {
   }
 
   function ValidCV() {
-    console.log("valid");
+    axios
+      .post(
+        `http://localhost:9090/validate/CV/${currentStudent.idUser}`
+      )
+      .then((response) => {
+        let validatedStudent = response.data;
+        setStudents(
+          students.filter((student) => {
+            return student.idUser !== validatedStudent.idUser;
+          })
+        );
+        if (students.length === 1) {
+          setTimeout(() => {
+            handleClose();
+            history.push({
+              pathname: `/home/${auth.user.username}`,
+            });
+          }, 3000);
+          setErrorMessage(
+            "Plus aucun CV à Valider, vous allez être redirigé"
+          );
+        }
+        setTimeout(() => {
+          handleClose();
+        }, 1000);
+        setErrorMessageModal("Confirmation de la validation");
+      })
+      .catch((err) => {
+        setErrorMessageModal("Erreur durant la validation du CV");
+      });
   }
 
   function checkIfGS() {
