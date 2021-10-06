@@ -47,6 +47,7 @@ class BackendControllerTest {
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
     private CV expectedCV;
+    private PDFDocument expectedPDFDocument;
 
     @Test
     public void testSignUpStudent() throws Exception {
@@ -548,5 +549,20 @@ class BackendControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(student.getSupervisor()).isNotNull();
 
+    }
+
+    @Test
+    //@Disabled
+    public void testGetStudentEvaluation() throws Exception {
+        //Arrange
+        expectedPDFDocument = getDocument();
+        when(service.getStudentEvaluationForm())
+                .thenReturn(Optional.of(expectedPDFDocument));
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/studentEvaluation")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
     }
 }
