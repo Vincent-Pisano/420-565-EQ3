@@ -542,11 +542,57 @@ class BackendControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
 
-        // Assert
+        //Assert
         MockHttpServletResponse response = result.getResponse();
         var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(student.getSupervisor()).isNotNull();
 
     }
+
+    @Test
+    //@Disabled
+    public void testGetAllCVThatIsActiveAndNotValid() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+
+        when(service.getListStudentWithCVActiveNotValid())
+                .thenReturn(Optional.of(expectedStudentList));
+
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/student/CVActiveNotValid/")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testValidateCVOfStudent() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedCV = getCV();
+        expectedCV.getPDFDocument().setContent(null);
+        expectedStudent.getCVList().add(expectedCV);
+        expectedCV.setIsActive(true);
+
+        when(service.validateCVOfStudent(expectedStudent.getIdUser()))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(post("/validate/CV/" + expectedStudent.getIdUser())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(student.getCVList().get(0).getIsActive());
+    }
+
 }

@@ -52,7 +52,7 @@ function StudentList() {
           });
       } else {
         axios
-          .get(`http://localhost:9090/getAll/Student/CVActiveNotValid`)
+          .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
           .then((response) => {
             setStudents(response.data);
           })

@@ -469,7 +469,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetMonitorByUsername(){
+    public void testGetMonitorByUsername() {
         //Arrange
         expectedMonitor = getMonitor();
 
@@ -485,7 +485,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testValidateInternshipOffer(){
+    public void testValidateInternshipOffer() {
         //Arrange
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setIsValid(true);
@@ -507,7 +507,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testApplyInternshipOffer(){
+    public void testApplyInternshipOffer() {
         //Arrange
         expectedStudent = getStudent();
         Student givenStudent = getStudent();
@@ -553,5 +553,35 @@ class BackendServiceTest {
         assertThat(student).isNotNull();
         assertThat(student.getSupervisor()).isEqualTo(expectedSupervisor);
 
+    }
+
+    @Test
+    //@Disabled
+    public void testGetListStudentWithCVActiveNotValid() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+
+        when(studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid())
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> students =
+                service.getListStudentWithCVActiveNotValid();
+
+        //Assert
+        assertThat(students.isPresent()).isTrue();
+        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
+
+    }
+
+    @Test
+    //@Disabled
+    public void testValidateCVOfStudent() {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedCV = getCV();
+        expectedCV.getPDFDocument().setContent(null);
+        expectedStudent.getCVList().add(expectedCV);
+        expectedCV.setIsActive(true);
     }
 }
