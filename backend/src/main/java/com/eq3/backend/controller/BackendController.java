@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:3006")
@@ -182,6 +183,13 @@ public class BackendController {
     @GetMapping("/getAll/Student/CVActiveNotValid")
     public ResponseEntity<List<Student>> getAllCVThatIsActiveAndNotValid() {
         return service.getListStudentWithCVActiveNotValid()
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/validate/CV/{idStudent}")
+    public ResponseEntity<Student> validateCVOfStudent(@PathVariable String idStudent) {
+        return service.validateCVOfStudent(idStudent)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
