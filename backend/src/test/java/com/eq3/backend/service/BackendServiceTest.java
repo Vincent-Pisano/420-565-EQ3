@@ -46,6 +46,9 @@ class BackendServiceTest {
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
+    @Mock
+    private StudentEvaluationRepository studentEvaluationRepository;
+
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
@@ -56,6 +59,7 @@ class BackendServiceTest {
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
     private CV expectedCV;
+    private StudentEvaluation expectedStudentEvaluation;
 
     @Test
     //@Disabled
@@ -414,6 +418,20 @@ class BackendServiceTest {
         // Assert
         assertThat(internshipOffers.isPresent()).isTrue();
         assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetStudentEvaluationForm() throws IOException {
+        //Arrange
+        expectedStudentEvaluation = getStudentEvaluation();
+        when(studentEvaluationRepository.findByName(expectedStudentEvaluation.getName()))
+                .thenReturn(Optional.of(expectedStudentEvaluation));
+        //Act
+        Optional<PDFDocument> optionalDocument = service.getStudentEvaluationForm();
+
+        //Assert
+        assertThat(optionalDocument.isPresent()).isTrue();
     }
 
     @Test

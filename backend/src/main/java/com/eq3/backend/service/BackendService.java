@@ -26,20 +26,22 @@ public class BackendService {
     private final SupervisorRepository supervisorRepository;
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
-
+    private final StudentEvaluationRepository studentEvaluationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
-                   InternshipOfferRepository internshipOfferRepository
-                   ) {
+                   InternshipOfferRepository internshipOfferRepository,
+                   StudentEvaluationRepository studentEvaluationRepository) {
+
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
+        this.studentEvaluationRepository = studentEvaluationRepository;
     }
 
 
@@ -256,6 +258,16 @@ public class BackendService {
                     optionalDocument = Optional.of(cv.getPDFDocument());
             }
             student.setCVList(listCV);
+        }
+        return optionalDocument;
+    }
+
+    public Optional<PDFDocument> getStudentEvaluationForm() {
+        Optional<PDFDocument> optionalDocument = Optional.empty();
+        Optional<StudentEvaluation> optionalEvaluation = studentEvaluationRepository.findByName("initialForm");
+        if(optionalEvaluation.isPresent()){
+            StudentEvaluation studentEvaluation = optionalEvaluation.get();
+            optionalDocument = Optional.of(studentEvaluation.getPDFDocument());
         }
         return optionalDocument;
     }

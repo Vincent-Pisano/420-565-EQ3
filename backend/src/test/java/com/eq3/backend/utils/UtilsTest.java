@@ -211,4 +211,11 @@ public class UtilsTest {
                 .build());
         return cvList;
     }
+
+    public static StudentEvaluation getStudentEvaluation() throws IOException {
+        return StudentEvaluation.builder()
+                .name("initialForm")
+                .PDFDocument(getDocument())
+                .build();
+    }
 }
