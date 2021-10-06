@@ -14,6 +14,7 @@ function StudentList() {
   const handleShow = () => setShow(true);
 
   let history = useHistory();
+  let supervisor = history.location.supervisor;
 
   const [students, setStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState(undefined);
@@ -28,10 +29,9 @@ function StudentList() {
           setStudents(response.data);
         })
         .catch((err) => {
-          setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
+          setErrorMessage("Erreur! Aucun étudiant ne s'est inscrit pour le moment");
         });
     } else if (auth.isInternshipManager()) {
-      let supervisor = history.location.supervisor;
       if (supervisor !== undefined) {
         axios
           .get(
@@ -41,13 +41,13 @@ function StudentList() {
             setStudents(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Aucun étudiant ne s'est inscrit pour le moment");
+            setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
           });
       } else {
         setErrorMessage("Erreur durant la sélection du Superviseur");
       }
     }
-  }, [history]);
+  }, [history, supervisor]);
 
   function reset(student) {
     setCurrentStudent(student);
@@ -58,17 +58,33 @@ function StudentList() {
   function AssignStudent(e) {
     e.preventDefault();
     if (auth.isInternshipManager()) {
-      let supervisor = history.location.supervisor;
       if (supervisor !== undefined) {
         axios
           .post(
-            `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`,
-            history.push({
-              pathname: `/listSupervisors`,
-            })
+            `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`
           )
           .then((response) => {
-            setStudents(response.data);
+            let assignedStudent = response.data;
+            setStudents(
+              students.filter((student) => {
+                return student.idUser !== assignedStudent.idUser;
+              })
+            );
+            if (students.length === 1) {
+              setTimeout(() => {
+                handleClose()
+                history.push({
+                  pathname: `/home/${auth.user.username}`,
+                });
+              }, 3000);
+              setErrorMessage(
+                "Plus aucun étudiant à assigner, vous allez être redirigé"
+              );
+            }
+            setTimeout(() => {
+              handleClose();
+            }, 1000);
+            setErrorMessageModal("Confirmation de l'assignation");
           })
           .catch((err) => {
             setErrorMessageModal("Erreur durant l'assignation du Superviseur");
@@ -85,10 +101,15 @@ function StudentList() {
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title style={{ textAlign: "center" }}>
-              Voulez-vous assigner le superviseur à
+              Voulez-vous assigner le superviseur{" "}
+              {supervisor !== undefined
+                ? " " + supervisor.firstName + " " + supervisor.lastName
+                : " choisi"}{" "}
+              à l'étudiant
               {currentStudent !== undefined
                 ? " " + currentStudent.firstName + " " + currentStudent.lastName
-                : " l'étudiant choisi"}
+                : " choisi"}{" "}
+              ?
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -145,7 +166,14 @@ function StudentList() {
             : "Étudiants de ce département à assigner"}
         </h2>
         <Container className="cont_list">
-          <p>{errorMessage}</p>
+          <p
+            className="error_p"
+            style={{
+              color: errorMessage.startsWith("Erreur") ? "red" : "green",
+            }}
+          >
+            {errorMessage}
+          </p>
           <ul>
             {students.map((student) => (
               <Student
