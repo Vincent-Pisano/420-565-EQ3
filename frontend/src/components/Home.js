@@ -6,6 +6,7 @@ import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import "./../styles/Home.css";
 import StudentEvaluation from "./Evaluations/StudentEvaluation";
+import EntrepriseEvaluation from "./Evaluations/EntrepriseEvaluation";
 
 function Home() {
   let user = auth.user;
@@ -38,6 +39,16 @@ function Home() {
     }
   }
 
+  function checkIfSupervisor() {
+    if (auth.isSupervisor()) {
+      return (
+        <>
+          <EntrepriseEvaluation/>
+        </>
+      );
+    }
+  }
+
   return (
     <>
       <Container className="cont_home">
@@ -61,6 +72,7 @@ function Home() {
             </Row>
           </Col>
           <Col xs={12} md={9}>
+            {checkIfSupervisor()}
             {checkIfStudent()}
             {checkIfMonitor()}
           </Col>
