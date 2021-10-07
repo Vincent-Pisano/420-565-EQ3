@@ -1,18 +1,19 @@
 import React from 'react'
-import { Container} from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import "../../styles/List.css";
 
 const StudentEvaluation = () => {
     return (
-        <Container>
-            <h4>Document d'évalution d'étudiant</h4>
-            <a
+      <Container>
+        <h2 className="cont_title_form">Document d'évalution d'étudiant</h2>
+        <a
                 className="btn btn-success btn-sm"
                 download
                 href={`http://localhost:9090/get/studentEvaluation/document`}
             >
                 Télécharger
             </a>
-        </Container>
+      </Container>
     )
 }
 
