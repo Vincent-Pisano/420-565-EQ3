@@ -5,7 +5,7 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import "./../styles/Home.css";
-import StudentEvaluation from "./Forms/StudentEvaluation";
+import StudentEvaluation from "./Evaluations/StudentEvaluation";
 
 function Home() {
   let user = auth.user;

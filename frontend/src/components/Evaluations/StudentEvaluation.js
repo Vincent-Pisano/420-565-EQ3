@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StudentEvaluation = ({ }) => {
+const StudentEvaluation = () => {
     return (
         <div>
             <h4>Document d'évalution d'étudiant</h4>
