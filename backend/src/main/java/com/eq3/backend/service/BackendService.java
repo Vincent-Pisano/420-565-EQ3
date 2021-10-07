@@ -262,7 +262,7 @@ public class BackendService {
         return optionalDocument;
     }
 
-    public Optional<PDFDocument> getStudentEvaluationForm() {
+    public Optional<PDFDocument> getStudentEvaluationDocument() {
         Optional<PDFDocument> optionalDocument = Optional.empty();
         Optional<StudentEvaluation> optionalEvaluation = studentEvaluationRepository.findByName("initialForm");
         if(optionalEvaluation.isPresent()){

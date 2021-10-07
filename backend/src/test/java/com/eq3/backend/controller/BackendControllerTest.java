@@ -553,10 +553,10 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetStudentEvaluation() throws Exception {
+    public void testGetStudentEvaluationDocument() throws Exception {
         //Arrange
         expectedPDFDocument = getDocument();
-        when(service.getStudentEvaluationForm())
+        when(service.getStudentEvaluationDocument())
                 .thenReturn(Optional.of(expectedPDFDocument));
         //Act
         MvcResult result = mockMvc.perform(get("/get/studentEvaluation")

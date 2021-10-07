@@ -422,13 +422,13 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetStudentEvaluationForm() throws IOException {
+    public void testGetStudentEvaluationDocument() throws IOException {
         //Arrange
         expectedStudentEvaluation = getStudentEvaluation();
         when(studentEvaluationRepository.findByName(expectedStudentEvaluation.getName()))
                 .thenReturn(Optional.of(expectedStudentEvaluation));
         //Act
-        Optional<PDFDocument> optionalDocument = service.getStudentEvaluationForm();
+        Optional<PDFDocument> optionalDocument = service.getStudentEvaluationDocument();
 
         //Assert
         assertThat(optionalDocument.isPresent()).isTrue();

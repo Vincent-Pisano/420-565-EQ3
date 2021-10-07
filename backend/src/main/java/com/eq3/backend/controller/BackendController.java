@@ -204,8 +204,8 @@ public class BackendController {
     }
 
     @GetMapping(value="/get/studentEvaluation", produces = "application/pdf")
-    public ResponseEntity<InputStreamResource> getStudentEvaluation(){
-        return service.getStudentEvaluationForm()
+    public ResponseEntity<InputStreamResource> getStudentEvaluationDocument(){
+        return service.getStudentEvaluationDocument()
                 .map(this::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
