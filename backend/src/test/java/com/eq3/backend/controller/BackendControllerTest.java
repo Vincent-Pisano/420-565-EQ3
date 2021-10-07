@@ -559,7 +559,7 @@ class BackendControllerTest {
         when(service.getStudentEvaluationDocument())
                 .thenReturn(Optional.of(expectedPDFDocument));
         //Act
-        MvcResult result = mockMvc.perform(get("/get/studentEvaluation")
+        MvcResult result = mockMvc.perform(get("/get/studentEvaluation/document")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

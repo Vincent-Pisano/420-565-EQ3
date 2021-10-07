@@ -20,6 +20,7 @@ import java.util.Optional;
 public class BackendService {
 
     private final Logger logger;
+    private final String STUDENT_EVALUATION_DOCUMENT_NAME = "initialForm";
 
     private final StudentRepository studentRepository;
     private final MonitorRepository monitorRepository;
@@ -264,10 +265,10 @@ public class BackendService {
 
     public Optional<PDFDocument> getStudentEvaluationDocument() {
         Optional<PDFDocument> optionalDocument = Optional.empty();
-        Optional<StudentEvaluation> optionalEvaluation = studentEvaluationRepository.findByName("initialForm");
+        Optional<StudentEvaluation> optionalEvaluation = studentEvaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME);
         if(optionalEvaluation.isPresent()){
             StudentEvaluation studentEvaluation = optionalEvaluation.get();
-            optionalDocument = Optional.of(studentEvaluation.getPDFDocument());
+            optionalDocument = Optional.of(studentEvaluation.getDocument());
         }
         return optionalDocument;
     }

@@ -5,19 +5,25 @@ import Nav from "react-bootstrap/Nav";
 import auth from "../../services/Auth"
 
 function NavUserSwitch() {
+
   function checkIfGS() {
-    if (auth.isInternshipManager()) {
-      return (
-        <>
-          <Nav.Link as={Link} to="/formInternshipOffer">
-            <li className="nav-links-header">Dépôt Offre</li>
-          </Nav.Link>
-          <Nav.Link as={Link} to="/listInternshipOffer">
+      if (auth.isInternshipManager()) {
+        return (
+          <>
+            <Nav.Link as={Link} to="/formInternshipOffer">
+              <li className="nav-links-header">Dépôt Offre</li>
+            </Nav.Link>
+            <Nav.Link as={Link} to="/listInternshipOffer">
+              <li className="nav-links-header">
+                Liste Offres
+              </li>
+            </Nav.Link>
+            <Nav.Link as={Link} to="/listStudents">
             <li className="nav-links-header">
-              Liste Offres
+              Listes des CV à valider
             </li>
-          </Nav.Link>
-          <Nav.Link as={Link} to="/listSupervisors">
+            </Nav.Link>
+            <Nav.Link as={Link} to="/listSupervisors">
             <li className="nav-links-header">Assignation Superviseur</li>
           </Nav.Link>
         </>

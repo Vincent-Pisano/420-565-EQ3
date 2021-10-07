@@ -14,6 +14,8 @@ import java.util.List;
 
 public class UtilsTest {
 
+    public final static String STUDENT_EVALUATION_DOCUMENT_NAME = "initialForm";
+
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
 
@@ -214,8 +216,7 @@ public class UtilsTest {
 
     public static StudentEvaluation getStudentEvaluation() throws IOException {
         return StudentEvaluation.builder()
-                .name("initialForm")
-                .PDFDocument(getDocument())
+                .document(getDocument())
                 .build();
     }
 }

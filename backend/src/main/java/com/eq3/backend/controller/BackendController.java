@@ -203,7 +203,7 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value="/get/studentEvaluation", produces = "application/pdf")
+    @GetMapping(value="/get/studentEvaluation/document", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> getStudentEvaluationDocument(){
         return service.getStudentEvaluationDocument()
                 .map(this::getDownloadingDocument)

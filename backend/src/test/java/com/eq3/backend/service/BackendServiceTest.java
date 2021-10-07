@@ -60,6 +60,7 @@ class BackendServiceTest {
     private List<InternshipOffer> expectedInternshipOfferList;
     private CV expectedCV;
     private StudentEvaluation expectedStudentEvaluation;
+    private PDFDocument expectedPDFDocument;
 
     @Test
     //@Disabled
@@ -425,7 +426,8 @@ class BackendServiceTest {
     public void testGetStudentEvaluationDocument() throws IOException {
         //Arrange
         expectedStudentEvaluation = getStudentEvaluation();
-        when(studentEvaluationRepository.findByName(expectedStudentEvaluation.getName()))
+
+        when(studentEvaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME))
                 .thenReturn(Optional.of(expectedStudentEvaluation));
         //Act
         Optional<PDFDocument> optionalDocument = service.getStudentEvaluationDocument();
