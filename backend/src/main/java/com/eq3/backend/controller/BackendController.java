@@ -210,4 +210,11 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping(value="/get/enterpriseEvaluation", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> getEnterpriseEvaluationDocument(){
+        return service.getEnterpriseEvaluationDocument()
+                .map(this::getDownloadingDocument)
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
 }

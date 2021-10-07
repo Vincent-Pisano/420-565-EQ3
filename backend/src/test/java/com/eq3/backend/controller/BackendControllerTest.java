@@ -565,4 +565,19 @@ class BackendControllerTest {
         //Assert
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
     }
+
+    @Test
+    //@Disabled
+    public void testGetEnterpriseEvaluationDocument() throws Exception {
+        //Arrange
+        expectedPDFDocument = getDocument();
+        when(service.getEnterpriseEvaluationDocument())
+                .thenReturn(Optional.of(expectedPDFDocument));
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/enterpriseEvaluation")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
+    }
 }
