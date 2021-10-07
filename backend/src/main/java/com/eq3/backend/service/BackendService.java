@@ -27,13 +27,15 @@ public class BackendService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final StudentEvaluationRepository studentEvaluationRepository;
+    private final EnterpriseEvaluationRepository enterpriseEvaluationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
-                   StudentEvaluationRepository studentEvaluationRepository) {
+                   StudentEvaluationRepository studentEvaluationRepository,
+                   EnterpriseEvaluationRepository enterpriseEvaluationRepository) {
 
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
@@ -42,6 +44,7 @@ public class BackendService {
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.studentEvaluationRepository = studentEvaluationRepository;
+        this.enterpriseEvaluationRepository = enterpriseEvaluationRepository;
     }
 
 
@@ -268,6 +271,16 @@ public class BackendService {
         if(optionalEvaluation.isPresent()){
             StudentEvaluation studentEvaluation = optionalEvaluation.get();
             optionalDocument = Optional.of(studentEvaluation.getPDFDocument());
+        }
+        return optionalDocument;
+    }
+
+    public Optional<PDFDocument> getEnterpriseEvaluationDocument() {
+        Optional<PDFDocument> optionalDocument = Optional.empty();
+        Optional<EnterpriseEvaluation> optionalEvaluation = enterpriseEvaluationRepository.findByName("initialForm");
+        if(optionalEvaluation.isPresent()){
+            EnterpriseEvaluation enterpriseEvaluation = optionalEvaluation.get();
+            optionalDocument = Optional.of(enterpriseEvaluation.getPDFDocument());
         }
         return optionalDocument;
     }

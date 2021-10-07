@@ -5,17 +5,17 @@ Dans BackendApplication entrez le code suivant :
 
 Dans la classe BackendApplication :
     @Autowired
-    private StudentEvaluationRepository studentEvaluationRepository;
+    private EnterpriseEvaluationRepository enterpriseEvaluationRepository;
 
 Dans la fonction run :
-	if(studentEvaluationRepository.findAll().size() < 1 ) {
-            StudentEvaluation studentEvaluation = new StudentEvaluation();
+	if(enterpriseEvaluationRepository.findAll().size() < 1 ) {
+            EnterpriseEvaluation enterpriseEvaluation = new EnterpriseEvaluation();
             Path pdfPath = Paths.get(System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf");
             PDFDocument evaluation = new PDFDocument();
             evaluation.setName("documentTest.pdf");
             evaluation.setContent(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)));
-            studentEvaluation.setPDFDocument(evaluation);
-            studentEvaluation.setName("initialForm");
+            enterpriseEvaluation.setPDFDocument(evaluation);
+            enterpriseEvaluation.setName("initialForm");
 
-            studentEvaluationRepository.save(studentEvaluation);
+            enterpriseEvaluationRepository.save(enterpriseEvaluation);
         }

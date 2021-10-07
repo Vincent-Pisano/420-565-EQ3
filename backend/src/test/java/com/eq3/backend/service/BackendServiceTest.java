@@ -49,6 +49,9 @@ class BackendServiceTest {
     @Mock
     private StudentEvaluationRepository studentEvaluationRepository;
 
+    @Mock
+    private EnterpriseEvaluationRepository enterpriseEvaluationRepository;
+
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
@@ -60,6 +63,7 @@ class BackendServiceTest {
     private List<InternshipOffer> expectedInternshipOfferList;
     private CV expectedCV;
     private StudentEvaluation expectedStudentEvaluation;
+    private EnterpriseEvaluation expectedEnterpriseEvaluation;
 
     @Test
     //@Disabled
@@ -429,6 +433,20 @@ class BackendServiceTest {
                 .thenReturn(Optional.of(expectedStudentEvaluation));
         //Act
         Optional<PDFDocument> optionalDocument = service.getStudentEvaluationDocument();
+
+        //Assert
+        assertThat(optionalDocument.isPresent()).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetEnterpriseEvaluationDocument() throws IOException {
+        //Arrange
+        expectedEnterpriseEvaluation = getEnterpriseEvaluation();
+        when(enterpriseEvaluationRepository.findByName(expectedEnterpriseEvaluation.getName()))
+                .thenReturn(Optional.of(expectedEnterpriseEvaluation));
+        //Act
+        Optional<PDFDocument> optionalDocument = service.getEnterpriseEvaluationDocument();
 
         //Assert
         assertThat(optionalDocument.isPresent()).isTrue();

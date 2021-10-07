@@ -218,4 +218,11 @@ public class UtilsTest {
                 .PDFDocument(getDocument())
                 .build();
     }
+
+    public static EnterpriseEvaluation getEnterpriseEvaluation() throws IOException {
+        return EnterpriseEvaluation.builder()
+                .name("initialForm")
+                .PDFDocument(getDocument())
+                .build();
+    }
 }
