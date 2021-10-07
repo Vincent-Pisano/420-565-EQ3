@@ -6,7 +6,7 @@ import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import "./../styles/Home.css";
 import StudentEvaluation from "./Evaluations/StudentEvaluation";
-import EntrepriseEvaluation from "./Evaluations/EntrepriseEvaluation";
+import EnterpriseEvaluation from "./Evaluations/EnterpriseEvaluation";
 
 function Home() {
   let user = auth.user;
@@ -43,7 +43,7 @@ function Home() {
     if (auth.isSupervisor()) {
       return (
         <>
-          <EntrepriseEvaluation/>
+          <EnterpriseEvaluation/>
         </>
       );
     }

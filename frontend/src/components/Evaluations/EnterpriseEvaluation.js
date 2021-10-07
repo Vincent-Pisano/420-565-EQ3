@@ -1,6 +1,6 @@
 import React from 'react'
 
-const EntrepriseEvaluation = () => {
+const EnterpriseEvaluation = () => {
     return (
         <div>
             <h4>Document d'évalution d'entreprise</h4>
@@ -15,4 +15,4 @@ const EntrepriseEvaluation = () => {
     )
 }
 
-export default EntrepriseEvaluation
+export default EnterpriseEvaluation
