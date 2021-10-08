@@ -552,7 +552,6 @@ class BackendServiceTest {
         Student student = optionalStudent.orElse(null);
         assertThat(student).isNotNull();
         assertThat(student.getSupervisor()).isEqualTo(expectedSupervisor);
-
     }
 
     @Test
@@ -571,7 +570,6 @@ class BackendServiceTest {
         //Assert
         assertThat(students.isPresent()).isTrue();
         assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
-
     }
 
     @Test
@@ -603,6 +601,5 @@ class BackendServiceTest {
         CV cv = student.getCVList().get(0);
         assertThat(student).isNotNull();
         assertThat(cv.getIsValid()).isTrue();
-
     }
 }

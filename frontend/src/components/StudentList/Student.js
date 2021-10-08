@@ -4,8 +4,7 @@ import { Row, Col } from "react-bootstrap";
 
 const Student = ({ student, onDoubleClick }) => {
   return (
-    <Row className="list_node"
-    onDoubleClick={() => onDoubleClick(student)}>
+    <Row className="list_node" onDoubleClick={() => onDoubleClick(student)}>
       <Col xs={3}>
         <FontAwesomeIcon className="fa-3x" icon={faUserCircle} />
       </Col>
