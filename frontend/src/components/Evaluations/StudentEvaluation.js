@@ -7,7 +7,7 @@ const StudentEvaluation = () => {
     return (
       <Container>
         <h2 className="cont_title_form">Document d'évalution d'étudiant</h2>
-        <EvaluationButtonDeposit />
+        <EvaluationButtonDeposit evaluationName="studentEvaluation"/>
       </Container>
     )
 }
