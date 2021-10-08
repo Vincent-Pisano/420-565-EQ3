@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class BackendService {
 
     private final Logger logger;
+    private final String STUDENT_EVALUATION_DOCUMENT_NAME = "studentEvaluation.pdf";
+    private final String ENTERPRISE_EVALUATION_DOCUMENT_NAME = "enterpriseEvaluation.pdf";
 
     private final StudentRepository studentRepository;
     private final MonitorRepository monitorRepository;
@@ -52,7 +55,7 @@ public class BackendService {
         Optional<Student> optionalStudent = Optional.empty();
         try {
             optionalStudent = cleanUpStudentCVList(Optional.of(studentRepository.save(student)));
-        } catch (DuplicateKeyException exception){
+        } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Student) : " + exception.getMessage());
         }
         return optionalStudent;
@@ -62,7 +65,7 @@ public class BackendService {
         Optional<Monitor> optionalMonitor = Optional.empty();
         try {
             optionalMonitor = Optional.of(monitorRepository.save(monitor));
-        } catch (DuplicateKeyException exception){
+        } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Monitor) : " + exception.getMessage());
         }
         return optionalMonitor;
@@ -72,7 +75,7 @@ public class BackendService {
         Optional<Supervisor> optionalSupervisor = Optional.empty();
         try {
             optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
-        } catch (DuplicateKeyException exception){
+        } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Supervisor) : " + exception.getMessage());
         }
         return optionalSupervisor;
@@ -111,7 +114,7 @@ public class BackendService {
         return internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
 
-    public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile){
+    public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
         InternshipOffer internshipOffer = null;
         try {
             internshipOffer = getInternshipOffer(internshipOfferJson, multipartFile);
@@ -134,7 +137,7 @@ public class BackendService {
         return new ObjectMapper().readValue(internshipOfferJson, InternshipOffer.class);
     }
 
-    public Optional<Student> saveCV(String id, MultipartFile multipartFile){
+    public Optional<Student> saveCV(String id, MultipartFile multipartFile) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
 
         optionalStudent = addToListCV(multipartFile, optionalStudent)
@@ -146,7 +149,7 @@ public class BackendService {
 
     private Boolean addToListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
         Boolean isPresent = optionalStudent.isPresent();
-        if(isPresent) {
+        if (isPresent) {
             Student student = optionalStudent.get();
             List<CV> listCV = student.getCVList();
             if (listCV.size() < 10) {
@@ -171,7 +174,7 @@ public class BackendService {
         return PDFDocument;
     }
 
-    public Optional<Student> deleteCV (String idStudent, String idCV) {
+    public Optional<Student> deleteCV(String idStudent, String idCV) {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
         optionalStudent = deleteCVFromListCV(optionalStudent, idCV)
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
@@ -181,7 +184,7 @@ public class BackendService {
 
     private Boolean deleteCVFromListCV(Optional<Student> optionalStudent, String idCV) {
         Boolean isPresent = optionalStudent.isPresent();
-        if(isPresent) {
+        if (isPresent) {
             Student student = optionalStudent.get();
             List<CV> listCV = student.getCVList();
             listCV.removeIf(cv -> cv.getId().equals(idCV));
@@ -190,7 +193,7 @@ public class BackendService {
         return isPresent;
     }
 
-    public Optional<Student> updateActiveCV (String idStudent, String idCV){
+    public Optional<Student> updateActiveCV(String idStudent, String idCV) {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
         optionalStudent = updateActiveCVFromListCV(optionalStudent, idCV)
                 ? Optional.of(studentRepository.save(optionalStudent.get()))
@@ -216,13 +219,13 @@ public class BackendService {
 
     private Optional<Student> cleanUpStudentCVList(Optional<Student> optionalStudent) {
         optionalStudent.ifPresent(student -> {
-                if (student.getCVList() != null) {
-                    student.getCVList().forEach(cv -> {
-                        PDFDocument PDFDocument = cv.getPDFDocument();
-                        PDFDocument.setContent(null);
-                    });
+                    if (student.getCVList() != null) {
+                        student.getCVList().forEach(cv -> {
+                            PDFDocument PDFDocument = cv.getPDFDocument();
+                            PDFDocument.setContent(null);
+                        });
+                    }
                 }
-            }
         );
         return optionalStudent;
     }
@@ -267,18 +270,20 @@ public class BackendService {
 
     public Optional<PDFDocument> getStudentEvaluationDocument() {
         Optional<PDFDocument> optionalDocument = Optional.empty();
-        Optional<StudentEvaluation> optionalEvaluation = studentEvaluationRepository.findByName("initialForm");
-        if(optionalEvaluation.isPresent()){
+        Optional<StudentEvaluation> optionalEvaluation =
+                studentEvaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME);
+        if (optionalEvaluation.isPresent()) {
             StudentEvaluation studentEvaluation = optionalEvaluation.get();
-            optionalDocument = Optional.of(studentEvaluation.getPDFDocument());
+            optionalDocument = Optional.of(studentEvaluation.getDocument());
         }
         return optionalDocument;
     }
 
     public Optional<PDFDocument> getEnterpriseEvaluationDocument() {
         Optional<PDFDocument> optionalDocument = Optional.empty();
-        Optional<EnterpriseEvaluation> optionalEvaluation = enterpriseEvaluationRepository.findByName("initialForm");
-        if(optionalEvaluation.isPresent()){
+        Optional<EnterpriseEvaluation> optionalEvaluation =
+                enterpriseEvaluationRepository.findByName(ENTERPRISE_EVALUATION_DOCUMENT_NAME);
+        if (optionalEvaluation.isPresent()) {
             EnterpriseEvaluation enterpriseEvaluation = optionalEvaluation.get();
             optionalDocument = Optional.of(enterpriseEvaluation.getPDFDocument());
         }
@@ -290,11 +295,17 @@ public class BackendService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<Monitor> getMonitorByUsername(String username){
+    public Optional<List<Student>> getListStudentWithCVActiveNotValid() {
+        List<Student> studentList = studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid();
+        studentList.forEach(student -> cleanUpStudentCVList(Optional.ofNullable(student)));
+        return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
+    }
+
+    public Optional<Monitor> getMonitorByUsername(String username) {
         return monitorRepository.findByUsernameAndIsDisabledFalse(username);
     }
 
-    public Optional<InternshipOffer> validateInternshipOffer(String idOffer){
+    public Optional<InternshipOffer> validateInternshipOffer(String idOffer) {
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
         optionalInternshipOffer.ifPresent(internshipOffer -> {
             internshipOffer.setIsValid(true);
@@ -302,7 +313,7 @@ public class BackendService {
         return optionalInternshipOffer.map(internshipOfferRepository::save);
     }
 
-    public Optional<Student> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer){
+    public Optional<Student> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         optionalStudent.ifPresent(student -> {
             List<InternshipOffer> internshipOffersList = student.getInternshipOffers();
@@ -329,6 +340,23 @@ public class BackendService {
 
         return cleanUpStudentCVList(optionalStudent);
 
+    }
+
+    public Optional<Student> validateCVOfStudent(String idStudent) {
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+
+        optionalStudent.ifPresent(student -> {
+            List<CV> CVList = student.getCVList();
+            for (CV currentCV : CVList) {
+                if (currentCV.getIsActive()) {
+                    currentCV.setIsValid(true);
+                }
+                break;
+            }
+            studentRepository.save(student);
+        });
+
+        return cleanUpStudentCVList(optionalStudent);
     }
 }
 

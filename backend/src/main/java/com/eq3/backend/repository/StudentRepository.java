@@ -4,6 +4,7 @@ import com.eq3.backend.model.Department;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.model.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     Optional<Student> findStudentByUsernameAndIsDisabledFalse(String username);
 
     List<Student> findAllByIsDisabledFalseAndDepartment(Department department);
+
+    @Query(value = "{ 'isDisabled':false ,'CVList' : {$elemMatch: { 'isValid': false, 'isActive' : true} } }")
+    List<Student> findAllByIsDisabledFalseAndActiveCVNotValid();
 
     List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(Department department);
 }

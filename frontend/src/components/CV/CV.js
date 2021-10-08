@@ -3,6 +3,11 @@ import CVButtonDownload from "./CVButtonDownload";
 import CVButtonDelete from "./CVButtonDelete";
 import CVButtonActive from "./CVButtonActive";
 import auth from "../../services/Auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheck,
+  faTimes
+} from "@fortawesome/free-solid-svg-icons";
 import "./../../styles/CV.css"
 
 const CV = ({ cv }) => {
@@ -19,6 +24,11 @@ const CV = ({ cv }) => {
       <td>
         <CVButtonActive documentId={cv.id} documentActive={cv.isActive}/>
       </td>
+      <td>
+        <FontAwesomeIcon className="fa-2x" 
+        icon={cv.isActive ? faCheck : faTimes} 
+        style={{ color: cv.isActive ? "green" : "red"}  }/>
+        </td>
     </tr>
   );
 };
