@@ -16,10 +16,10 @@ function NavUserSwitch() {
             <li className="nav-links-header">Liste Offres</li>
           </Nav.Link>
           <Nav.Link as={Link} to="/listStudents">
-            <li className="nav-links-header">Listes des CV à valider</li>
+            <li className="nav-links-header">Liste CV</li>
           </Nav.Link>
           <Nav.Link as={Link} to="/listSupervisors">
-            <li className="nav-links-header">Assignation Superviseur</li>
+            <li className="nav-links-header">Assignation</li>
           </Nav.Link>
         </>
       );
