@@ -20,9 +20,7 @@ function InternshipOfferList() {
           setInternshipOffers(response.data);
         })
         .catch((err) => {
-          setErrorMessage(
-            "Aucune Offre de stage à valider"
-          );
+          setErrorMessage("Aucune Offre de stage à valider");
         });
     } else {
       axios

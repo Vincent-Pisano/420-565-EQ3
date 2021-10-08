@@ -116,9 +116,7 @@ function StudentList() {
 
   function ValidCV() {
     axios
-      .post(
-        `http://localhost:9090/validate/CV/${currentStudent.idUser}`
-      )
+      .post(`http://localhost:9090/validate/CV/${currentStudent.idUser}`)
       .then((response) => {
         let validatedStudent = response.data;
         setStudents(
@@ -133,9 +131,7 @@ function StudentList() {
               pathname: `/home/${auth.user.username}`,
             });
           }, 3000);
-          setErrorMessage(
-            "Plus aucun CV à Valider, vous allez être redirigé"
-          );
+          setErrorMessage("Plus aucun CV à Valider, vous allez être redirigé");
         }
         setTimeout(() => {
           handleClose();
@@ -236,8 +232,8 @@ function StudentList() {
                     download
                     href={`http://localhost:9090/get/CV/document/${
                       currentStudent === undefined
-                        ?  "" :
-                        currentStudent.idUser +
+                        ? ""
+                        : currentStudent.idUser +
                           "/" +
                           currentStudent.cvlist.filter(
                             (cv) => cv.isActive === true

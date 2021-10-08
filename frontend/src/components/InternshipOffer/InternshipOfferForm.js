@@ -124,7 +124,9 @@ const InternshipOfferForm = () => {
         `http://localhost:9090/save/internshipOffer/validate/${internshipOffer.id}`
       )
       .then((response) => {
-        setErrorMessage("L'offre de stage a été validée, vous allez être redirigé");
+        setErrorMessage(
+          "L'offre de stage a été validée, vous allez être redirigé"
+        );
         setTimeout(() => {
           history.push({
             pathname: `/listInternshipOffer`,
@@ -136,22 +138,27 @@ const InternshipOfferForm = () => {
       });
   }
 
-  function applyInternshipOffer(){
+  function applyInternshipOffer() {
     axios
-      .post(`http://localhost:9090/apply/internshipOffer/${user.username}`, fields)
+      .post(
+        `http://localhost:9090/apply/internshipOffer/${user.username}`,
+        fields
+      )
       .then((response) => {
         auth.user = response.data;
-        setHasApplied(true)
-        
+        setHasApplied(true);
+
         setTimeout(() => {
           history.push({
-            pathname: `/listInternshipOffer`
+            pathname: `/listInternshipOffer`,
           });
         }, 3000);
-        setErrorMessage("Votre demande a été acceptée, vous allez être redirigé");
-      }
-      ).catch((error) => {
-        setErrorMessage("Erreur lors de l'application de stage")
+        setErrorMessage(
+          "Votre demande a été acceptée, vous allez être redirigé"
+        );
+      })
+      .catch((error) => {
+        setErrorMessage("Erreur lors de l'application de stage");
       });
   }
 
@@ -200,28 +207,47 @@ const InternshipOfferForm = () => {
     if (auth.isStudent() && internshipOffer !== undefined) {
       let internshipOffferList = user.internshipOffers;
       let hasAlredayApplied = false;
-      internshipOffferList.forEach(_internshipOffer => {
-        if(_internshipOffer.id === internshipOffer.id) {
+      internshipOffferList.forEach((_internshipOffer) => {
+        if (_internshipOffer.id === internshipOffer.id) {
           hasAlredayApplied = true;
         }
       });
       if (!hasApplied) {
         if (!hasAlredayApplied) {
-          return (<>
-            <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
-            <button className="btn_submit" onClick={() => applyInternshipOffer()}>Appliquer</button>
-          </>)
-        }
-        else {
           return (
-             <p style={{ color:'red'}}>Vous avez déja appliqué à ce stage</p>
-          )
+            <>
+              <p
+                style={{
+                  color: errorMessage.startsWith("Erreur") ? "red" : "blue",
+                }}
+              >
+                {errorMessage}
+              </p>
+              <button
+                className="btn_submit"
+                onClick={() => applyInternshipOffer()}
+              >
+                Appliquer
+              </button>
+            </>
+          );
+        } else {
+          return (
+            <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
+          );
         }
-      }
-      else{
-        return (<>
-          <p style={{ color: errorMessage.startsWith("Erreur") ? 'red' : 'blue' }}>{errorMessage}</p>
-        </>)
+      } else {
+        return (
+          <>
+            <p
+              style={{
+                color: errorMessage.startsWith("Erreur") ? "red" : "blue",
+              }}
+            >
+              {errorMessage}
+            </p>
+          </>
+        );
       }
     }
   }

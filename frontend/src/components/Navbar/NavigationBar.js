@@ -10,12 +10,12 @@ import "../../styles/Navbar.css";
 function NavigationBar() {
   let history = useHistory();
   const [userStatus, setUserStatus] = useState({
-    isLoggedIn: auth.authenticated
+    isLoggedIn: auth.authenticated,
   });
 
   history.listen(() => {
     setUserStatus({
-      isLoggedIn: auth.authenticated
+      isLoggedIn: auth.authenticated,
     });
   });
 
@@ -35,7 +35,7 @@ function NavigationBar() {
               Home
             </li>
           </Nav.Link>
-          <NavUserSwitch/>
+          <NavUserSwitch />
           <Nav.Link>
             <li
               className="nav-links-header"

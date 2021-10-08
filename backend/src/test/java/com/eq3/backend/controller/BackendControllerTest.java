@@ -50,6 +50,7 @@ class BackendControllerTest {
     private PDFDocument expectedPDFDocument;
 
     @Test
+    //@Disabled
     public void testSignUpStudent() throws Exception {
         // Arrange
         expectedStudent = getStudent();
@@ -66,6 +67,7 @@ class BackendControllerTest {
     }
 
     @Test
+    //@Disabled
     public void testSignUpMonitor() throws Exception {
         // Arrange
         expectedMonitor = getMonitor();
@@ -82,6 +84,7 @@ class BackendControllerTest {
     }
 
     @Test
+    //@Disabled
     public void testSignUpSupervisor() throws Exception {
         // Arrange
         expectedSupervisor = getSupervisor();
@@ -335,6 +338,7 @@ class BackendControllerTest {
     }
 
     @Test
+    //@Disabled
     public void testUpdateActiveCV() throws Exception {
         //Arrange
         final int NEW_ACTIVE_CV_INDEX = 0;
