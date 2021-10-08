@@ -215,16 +215,9 @@ public class UtilsTest {
         return cvList;
     }
 
-    public static StudentEvaluation getStudentEvaluation() throws IOException {
-        return StudentEvaluation.builder()
+    public static Evaluation getEvaluation() throws IOException {
+        return Evaluation.builder()
                 .document(getDocument())
-                .build();
-    }
-
-    public static EnterpriseEvaluation getEnterpriseEvaluation() throws IOException {
-        return EnterpriseEvaluation.builder()
-                .name("initialForm")
-                .PDFDocument(getDocument())
                 .build();
     }
 }

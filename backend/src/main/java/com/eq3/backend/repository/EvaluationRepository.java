@@ -1,6 +1,6 @@
 package com.eq3.backend.repository;
 
-import com.eq3.backend.model.StudentEvaluation;
+import com.eq3.backend.model.Evaluation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface StudentEvaluationRepository extends MongoRepository<StudentEvaluation, String> {
+public interface EvaluationRepository extends MongoRepository<Evaluation, String> {
 
     @Query(value = "{ 'isDisabled':false ,'document.name': ?0 }")
-    Optional<StudentEvaluation> findByName(String name);
+    Optional<Evaluation> findByName(String name);
 }

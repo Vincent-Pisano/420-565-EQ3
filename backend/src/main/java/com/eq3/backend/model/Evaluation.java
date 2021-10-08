@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
@@ -13,14 +14,11 @@ import java.util.Date;
 @Data
 @Builder
 @AllArgsConstructor
-public class StudentEvaluation {
+@Document
+public class Evaluation {
 
     @Id
     private String id;
-
-    /*@Field
-    @Indexed(unique = true)
-    private String name;*/
 
     @Field
     private PDFDocument document;
@@ -28,11 +26,12 @@ public class StudentEvaluation {
     @Field
     @Builder.Default
     protected Date creationDate = new Date();
+
     @Field
     @Builder.Default
     protected Boolean isDisabled = false;
 
-    public StudentEvaluation() {
+    public Evaluation() {
         this.creationDate = new Date();
         this.isDisabled = false;
     }

@@ -47,10 +47,7 @@ class BackendServiceTest {
     private InternshipOfferRepository internshipOfferRepository;
 
     @Mock
-    private StudentEvaluationRepository studentEvaluationRepository;
-
-    @Mock
-    private EnterpriseEvaluationRepository enterpriseEvaluationRepository;
+    private EvaluationRepository evaluationRepository;
 
     //global variables
     private Student expectedStudent;
@@ -62,8 +59,7 @@ class BackendServiceTest {
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
     private CV expectedCV;
-    private StudentEvaluation expectedStudentEvaluation;
-    private EnterpriseEvaluation expectedEnterpriseEvaluation;
+    private Evaluation expectedEvaluation;
 
     @Test
     //@Disabled
@@ -428,10 +424,10 @@ class BackendServiceTest {
     //@Disabled
     public void testGetStudentEvaluationDocument() throws IOException {
         //Arrange
-        expectedStudentEvaluation = getStudentEvaluation();
+        expectedEvaluation = getEvaluation();
 
-        when(studentEvaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME))
-                .thenReturn(Optional.of(expectedStudentEvaluation));
+        when(evaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME))
+                .thenReturn(Optional.of(expectedEvaluation));
         //Act
         Optional<PDFDocument> optionalDocument = service.getStudentEvaluationDocument();
 
@@ -443,9 +439,9 @@ class BackendServiceTest {
     //@Disabled
     public void testGetEnterpriseEvaluationDocument() throws IOException {
         //Arrange
-        expectedEnterpriseEvaluation = getEnterpriseEvaluation();
-        when(enterpriseEvaluationRepository.findByName(ENTERPRISE_EVALUATION_DOCUMENT_NAME))
-                .thenReturn(Optional.of(expectedEnterpriseEvaluation));
+        expectedEvaluation = getEvaluation();
+        when(evaluationRepository.findByName(ENTERPRISE_EVALUATION_DOCUMENT_NAME))
+                .thenReturn(Optional.of(expectedEvaluation));
         //Act
         Optional<PDFDocument> optionalDocument = service.getEnterpriseEvaluationDocument();
 

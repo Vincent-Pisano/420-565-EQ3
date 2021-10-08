@@ -1,17 +1,14 @@
 import React from 'react'
+import { Container } from "react-bootstrap";
+import EvaluationButtonDeposit from "./EvaluationButtonDeposit"
+import "../../styles/List.css";
 
 const EnterpriseEvaluation = () => {
     return (
-        <div>
-            <h4>Document d'évalution d'entreprise</h4>
-            <a
-                className="btn btn-success btn-sm"
-                download
-                href={`http://localhost:9090/get/enterpriseEvaluation`}
-            >
-                Télécharger
-            </a>
-        </div>
+      <Container>
+        <h2 className="cont_title_form">Document d'évalution d'entreprise</h2>
+        <EvaluationButtonDeposit evaluationName="enterpriseEvaluation"/>
+      </Container>
     )
 }
 

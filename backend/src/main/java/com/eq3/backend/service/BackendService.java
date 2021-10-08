@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,16 +28,15 @@ public class BackendService {
     private final SupervisorRepository supervisorRepository;
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
-    private final StudentEvaluationRepository studentEvaluationRepository;
-    private final EnterpriseEvaluationRepository enterpriseEvaluationRepository;
+    private final EvaluationRepository evaluationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
-                   StudentEvaluationRepository studentEvaluationRepository,
-                   EnterpriseEvaluationRepository enterpriseEvaluationRepository) {
+                   EvaluationRepository evaluationRepository
+    ) {
 
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
@@ -46,8 +44,7 @@ public class BackendService {
         this.supervisorRepository = supervisorRepository;
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
-        this.studentEvaluationRepository = studentEvaluationRepository;
-        this.enterpriseEvaluationRepository = enterpriseEvaluationRepository;
+        this.evaluationRepository = evaluationRepository;
     }
 
 
@@ -270,10 +267,10 @@ public class BackendService {
 
     public Optional<PDFDocument> getStudentEvaluationDocument() {
         Optional<PDFDocument> optionalDocument = Optional.empty();
-        Optional<StudentEvaluation> optionalEvaluation =
-                studentEvaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME);
+        Optional<Evaluation> optionalEvaluation =
+                evaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME);
         if (optionalEvaluation.isPresent()) {
-            StudentEvaluation studentEvaluation = optionalEvaluation.get();
+            Evaluation studentEvaluation = optionalEvaluation.get();
             optionalDocument = Optional.of(studentEvaluation.getDocument());
         }
         return optionalDocument;
@@ -281,11 +278,11 @@ public class BackendService {
 
     public Optional<PDFDocument> getEnterpriseEvaluationDocument() {
         Optional<PDFDocument> optionalDocument = Optional.empty();
-        Optional<EnterpriseEvaluation> optionalEvaluation =
-                enterpriseEvaluationRepository.findByName(ENTERPRISE_EVALUATION_DOCUMENT_NAME);
+        Optional<Evaluation> optionalEvaluation =
+                evaluationRepository.findByName(ENTERPRISE_EVALUATION_DOCUMENT_NAME);
         if (optionalEvaluation.isPresent()) {
-            EnterpriseEvaluation enterpriseEvaluation = optionalEvaluation.get();
-            optionalDocument = Optional.of(enterpriseEvaluation.getPDFDocument());
+            Evaluation enterpriseEvaluation = optionalEvaluation.get();
+            optionalDocument = Optional.of(enterpriseEvaluation.getDocument());
         }
         return optionalDocument;
     }

@@ -1,21 +1,51 @@
-Note : changez l'URL quand on aura les bons PDF
+package com.eq3.backend;
+
+import com.eq3.backend.model.Evaluation;
+import com.eq3.backend.model.PDFDocument;
+import com.eq3.backend.repository.EvaluationRepository;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
-Dans BackendApplication entrez le code suivant :
+@SpringBootApplication
+public class BackendApplication implements CommandLineRunner {
 
-Dans la classe BackendApplication :
-    @Autowired
-    private EnterpriseEvaluationRepository enterpriseEvaluationRepository;
+    private final EvaluationRepository evaluationRepository;
 
-Dans la fonction run :
-	if(enterpriseEvaluationRepository.findAll().size() < 1 ) {
-            EnterpriseEvaluation enterpriseEvaluation = new EnterpriseEvaluation();
-            Path pdfPath = Paths.get(System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf");
-            PDFDocument evaluation = new PDFDocument();
-            evaluation.setName("documentTest.pdf");
-            evaluation.setContent(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)));
-            enterpriseEvaluation.setPDFDocument(evaluation);
-            enterpriseEvaluation.setName("initialForm");
+    public BackendApplication(EvaluationRepository evaluationRepository) {
+        this.evaluationRepository = evaluationRepository;
+    }
 
-            enterpriseEvaluationRepository.save(enterpriseEvaluation);
-        }
+    public static void main(String[] args) {
+        SpringApplication.run(BackendApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        Evaluation enterpriseEvaluation = new Evaluation();
+        Path pdfPath = Paths.get(System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf");
+        PDFDocument document = PDFDocument.builder()
+                .name("enterpriseEvaluation.pdf")
+                .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
+                .build();
+        enterpriseEvaluation.setDocument(document);
+        this.evaluationRepository.save(enterpriseEvaluation);
+
+        Evaluation studentEvaluation = new Evaluation();
+        Path pdfPath2 = Paths.get(System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf");
+        PDFDocument document2 = PDFDocument.builder()
+                .name("enterpriseEvaluation.pdf")
+                .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath2)))
+                .build();
+        studentEvaluation.setDocument(document2);
+        this.evaluationRepository.save(studentEvaluation);
+    }
+
+}
