@@ -20,7 +20,7 @@ import java.util.Optional;
 public class BackendService {
 
     private final Logger logger;
-    private final String STUDENT_EVALUATION_DOCUMENT_NAME = "initialForm";
+    private final String STUDENT_EVALUATION_DOCUMENT_NAME = "studentEvaluation";
 
     private final StudentRepository studentRepository;
     private final MonitorRepository monitorRepository;
