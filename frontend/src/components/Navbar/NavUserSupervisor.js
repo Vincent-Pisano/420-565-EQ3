@@ -12,6 +12,13 @@ const NavUserSupervisor = () => {
       <NavDropdown.Item as={Link} to="/listStudents">
         Liste des étudiants
       </NavDropdown.Item>
+
+      <NavDropdown.Item
+        download
+        href={`http://localhost:9090/get/enterpriseEvaluation/document`}
+      >
+        Document d'évalution d'entreprise
+      </NavDropdown.Item>
     </NavDropdown>
   );
 };

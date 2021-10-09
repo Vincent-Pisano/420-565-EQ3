@@ -5,8 +5,6 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import "./../styles/Home.css";
-import StudentEvaluation from "./Evaluations/StudentEvaluation";
-import EnterpriseEvaluation from "./Evaluations/EnterpriseEvaluation";
 
 function Home() {
   let user = auth.user;
@@ -24,26 +22,6 @@ function Home() {
       return (
         <>
           <CVList />
-        </>
-      );
-    }
-  }
-
-  function checkIfMonitor() {
-    if (auth.isMonitor()) {
-      return (
-        <>
-          <StudentEvaluation/>
-        </>
-      );
-    }
-  }
-
-  function checkIfSupervisor() {
-    if (auth.isSupervisor()) {
-      return (
-        <>
-          <EnterpriseEvaluation/>
         </>
       );
     }
@@ -72,9 +50,7 @@ function Home() {
             </Row>
           </Col>
           <Col xs={12} md={9}>
-            {checkIfSupervisor()}
             {checkIfStudent()}
-            {checkIfMonitor()}
           </Col>
         </Row>
       </Container>

@@ -12,6 +12,13 @@ const NavUserMonitor = () => {
       <NavDropdown.Item as={Link} to="/formInternshipOffer">
         Dépôt d'offres de stage
       </NavDropdown.Item>
+
+      <NavDropdown.Item
+        download
+        href={`http://localhost:9090/get/studentEvaluation/document`}
+      >
+        Document d'évalution d'étudiant
+      </NavDropdown.Item>
     </NavDropdown>
   );
 };
