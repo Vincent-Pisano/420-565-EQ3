@@ -182,7 +182,7 @@ public class BackendController {
 
     @GetMapping("/getAll/student/CVActiveNotValid")
     public ResponseEntity<List<Student>> getAllStudentsWithActiveAndNotValidCV() {
-        return service.getListStudentWithCVActiveNotValid()
+        return service.getAllStudentWithCVActiveWaitingValidation()
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

@@ -300,8 +300,8 @@ public class BackendService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<Student>> getListStudentWithCVActiveNotValid() {
-        List<Student> studentList = studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid();
+    public Optional<List<Student>> getAllStudentWithCVActiveWaitingValidation() {
+        List<Student> studentList = studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation();
         studentList.forEach(student -> cleanUpStudentCVList(Optional.ofNullable(student)));
         return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }

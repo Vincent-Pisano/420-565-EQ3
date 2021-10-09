@@ -589,16 +589,16 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetListStudentWithCVActiveNotValid() {
+    public void testGetAllStudentWithCVActiveWaitingValidation() {
         //Arrange
         expectedStudentList = getListOfStudents();
 
-        when(studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid())
+        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation())
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> students =
-                service.getListStudentWithCVActiveNotValid();
+                service.getAllStudentWithCVActiveWaitingValidation();
 
         //Assert
         assertThat(students.isPresent()).isTrue();

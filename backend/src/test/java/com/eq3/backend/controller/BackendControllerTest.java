@@ -556,11 +556,11 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllCVThatIsActiveAndNotValid() throws Exception {
+    public void testGetAllStudentWithCVActiveWaitingValidation() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
 
-        when(service.getListStudentWithCVActiveNotValid())
+        when(service.getAllStudentWithCVActiveWaitingValidation())
                 .thenReturn(Optional.of(expectedStudentList));
 
         //Act
