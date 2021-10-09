@@ -1,26 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../App.css";
-import Nav from "react-bootstrap/Nav";
 import auth from "../../services/Auth";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 function NavUserSwitch() {
   function checkIfGS() {
     if (auth.isInternshipManager()) {
       return (
         <>
-          <Nav.Link as={Link} to="/formInternshipOffer">
-            <li className="nav-links-header">Dépôt Offre</li>
-          </Nav.Link>
-          <Nav.Link as={Link} to="/listInternshipOffer">
-            <li className="nav-links-header">Liste Offres</li>
-          </Nav.Link>
-          <Nav.Link as={Link} to="/listStudents">
-            <li className="nav-links-header">Liste CV</li>
-          </Nav.Link>
-          <Nav.Link as={Link} to="/listSupervisors">
-            <li className="nav-links-header">Assignation</li>
-          </Nav.Link>
+          <NavDropdown
+            className="nav-drop-cust"
+            title={<span className="nav-links-header">Options GS</span>}
+            menuVariant="dark"
+            noCaret
+          >
+            <NavDropdown.Item as={Link} to="/formInternshipOffer">
+              Dépôt Offre
+            </NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/listInternshipOffer">
+              Liste Offres
+            </NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/listStudents">
+              Liste CV
+            </NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/listSupervisors">
+              Assignation
+            </NavDropdown.Item>
+          </NavDropdown>
         </>
       );
     }
@@ -30,9 +37,16 @@ function NavUserSwitch() {
     if (auth.isStudent()) {
       return (
         <>
-          <Nav.Link as={Link} to="/listInternshipOffer">
-            <li className="nav-links-header">Liste d'offres de stage</li>
-          </Nav.Link>
+          <NavDropdown
+            className="nav-drop-cust"
+            title={<span className="nav-links-header">Options Étudiant</span>}
+            menuVariant="dark"
+            noCaret
+          >
+            <NavDropdown.Item as={Link} to="/listInternshipOffer">
+              Liste d'offres de stage
+            </NavDropdown.Item>
+          </NavDropdown>
         </>
       );
     }
@@ -42,9 +56,16 @@ function NavUserSwitch() {
     if (auth.isSupervisor()) {
       return (
         <>
-          <Nav.Link as={Link} to="/listStudents">
-            <li className="nav-links-header">Liste des étudiants</li>
-          </Nav.Link>
+          <NavDropdown
+            className="nav-drop-cust"
+            title={<span className="nav-links-header">Options Superviseur</span>}
+            menuVariant="dark"
+            noCaret
+          >
+            <NavDropdown.Item as={Link} to="/listStudents">
+              Liste des étudiants
+            </NavDropdown.Item>
+          </NavDropdown>
         </>
       );
     }
@@ -54,9 +75,16 @@ function NavUserSwitch() {
     if (auth.isMonitor()) {
       return (
         <>
-          <Nav.Link as={Link} to="/formInternshipOffer">
-            <li className="nav-links-header">Dépôt d'offres de stage</li>
-          </Nav.Link>
+          <NavDropdown
+            className="nav-drop-cust"
+            title={<span className="nav-links-header">Options Moniteur</span>}
+            menuVariant="dark"
+            noCaret
+          >
+            <NavDropdown.Item as={Link} to="/formInternshipOffer">
+              Dépôt d'offres de stage
+            </NavDropdown.Item>
+          </NavDropdown>
         </>
       );
     }
