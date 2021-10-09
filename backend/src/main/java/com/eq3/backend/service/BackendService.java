@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.eq3.backend.utils.Utils.DOCUMENT_EXTENSION;
+
 @Service
 public class BackendService {
 
     private final Logger logger;
-    private final String STUDENT_EVALUATION_DOCUMENT_NAME = "studentEvaluation.pdf";
-    private final String ENTERPRISE_EVALUATION_DOCUMENT_NAME = "enterpriseEvaluation.pdf";
 
     private final StudentRepository studentRepository;
     private final MonitorRepository monitorRepository;
@@ -273,24 +273,13 @@ public class BackendService {
         return optionalDocument;
     }
 
-    public Optional<PDFDocument> getStudentEvaluationDocument() {
+    public Optional<PDFDocument> getEvaluationDocument(String documentName) {
         Optional<PDFDocument> optionalDocument = Optional.empty();
         Optional<Evaluation> optionalEvaluation =
-                evaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME);
+                evaluationRepository.findByName(documentName + DOCUMENT_EXTENSION);
         if (optionalEvaluation.isPresent()) {
-            Evaluation studentEvaluation = optionalEvaluation.get();
-            optionalDocument = Optional.of(studentEvaluation.getDocument());
-        }
-        return optionalDocument;
-    }
-
-    public Optional<PDFDocument> getEnterpriseEvaluationDocument() {
-        Optional<PDFDocument> optionalDocument = Optional.empty();
-        Optional<Evaluation> optionalEvaluation =
-                evaluationRepository.findByName(ENTERPRISE_EVALUATION_DOCUMENT_NAME);
-        if (optionalEvaluation.isPresent()) {
-            Evaluation enterpriseEvaluation = optionalEvaluation.get();
-            optionalDocument = Optional.of(enterpriseEvaluation.getDocument());
+            Evaluation evaluation = optionalEvaluation.get();
+            optionalDocument = Optional.of(evaluation.getDocument());
         }
         return optionalDocument;
     }

@@ -206,14 +206,14 @@ const InternshipOfferForm = () => {
   function checkIfStudent() {
     if (auth.isStudent() && internshipOffer !== undefined) {
       let internshipOffferList = user.internshipOffers;
-      let hasAlredayApplied = false;
+      let hasAlreadyApplied = false;
       internshipOffferList.forEach((_internshipOffer) => {
         if (_internshipOffer.id === internshipOffer.id) {
-          hasAlredayApplied = true;
+          hasAlreadyApplied = true;
         }
       });
       if (!hasApplied) {
-        if (!hasAlredayApplied) {
+        if (!hasAlreadyApplied) {
           return (
             <>
               <p
@@ -256,7 +256,7 @@ const InternshipOfferForm = () => {
     if (internshipOffer === undefined) {
       return <h2>Ajout d'offre de stages</h2>;
     } else {
-      return <h2>Information sur l'offre de stage</h2>;
+      return <h2>Informations sur l'offre de stage</h2>;
     }
   }
 

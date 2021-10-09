@@ -60,6 +60,7 @@ class BackendServiceTest {
     private List<InternshipOffer> expectedInternshipOfferList;
     private CV expectedCV;
     private Evaluation expectedEvaluation;
+    private String expectedDocumentName;
 
     @Test
     //@Disabled
@@ -422,28 +423,15 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetStudentEvaluationDocument() throws IOException {
+    public void testGetEvaluationDocument() throws IOException {
         //Arrange
         expectedEvaluation = getEvaluation();
+        expectedDocumentName = DOCUMENT_NAME;
 
-        when(evaluationRepository.findByName(STUDENT_EVALUATION_DOCUMENT_NAME))
+        when(evaluationRepository.findByName(expectedDocumentName + DOCUMENT_EXTENSION))
                 .thenReturn(Optional.of(expectedEvaluation));
         //Act
-        Optional<PDFDocument> optionalDocument = service.getStudentEvaluationDocument();
-
-        //Assert
-        assertThat(optionalDocument.isPresent()).isTrue();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetEnterpriseEvaluationDocument() throws IOException {
-        //Arrange
-        expectedEvaluation = getEvaluation();
-        when(evaluationRepository.findByName(ENTERPRISE_EVALUATION_DOCUMENT_NAME))
-                .thenReturn(Optional.of(expectedEvaluation));
-        //Act
-        Optional<PDFDocument> optionalDocument = service.getEnterpriseEvaluationDocument();
+        Optional<PDFDocument> optionalDocument = service.getEvaluationDocument(expectedDocumentName);
 
         //Assert
         assertThat(optionalDocument.isPresent()).isTrue();

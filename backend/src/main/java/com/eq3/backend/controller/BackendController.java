@@ -194,6 +194,20 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @PostMapping("/assign/supervisor/{idStudent}/{idSupervisor}")
+    public ResponseEntity<Student> assignSupervisorToStudent(@PathVariable String idStudent, @PathVariable String idSupervisor) {
+        return service.assignSupervisorToStudent(idStudent, idSupervisor)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping(value="/get/{typeEvaluation}/evaluation/document", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> getEvaluationDocument(@PathVariable String typeEvaluation){
+        return service.getEvaluationDocument(typeEvaluation)
+                .map(this::getDownloadingDocument)
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     private ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -209,27 +223,6 @@ public class BackendController {
                 .body(new InputStreamResource(
                         new ByteArrayInputStream(PDFDocument.getContent().getData()))
                 );
-    }
-
-    @PostMapping("/assign/supervisor/{idStudent}/{idSupervisor}")
-    public ResponseEntity<Student> assignSupervisorToStudent(@PathVariable String idStudent, @PathVariable String idSupervisor) {
-        return service.assignSupervisorToStudent(idStudent, idSupervisor)
-                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping(value="/get/studentEvaluation/document", produces = "application/pdf")
-    public ResponseEntity<InputStreamResource> getStudentEvaluationDocument(){
-        return service.getStudentEvaluationDocument()
-                .map(this::getDownloadingDocument)
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping(value="/get/enterpriseEvaluation/document", produces = "application/pdf")
-    public ResponseEntity<InputStreamResource> getEnterpriseEvaluationDocument(){
-        return service.getEnterpriseEvaluationDocument()
-                .map(this::getDownloadingDocument)
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
 }
