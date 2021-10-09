@@ -1,18 +1,21 @@
 class Auth {
     constructor() {
-      this.authenticated = false;
-      this.user = undefined;
+        this.user = JSON.parse(sessionStorage.getItem("user"))
+        console.log(this.user)
+        this.authenticated = this.user !== null ? true : false;
     }
   
     login(cb, user) {
       this.authenticated = true;
       this.user = user;
+      sessionStorage.setItem("user", JSON.stringify(this.user));
       cb();
     }
   
     logout(cb) {
       this.authenticated = false;
       this.user = undefined;
+      sessionStorage.setItem("user", undefined);
       cb();
     }
   

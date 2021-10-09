@@ -184,7 +184,7 @@ const InternshipOfferForm = () => {
     }
   }
 
-  function checkIfDocumentIsDownload() {
+  function checkIfDocumentExist() {
     if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
       return (
         <Container className="cont_btn_file">
@@ -218,7 +218,7 @@ const InternshipOfferForm = () => {
             <>
               <p
                 style={{
-                  color: errorMessage.startsWith("Erreur") ? "red" : "blue",
+                  color: errorMessage.startsWith("Erreur") ? "red" : "green",
                 }}
               >
                 {errorMessage}
@@ -241,7 +241,7 @@ const InternshipOfferForm = () => {
           <>
             <p
               style={{
-                color: errorMessage.startsWith("Erreur") ? "red" : "blue",
+                color: errorMessage.startsWith("Erreur") ? "red" : "green",
               }}
             >
               {errorMessage}
@@ -586,7 +586,9 @@ const InternshipOfferForm = () => {
                 </Container>
               </Form>
             </fieldset>
-            {checkIfDocumentIsDownload()}
+            <Container className="cont_btn">
+              {checkIfDocumentExist()}
+            </Container>
             <Container className="cont_btn">
               {checkIfValidated()}
               {checkIfStudent()}
