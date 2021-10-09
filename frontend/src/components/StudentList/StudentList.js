@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import Student from "./Student";
 import { useHistory } from "react-router";
 import auth from "../../services/Auth";
 import "../../styles/List.css";
 import { Container } from "react-bootstrap";
+import AssignSupervisorModal from "./AssignSupervisorModal";
+import ValidCVModal from "./ValidCVModal";
 
 function StudentList() {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   let history = useHistory();
   let supervisor = history.location.supervisor;
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const [students, setStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState("");
-  const [errorMessageModal, setErrorMessageModal] = useState("");
+
   let title = !auth.isInternshipManager()
     ? "Étudiants de votre département"
     : supervisor !== undefined
@@ -66,212 +66,32 @@ function StudentList() {
   function reset(student) {
     setCurrentStudent(student);
     handleShow();
-    setErrorMessageModal("");
-  }
-
-  function onConfirmModal(e) {
-    e.preventDefault();
-    if (auth.isInternshipManager()) {
-      if (supervisor !== undefined) {
-        console.log(supervisor);
-        AssignStudent();
-      } else {
-        ValidCV();
-      }
-    }
-  }
-
-  function AssignStudent() {
-    axios
-      .post(
-        `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`
-      )
-      .then((response) => {
-        let assignedStudent = response.data;
-        setStudents(
-          students.filter((student) => {
-            return student.idUser !== assignedStudent.idUser;
-          })
-        );
-        if (students.length === 1) {
-          setTimeout(() => {
-            handleClose();
-            history.push({
-              pathname: `/home/${auth.user.username}`,
-            });
-          }, 3000);
-          setErrorMessage(
-            "Plus aucun étudiant à assigner, vous allez être redirigé"
-          );
-        }
-        setTimeout(() => {
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Confirmation de l'assignation");
-      })
-      .catch((err) => {
-        setErrorMessageModal("Erreur durant l'assignation du Superviseur");
-      });
-  }
-
-  function ValidCV() {
-    axios
-      .post(`http://localhost:9090/validate/CV/${currentStudent.idUser}`)
-      .then((response) => {
-        let validatedStudent = response.data;
-        setStudents(
-          students.filter((student) => {
-            return student.idUser !== validatedStudent.idUser;
-          })
-        );
-        if (students.length === 1) {
-          setTimeout(() => {
-            handleClose();
-            history.push({
-              pathname: `/home/${auth.user.username}`,
-            });
-          }, 3000);
-          setErrorMessage("Plus aucun CV à Valider, vous allez être redirigé");
-        }
-        setTimeout(() => {
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Confirmation de la validation");
-      })
-      .catch((err) => {
-        setErrorMessageModal("Erreur durant la validation du CV");
-      });
   }
 
   function checkIfGS() {
     if (auth.isInternshipManager()) {
       if (supervisor !== undefined) {
         return (
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header>
-              <Modal.Title style={{ textAlign: "center" }}>
-                Voulez-vous assigner le superviseur{" "}
-                {supervisor !== undefined
-                  ? " " + supervisor.firstName + " " + supervisor.lastName
-                  : " choisi"}{" "}
-                à l'étudiant
-                {currentStudent !== undefined
-                  ? " " +
-                    currentStudent.firstName +
-                    " " +
-                    currentStudent.lastName
-                  : " choisi"}{" "}
-                ?
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Row>
-                <Col xs={6}>
-                  <Button
-                    variant="success"
-                    size="lg"
-                    className="btn_sub"
-                    onClick={(e) => onConfirmModal(e)}
-                  >
-                    Oui
-                  </Button>
-                </Col>
-                <Col xs={6}>
-                  <Button
-                    variant="danger"
-                    size="lg"
-                    className="btn_sub"
-                    onClick={handleClose}
-                  >
-                    Non
-                  </Button>
-                </Col>
-              </Row>
-            </Modal.Body>
-            <Modal.Footer>
-              <Row>
-                <Col>
-                  <p
-                    className="error_p"
-                    style={{
-                      color: errorMessageModal.startsWith("Erreur")
-                        ? "red"
-                        : "green",
-                    }}
-                  >
-                    {errorMessageModal}
-                  </p>
-                </Col>
-              </Row>
-            </Modal.Footer>
-          </Modal>
+          <AssignSupervisorModal
+            show={show}
+            handleClose={handleClose}
+            students={students}
+            setStudents={setStudents}
+            setErrorMessage={setErrorMessage}
+            supervisor={supervisor}
+            currentStudent={currentStudent}
+          />
         );
       } else {
         return (
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header>
-              <Modal.Title style={{ textAlign: "center" }}>
-                Voulez-vous confirmer le cv de l'étudiant choisi ?
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ margin: "0%" }}>
-              <Row style={{ textAlign: "center" }}>
-                <Col md={3}>
-                  <Button
-                    variant="success"
-                    size="lg"
-                    className="btn_sub"
-                    onClick={(e) => onConfirmModal(e)}
-                  >
-                    Oui
-                  </Button>
-                </Col>
-                <Col md={6}>
-                  <a
-                    className="btn btn-warning btn-lg mt-3"
-                    download
-                    href={`http://localhost:9090/get/CV/document/${
-                      currentStudent === undefined
-                        ? ""
-                        : currentStudent.idUser +
-                          "/" +
-                          currentStudent.cvlist.filter(
-                            (cv) => cv.isActive === true
-                          )[0].id
-                    }`}
-                  >
-                    Télécharger
-                  </a>
-                </Col>
-                <Col md={3}>
-                  <Button
-                    variant="danger"
-                    size="lg"
-                    className="btn_sub"
-                    onClick={handleClose}
-                  >
-                    Non
-                  </Button>
-                </Col>
-              </Row>
-            </Modal.Body>
-            <Modal.Footer>
-              <Row>
-                <Col>
-                  <p
-                    className="error_p"
-                    style={{
-                      color: errorMessageModal.startsWith("Erreur")
-                        ? "red"
-                        : "green",
-                    }}
-                  >
-                    {errorMessageModal}
-                  </p>
-                </Col>
-              </Row>
-            </Modal.Footer>
-          </Modal>
+          <ValidCVModal
+            show={show}
+            handleClose={handleClose}
+            students={students}
+            setStudents={setStudents}
+            setErrorMessage={setErrorMessage}
+            currentStudent={currentStudent}
+          />
         );
       }
     }
