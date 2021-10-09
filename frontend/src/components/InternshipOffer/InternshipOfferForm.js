@@ -18,7 +18,7 @@ const InternshipOfferForm = () => {
   let title =
     internshipOffer === undefined
       ? "Ajout d'offre de stages"
-      : "Information sur l'offre de stage";
+      : "Informations sur l'offre de stage";
 
   const [hasApplied, setHasApplied] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -142,14 +142,14 @@ const InternshipOfferForm = () => {
   function checkIfStudent() {
     if (auth.isStudent() && internshipOffer !== undefined) {
       let internshipOffferList = user.internshipOffers;
-      let hasAlredayApplied = false;
+      let hasAlreadyApplied = false;
       internshipOffferList.forEach((_internshipOffer) => {
         if (_internshipOffer.id === internshipOffer.id) {
-          hasAlredayApplied = true;
+          hasAlreadyApplied = true;
         }
       });
       if (!hasApplied) {
-        if (!hasAlredayApplied) {
+        if (!hasAlreadyApplied) {
           return (
             <InternshipOfferButtonApply
               fields={fields}

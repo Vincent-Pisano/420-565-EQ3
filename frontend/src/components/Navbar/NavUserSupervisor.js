@@ -7,7 +7,6 @@ const NavUserSupervisor = () => {
       className="nav-drop-cust"
       title={<span className="nav-links-header">Options Superviseur</span>}
       menuVariant="dark"
-      noCaret
     >
       <NavDropdown.Item as={Link} to="/listStudents">
         Liste des étudiants
@@ -15,7 +14,7 @@ const NavUserSupervisor = () => {
 
       <NavDropdown.Item
         download
-        href={`http://localhost:9090/get/enterpriseEvaluation/document`}
+        href={`http://localhost:9090/get/enterprise/evaluation/document`}
       >
         Document d'évalution d'entreprise
       </NavDropdown.Item>

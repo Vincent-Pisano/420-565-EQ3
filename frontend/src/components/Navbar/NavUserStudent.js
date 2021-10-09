@@ -7,7 +7,6 @@ const NavUserStudent = () => {
       className="nav-drop-cust"
       title={<span className="nav-links-header">Options Étudiant</span>}
       menuVariant="dark"
-      noCaret
     >
       <NavDropdown.Item as={Link} to="/listInternshipOffer">
         Liste d'offres de stage

@@ -7,7 +7,6 @@ const NavUserMonitor = () => {
       className="nav-drop-cust"
       title={<span className="nav-links-header">Options Moniteur</span>}
       menuVariant="dark"
-      noCaret
     >
       <NavDropdown.Item as={Link} to="/formInternshipOffer">
         Dépôt d'offres de stage
@@ -15,7 +14,7 @@ const NavUserMonitor = () => {
 
       <NavDropdown.Item
         download
-        href={`http://localhost:9090/get/studentEvaluation/document`}
+        href={`http://localhost:9090/get/student/evaluation/document`}
       >
         Document d'évalution d'étudiant
       </NavDropdown.Item>

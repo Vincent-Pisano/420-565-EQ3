@@ -48,6 +48,7 @@ class BackendControllerTest {
     private List<InternshipOffer> expectedInternshipOfferList;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
+    private String expectedDocumentName;
 
     @Test
     //@Disabled
@@ -607,28 +608,15 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetStudentEvaluationDocument() throws Exception {
+    public void testGetEvaluationDocument() throws Exception {
         //Arrange
         expectedPDFDocument = getDocument();
-        when(service.getStudentEvaluationDocument())
+        expectedDocumentName = DOCUMENT_NAME;
+
+        when(service.getEvaluationDocument(expectedDocumentName))
                 .thenReturn(Optional.of(expectedPDFDocument));
         //Act
-        MvcResult result = mockMvc.perform(get("/get/studentEvaluation/document")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetEnterpriseEvaluationDocument() throws Exception {
-        //Arrange
-        expectedPDFDocument = getDocument();
-        when(service.getEnterpriseEvaluationDocument())
-                .thenReturn(Optional.of(expectedPDFDocument));
-        //Act
-        MvcResult result = mockMvc.perform(get("/get/enterpriseEvaluation/document")
+        MvcResult result = mockMvc.perform(get("/get/"+ expectedDocumentName +"/evaluation/document")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

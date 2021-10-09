@@ -7,18 +7,17 @@ const NavUserGs = () => {
       className="nav-drop-cust"
       title={<span className="nav-links-header">Options GS</span>}
       menuVariant="dark"
-      noCaret
     >
-      <NavDropdown.Item as={Link} to="/formInternshipOffer">
+      <NavDropdown.Item as={Link} className="nav-item-cust" to="/formInternshipOffer">
         Dépôt Offre
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/listInternshipOffer">
+      <NavDropdown.Item as={Link} className="nav-item-cust" to="/listInternshipOffer">
         Liste Offres
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/listStudents">
+      <NavDropdown.Item as={Link} className="nav-item-cust" to="/listStudents">
         Liste CV
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/listSupervisors">
+      <NavDropdown.Item as={Link} className="nav-item-cust" to="/listSupervisors">
         Assignation
       </NavDropdown.Item>
     </NavDropdown>
