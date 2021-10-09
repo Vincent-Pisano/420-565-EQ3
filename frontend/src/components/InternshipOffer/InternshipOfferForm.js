@@ -5,18 +5,25 @@ import { useState } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router";
 import { Container, Row, Col, Form } from "react-bootstrap";
+import InternshipOfferButtonDownload from "./InternshipOfferButtonDownload";
+import InternshipOfferButtonValidate from "./InternshipOfferButtonValidate";
+import InternshipOfferButtonApply from "./InternshipOfferButtonApply";
 import "../../styles/Form.css";
 
 const InternshipOfferForm = () => {
   let user = auth.user;
   let history = useHistory();
   let internshipOffer = history.location.state;
+  let isLoading = false;
+  let title =
+    internshipOffer === undefined
+      ? "Ajout d'offre de stages"
+      : "Information sur l'offre de stage";
+
   const [hasApplied, setHasApplied] = useState(false);
-
-  formatDates();
-
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [monitor, setMonitor] = useFormFields({ name: "" });
+  const [document, setDocument] = useState(undefined);
   const [fields, handleFieldChange] = useFormFields(
     internshipOffer !== undefined
       ? internshipOffer
@@ -37,13 +44,7 @@ const InternshipOfferForm = () => {
         }
   );
 
-  const [monitor, setMonitor] = useFormFields({
-    name: "",
-  });
-
-  const [document, setDocument] = useState(undefined);
-
-  let isLoading = false;
+  formatDates();
 
   function onCreatePost(e) {
     e.preventDefault();
@@ -118,68 +119,14 @@ const InternshipOfferForm = () => {
     }
   }
 
-  function validateInternshipOffer() {
-    axios
-      .post(
-        `http://localhost:9090/save/internshipOffer/validate/${internshipOffer.id}`
-      )
-      .then((response) => {
-        setErrorMessage(
-          "L'offre de stage a été validée, vous allez être redirigé"
-        );
-        setTimeout(() => {
-          history.push({
-            pathname: `/listInternshipOffer`,
-          });
-        }, 2000);
-      })
-      .catch((error) => {
-        setErrorMessage("Erreur lors de la validation");
-      });
-  }
-
-  function applyInternshipOffer() {
-    axios
-      .post(
-        `http://localhost:9090/apply/internshipOffer/${user.username}`,
-        fields
-      )
-      .then((response) => {
-        auth.user = response.data;
-        setHasApplied(true);
-
-        setTimeout(() => {
-          history.push({
-            pathname: `/listInternshipOffer`,
-          });
-        }, 3000);
-        setErrorMessage(
-          "Votre demande a été acceptée, vous allez être redirigé"
-        );
-      })
-      .catch((error) => {
-        setErrorMessage("Erreur lors de l'application de stage");
-      });
-  }
-
   function checkIfValidated() {
     if (auth.isInternshipManager() && internshipOffer !== undefined) {
       return (
-        <>
-          <p
-            style={{
-              color: errorMessage.startsWith("Erreur") ? "red" : "green",
-            }}
-          >
-            {errorMessage}
-          </p>
-          <button
-            className="btn_submit"
-            onClick={() => validateInternshipOffer()}
-          >
-            Valider
-          </button>
-        </>
+        <InternshipOfferButtonValidate
+          internshipOfferID={internshipOffer.id}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
       );
     }
   }
@@ -187,18 +134,7 @@ const InternshipOfferForm = () => {
   function checkIfDocumentExist() {
     if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
       return (
-        <Container className="cont_btn_file">
-          <a
-            className="btn_file"
-            href={
-              "http://localhost:9090/get/internshipOffer/document/" +
-              internshipOffer.id
-            }
-            download
-          >
-            Télécharger le document
-          </a>
-        </Container>
+        <InternshipOfferButtonDownload internshipOfferID={internshipOffer.id} />
       );
     }
   }
@@ -215,21 +151,12 @@ const InternshipOfferForm = () => {
       if (!hasApplied) {
         if (!hasAlredayApplied) {
           return (
-            <>
-              <p
-                style={{
-                  color: errorMessage.startsWith("Erreur") ? "red" : "green",
-                }}
-              >
-                {errorMessage}
-              </p>
-              <button
-                className="btn_submit"
-                onClick={() => applyInternshipOffer()}
-              >
-                Appliquer
-              </button>
-            </>
+            <InternshipOfferButtonApply
+              fields={fields}
+              setHasApplied={setHasApplied}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+            />
           );
         } else {
           return (
@@ -249,14 +176,6 @@ const InternshipOfferForm = () => {
           </>
         );
       }
-    }
-  }
-
-  function setPageTitle() {
-    if (internshipOffer === undefined) {
-      return <h2>Ajout d'offre de stages</h2>;
-    } else {
-      return <h2>Information sur l'offre de stage</h2>;
     }
   }
 
@@ -282,7 +201,9 @@ const InternshipOfferForm = () => {
       <Row className="cont_central">
         <Col md="auto" className="cont_form">
           <Row>
-            <Container className="cont_title_form">{setPageTitle()}</Container>
+            <Container className="cont_title_form">
+              <h2>{title}</h2>
+            </Container>
           </Row>
           <Row>
             <fieldset disabled={internshipOffer ? "disabled" : ""}>
@@ -586,13 +507,9 @@ const InternshipOfferForm = () => {
                 </Container>
               </Form>
             </fieldset>
-            <Container className="cont_btn">
-              {checkIfDocumentExist()}
-            </Container>
-            <Container className="cont_btn">
-              {checkIfValidated()}
-              {checkIfStudent()}
-            </Container>
+            {checkIfDocumentExist()}
+            {checkIfValidated()}
+            {checkIfStudent()}
           </Row>
         </Col>
       </Row>
