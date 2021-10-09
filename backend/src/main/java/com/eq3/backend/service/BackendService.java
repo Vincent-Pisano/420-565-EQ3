@@ -203,14 +203,23 @@ public class BackendService {
             Student student = optionalStudent.get();
             List<CV> listCV = student.getCVList();
             for (CV cv : listCV) {
-                if (cv.getIsActive())
-                    cv.setIsActive(false);
-                if (cv.getId().equals(idCV))
-                    cv.setIsActive(true);
+                updateCVActive(idCV, cv);
             }
             student.setCVList(listCV);
         }
         return isPresent;
+    }
+
+    private void updateCVActive(String idCV, CV cv) {
+        if (cv.getIsActive()) {
+            cv.setIsActive(false);
+            if (cv.getStatus() == CV.CVStatus.WAITING)
+                cv.setStatus(CV.CVStatus.INVALID);
+        }
+        if (cv.getId().equals(idCV)) {
+            cv.setIsActive(true);
+            cv.setStatus(CV.CVStatus.WAITING);
+        }
     }
 
     private Optional<Student> cleanUpStudentCVList(Optional<Student> optionalStudent) {
@@ -291,8 +300,8 @@ public class BackendService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<Student>> getListStudentWithCVActiveNotValid() {
-        List<Student> studentList = studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid();
+    public Optional<List<Student>> getAllStudentWithCVActiveWaitingValidation() {
+        List<Student> studentList = studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation();
         studentList.forEach(student -> cleanUpStudentCVList(Optional.ofNullable(student)));
         return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }
@@ -345,7 +354,7 @@ public class BackendService {
             List<CV> CVList = student.getCVList();
             for (CV currentCV : CVList) {
                 if (currentCV.getIsActive()) {
-                    currentCV.setIsValid(true);
+                    currentCV.setStatus(CV.CVStatus.VALID);
                 }
                 break;
             }

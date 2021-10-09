@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Student from "./Student";
+import { React, useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
+
 import { useHistory } from "react-router";
 import auth from "../../services/Auth";
-import "../../styles/List.css";
-import { Container } from "react-bootstrap";
+import axios from "axios";
+
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
+import Student from "./Student";
+
+import "../../styles/List.css";
 
 function StudentList() {
   let history = useHistory();
@@ -63,7 +66,7 @@ function StudentList() {
     }
   }, [history, supervisor]);
 
-  function reset(student) {
+  function showModal(student) {
     setCurrentStudent(student);
     handleShow();
   }
@@ -115,7 +118,7 @@ function StudentList() {
               <Student
                 key={student.idUser}
                 student={student}
-                onDoubleClick={auth.isInternshipManager() ? reset : null}
+                onDoubleClick={auth.isInternshipManager() ? showModal : null}
               />
             ))}
           </ul>

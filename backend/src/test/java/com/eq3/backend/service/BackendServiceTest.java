@@ -589,16 +589,16 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetListStudentWithCVActiveNotValid() {
+    public void testGetAllStudentWithCVActiveWaitingValidation() {
         //Arrange
         expectedStudentList = getListOfStudents();
 
-        when(studentRepository.findAllByIsDisabledFalseAndActiveCVNotValid())
+        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation())
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> students =
-                service.getListStudentWithCVActiveNotValid();
+                service.getAllStudentWithCVActiveWaitingValidation();
 
         //Assert
         assertThat(students.isPresent()).isTrue();
@@ -614,7 +614,7 @@ class BackendServiceTest {
         expectedCV.getPDFDocument().setContent(null);
         expectedStudent.getCVList().add(expectedCV);
         expectedCV.setIsActive(true);
-        expectedCV.setIsValid(true);
+        expectedCV.setStatus(CV.CVStatus.VALID);
 
         Student givenStudent = getStudent();
         CV givenCV = getCV();
@@ -631,8 +631,9 @@ class BackendServiceTest {
 
         //Assert
         Student student = optionalStudent.orElse(null);
-        CV cv = student.getCVList().get(0);
+        CV cv = student != null ? student.getCVList().get(0) : null;
         assertThat(student).isNotNull();
-        assertThat(cv.getIsValid()).isTrue();
+        assertThat(cv).isNotNull();
+        assertThat(cv.getStatus()).isEqualTo(CV.CVStatus.VALID);
     }
 }

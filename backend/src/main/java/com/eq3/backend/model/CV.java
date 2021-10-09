@@ -15,6 +15,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class CV {
 
+    public enum CVStatus {
+        INVALID, WAITING, VALID
+    }
+
     @Id
     private String id;
 
@@ -27,21 +31,21 @@ public class CV {
     private Boolean isActive = false;
 
     @Builder.Default
-    private Boolean isValid = false;
+    private CVStatus status = CVStatus.INVALID;
 
     public CV(PDFDocument PDFDocument) {
         this.id = String.valueOf(new ObjectId());
         this.PDFDocument = PDFDocument;
         this.depositDate = new Date();
         this.isActive = false;
-        this.isValid = false;
+        this.status = CVStatus.INVALID;
     }
 
     public CV() {
         this.id = String.valueOf(new ObjectId());
         this.depositDate = new Date();
         this.isActive = false;
-        this.isValid = false;
+        this.status = CVStatus.INVALID;
     }
 
 }
