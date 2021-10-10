@@ -22,7 +22,7 @@ public class UtilsTest {
 
     public static Student getStudent(){
         return Student.builder()
-                .idUser("61478hgk58e00c02c02bhd5")
+                .id("61478hgk58e00c02c02bhd5")
                 .username("E1257896")
                 .password("DAJo90l")
                 .email("daniel.jolicoeur5@gmail.com")
@@ -34,7 +34,7 @@ public class UtilsTest {
 
     public static List<Student> getListOfStudents(){
         Student student1 = Student.builder()
-                .idUser("6144343k58e00c02c02bhd5")
+                .id("6144343k58e00c02c02bhd5")
                 .username("E1257896")
                 .password("DAJo90l")
                 .email("daniel.jolicoeur5@gmail.com")
@@ -43,7 +43,7 @@ public class UtilsTest {
                 .department(Department.COMPUTER_SCIENCE)
                 .build();
         Student student2 = Student.builder()
-                .idUser("61478hgk58e00c02c02bhd2432")
+                .id("61478hgk58e00c02c02bhd2432")
                 .username("E1257896")
                 .password("DAJo90l")
                 .email("daniel.jolicoeur5@gmail.com")
@@ -59,7 +59,7 @@ public class UtilsTest {
 
     public static Monitor getMonitor(){
         return Monitor.builder()
-                .idUser("61478hgk580000jbhd5")
+                .id("61478hgk580000jbhd5")
                 .username("M1234313")
                 .password("DAJo90l")
                 .email("Nicolas.lavoie43@gmail.com")
@@ -72,7 +72,7 @@ public class UtilsTest {
 
     public static Supervisor getSupervisor(){
         return Supervisor.builder()
-                .idUser("15848hgk58e00c02c02bhd5")
+                .id("15848hgk58e00c02c02bhd5")
                 .username("S1298896")
                 .password("JeA55E!")
                 .email("jeanne.dumond@gmail.com")
@@ -84,7 +84,7 @@ public class UtilsTest {
 
     public static List<Supervisor> getListOfSupervisors(){
         Supervisor monitor1 = Supervisor.builder()
-                .idUser("6144343k58e00c02c02bhd5")
+                .id("6144343k58e00c02c02bhd5")
                 .username("E1257896")
                 .password("DAJo90l")
                 .email("daniel.jolicoeur5@gmail.com")
@@ -93,7 +93,7 @@ public class UtilsTest {
                 .department(Department.COMPUTER_SCIENCE)
                 .build();
         Supervisor monitor2 = Supervisor.builder()
-                .idUser("61478hgk58e00c02c02bhd2432")
+                .id("61478hgk58e00c02c02bhd2432")
                 .username("E1257896")
                 .password("DAJo90l")
                 .email("daniel.jolicoeur5@gmail.com")
@@ -109,7 +109,7 @@ public class UtilsTest {
 
     public static InternshipManager getInternshipManager(){
         return InternshipManager.builder()
-                .idUser("6146tf5eg8e00c02c02bhd5")
+                .id("6146tf5eg8e00c02c02bhd5")
                 .username("G42415")
                 .password("qWeRtY987")
                 .email("marcel.tremblay@outlook.com")

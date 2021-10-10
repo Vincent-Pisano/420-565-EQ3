@@ -283,12 +283,12 @@ class BackendServiceTest {
         expectedStudent.setCVList(getCVList());
         expectedCV = getCV();
 
-        when(studentRepository.findById(expectedStudent.getIdUser()))
+        when(studentRepository.findById(expectedStudent.getId()))
                 .thenReturn(Optional.ofNullable(expectedStudent));
 
         //Act
         Optional<PDFDocument> optionalDocument = service.downloadStudentCVDocument(
-                expectedStudent.getIdUser(), expectedCV.getId()
+                expectedStudent.getId(), expectedCV.getId()
         );
 
         //Assert
@@ -307,11 +307,11 @@ class BackendServiceTest {
         expectedStudent = getStudent();
         expectedStudent.setCVList(getCVList());
         when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
-        when(studentRepository.findById(expectedStudent.getIdUser())).thenReturn(Optional.ofNullable(expectedStudent));
+        when(studentRepository.findById(expectedStudent.getId())).thenReturn(Optional.ofNullable(expectedStudent));
 
         //Act
         final Optional<Student> optionalStudent =
-                service.saveCV(expectedStudent.getIdUser(), multipartFile);
+                service.saveCV(expectedStudent.getId(), multipartFile);
 
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
@@ -334,12 +334,12 @@ class BackendServiceTest {
         CV givenCV = givenListCV.get(0);
 
         when(studentRepository.save(any(Student.class))).thenReturn(expectedStudent);
-        when(studentRepository.findById(givenStudent.getIdUser()))
+        when(studentRepository.findById(givenStudent.getId()))
                 .thenReturn(Optional.of(givenStudent));
 
         //Act
         final Optional<Student> optionalStudent =
-                service.deleteCV(givenStudent.getIdUser(), givenCV.getId());
+                service.deleteCV(givenStudent.getId(), givenCV.getId());
 
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
@@ -368,12 +368,12 @@ class BackendServiceTest {
         CV givenCV = givenListCV.get(NEW_ACTIVE_CV_INDEX);
 
         when(studentRepository.save(any(Student.class))).thenReturn(expectedStudent);
-        when(studentRepository.findById(givenStudent.getIdUser()))
+        when(studentRepository.findById(givenStudent.getId()))
                 .thenReturn(Optional.of(givenStudent));
 
         //Act
         final Optional<Student> optionalStudent =
-                service.updateActiveCV(givenStudent.getIdUser(), givenCV.getId());
+                service.updateActiveCV(givenStudent.getId(), givenCV.getId());
 
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
@@ -561,13 +561,13 @@ class BackendServiceTest {
         Student givenStudent = getStudent();
 
 
-        when(studentRepository.findById(givenStudent.getIdUser())).thenReturn(Optional.of(givenStudent));
-        when(supervisorRepository.findById(expectedSupervisor.getIdUser())).thenReturn(Optional.of(expectedSupervisor));
+        when(studentRepository.findById(givenStudent.getId())).thenReturn(Optional.of(givenStudent));
+        when(supervisorRepository.findById(expectedSupervisor.getId())).thenReturn(Optional.of(expectedSupervisor));
         lenient().when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
         //Act
         final Optional<Student> optionalStudent =
-                service.assignSupervisorToStudent(givenStudent.getIdUser(), expectedSupervisor.getIdUser());
+                service.assignSupervisorToStudent(givenStudent.getId(), expectedSupervisor.getId());
 
         //Assert
         Student student = optionalStudent.orElse(null);
@@ -610,12 +610,12 @@ class BackendServiceTest {
         givenStudent.getCVList().add(givenCV);
         givenCV.setIsActive(true);
 
-        when(studentRepository.findById(expectedStudent.getIdUser())).thenReturn(Optional.of(givenStudent));
+        when(studentRepository.findById(expectedStudent.getId())).thenReturn(Optional.of(givenStudent));
         lenient().when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
         //Act
         final Optional<Student> optionalStudent =
-                service.validateCVOfStudent(givenStudent.getIdUser());
+                service.validateCVOfStudent(givenStudent.getId());
 
         //Assert
         Student student = optionalStudent.orElse(null);

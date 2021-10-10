@@ -38,7 +38,7 @@ function ListStudents() {
           <ul>
             {supervisors.map((supervisor) => (
               <Supervisor
-                key={supervisor.idUser}
+                key={supervisor.id}
                 supervisor={supervisor}
                 onDoubleClick={showAssignableStudents}
               />

@@ -25,7 +25,7 @@ const CVButtonDelete = ({ documentId }) => {
   function onCreatePost(e) {
     e.preventDefault();
     axios
-      .delete(`http://localhost:9090/delete/CV/${user.idUser}/${documentId}`)
+      .delete(`http://localhost:9090/delete/CV/${user.id}/${documentId}`)
       .then((response) => {
         user = response.data;
         auth.user = user;

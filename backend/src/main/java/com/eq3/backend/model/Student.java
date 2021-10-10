@@ -33,6 +33,4 @@ public class Student extends User {
         this.CVList = new ArrayList<>();
         this.internshipOffers = new ArrayList<>();
     }
-
-
 }

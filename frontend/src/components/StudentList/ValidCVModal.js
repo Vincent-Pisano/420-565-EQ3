@@ -23,12 +23,12 @@ const ValidCVModal = ({
 
   function ValidCV() {
     axios
-      .post(`http://localhost:9090/validate/CV/${currentStudent.idUser}`)
+      .post(`http://localhost:9090/validate/CV/${currentStudent.id}`)
       .then((response) => {
         let validatedStudent = response.data;
         setStudents(
           students.filter((student) => {
-            return student.idUser !== validatedStudent.idUser;
+            return student.id !== validatedStudent.id;
           })
         );
         if (students.length === 1) {
@@ -77,7 +77,7 @@ const ValidCVModal = ({
               href={`http://localhost:9090/get/CV/document/${
                 currentStudent === undefined
                   ? ""
-                  : currentStudent.idUser +
+                  : currentStudent.id +
                     "/" +
                     currentStudent.cvlist.filter(
                       (cv) => cv.isActive === true

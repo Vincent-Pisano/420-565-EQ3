@@ -267,12 +267,12 @@ class BackendControllerTest {
         expectedStudent.setCVList(getCVList());
         expectedCV = getCV();
 
-        when(service.downloadStudentCVDocument(expectedStudent.getIdUser(), expectedCV.getId()))
+        when(service.downloadStudentCVDocument(expectedStudent.getId(), expectedCV.getId()))
                 .thenReturn(Optional.ofNullable(expectedCV.getPDFDocument()));
 
         //Act
         MvcResult result = mockMvc.perform(get("/get/CV/document/" +
-                expectedStudent.getIdUser() + "/" + expectedCV.getId())
+                expectedStudent.getId() + "/" + expectedCV.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -294,7 +294,7 @@ class BackendControllerTest {
         expectedStudent.setCVList(getCVList());
 
         Student givenStudent = getStudent();
-        when(service.saveCV(Mockito.eq(givenStudent.getIdUser()), any(MultipartFile.class)))
+        when(service.saveCV(Mockito.eq(givenStudent.getId()), any(MultipartFile.class)))
                 .thenReturn(Optional.ofNullable(expectedStudent));
 
         //Act
@@ -303,7 +303,7 @@ class BackendControllerTest {
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
 
         MvcResult result =  mockMvc
-                .perform(MockMvcRequestBuilders.multipart("/save/CV/"+ givenStudent.getIdUser())
+                .perform(multipart("/save/CV/"+ givenStudent.getId())
                         .file("document", multipartFile.getBytes())
                         .contentType(mediaType)).andReturn();
 
@@ -325,12 +325,12 @@ class BackendControllerTest {
         givenStudent.setCVList(givenListCV);
         CV givenCV = givenListCV.get(0);
 
-        when(service.deleteCV(givenStudent.getIdUser(), givenCV.getId()))
+        when(service.deleteCV(givenStudent.getId(), givenCV.getId()))
                 .thenReturn(Optional.of(expectedStudent));
 
         //Act
         MvcResult result = mockMvc.perform(delete("/delete/CV/" +
-                givenStudent.getIdUser() + "/" + givenCV.getId())
+                givenStudent.getId() + "/" + givenCV.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -358,13 +358,13 @@ class BackendControllerTest {
         givenStudent.setCVList(givenListCV);
         CV givenCV = givenListCV.get(NEW_ACTIVE_CV_INDEX);
 
-        when(service.updateActiveCV(givenStudent.getIdUser(), givenCV.getId()))
+        when(service.updateActiveCV(givenStudent.getId(), givenCV.getId()))
                 .thenReturn(Optional.ofNullable(expectedStudent));
 
         //Act
         MvcResult result =  mockMvc
                 .perform(post("/update/ActiveCV/" +
-                        givenStudent.getIdUser() + "/"+ givenCV.getId())).andReturn();
+                        givenStudent.getId() + "/"+ givenCV.getId())).andReturn();
 
         //Assert
         assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
@@ -539,12 +539,12 @@ class BackendControllerTest {
         expectedSupervisor = getSupervisor();
         expectedStudent.setSupervisor(expectedSupervisor);
 
-        when(service.assignSupervisorToStudent(expectedStudent.getIdUser(), expectedSupervisor.getIdUser()))
+        when(service.assignSupervisorToStudent(expectedStudent.getId(), expectedSupervisor.getId()))
                 .thenReturn(Optional.of(expectedStudent));
 
         //Act
         MvcResult result = mockMvc.perform(post("/assign/supervisor/" +
-                expectedStudent.getIdUser() + "/" + expectedSupervisor.getIdUser())
+                expectedStudent.getId() + "/" + expectedSupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
 
@@ -585,11 +585,11 @@ class BackendControllerTest {
         expectedStudent.getCVList().add(expectedCV);
         expectedCV.setIsActive(true);
 
-        when(service.validateCVOfStudent(expectedStudent.getIdUser()))
+        when(service.validateCVOfStudent(expectedStudent.getId()))
                 .thenReturn(Optional.of(expectedStudent));
 
         //Act
-        MvcResult result = mockMvc.perform(post("/validate/CV/" + expectedStudent.getIdUser())
+        MvcResult result = mockMvc.perform(post("/validate/CV/" + expectedStudent.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
 

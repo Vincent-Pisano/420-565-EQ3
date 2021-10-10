@@ -3,7 +3,7 @@ const CVButtonDownload = ({ user, cv }) => {
     <a
       className="btn btn-success btn-sm"
       download
-      href={`http://localhost:9090/get/CV/document/${user.idUser}/${cv.id}`}
+      href={`http://localhost:9090/get/CV/document/${user.id}/${cv.id}`}
     >
       Télécharger
     </a>

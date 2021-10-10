@@ -3,6 +3,7 @@ package com.eq3.backend.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -10,12 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Builder
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
-public class InternshipOffer {
-
-    @Id
-    private String id;
+public class InternshipOffer extends Entity{
 
     @Field
     private String jobName;
@@ -61,14 +59,10 @@ public class InternshipOffer {
 
     @Field
     @Builder.Default
-    protected Date creationDate = new Date();
-
-    @Field
-    @Builder.Default
     protected Boolean isValid = false;
 
     public InternshipOffer() {
-        this.creationDate = new Date();
+        super();
         this.isValid = false;
     }
 

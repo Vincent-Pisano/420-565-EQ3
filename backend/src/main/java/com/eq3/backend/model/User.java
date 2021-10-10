@@ -2,19 +2,16 @@ package com.eq3.backend.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.io.Serializable;
-import java.util.Date;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder(toBuilder = true)
-public class User implements Serializable {
+@NoArgsConstructor
+public class User extends Entity {
 
-    @Id
-    protected String idUser;
     @Field
     @Indexed(unique = true)
     protected String username;
@@ -27,15 +24,4 @@ public class User implements Serializable {
     protected String firstName;
     @Field
     protected String lastName;
-    @Field
-    @Builder.Default
-    protected Date creationDate = new Date();
-    @Field
-    @Builder.Default
-    protected Boolean isDisabled = false;
-
-    public User() {
-        this.creationDate = new Date();
-        this.isDisabled = false;
-    }
 }

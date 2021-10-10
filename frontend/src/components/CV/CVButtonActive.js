@@ -26,7 +26,7 @@ const CVButtonActive = ({ documentId, documentActive }) => {
     e.preventDefault();
     axios
       .post(
-        `http://localhost:9090/update/ActiveCV/${user.idUser}/${documentId}`
+        `http://localhost:9090/update/ActiveCV/${user.id}/${documentId}`
       )
       .then((response) => {
         user = response.data;

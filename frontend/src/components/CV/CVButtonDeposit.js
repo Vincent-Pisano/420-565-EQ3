@@ -34,7 +34,7 @@ const CVButtonDeposit = () => {
       let formData = new FormData();
       formData.append("document", document);
       axios
-        .post(`http://localhost:9090/save/CV/${user.idUser}/`, formData)
+        .post(`http://localhost:9090/save/CV/${user.id}/`, formData)
         .then((response) => {
           user = response.data;
           auth.user = user;

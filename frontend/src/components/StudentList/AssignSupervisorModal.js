@@ -20,13 +20,13 @@ const AssignSupervisorModal = ({
   function AssignStudent() {
     axios
       .post(
-        `http://localhost:9090/assign/supervisor/${currentStudent.idUser}/${supervisor.idUser}`
+        `http://localhost:9090/assign/supervisor/${currentStudent.id}/${supervisor.id}`
       )
       .then((response) => {
         let assignedStudent = response.data;
         setStudents(
           students.filter((student) => {
-            return student.idUser !== assignedStudent.idUser;
+            return student.id !== assignedStudent.id;
           })
         );
         if (students.length === 1) {

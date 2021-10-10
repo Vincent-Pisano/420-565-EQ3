@@ -116,7 +116,7 @@ function StudentList() {
           <ul>
             {students.map((student) => (
               <Student
-                key={student.idUser}
+                key={student.id}
                 student={student}
                 onDoubleClick={auth.isInternshipManager() ? showModal : null}
               />
