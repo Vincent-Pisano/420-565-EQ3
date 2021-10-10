@@ -141,10 +141,10 @@ const InternshipOfferForm = () => {
 
   function checkIfStudent() {
     if (auth.isStudent() && internshipOffer !== undefined) {
-      let internshipOffferList = user.internshipOffers;
+      let internshipApplicationsList = user.internshipApplications;
       let hasAlreadyApplied = false;
-      internshipOffferList.forEach((_internshipOffer) => {
-        if (_internshipOffer.id === internshipOffer.id) {
+      internshipApplicationsList.forEach((_internshipApplication) => {
+        if (_internshipApplication.internshipOffer.id === internshipOffer.id) {
           hasAlreadyApplied = true;
         }
       });

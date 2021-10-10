@@ -145,7 +145,7 @@ public class InternshipServiceTest {
         //Assert
         assertThat(internshipOffer.isPresent()).isFalse();
     }
-
+/*
     @Test
     //@Disabled
     public void testApplyInternshipOffer() {
@@ -170,7 +170,7 @@ public class InternshipServiceTest {
         assertThat(actualStudent).isNotNull();
         assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
     }
-
+*/
     @Test
     //@Disabled
     public void testGetAllInternshipOfferByWorkField() {

@@ -1,9 +1,6 @@
 package com.eq3.backend.service;
 
-import com.eq3.backend.model.Department;
-import com.eq3.backend.model.InternshipOffer;
-import com.eq3.backend.model.PDFDocument;
-import com.eq3.backend.model.Student;
+import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.BsonBinarySubType;
@@ -28,13 +25,15 @@ public class InternshipService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final EvaluationRepository evaluationRepository;
+    private final InternshipApplicationRepository internshipApplicationRepository;
 
     InternshipService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
-                   EvaluationRepository evaluationRepository
+                   EvaluationRepository evaluationRepository,
+                   InternshipApplicationRepository internshipApplicationRepository
     ) {
 
         this.logger = LoggerFactory.getLogger(BackendService.class);
@@ -44,6 +43,7 @@ public class InternshipService {
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.evaluationRepository = evaluationRepository;
+        this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
@@ -104,17 +104,25 @@ public class InternshipService {
     public Optional<Student> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         optionalStudent.ifPresent(student -> {
-            List<InternshipOffer> internshipOffersList = student.getInternshipOffers();
+            List<InternshipApplication> internshipApplicationList = student.getInternshipApplications();
             if (internshipOffer.getPDFDocument() != null) {
                 PDFDocument PDFDocument = internshipOffer.getPDFDocument();
                 PDFDocument.setContent(null);
                 internshipOffer.setPDFDocument(PDFDocument);
             }
-            internshipOffersList.add(internshipOffer);
-            student.setInternshipOffers(internshipOffersList);
+            internshipApplicationList.add(createInternshipApplication(internshipOffer));
+            student.setInternshipApplications(internshipApplicationList);
             studentRepository.save(student);
         });
         return cleanUpStudentCVList(optionalStudent);
+    }
+
+    private InternshipApplication createInternshipApplication(InternshipOffer internshipOffer){
+        InternshipApplication internshipApplication = new InternshipApplication();
+        internshipApplication.setInternshipOffer(internshipOffer);
+        internshipApplication.setStatus(InternshipApplicationStatus.WAITING);
+        internshipApplicationRepository.save(internshipApplication);
+        return internshipApplication;
     }
 
     private Optional<Student> cleanUpStudentCVList(Optional<Student> optionalStudent) {
