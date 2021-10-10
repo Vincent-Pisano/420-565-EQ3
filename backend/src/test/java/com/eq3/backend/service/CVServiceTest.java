@@ -30,7 +30,6 @@ public class CVServiceTest {
     @Mock
     private StudentRepository studentRepository;
 
-
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
@@ -53,6 +52,34 @@ public class CVServiceTest {
         //Act
         final Optional<Student> optionalStudent =
                 service.saveCV(expectedStudent.getId(), multipartFile);
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteCV() throws IOException {
+        //Arrange
+        expectedStudent = getStudent();
+        List<CV> expectedListCV = getCVList();
+        expectedListCV.remove(0);
+        expectedStudent.setCVList(expectedListCV);
+
+        Student givenStudent = getStudent();
+        List<CV> givenListCV = getCVList();
+        givenStudent.setCVList(givenListCV);
+        CV givenCV = givenListCV.get(0);
+
+        when(studentRepository.save(any(Student.class))).thenReturn(expectedStudent);
+        when(studentRepository.findById(givenStudent.getId()))
+                .thenReturn(Optional.of(givenStudent));
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.deleteCV(givenStudent.getId(), givenCV.getId());
 
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
@@ -100,30 +127,20 @@ public class CVServiceTest {
 
     @Test
     //@Disabled
-    public void testDeleteCV() throws IOException {
+    public void testGetAllStudentWithCVActiveWaitingValidation() {
         //Arrange
-        expectedStudent = getStudent();
-        List<CV> expectedListCV = getCVList();
-        expectedListCV.remove(0);
-        expectedStudent.setCVList(expectedListCV);
+        expectedStudentList = getListOfStudents();
 
-        Student givenStudent = getStudent();
-        List<CV> givenListCV = getCVList();
-        givenStudent.setCVList(givenListCV);
-        CV givenCV = givenListCV.get(0);
-
-        when(studentRepository.save(any(Student.class))).thenReturn(expectedStudent);
-        when(studentRepository.findById(givenStudent.getId()))
-                .thenReturn(Optional.of(givenStudent));
+        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation())
+                .thenReturn(expectedStudentList);
 
         //Act
-        final Optional<Student> optionalStudent =
-                service.deleteCV(givenStudent.getId(), givenCV.getId());
+        final Optional<List<Student>> students =
+                service.getAllStudentWithCVActiveWaitingValidation();
 
         //Assert
-        Student actualStudent = optionalStudent.orElse(null);
-        assertThat(optionalStudent.isPresent()).isTrue();
-        assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
+        assertThat(students.isPresent()).isTrue();
+        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
     }
 
     @Test
@@ -156,23 +173,5 @@ public class CVServiceTest {
         assertThat(student).isNotNull();
         assertThat(cv).isNotNull();
         assertThat(cv.getStatus()).isEqualTo(CV.CVStatus.VALID);
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentWithCVActiveWaitingValidation() {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-
-        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation())
-                .thenReturn(expectedStudentList);
-
-        //Act
-        final Optional<List<Student>> students =
-                service.getAllStudentWithCVActiveWaitingValidation();
-
-        //Assert
-        assertThat(students.isPresent()).isTrue();
-        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
     }
 }

@@ -46,29 +46,6 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
-    public void testSaveInternshipOfferWithoutDocument() {
-        //Arrange
-        expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setMonitor(getMonitor());
-        when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
-
-        //Act
-        Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
-        try {
-            optionalInternshipOffer = service.saveInternshipOffer(
-                    new ObjectMapper().writeValueAsString(expectedInternshipOffer), null
-            );
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            fail("Couldn't write expectedInternshipOffer as a String");
-        }
-
-        //Assert
-        assertThat(optionalInternshipOffer.isPresent()).isTrue();
-    }
-
-    @Test
-    //@Disabled
     public void testSaveInternshipOfferWithDocument() throws IOException {
         //Arrange
         PDFDocument PDFDocument = getDocument();
@@ -105,24 +82,25 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
-    public void testValidateInternshipOffer() {
+    public void testSaveInternshipOfferWithoutDocument() {
         //Arrange
         expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setIsValid(true);
-
-        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
-                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
-        when(internshipOfferRepository.save(expectedInternshipOffer))
-                .thenReturn(expectedInternshipOffer);
+        expectedInternshipOffer.setMonitor(getMonitor());
+        when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
 
         //Act
-        final Optional<InternshipOffer> actualInternshipOffer =
-                service.validateInternshipOffer(expectedInternshipOffer.getId());
+        Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
+        try {
+            optionalInternshipOffer = service.saveInternshipOffer(
+                    new ObjectMapper().writeValueAsString(expectedInternshipOffer), null
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail("Couldn't write expectedInternshipOffer as a String");
+        }
 
         //Assert
-        Boolean isValid = actualInternshipOffer.isPresent() ? actualInternshipOffer.get().getIsValid() : false;
-        assertThat(actualInternshipOffer.isPresent()).isTrue();
-        assertThat(isValid).isTrue();
+        assertThat(optionalInternshipOffer.isPresent()).isTrue();
     }
 
     @Test
@@ -144,31 +122,6 @@ public class InternshipServiceTest {
 
         //Assert
         assertThat(internshipOffer.isPresent()).isFalse();
-    }
-
-    @Test
-    //@Disabled
-    public void testApplyInternshipOffer() {
-        //Arrange
-        expectedStudent = getStudent();
-        Student givenStudent = getStudent();
-        expectedInternshipOffer = getInternshipOffer();
-
-        List<InternshipOffer> internshipOffers = new ArrayList<>();
-        internshipOffers.add(expectedInternshipOffer);
-        expectedStudent.setInternshipOffers(internshipOffers);
-
-        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
-        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
-
-        //Act
-        final Optional<Student> optionalStudent =
-                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
-
-        //Assert
-        Student actualStudent = optionalStudent.orElse(null);
-        assertThat(actualStudent).isNotNull();
-        assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
     }
 
     @Test
@@ -207,4 +160,50 @@ public class InternshipServiceTest {
         assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
     }
 
+    @Test
+    //@Disabled
+    public void testApplyInternshipOffer() {
+        //Arrange
+        expectedStudent = getStudent();
+        Student givenStudent = getStudent();
+        expectedInternshipOffer = getInternshipOffer();
+
+        List<InternshipOffer> internshipOffers = new ArrayList<>();
+        internshipOffers.add(expectedInternshipOffer);
+        expectedStudent.setInternshipOffers(internshipOffers);
+
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
+        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
+    }
+
+    @Test
+    //@Disabled
+    public void testValidateInternshipOffer() {
+        //Arrange
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setIsValid(true);
+
+        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
+        when(internshipOfferRepository.save(expectedInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
+
+        //Act
+        final Optional<InternshipOffer> actualInternshipOffer =
+                service.validateInternshipOffer(expectedInternshipOffer.getId());
+
+        //Assert
+        Boolean isValid = actualInternshipOffer.isPresent() ? actualInternshipOffer.get().getIsValid() : false;
+        assertThat(actualInternshipOffer.isPresent()).isTrue();
+        assertThat(isValid).isTrue();
+    }
 }

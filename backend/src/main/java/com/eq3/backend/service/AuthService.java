@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import static com.eq3.backend.utils.Utils.cleanUpStudentCVList;
+
 import java.util.Optional;
 
 @Service
@@ -18,24 +20,17 @@ public class AuthService {
     private final MonitorRepository monitorRepository;
     private final SupervisorRepository supervisorRepository;
     private final InternshipManagerRepository internshipManagerRepository;
-    private final InternshipOfferRepository internshipOfferRepository;
-    private final EvaluationRepository evaluationRepository;
 
     AuthService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
-                   InternshipManagerRepository internshipManagerRepository,
-                   InternshipOfferRepository internshipOfferRepository,
-                   EvaluationRepository evaluationRepository
+                   InternshipManagerRepository internshipManagerRepository
     ) {
-
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
         this.internshipManagerRepository = internshipManagerRepository;
-        this.internshipOfferRepository = internshipOfferRepository;
-        this.evaluationRepository = evaluationRepository;
     }
 
     public Optional<Student> signUp(Student student) {
@@ -72,30 +67,15 @@ public class AuthService {
         return cleanUpStudentCVList(studentRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password));
     }
 
-    public Optional<Supervisor> loginSupervisor(String username, String password) {
-        return supervisorRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
-    }
-
     public Optional<Monitor> loginMonitor(String username, String password) {
         return monitorRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
+    }
+
+    public Optional<Supervisor> loginSupervisor(String username, String password) {
+        return supervisorRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
 
     public Optional<InternshipManager> loginInternshipManager(String username, String password) {
         return internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(username, password);
     }
-
-    private Optional<Student> cleanUpStudentCVList(Optional<Student> optionalStudent) {
-        optionalStudent.ifPresent(student -> {
-                    if (student.getCVList() != null) {
-                        student.getCVList().forEach(cv -> {
-                            PDFDocument PDFDocument = cv.getPDFDocument();
-                            PDFDocument.setContent(null);
-                        });
-                    }
-                }
-        );
-        return optionalStudent;
-    }
-
-
 }

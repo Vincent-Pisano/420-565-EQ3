@@ -48,20 +48,6 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
-    public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
-        return service.downloadInternshipOfferDocument(id)
-                .map(this::getDownloadingDocument)
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping(value = "/get/CV/document/{idStudent}/{idCV}", produces = "application/pdf")
-    public ResponseEntity<InputStreamResource> downloadStudentCVDocument(@PathVariable String idStudent, @PathVariable String idCV){
-        return service.downloadStudentCVDocument(idStudent, idCV)
-                .map(this::getDownloadingDocument)
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
     @GetMapping("/get/monitor/{username}")
     public ResponseEntity<Monitor> getMonitorByUsername(@PathVariable String username) {
         return service.getMonitorByUsername(username)
@@ -76,9 +62,23 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
+        return service.downloadInternshipOfferDocument(id)
+                .map(this::getDownloadingDocument)
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping(value = "/get/CV/document/{idStudent}/{idCV}", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> downloadStudentCVDocument(@PathVariable String idStudent, @PathVariable String idCV){
+        return service.downloadStudentCVDocument(idStudent, idCV)
+                .map(this::getDownloadingDocument)
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping(value="/get/{typeEvaluation}/evaluation/document", produces = "application/pdf")
-    public ResponseEntity<InputStreamResource> getEvaluationDocument(@PathVariable String typeEvaluation){
-        return service.getEvaluationDocument(typeEvaluation)
+    public ResponseEntity<InputStreamResource> downloadEvaluationDocument(@PathVariable String typeEvaluation){
+        return service.downloadEvaluationDocument(typeEvaluation)
                 .map(this::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

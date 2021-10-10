@@ -107,25 +107,6 @@ public class AuthControllerTest {
 
     @Test
     //@Disabled
-    public void testLoginSupervisor() throws Exception {
-        //Arrange
-        expectedSupervisor = getSupervisor();
-        when(service.loginSupervisor(expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
-                .thenReturn(Optional.of(expectedSupervisor));
-        //Act
-        MvcResult result = mockMvc.perform(get("/login/supervisor/" +
-                expectedSupervisor.getUsername()+"/"+expectedSupervisor.getPassword())
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualSupervisor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Supervisor.class);
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualSupervisor).isNotNull();
-    }
-
-    @Test
-    //@Disabled
     public void testLoginMonitor() throws Exception {
         //Arrange
         expectedMonitor = getMonitor();
@@ -141,6 +122,25 @@ public class AuthControllerTest {
         var actualMonitor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Monitor.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualMonitor).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testLoginSupervisor() throws Exception {
+        //Arrange
+        expectedSupervisor = getSupervisor();
+        when(service.loginSupervisor(expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
+                .thenReturn(Optional.of(expectedSupervisor));
+        //Act
+        MvcResult result = mockMvc.perform(get("/login/supervisor/" +
+                expectedSupervisor.getUsername()+"/"+expectedSupervisor.getPassword())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSupervisor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Supervisor.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSupervisor).isNotNull();
     }
 
     @Test

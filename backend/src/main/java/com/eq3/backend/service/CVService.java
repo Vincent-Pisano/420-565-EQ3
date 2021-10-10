@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.eq3.backend.utils.Utils.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +23,7 @@ public class CVService {
 
     private final StudentRepository studentRepository;
 
-    CVService(StudentRepository studentRepository
-    )
-    {
-
+    CVService(StudentRepository studentRepository) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
     }
@@ -40,12 +39,17 @@ public class CVService {
     }
 
     private Boolean addToListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
-        Boolean isPresent = optionalStudent.isPresent();
+        boolean isPresent = optionalStudent.isPresent();
         if (isPresent) {
             Student student = optionalStudent.get();
             List<CV> listCV = student.getCVList();
             if (listCV.size() < 10) {
-                listCV.add(new CV(extractDocument(multipartFile)));
+                try {
+                    listCV.add(new CV(extractDocument(multipartFile)));
+                } catch (IOException e) {
+                    logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
+                            + " at extractDocument in CVService : " + e.getMessage());
+                }
                 student.setCVList(listCV);
             } else {
                 isPresent = false;
@@ -53,6 +57,7 @@ public class CVService {
         }
         return isPresent;
     }
+
     public Optional<Student> deleteCV(String idStudent, String idCV) {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
         optionalStudent = deleteCVFromListCV(optionalStudent, idCV)
@@ -127,30 +132,4 @@ public class CVService {
         studentList.forEach(student -> cleanUpStudentCVList(Optional.ofNullable(student)));
         return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }
-
-    private Optional<Student> cleanUpStudentCVList(Optional<Student> optionalStudent) {
-        optionalStudent.ifPresent(student -> {
-                    if (student.getCVList() != null) {
-                        student.getCVList().forEach(cv -> {
-                            PDFDocument PDFDocument = cv.getPDFDocument();
-                            PDFDocument.setContent(null);
-                        });
-                    }
-                }
-        );
-        return optionalStudent;
-    }
-
-    private PDFDocument extractDocument(MultipartFile multipartFile) {
-        PDFDocument PDFDocument = new PDFDocument();
-        PDFDocument.setName(multipartFile.getOriginalFilename());
-        try {
-            PDFDocument.setContent(new Binary(BsonBinarySubType.BINARY, multipartFile.getBytes()));
-        } catch (IOException e) {
-            logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
-                    + " at extractDocument in BackendService : " + e.getMessage());
-        }
-        return PDFDocument;
-    }
-
 }

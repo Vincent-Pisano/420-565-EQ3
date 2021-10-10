@@ -24,5 +24,178 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(BackendController.class)
 class BackendControllerTest {
 
+    @Autowired
+    private MockMvc mockMvc;
 
+    @MockBean
+    private BackendService service;
+
+    //global variables
+    private Student expectedStudent;
+    private List<Student> expectedStudentList;
+    private List<Supervisor> expectedSupervisorList;
+    private Monitor expectedMonitor;
+    private Supervisor expectedSupervisor;
+    private InternshipOffer expectedInternshipOffer;
+    private CV expectedCV;
+    private PDFDocument expectedPDFDocument;
+    private String expectedDocumentName;
+
+    @Test
+    //@Disabled
+    public void testGetAllStudents() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudents(Department.COMPUTER_SCIENCE))
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/students/" +
+                Department.COMPUTER_SCIENCE)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutSupervisor() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE))
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/students/noSupervisor/" +
+                Department.COMPUTER_SCIENCE)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSupervisors() throws Exception {
+        //Arrange
+        expectedSupervisorList = getListOfSupervisors();
+        when(service.getAllSupervisors())
+                .thenReturn(Optional.of(expectedSupervisorList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/supervisors/")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSupervisorList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSupervisorList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetMonitorByUsername() throws Exception {
+        //Arrange
+        expectedMonitor = getMonitor();
+        when(service.getMonitorByUsername(expectedMonitor.getUsername()))
+                .thenReturn(Optional.of(expectedMonitor));
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/monitor/" +
+                expectedMonitor.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualMonitor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Monitor.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualMonitor).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testAssignSupervisorToStudent() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedSupervisor = getSupervisor();
+        expectedStudent.setSupervisor(expectedSupervisor);
+
+        when(service.assignSupervisorToStudent(expectedStudent.getId(), expectedSupervisor.getId()))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(post("/assign/supervisor/" +
+                expectedStudent.getId() + "/" + expectedSupervisor.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(student.getSupervisor()).isNotNull();
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadInternshipOfferDocument() throws Exception {
+        // Arrange
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setPDFDocument(getDocument());
+
+        when(service.downloadInternshipOfferDocument(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.of(expectedInternshipOffer.getPDFDocument()));
+
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/internshipOffer/document/" +
+                expectedInternshipOffer.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadStudentCVDocument() throws Exception {
+        //Arrange
+        expectedStudent = getStudent();
+        expectedStudent.setCVList(getCVList());
+        expectedCV = getCV();
+
+        when(service.downloadStudentCVDocument(expectedStudent.getId(), expectedCV.getId()))
+                .thenReturn(Optional.ofNullable(expectedCV.getPDFDocument()));
+
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/CV/document/" +
+                expectedStudent.getId() + "/" + expectedCV.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
+    }
+
+    @Test
+    //@Disabled
+    public void testDownloadEvaluationDocument() throws Exception {
+        //Arrange
+        expectedPDFDocument = getDocument();
+        expectedDocumentName = DOCUMENT_NAME;
+
+        when(service.downloadEvaluationDocument(expectedDocumentName))
+                .thenReturn(Optional.of(expectedPDFDocument));
+        //Act
+        MvcResult result = mockMvc.perform(get("/get/"+ expectedDocumentName +"/evaluation/document")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
+    }
 }
