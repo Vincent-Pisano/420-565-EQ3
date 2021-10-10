@@ -1,9 +1,6 @@
 package com.eq3.backend.service;
 
-import com.eq3.backend.model.Department;
-import com.eq3.backend.model.InternshipOffer;
-import com.eq3.backend.model.PDFDocument;
-import com.eq3.backend.model.Student;
+import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -24,13 +21,16 @@ public class InternshipService {
 
     private final StudentRepository studentRepository;
     private final InternshipOfferRepository internshipOfferRepository;
+    private final InternshipApplicationRepository internshipApplicationRepository;
 
     InternshipService(StudentRepository studentRepository,
-                   InternshipOfferRepository internshipOfferRepository) {
-
+                   InternshipOfferRepository internshipOfferRepository,
+                   InternshipApplicationRepository internshipApplicationRepository
+    ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
+        this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -79,16 +79,14 @@ public class InternshipService {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
 
         optionalStudent.ifPresent(student -> {
-            List<InternshipOffer> internshipOffersList = student.getInternshipOffers();
-
+            List<InternshipApplication> internshipApplicationList = student.getInternshipApplications();
             if (internshipOffer.getPDFDocument() != null) {
                 PDFDocument PDFDocument = internshipOffer.getPDFDocument();
                 PDFDocument.setContent(null);
                 internshipOffer.setPDFDocument(PDFDocument);
             }
-
-            internshipOffersList.add(internshipOffer);
-            student.setInternshipOffers(internshipOffersList);
+            internshipApplicationList.add(createInternshipApplication(internshipOffer));
+            student.setInternshipApplications(internshipApplicationList);
             studentRepository.save(student);
         });
 
@@ -101,5 +99,13 @@ public class InternshipService {
             internshipOffer.setIsValid(true);
         });
         return optionalInternshipOffer.map(internshipOfferRepository::save);
+    }
+
+    private InternshipApplication createInternshipApplication(InternshipOffer internshipOffer){
+        InternshipApplication internshipApplication = new InternshipApplication();
+        internshipApplication.setInternshipOffer(internshipOffer);
+        internshipApplication.setStatus(InternshipApplicationStatus.WAITING);
+        internshipApplicationRepository.save(internshipApplication);
+        return internshipApplication;
     }
 }

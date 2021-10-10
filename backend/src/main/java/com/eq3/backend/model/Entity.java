@@ -27,5 +27,4 @@ public abstract class Entity implements Serializable {
         creationDate = new Date();
         isDisabled = false;
     }
-
 }

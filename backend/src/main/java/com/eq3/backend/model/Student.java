@@ -20,7 +20,7 @@ public class Student extends User {
 
     @Builder.Default
     @DBRef
-    private List<InternshipOffer> internshipOffers = new ArrayList<>();
+    private List<InternshipApplication> internshipApplications = new ArrayList<>();
 
     @Builder.Default
     private List<CV> CVList = new ArrayList<>();
@@ -31,6 +31,6 @@ public class Student extends User {
     public Student() {
         super();
         this.CVList = new ArrayList<>();
-        this.internshipOffers = new ArrayList<>();
+        this.internshipApplications = new ArrayList<>();
     }
 }

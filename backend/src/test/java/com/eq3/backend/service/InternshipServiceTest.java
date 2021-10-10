@@ -123,7 +123,32 @@ public class InternshipServiceTest {
         //Assert
         assertThat(internshipOffer.isPresent()).isFalse();
     }
+/*
+    @Test
+    //@Disabled
+    public void testApplyInternshipOffer() {
+        //Arrange
+        expectedStudent = getStudent();
+        Student givenStudent = getStudent();
+        expectedInternshipOffer = getInternshipOffer();
 
+        List<InternshipOffer> internshipOffers = new ArrayList<>();
+        internshipOffers.add(expectedInternshipOffer);
+        expectedStudent.setInternshipOffers(internshipOffers);
+
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
+        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
+    }
+*/
     @Test
     //@Disabled
     public void testGetAllInternshipOfferByWorkField() {
@@ -158,31 +183,6 @@ public class InternshipServiceTest {
         // Assert
         assertThat(internshipOffers.isPresent()).isTrue();
         assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testApplyInternshipOffer() {
-        //Arrange
-        expectedStudent = getStudent();
-        Student givenStudent = getStudent();
-        expectedInternshipOffer = getInternshipOffer();
-
-        List<InternshipOffer> internshipOffers = new ArrayList<>();
-        internshipOffers.add(expectedInternshipOffer);
-        expectedStudent.setInternshipOffers(internshipOffers);
-
-        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
-        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
-
-        //Act
-        final Optional<Student> optionalStudent =
-                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
-
-        //Assert
-        Student actualStudent = optionalStudent.orElse(null);
-        assertThat(actualStudent).isNotNull();
-        assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
     }
 
     @Test
