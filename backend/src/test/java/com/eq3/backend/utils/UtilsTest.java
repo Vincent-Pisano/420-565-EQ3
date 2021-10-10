@@ -220,4 +220,13 @@ public class UtilsTest {
                 .document(getDocument())
                 .build();
     }
+
+    public static InternshipApplication getInternshipApplication() {
+        return InternshipApplication.builder()
+                .id("91448hkk58e00c02w02bjd4")
+                .status(InternshipApplicationStatus.WAITING)
+                .internshipOffer(getInternshipOffer())
+                .build();
+    }
+
 }

@@ -39,7 +39,7 @@ public class InternshipService {
             internshipOffer = getInternshipOffer(internshipOfferJson, multipartFile);
         } catch (IOException e) {
             logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at " +
-                    "saveInternshipOffer in BackendService : " + e.getMessage());
+                    "saveInternshipOffer in InternshipService : " + e.getMessage());
         }
         return internshipOffer == null ? Optional.empty() :
                 Optional.of(internshipOfferRepository.save(internshipOffer));
@@ -93,19 +93,19 @@ public class InternshipService {
         return cleanUpStudentCVList(optionalStudent);
     }
 
-    public Optional<InternshipOffer> validateInternshipOffer(String idOffer) {
-        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
-        optionalInternshipOffer.ifPresent(internshipOffer -> {
-            internshipOffer.setIsValid(true);
-        });
-        return optionalInternshipOffer.map(internshipOfferRepository::save);
-    }
-
     private InternshipApplication createInternshipApplication(InternshipOffer internshipOffer){
         InternshipApplication internshipApplication = new InternshipApplication();
         internshipApplication.setInternshipOffer(internshipOffer);
         internshipApplication.setStatus(InternshipApplication.ApplicationStatus.WAITING);
         internshipApplicationRepository.save(internshipApplication);
         return internshipApplication;
+    }
+
+    public Optional<InternshipOffer> validateInternshipOffer(String idOffer) {
+        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
+        optionalInternshipOffer.ifPresent(internshipOffer -> {
+            internshipOffer.setIsValid(true);
+        });
+        return optionalInternshipOffer.map(internshipOfferRepository::save);
     }
 }
