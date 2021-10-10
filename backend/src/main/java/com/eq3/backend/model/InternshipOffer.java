@@ -15,6 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 public class InternshipOffer extends Entity{
 
+    public enum WorkShift {
+        DAY,
+        NIGHT,
+        FLEXIBLE
+    }
+
     @Field
     private String jobName;
 

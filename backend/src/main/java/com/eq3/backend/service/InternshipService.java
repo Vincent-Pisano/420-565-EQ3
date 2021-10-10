@@ -104,7 +104,7 @@ public class InternshipService {
     private InternshipApplication createInternshipApplication(InternshipOffer internshipOffer){
         InternshipApplication internshipApplication = new InternshipApplication();
         internshipApplication.setInternshipOffer(internshipOffer);
-        internshipApplication.setStatus(InternshipApplicationStatus.WAITING);
+        internshipApplication.setStatus(InternshipApplication.ApplicationStatus.WAITING);
         internshipApplicationRepository.save(internshipApplication);
         return internshipApplication;
     }

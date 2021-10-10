@@ -12,15 +12,21 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @AllArgsConstructor
 public class InternshipApplication extends Entity{
 
+    public enum ApplicationStatus {
+        NOT_TAKEN,
+        WAITING,
+        TAKEN
+    }
+
     @Builder.Default
-    private InternshipApplicationStatus status = InternshipApplicationStatus.NOT_TAKEN;
+    private ApplicationStatus status = ApplicationStatus.NOT_TAKEN;
 
     @Field
     private InternshipOffer internshipOffer;
 
     public InternshipApplication() {
         super();
-        this.status = InternshipApplicationStatus.NOT_TAKEN;
+        this.status = ApplicationStatus.NOT_TAKEN;
     }
 
 }
