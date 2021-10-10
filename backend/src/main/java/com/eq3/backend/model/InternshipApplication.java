@@ -3,12 +3,13 @@ package com.eq3.backend.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 
 @Data
-@Builder
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 public class InternshipApplication extends Entity{
 

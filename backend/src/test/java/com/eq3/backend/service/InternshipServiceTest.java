@@ -36,12 +36,16 @@ public class InternshipServiceTest {
     private StudentRepository studentRepository;
 
     @Mock
+    private InternshipApplicationRepository internshipApplicationRepository;
+
+    @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
     //global variables
     private Student expectedStudent;
     private Monitor expectedMonitor;
     private InternshipOffer expectedInternshipOffer;
+    private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
 
     @Test
@@ -123,21 +127,23 @@ public class InternshipServiceTest {
         //Assert
         assertThat(internshipOffer.isPresent()).isFalse();
     }
-/*
+
     @Test
     //@Disabled
     public void testApplyInternshipOffer() {
         //Arrange
         expectedStudent = getStudent();
         Student givenStudent = getStudent();
+        expectedInternshipApplication = getInternshipApplication();
         expectedInternshipOffer = getInternshipOffer();
 
-        List<InternshipOffer> internshipOffers = new ArrayList<>();
-        internshipOffers.add(expectedInternshipOffer);
-        expectedStudent.setInternshipOffers(internshipOffers);
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+        internshipApplications.add(expectedInternshipApplication);
+        expectedStudent.setInternshipApplications(internshipApplications);
 
         when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
         when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+        when(internshipApplicationRepository.save(expectedInternshipApplication)).thenReturn(expectedInternshipApplication);
 
         //Act
         final Optional<Student> optionalStudent =
@@ -146,9 +152,10 @@ public class InternshipServiceTest {
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
         assertThat(actualStudent).isNotNull();
-        assertThat(actualStudent.getInternshipOffers().size()).isGreaterThan(0);
+        assertThat(actualStudent.getInternshipApplications().size()).isGreaterThan(0);
     }
-*/
+
+
     @Test
     //@Disabled
     public void testGetAllInternshipOfferByWorkField() {
