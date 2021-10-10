@@ -224,7 +224,7 @@ public class UtilsTest {
     public static InternshipApplication getInternshipApplication() {
         return InternshipApplication.builder()
                 .id("91448hkk58e00c02w02bjd4")
-                .status(InternshipApplicationStatus.WAITING)
+                .status(InternshipApplication.ApplicationStatus.WAITING)
                 .internshipOffer(getInternshipOffer())
                 .build();
     }
