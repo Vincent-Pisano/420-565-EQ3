@@ -1,7 +1,6 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
-import com.eq3.backend.service.BackendService;
 import com.eq3.backend.service.InternshipService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
