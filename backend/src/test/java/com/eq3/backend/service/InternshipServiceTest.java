@@ -158,7 +158,7 @@ public class InternshipServiceTest {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(Department.COMPUTER_SCIENCE))
+        when(internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(Department.COMPUTER_SCIENCE))
                 .thenReturn(expectedInternshipOfferList);
 
         //Act
@@ -176,7 +176,7 @@ public class InternshipServiceTest {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidFalse())
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
         // Act

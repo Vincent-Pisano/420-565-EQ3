@@ -11,6 +11,9 @@ const NavUserStudent = () => {
       <NavDropdown.Item as={Link} to="/listInternshipOffer">
         Liste d'offres de stage
       </NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/listInternshipApplication">
+        Liste de vos applications de stage
+      </NavDropdown.Item>
     </NavDropdown>
   );
 };

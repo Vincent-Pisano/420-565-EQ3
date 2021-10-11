@@ -8,6 +8,7 @@ import StudentList from './components/StudentList/StudentList';
 import SupervisorList from './components/SupervisorList/SupervisorList';
 import InternshipOfferForm from './components/InternshipOffer/InternshipOfferForm'
 import InternshipOfferList from './components/IntershipOfferList/InternshipOfferList';
+import InternshipApplicationList from './components/InternshipApplicationList/InternshipApplicationList';
 import NavigationBar from "../src/components/Navbar/NavigationBar";
 
 function App () {
@@ -23,6 +24,7 @@ function App () {
           <ProtectedRoute path="/formInternshipOffer" exact component={InternshipOfferForm}/>
           <ProtectedRoute path="/listStudents" exact component={StudentList}/>
           <ProtectedRoute path="/listInternshipOffer" exact component={InternshipOfferList}/>
+          <ProtectedRoute path="/listInternshipApplication" exact component={InternshipApplicationList}/>
           <ProtectedRoute path="/listSupervisors" exact component={SupervisorList}/>
           <Route path="*" exact component={Login}/>
         </Switch>           
