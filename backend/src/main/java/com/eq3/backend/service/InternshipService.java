@@ -75,30 +75,17 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<Student> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
+    public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
 
-        optionalStudent.ifPresent(student -> {
-            List<InternshipApplication> internshipApplicationList = student.getInternshipApplications();
-            if (internshipOffer.getPDFDocument() != null) {
-                PDFDocument PDFDocument = internshipOffer.getPDFDocument();
-                PDFDocument.setContent(null);
-                internshipOffer.setPDFDocument(PDFDocument);
-            }
-            internshipApplicationList.add(createInternshipApplication(internshipOffer));
-            student.setInternshipApplications(internshipApplicationList);
-            studentRepository.save(student);
-        });
-
-        return cleanUpStudentCVList(optionalStudent);
+        return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
     }
 
-    private InternshipApplication createInternshipApplication(InternshipOffer internshipOffer){
+    private InternshipApplication createInternshipApplication(Student student, InternshipOffer internshipOffer){
         InternshipApplication internshipApplication = new InternshipApplication();
         internshipApplication.setInternshipOffer(internshipOffer);
-        internshipApplication.setStatus(InternshipApplication.ApplicationStatus.WAITING);
-        internshipApplicationRepository.save(internshipApplication);
-        return internshipApplication;
+        internshipApplication.setStudent(student);
+        return internshipApplicationRepository.save(internshipApplication);
     }
 
     public Optional<InternshipOffer> validateInternshipOffer(String idOffer) {

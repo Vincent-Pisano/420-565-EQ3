@@ -15,9 +15,7 @@ const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErr
         fields
       )
       .then((response) => {
-        auth.user = response.data;
         setHasApplied(true);
-
         setTimeout(() => {
           history.push({
             pathname: `/listInternshipOffer`,
@@ -28,7 +26,7 @@ const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErr
         );
       })
       .catch((error) => {
-        setErrorMessage("Erreur lors de l'application de stage");
+        setErrorMessage("Erreur lors de l'application à l'ofre de stage stage");
       });
   }
 

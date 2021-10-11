@@ -40,6 +40,7 @@ public class InternshipControllerTest {
     private Student expectedStudent;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
+    private InternshipApplication expectedInternshipApplication;
 
     @Test
     //Disabled
@@ -149,8 +150,12 @@ public class InternshipControllerTest {
         expectedStudent = getStudent();
         expectedInternshipOffer = getInternshipOffer();
 
+        expectedInternshipApplication = getInternshipApplication();
+        expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
+        expectedInternshipApplication.setStudent(expectedStudent);
+
         when(service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer))
-                .thenReturn(Optional.of(expectedStudent));
+                .thenReturn(Optional.of(expectedInternshipApplication));
 
         //Act
         MvcResult result = mockMvc.perform(post("/apply/internshipOffer/" +
@@ -160,9 +165,9 @@ public class InternshipControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var student = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
+        var internshipApplication = new ObjectMapper().readValue(response.getContentAsString(), InternshipApplication.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(student).isNotNull();
+        assertThat(internshipApplication).isNotNull();
     }
 
     @Test

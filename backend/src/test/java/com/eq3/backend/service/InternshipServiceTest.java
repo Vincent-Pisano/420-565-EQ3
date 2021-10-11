@@ -133,26 +133,22 @@ public class InternshipServiceTest {
     public void testApplyInternshipOffer() {
         //Arrange
         expectedStudent = getStudent();
-        Student givenStudent = getStudent();
-        expectedInternshipApplication = getInternshipApplication();
         expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipApplication = getInternshipApplication();
 
-        List<InternshipApplication> internshipApplications = new ArrayList<>();
-        internshipApplications.add(expectedInternshipApplication);
-        expectedStudent.setInternshipApplications(internshipApplications);
+        expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
+        expectedInternshipApplication.setStudent(expectedStudent);
 
-        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(givenStudent.getUsername())).thenReturn(Optional.of(givenStudent));
-        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
-        when(internshipApplicationRepository.save(expectedInternshipApplication)).thenReturn(expectedInternshipApplication);
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername())).thenReturn(Optional.of(expectedStudent));
+        when(internshipApplicationRepository.save(any(InternshipApplication.class))).thenReturn(expectedInternshipApplication);
 
         //Act
-        final Optional<Student> optionalStudent =
+        final Optional<InternshipApplication> optionalInternshipApplication =
                 service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
 
         //Assert
-        Student actualStudent = optionalStudent.orElse(null);
-        assertThat(actualStudent).isNotNull();
-        assertThat(actualStudent.getInternshipApplications().size()).isGreaterThan(0);
+        InternshipApplication internshipApplication = optionalInternshipApplication.orElse(null);
+        assertThat(internshipApplication).isNotNull();
     }
 
 
