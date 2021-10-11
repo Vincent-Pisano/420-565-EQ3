@@ -5,7 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -25,9 +29,11 @@ public class InternshipApplication extends Entity{
     @Field
     private InternshipOffer internshipOffer;
 
+    @DBRef
+    private Student student;
+
     public InternshipApplication() {
         super();
         this.status = ApplicationStatus.NOT_TAKEN;
     }
-
 }
