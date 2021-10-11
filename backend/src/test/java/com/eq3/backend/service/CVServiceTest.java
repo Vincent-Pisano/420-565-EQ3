@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
+import static com.eq3.backend.utils.UtilsTest.getCVList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.lenient;
@@ -34,6 +35,7 @@ public class CVServiceTest {
     private Student expectedStudent;
     private List<Student> expectedStudentList;
     private CV expectedCV;
+    private List<CV> expectedCVList;
 
     @Test
     //@Disabled
@@ -45,7 +47,9 @@ public class CVServiceTest {
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedStudent = getStudent();
-        expectedStudent.setCVList(getCVList());
+        expectedCVList = getCVList();
+        expectedStudent.setCVList(expectedCVList);
+
         when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
         when(studentRepository.findById(expectedStudent.getId())).thenReturn(Optional.ofNullable(expectedStudent));
 
@@ -55,8 +59,11 @@ public class CVServiceTest {
 
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
+        List<CV> actualCVList = actualStudent != null ? actualStudent.getCVList() : null;
+
         assertThat(optionalStudent.isPresent()).isTrue();
-        assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
+        assertThat(actualCVList).isNotNull();
+        assertThat(actualCVList.size()).isEqualTo(expectedCVList.size());
     }
 
     @Test
@@ -64,9 +71,9 @@ public class CVServiceTest {
     public void testDeleteCV() throws IOException {
         //Arrange
         expectedStudent = getStudent();
-        List<CV> expectedListCV = getCVList();
-        expectedListCV.remove(0);
-        expectedStudent.setCVList(expectedListCV);
+        expectedCVList = getCVList();
+        expectedCVList.remove(0);
+        expectedStudent.setCVList(expectedCVList);
 
         Student givenStudent = getStudent();
         List<CV> givenListCV = getCVList();
@@ -83,8 +90,11 @@ public class CVServiceTest {
 
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
+        List<CV> actualCVList = actualStudent != null ? actualStudent.getCVList() : null;
+
         assertThat(optionalStudent.isPresent()).isTrue();
-        assertThat(actualStudent.getCVList().size()).isEqualTo(expectedStudent.getCVList().size());
+        assertThat(actualCVList).isNotNull();
+        assertThat(actualCVList.size()).isEqualTo(expectedCVList.size());
     }
 
     @Test
@@ -135,12 +145,14 @@ public class CVServiceTest {
                 .thenReturn(expectedStudentList);
 
         //Act
-        final Optional<List<Student>> students =
+        final Optional<List<Student>> optionalStudents =
                 service.getAllStudentWithCVActiveWaitingValidation();
 
         //Assert
-        assertThat(students.isPresent()).isTrue();
-        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
     }
 
     @Test
@@ -168,10 +180,11 @@ public class CVServiceTest {
                 service.validateCVOfStudent(givenStudent.getId());
 
         //Assert
-        Student student = optionalStudent.orElse(null);
-        CV cv = student != null ? student.getCVList().get(0) : null;
-        assertThat(student).isNotNull();
-        assertThat(cv).isNotNull();
-        assertThat(cv.getStatus()).isEqualTo(CV.CVStatus.VALID);
+        Student actualStudent = optionalStudent.orElse(null);
+        CV actualCV = actualStudent != null ? actualStudent.getCVList().get(0) : null;
+
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualCV).isNotNull();
+        assertThat(actualCV.getStatus()).isEqualTo(CV.CVStatus.VALID);
     }
 }

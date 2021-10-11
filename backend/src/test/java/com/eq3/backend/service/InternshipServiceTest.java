@@ -80,6 +80,7 @@ public class InternshipServiceTest {
 
         //Assert
         InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
+
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
         assertThat(actualInternshipOffer.getPDFDocument()).isNotNull();
     }
@@ -104,7 +105,10 @@ public class InternshipServiceTest {
         }
 
         //Assert
+        InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
+
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
+        assertThat(actualInternshipOffer.getPDFDocument()).isNull();
     }
 
     @Test
@@ -114,9 +118,9 @@ public class InternshipServiceTest {
         expectedMonitor = getMonitor();
 
         //Act
-        Optional<InternshipOffer> internshipOffer = Optional.empty();
+        Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try {
-            internshipOffer = service.saveInternshipOffer(
+            optionalInternshipOffer = service.saveInternshipOffer(
                     new ObjectMapper().writeValueAsString(expectedMonitor), null
             );
         } catch (JsonProcessingException e) {
@@ -125,7 +129,47 @@ public class InternshipServiceTest {
         }
 
         //Assert
-        assertThat(internshipOffer.isPresent()).isFalse();
+        assertThat(optionalInternshipOffer.isPresent()).isFalse();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllInternshipOfferByWorkField() {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(Department.COMPUTER_SCIENCE))
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<List<InternshipOffer>> optionalInternshipOffers =
+                service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE);
+
+        //Assert
+        List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
+
+        assertThat(optionalInternshipOffers.isPresent()).isTrue();
+        assertThat(actualInternshipOffers.size()).isEqualTo(expectedInternshipOfferList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllInternshipOffer() {
+        // Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        // Act
+        final Optional<List<InternshipOffer>> optionalInternshipOffers =
+                service.getAllUnvalidatedInternshipOffer();
+
+        // Assert
+        List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
+
+        assertThat(optionalInternshipOffers.isPresent()).isTrue();
+        assertThat(actualInternshipOffers.size()).isEqualTo(expectedInternshipOfferList.size());
     }
 
     @Test
@@ -148,44 +192,9 @@ public class InternshipServiceTest {
 
         //Assert
         InternshipApplication internshipApplication = optionalInternshipApplication.orElse(null);
-        assertThat(internshipApplication).isNotNull();
-    }
 
-
-    @Test
-    //@Disabled
-    public void testGetAllInternshipOfferByWorkField() {
-        //Arrange
-        expectedInternshipOfferList = getListOfInternshipOffer();
-
-        when(internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(Department.COMPUTER_SCIENCE))
-                .thenReturn(expectedInternshipOfferList);
-
-        //Act
-        final Optional<List<InternshipOffer>> internshipOffers =
-                service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE);
-
-        //Assert
-        assertThat(internshipOffers.isPresent()).isTrue();
-        assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllInternshipOffer() {
-        // Arrange
-        expectedInternshipOfferList = getListOfInternshipOffer();
-
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
-                .thenReturn(expectedInternshipOfferList);
-
-        // Act
-        final Optional<List<InternshipOffer>> internshipOffers =
-                service.getAllUnvalidatedInternshipOffer();
-
-        // Assert
-        assertThat(internshipOffers.isPresent()).isTrue();
-        assertThat(internshipOffers.get().size()).isEqualTo(expectedInternshipOfferList.size());
+        assertThat(optionalInternshipApplication.isPresent()).isTrue();
+        assertThat(internshipApplication).isEqualTo(expectedInternshipApplication);
     }
 
     @Test
@@ -201,12 +210,15 @@ public class InternshipServiceTest {
                 .thenReturn(expectedInternshipOffer);
 
         //Act
-        final Optional<InternshipOffer> actualInternshipOffer =
+        final Optional<InternshipOffer> optionalInternshipOffer =
                 service.validateInternshipOffer(expectedInternshipOffer.getId());
 
         //Assert
-        Boolean isValid = actualInternshipOffer.isPresent() ? actualInternshipOffer.get().getIsValid() : false;
-        assertThat(actualInternshipOffer.isPresent()).isTrue();
+        InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
+        Boolean isValid = actualInternshipOffer != null ? actualInternshipOffer.getIsValid() : false;
+
+        assertThat(optionalInternshipOffer.isPresent()).isTrue();
+        assertThat(actualInternshipOffer).isEqualTo(expectedInternshipOffer);
         assertThat(isValid).isTrue();
     }
 }

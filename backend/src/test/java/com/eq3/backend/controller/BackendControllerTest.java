@@ -55,7 +55,8 @@ class BackendControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualStudentList).isNotNull();
     }
@@ -74,7 +75,8 @@ class BackendControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualStudentList).isNotNull();
     }
@@ -91,7 +93,8 @@ class BackendControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualSupervisorList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        var actualSupervisorList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualSupervisorList).isNotNull();
     }
@@ -110,7 +113,8 @@ class BackendControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualMonitor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Monitor.class);
+        var actualMonitor = new ObjectMapper().readValue(response.getContentAsString(), Monitor.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualMonitor).isNotNull();
     }
@@ -134,9 +138,10 @@ class BackendControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
+        var actualStudent = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(student.getSupervisor()).isNotNull();
+        assertThat(actualStudent.getSupervisor()).isNotNull();
     }
 
     @Test
@@ -156,6 +161,7 @@ class BackendControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(response.getContentLength()).isGreaterThan(0);
     }
@@ -178,6 +184,7 @@ class BackendControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(response.getContentLength()).isGreaterThan(0);
     }
@@ -196,6 +203,9 @@ class BackendControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
-        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
     }
 }

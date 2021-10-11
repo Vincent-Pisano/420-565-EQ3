@@ -47,45 +47,8 @@ class BackendServiceTest {
     private Supervisor expectedSupervisor;
     private InternshipOffer expectedInternshipOffer;
     private Evaluation expectedEvaluation;
-    private String expectedDocumentName;
     private CV expectedCV;
-
-
-    @Test
-    //Disabled
-    public void testDownloadInternshipOfferDocument() throws IOException {
-        //Arrange
-        expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setMonitor(getMonitor());
-        expectedInternshipOffer.setPDFDocument(getDocument());
-
-        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
-                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
-
-        //Act
-        Optional<PDFDocument> optionalDocument = service.downloadInternshipOfferDocument(
-                expectedInternshipOffer.getId()
-        );
-
-        //Assert
-        assertThat(optionalDocument.isPresent()).isTrue();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetEvaluationDocument() throws IOException {
-        //Arrange
-        expectedEvaluation = getEvaluation();
-        expectedDocumentName = DOCUMENT_NAME;
-
-        when(evaluationRepository.findByName(expectedDocumentName + DOCUMENT_EXTENSION))
-                .thenReturn(Optional.of(expectedEvaluation));
-        //Act
-        Optional<PDFDocument> optionalDocument = service.downloadEvaluationDocument(expectedDocumentName);
-
-        //Assert
-        assertThat(optionalDocument.isPresent()).isTrue();
-    }
+    private PDFDocument expectedPDFDocument;
 
     @Test
     //@Disabled
@@ -96,12 +59,14 @@ class BackendServiceTest {
                 .thenReturn(expectedStudentList);
 
         //Act
-        final Optional<List<Student>> students =
+        final Optional<List<Student>> optionalStudents =
                 service.getAllStudents(Department.COMPUTER_SCIENCE);
 
         //Assert
-        assertThat(students.isPresent()).isTrue();
-        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
     }
 
     @Test
@@ -113,12 +78,14 @@ class BackendServiceTest {
                 .thenReturn(expectedStudentList);
 
         //Act
-        final Optional<List<Student>> students =
+        final Optional<List<Student>> optionalStudents =
                 service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE);
 
         //Assert
-        assertThat(students.isPresent()).isTrue();
-        assertThat(students.get().size()).isEqualTo(expectedStudentList.size());
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
     }
 
     @Test
@@ -130,12 +97,14 @@ class BackendServiceTest {
                 .thenReturn(expectedSupervisorList);
 
         //Act
-        final Optional<List<Supervisor>> supervisors =
+        final Optional<List<Supervisor>> optionalSupervisors =
                 service.getAllSupervisors();
 
         //Assert
-        assertThat(supervisors.isPresent()).isTrue();
-        assertThat(supervisors.get().size()).isEqualTo(expectedSupervisorList.size());
+        List<Supervisor> actualSupervisors = optionalSupervisors.orElse(null);
+
+        assertThat(optionalSupervisors.isPresent()).isTrue();
+        assertThat(actualSupervisors.size()).isEqualTo(expectedSupervisorList.size());
     }
 
     @Test
@@ -147,11 +116,14 @@ class BackendServiceTest {
         when(monitorRepository.findByUsernameAndIsDisabledFalse(expectedMonitor.getUsername()))
                 .thenReturn(Optional.of(expectedMonitor));
         //Act
-        final Optional<Monitor> loginMonitor =
+        final Optional<Monitor> optionalMonitor =
                 service.getMonitorByUsername(expectedMonitor.getUsername());
 
         //Assert
-        assertThat(loginMonitor.isPresent()).isTrue();
+        Monitor actualMonitor = optionalMonitor.orElse(null);
+
+        assertThat(optionalMonitor.isPresent()).isTrue();
+        assertThat(actualMonitor).isEqualTo(expectedMonitor);
     }
 
     @Test
@@ -173,9 +145,34 @@ class BackendServiceTest {
                 service.assignSupervisorToStudent(givenStudent.getId(), expectedSupervisor.getId());
 
         //Assert
-        Student student = optionalStudent.orElse(null);
-        assertThat(student).isNotNull();
-        assertThat(student.getSupervisor()).isEqualTo(expectedSupervisor);
+        Student actualStudent = optionalStudent.orElse(null);
+
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualStudent.getSupervisor()).isEqualTo(expectedSupervisor);
+    }
+
+    @Test
+    //Disabled
+    public void testDownloadInternshipOfferDocument() throws IOException {
+        //Arrange
+        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedPDFDocument = getDocument();
+        expectedInternshipOffer.setPDFDocument(getDocument());
+
+        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
+
+        //Act
+        Optional<PDFDocument> optionalDocument = service.downloadInternshipOfferDocument(
+                expectedInternshipOffer.getId()
+        );
+
+        //Assert
+        PDFDocument actualPDFDocument = optionalDocument.orElse(null);
+
+        assertThat(optionalDocument.isPresent()).isTrue();
+        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
     }
 
     @Test
@@ -185,6 +182,7 @@ class BackendServiceTest {
         expectedStudent = getStudent();
         expectedStudent.setCVList(getCVList());
         expectedCV = getCV();
+        expectedPDFDocument = expectedCV.getPDFDocument();
 
         when(studentRepository.findById(expectedStudent.getId()))
                 .thenReturn(Optional.ofNullable(expectedStudent));
@@ -195,6 +193,29 @@ class BackendServiceTest {
         );
 
         //Assert
+        PDFDocument actualPDFDocument = optionalDocument.orElse(null);
+
         assertThat(optionalDocument.isPresent()).isTrue();
+        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+    }
+
+    @Test
+    //@Disabled
+    public void testDownloadEvaluationDocument() throws IOException {
+        //Arrange
+        expectedEvaluation = getEvaluation();
+        expectedPDFDocument = getDocument();
+        String givenDocumentName = DOCUMENT_NAME;
+
+        when(evaluationRepository.findByName(givenDocumentName + DOCUMENT_EXTENSION))
+                .thenReturn(Optional.of(expectedEvaluation));
+        //Act
+        Optional<PDFDocument> optionalDocument = service.downloadEvaluationDocument(givenDocumentName);
+
+        //Assert
+        PDFDocument actualPDFDocument = optionalDocument.orElse(null);
+
+        assertThat(optionalDocument.isPresent()).isTrue();
+        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
     }
 }

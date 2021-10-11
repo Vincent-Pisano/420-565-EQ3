@@ -46,10 +46,13 @@ public class AuthServiceTest {
         when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
         //Act
-        final Optional<Student> student = service.signUp(expectedStudent);
+        final Optional<Student> optionalStudent = service.signUp(expectedStudent);
 
         //Assert
-        assertThat(student.isPresent()).isTrue();
+        Student actualStudent = optionalStudent.orElse(null);
+
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualStudent).isEqualTo(expectedStudent);
     }
 
     @Test
@@ -60,10 +63,13 @@ public class AuthServiceTest {
         when(monitorRepository.save(expectedMonitor)).thenReturn(expectedMonitor);
 
         //Act
-        final Optional<Monitor> monitor = service.signUp(expectedMonitor);
+        final Optional<Monitor> optionalMonitor = service.signUp(expectedMonitor);
 
         //Assert
-        assertThat(monitor.isPresent()).isTrue();
+        Monitor actualMonitor = optionalMonitor.orElse(null);
+
+        assertThat(optionalMonitor.isPresent()).isTrue();
+        assertThat(actualMonitor).isEqualTo(expectedMonitor);
     }
 
     @Test
@@ -74,10 +80,13 @@ public class AuthServiceTest {
         when(supervisorRepository.save(expectedSupervisor)).thenReturn(expectedSupervisor);
 
         //Act
-        final Optional<Supervisor> supervisor = service.signUp(expectedSupervisor);
+        final Optional<Supervisor> optionalSupervisor = service.signUp(expectedSupervisor);
 
         //Assert
-        assertThat(supervisor.isPresent()).isTrue();
+        Supervisor actualSupervisor = optionalSupervisor.orElse(null);
+
+        assertThat(optionalSupervisor.isPresent()).isTrue();
+        assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
     }
 
     @Test
@@ -90,11 +99,14 @@ public class AuthServiceTest {
                 expectedStudent.getUsername(), expectedStudent.getPassword()))
                 .thenReturn(Optional.of(expectedStudent));
         //Act
-        final Optional<Student> loginStudent =
+        final Optional<Student> optionalStudent =
                 service.loginStudent(expectedStudent.getUsername(), expectedStudent.getPassword());
 
         //Assert
-        assertThat(loginStudent.isPresent()).isTrue();
+        Student actualStudent = optionalStudent.orElse(null);
+
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualStudent).isEqualTo(expectedStudent);
     }
 
     @Test
@@ -107,11 +119,14 @@ public class AuthServiceTest {
                 expectedMonitor.getUsername(), expectedMonitor.getPassword()))
                 .thenReturn(Optional.of(expectedMonitor));
         //Act
-        final Optional<Monitor> loginMonitor =
+        final Optional<Monitor> optionalMonitor =
                 service.loginMonitor(expectedMonitor.getUsername(), expectedMonitor.getPassword());
 
         //Assert
-        assertThat(loginMonitor.isPresent()).isTrue();
+        Monitor actualMonitor = optionalMonitor.orElse(null);
+
+        assertThat(optionalMonitor.isPresent()).isTrue();
+        assertThat(actualMonitor).isEqualTo(expectedMonitor);
     }
 
     @Test
@@ -124,11 +139,14 @@ public class AuthServiceTest {
                 expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
                 .thenReturn(Optional.of(expectedSupervisor));
         //Act
-        final Optional<Supervisor> loginSupervisor =
+        final Optional<Supervisor> optionalSupervisor =
                 service.loginSupervisor(expectedSupervisor.getUsername(), expectedSupervisor.getPassword());
 
         //Assert
-        assertThat(loginSupervisor.isPresent()).isTrue();
+        Supervisor actualSupervisor = optionalSupervisor.orElse(null);
+
+        assertThat(optionalSupervisor.isPresent()).isTrue();
+        assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
     }
 
     @Test
@@ -141,13 +159,16 @@ public class AuthServiceTest {
                 expectedInternshipManager.getUsername(), expectedInternshipManager.getPassword()))
                 .thenReturn(Optional.of(expectedInternshipManager));
         //Act
-        final Optional<InternshipManager> loginInternshipManager =
+        final Optional<InternshipManager> optionalInternshipManager =
                 service.loginInternshipManager(
                         expectedInternshipManager.getUsername(),
                         expectedInternshipManager.getPassword()
                 );
 
         //Assert
-        assertThat(loginInternshipManager.isPresent()).isTrue();
+        InternshipManager actualInternshipManager = optionalInternshipManager.orElse(null);
+
+        assertThat(optionalInternshipManager.isPresent()).isTrue();
+        assertThat(actualInternshipManager).isEqualTo(expectedInternshipManager);
     }
 }
