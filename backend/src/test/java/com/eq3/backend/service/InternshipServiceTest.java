@@ -191,10 +191,10 @@ public class InternshipServiceTest {
                 service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
 
         //Assert
-        InternshipApplication internshipApplication = optionalInternshipApplication.orElse(null);
+        InternshipApplication actualInternshipApplication = optionalInternshipApplication.orElse(null);
 
         assertThat(optionalInternshipApplication.isPresent()).isTrue();
-        assertThat(internshipApplication).isEqualTo(expectedInternshipApplication);
+        assertThat(actualInternshipApplication).isEqualTo(expectedInternshipApplication);
     }
 
     @Test
@@ -215,10 +215,10 @@ public class InternshipServiceTest {
 
         //Assert
         InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
-        Boolean isValid = actualInternshipOffer != null ? actualInternshipOffer.getIsValid() : false;
+        Boolean actualIsValid = actualInternshipOffer != null ? actualInternshipOffer.getIsValid() : false;
 
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
         assertThat(actualInternshipOffer).isEqualTo(expectedInternshipOffer);
-        assertThat(isValid).isTrue();
+        assertThat(actualIsValid).isTrue();
     }
 }
