@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Supervisor from "./Supervisor";
 
-function ListStudents() {
+function SupervisorList() {
   let history = useHistory();
 
   const [supervisors, setSupervisors] = useState([]);
@@ -50,4 +50,4 @@ function ListStudents() {
   );
 }
 
-export default ListStudents;
+export default SupervisorList;
