@@ -48,6 +48,8 @@ public class InternshipServiceTest {
     private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
 
+    private List<InternshipApplication> expectedInternshipApplicationList;
+
     @Test
     //@Disabled
     public void testSaveInternshipOfferWithDocument() throws IOException {
@@ -208,5 +210,25 @@ public class InternshipServiceTest {
         Boolean isValid = actualInternshipOffer.isPresent() ? actualInternshipOffer.get().getIsValid() : false;
         assertThat(actualInternshipOffer.isPresent()).isTrue();
         assertThat(isValid).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllTakenInternshipApplication() {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+
+        when(internshipApplicationRepository.findAllByStatus(InternshipApplication.ApplicationStatus.TAKEN))
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllTakenInternshipApplication();
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+
     }
 }
