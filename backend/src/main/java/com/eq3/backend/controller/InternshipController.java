@@ -3,8 +3,6 @@ package com.eq3.backend.controller;
 import com.eq3.backend.model.Department;
 import com.eq3.backend.model.InternshipApplication;
 import com.eq3.backend.model.InternshipOffer;
-import com.eq3.backend.model.Student;
-import com.eq3.backend.service.BackendService;
 import com.eq3.backend.service.InternshipService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +71,13 @@ public class InternshipController {
     public ResponseEntity<InternshipApplication> updateInternshipApplication(@RequestBody InternshipApplication internshipApplication) {
         return service.updateInternshipApplication(internshipApplication)
                 .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/getAll/taken/internshipApplication")
+    public ResponseEntity<List<InternshipApplication>> getAllTakenInternshipApplication() {
+        return service.getAllTakenInternshipApplication()
+                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 }

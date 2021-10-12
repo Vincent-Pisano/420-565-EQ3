@@ -187,6 +187,25 @@ public class UtilsTest {
         return internshipOffers;
     }
 
+    public static List<InternshipApplication> getListOfInternshipApplication() {
+        InternshipApplication internshipApplication1 = InternshipApplication.builder()
+                .id("9144kk58e00c0242w02bjd4")
+                .status(InternshipApplication.ApplicationStatus.TAKEN)
+                .internshipOffer(getInternshipOffer())
+                .build();
+
+        InternshipApplication internshipApplication2 = InternshipApplication.builder()
+                .id("9144kk58e00c0242re2bjd4")
+                .status(InternshipApplication.ApplicationStatus.TAKEN)
+                .internshipOffer(getInternshipOffer())
+                .build();
+
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+        internshipApplications.add(internshipApplication1);
+        internshipApplications.add(internshipApplication2);
+        return internshipApplications;
+    }
+
     public static PDFDocument getDocument() throws IOException {
         Path pdfPath = Paths.get(PDF_FILEPATH);
         return PDFDocument.builder()

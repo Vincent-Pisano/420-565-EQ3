@@ -106,4 +106,9 @@ public class InternshipService {
         return optionalInternshipApplication.map((_internshipApplication) ->
                 internshipApplicationRepository.save(internshipApplication));
     }
+
+    public Optional<List<InternshipApplication>> getAllTakenInternshipApplication() {
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatus(InternshipApplication.ApplicationStatus.TAKEN);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
 }

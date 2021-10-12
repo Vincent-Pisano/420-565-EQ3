@@ -10,6 +10,10 @@ import java.util.List;
 @Repository
 public interface InternshipApplicationRepository extends MongoRepository<InternshipApplication, String> {
 
+<<<<<<< HEAD
+    List<InternshipApplication> findAllByStatus(InternshipApplication.ApplicationStatus status);
+=======
     List<InternshipApplication> findAllByStudentAndIsDisabledFalse(Student student);
 
+>>>>>>> ead4e8a49dc951f1a1f0dbcd7250edd7ac7caa67
 }
