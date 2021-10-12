@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import auth from "../../services/Auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router";
 import { Container, Row, Col, Form } from "react-bootstrap";
@@ -24,6 +24,7 @@ const InternshipOfferForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [monitor, setMonitor] = useFormFields({ name: "" });
   const [document, setDocument] = useState(undefined);
+  const [internshipApplications, setInternshipApplications] = useState([]);
   const [fields, handleFieldChange] = useFormFields(
     internshipOffer !== undefined
       ? internshipOffer
@@ -45,6 +46,21 @@ const InternshipOfferForm = () => {
   );
 
   formatDates();
+
+  useEffect(() => {
+    if (auth.isStudent() && internshipOffer !== undefined) {
+      axios
+        .get(
+          `http://localhost:9090/getAll/internshipApplication/${user.username}`
+        )
+        .then((response) => {
+          setInternshipApplications(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Aucune Application enregistrée pour le moment");
+        });
+    }
+  }, [internshipOffer, user.username]);
 
   function onCreatePost(e) {
     e.preventDefault();
@@ -140,42 +156,39 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfStudent() {
-    if (auth.isStudent() && internshipOffer !== undefined) {
-      let internshipApplicationsList = user.internshipApplications;
-      let hasAlreadyApplied = false;
-      internshipApplicationsList.forEach((_internshipApplication) => {
-        if (_internshipApplication.internshipOffer.id === internshipOffer.id) {
-          hasAlreadyApplied = true;
-        }
-      });
-      if (!hasApplied) {
-        if (!hasAlreadyApplied) {
-          return (
-            <InternshipOfferButtonApply
-              fields={fields}
-              setHasApplied={setHasApplied}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
-            />
-          );
-        } else {
-          return (
-            <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
-          );
-        }
+    let hasAlreadyApplied = false;
+    internshipApplications.forEach((_internshipApplication) => {
+      if (_internshipApplication.internshipOffer.id === internshipOffer.id) {
+        hasAlreadyApplied = true;
+      }
+    });
+    if (!hasApplied) {
+      if (!hasAlreadyApplied) {
+        return (
+          <InternshipOfferButtonApply
+            fields={fields}
+            setHasApplied={setHasApplied}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+          />
+        );
       } else {
         return (
-          <>
-            <p
-              style={{
-                color: errorMessage.startsWith("Erreur") ? "red" : "green",
-              }}
-            >
-              {errorMessage}
-            </p>
-          </>
+          <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
         );
       }
+    } else {
+      return (
+        <>
+          <p
+            style={{
+              color: errorMessage.startsWith("Erreur") ? "red" : "green",
+            }}
+          >
+            {errorMessage}
+          </p>
+        </>
+      );
     }
   }
 

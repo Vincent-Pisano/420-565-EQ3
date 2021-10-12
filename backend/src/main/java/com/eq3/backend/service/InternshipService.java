@@ -63,7 +63,8 @@ public class InternshipService {
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByWorkFieldAndIsValidTrue(workField);
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(workField);
         internshipOffers.forEach(internshipOffer -> internshipOffer.setPDFDocument(
                 internshipOffer.getPDFDocument() != null ? new PDFDocument() : null)
         );
@@ -71,13 +72,17 @@ public class InternshipService {
     }
 
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalse();
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+    }
+
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String studentUsername) {
+        Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
+        return optionalStudent.map(internshipApplicationRepository::findAllByStudentAndIsDisabledFalse);
     }
 
     public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
-
         return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
     }
 

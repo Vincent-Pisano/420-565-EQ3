@@ -70,12 +70,15 @@ public class InternshipControllerTest {
 
         MvcResult result =  mockMvc
                 .perform(MockMvcRequestBuilders.multipart("/save/internshipOffer")
-                        .file("internshipOffer", new ObjectMapper().writeValueAsString(givenInternshipOffer).getBytes())
+                        .file("internshipOffer",
+                                new ObjectMapper().writeValueAsString(givenInternshipOffer).getBytes())
                         .file("document", multipartFile.getBytes())
                         .contentType(mediaType)).andReturn();
 
         // Assert
-        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
     }
 
     @Test
@@ -85,7 +88,8 @@ public class InternshipControllerTest {
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipOffer.setMonitor(getMonitor());
 
-        when(service.saveInternshipOffer(new ObjectMapper().writeValueAsString(expectedInternshipOffer), null))
+        when(service.saveInternshipOffer(
+                new ObjectMapper().writeValueAsString(expectedInternshipOffer), null))
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
         // Act
@@ -95,12 +99,16 @@ public class InternshipControllerTest {
 
         MvcResult result =  mockMvc
                 .perform(MockMvcRequestBuilders.multipart("/save/internshipOffer")
-                        .file("internshipOffer", new ObjectMapper().writeValueAsString(expectedInternshipOffer).getBytes())
+                        .file("internshipOffer",
+                                new ObjectMapper().writeValueAsString(expectedInternshipOffer).getBytes())
                         .contentType(mediaType)).andReturn();
 
         // Assert
-        var actualInternshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
-        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipOffer
+                = new ObjectMapper().readValue(response.getContentAsString(), InternshipOffer.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(expectedInternshipOffer).isEqualTo(actualInternshipOffer);
     }
 
@@ -118,8 +126,8 @@ public class InternshipControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
+        var actualInternshipOffers = new ObjectMapper().readValue(response.getContentAsString(), List.class);
 
-        var actualInternshipOffers = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipOffers).isNotNull();
     }
@@ -138,8 +146,8 @@ public class InternshipControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
+        var actualInternshipOffers = new ObjectMapper().readValue(response.getContentAsString(), List.class);
 
-        var actualInternshipOffers = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipOffers).isNotNull();
     }
@@ -166,9 +174,11 @@ public class InternshipControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var internshipApplication = new ObjectMapper().readValue(response.getContentAsString(), InternshipApplication.class);
+        var actualInternshipApplication
+                = new ObjectMapper().readValue(response.getContentAsString(), InternshipApplication.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(internshipApplication).isNotNull();
+        assertThat(actualInternshipApplication).isNotNull();
     }
 
     @Test
@@ -189,10 +199,11 @@ public class InternshipControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var internshipOffer = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipOffer.class);
+        var actualInternshipOffer
+                = new ObjectMapper().readValue(response.getContentAsString(), InternshipOffer.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(internshipOffer).isNotNull();
-        assertThat(internshipOffer.getIsValid()).isTrue();
+        assertThat(actualInternshipOffer).isNotNull();
+        assertThat(actualInternshipOffer.getIsValid()).isTrue();
     }
 
     @Test

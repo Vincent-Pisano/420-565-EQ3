@@ -48,8 +48,11 @@ public class AuthControllerTest {
                 .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
 
         // Assert
-        var actualStudent = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
-        assertThat(expectedStudent).isEqualTo(actualStudent);
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudent = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualStudent).isEqualTo(expectedStudent);
     }
 
     @Test
@@ -65,8 +68,11 @@ public class AuthControllerTest {
                 .content(new ObjectMapper().writeValueAsString(expectedMonitor))).andReturn();
 
         // Assert
-        var actualMonitor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Monitor.class);
-        assertThat(expectedMonitor).isEqualTo(actualMonitor);
+        MockHttpServletResponse response = result.getResponse();
+        var actualMonitor = new ObjectMapper().readValue(response.getContentAsString(), Monitor.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualMonitor).isEqualTo(expectedMonitor);
     }
 
     @Test
@@ -82,8 +88,11 @@ public class AuthControllerTest {
                 .content(new ObjectMapper().writeValueAsString(expectedSupervisor))).andReturn();
 
         // Assert
-        var actualSupervisor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Supervisor.class);
-        assertThat(expectedSupervisor).isEqualTo(actualSupervisor);
+        MockHttpServletResponse response = result.getResponse();
+        var actualSupervisor = new ObjectMapper().readValue(response.getContentAsString(), Supervisor.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
     }
 
     @Test
@@ -100,7 +109,8 @@ public class AuthControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualStudent = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
+        var actualStudent = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualStudent).isNotNull();
     }
@@ -119,7 +129,8 @@ public class AuthControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualMonitor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Monitor.class);
+        var actualMonitor = new ObjectMapper().readValue(response.getContentAsString(), Monitor.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualMonitor).isNotNull();
     }
@@ -138,7 +149,8 @@ public class AuthControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualSupervisor = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Supervisor.class);
+        var actualSupervisor = new ObjectMapper().readValue(response.getContentAsString(), Supervisor.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualSupervisor).isNotNull();
     }
@@ -157,9 +169,8 @@ public class AuthControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        System.out.println(response);
-        var actualInternshipManager = new ObjectMapper().readValue(result.getResponse().getContentAsString(), InternshipManager.class);
-        System.out.println(actualInternshipManager);
+        var actualInternshipManager = new ObjectMapper().readValue(response.getContentAsString(), InternshipManager.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipManager).isNotNull();
     }

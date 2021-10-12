@@ -66,7 +66,9 @@ public class CVControllerTest {
                         .contentType(mediaType)).andReturn();
 
         //Assert
-        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.CREATED.value());
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
     }
 
     @Test
@@ -93,6 +95,7 @@ public class CVControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
     }
 
@@ -125,7 +128,9 @@ public class CVControllerTest {
                         givenStudent.getId() + "/"+ givenCV.getId())).andReturn();
 
         //Assert
-        assertThat(result.getResponse().getStatus()).isEqualTo( HttpStatus.ACCEPTED.value());
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
     }
 
     @Test
@@ -143,9 +148,11 @@ public class CVControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualStudentList).isNotNull();
+        assertThat(actualStudentList.size()).isEqualTo(expectedStudentList.size());
     }
 
 
@@ -169,12 +176,12 @@ public class CVControllerTest {
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var student = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Student.class);
-        List<CV> cvList = (student != null ? student.getCVList() : null);
-        CV cv = (cvList != null ? cvList.get(0) : null);
+        var actualStudent = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
+        List<CV> cvList = actualStudent != null ? actualStudent.getCVList() : null;
+        CV cv = cvList != null ? cvList.get(0) : null;
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(student).isNotNull();
+        assertThat(actualStudent).isNotNull();
         assertThat(cvList).isNotNull();
         assertThat(cv).isNotNull();
         assertThat(cv.getIsActive()).isTrue();
