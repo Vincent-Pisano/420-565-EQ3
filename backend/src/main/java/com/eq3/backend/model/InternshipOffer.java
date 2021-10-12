@@ -4,11 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-<<<<<<< HEAD
-=======
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
->>>>>>> ead4e8a49dc951f1a1f0dbcd7250edd7ac7caa67
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
