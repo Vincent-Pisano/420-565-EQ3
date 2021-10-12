@@ -21,7 +21,6 @@ public class InternshipController {
         this.service = service;
     }
 
-
     @PostMapping(value = "/save/internshipOffer",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
@@ -53,6 +52,13 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/taken/internshipApplication")
+    public ResponseEntity<List<InternshipApplication>> getAllTakenInternshipApplication() {
+        return service.getAllTakenInternshipApplication()
+                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @PostMapping("/apply/internshipOffer/{username}")
     public ResponseEntity<InternshipApplication> applyInternshipOffer(@PathVariable String username, @RequestBody InternshipOffer internshipOffer) {
         return service.applyInternshipOffer(username, internshipOffer)
@@ -71,13 +77,6 @@ public class InternshipController {
     public ResponseEntity<InternshipApplication> updateInternshipApplication(@RequestBody InternshipApplication internshipApplication) {
         return service.updateInternshipApplication(internshipApplication)
                 .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @PostMapping("/getAll/taken/internshipApplication")
-    public ResponseEntity<List<InternshipApplication>> getAllTakenInternshipApplication() {
-        return service.getAllTakenInternshipApplication()
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 }

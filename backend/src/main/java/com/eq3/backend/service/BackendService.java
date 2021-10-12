@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.eq3.backend.utils.Utils.DOCUMENT_EXTENSION;
+import static com.eq3.backend.utils.Utils.*;
 
 @Service
 public class BackendService {
@@ -63,18 +63,6 @@ public class BackendService {
         });
 
         return cleanUpStudentCVList(optionalStudent);
-    }
-
-    private Optional<Student> cleanUpStudentCVList(Optional<Student> optionalStudent) {
-        optionalStudent.ifPresent(student -> {
-            if (student.getCVList() != null) {
-                student.getCVList().forEach(cv -> {
-                    PDFDocument PDFDocument = cv.getPDFDocument();
-                    PDFDocument.setContent(null);
-                });
-            }
-        });
-        return optionalStudent;
     }
 
     private Optional<PDFDocument> getCVFromStudent(String idCV, Optional<Student> optionalStudent) {

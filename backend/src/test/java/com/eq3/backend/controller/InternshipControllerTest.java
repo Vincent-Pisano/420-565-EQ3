@@ -154,6 +154,47 @@ public class InternshipControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllInternshipApplicationOfStudent() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedStudent = getStudent();
+
+        when(service.getAllInternshipApplicationOfStudent(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedInternshipApplicationList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/internshipApplication/" + expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipApplications = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllTakenInternshipApplication() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+
+        when(service.getAllTakenInternshipApplication())
+                .thenReturn(Optional.of(expectedInternshipApplicationList));
+        //Act
+        MvcResult result = mockMvc.perform(get("/getAll/taken/internshipApplication")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipApplications = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testApplyInternshipOffer() throws Exception {
         //Arrange
         expectedStudent = getStudent();
@@ -208,21 +249,27 @@ public class InternshipControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllTakenInternshipApplication() throws Exception {
+    public void testUpdateInternshipApplication() throws Exception {
         //Arrange
-        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedInternshipApplication = getInternshipApplication();
+        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.TAKEN);
 
-        when(service.getAllTakenInternshipApplication())
-                .thenReturn(Optional.of(expectedInternshipApplicationList));
+        when(service.updateInternshipApplication(expectedInternshipApplication))
+                .thenReturn(Optional.of(expectedInternshipApplication));
+
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/taken/internshipApplication")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult result = mockMvc.perform(post("/update/internshipApplication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedInternshipApplication)))
+                .andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
+        var actualInternshipApplication
+                = new ObjectMapper().readValue(response.getContentAsString(), InternshipApplication.class);
 
-        var actualInternshipApplications = new ObjectMapper().readValue(result.getResponse().getContentAsString(), List.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(expectedInternshipApplicationList.size()).isEqualTo(actualInternshipApplications);
+        assertThat(actualInternshipApplication).isNotNull();
+        assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.TAKEN);
     }
 }

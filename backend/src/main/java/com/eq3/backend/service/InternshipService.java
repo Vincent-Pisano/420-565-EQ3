@@ -81,6 +81,11 @@ public class InternshipService {
         return optionalStudent.map(internshipApplicationRepository::findAllByStudentAndIsDisabledFalse);
     }
 
+    public Optional<List<InternshipApplication>> getAllTakenInternshipApplication() {
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.TAKEN);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
     public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
@@ -105,10 +110,5 @@ public class InternshipService {
 
         return optionalInternshipApplication.map((_internshipApplication) ->
                 internshipApplicationRepository.save(internshipApplication));
-    }
-
-    public Optional<List<InternshipApplication>> getAllTakenInternshipApplication() {
-        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatus(InternshipApplication.ApplicationStatus.TAKEN);
-        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 }

@@ -10,15 +10,12 @@ const InternshipApplicationModal = ({
   currentInternshipApplication,
   showIntershipOffer,
 }) => {
-
-    let currentInternshipOffer = currentInternshipApplication.internshipOffer;
+  let currentInternshipOffer = currentInternshipApplication.internshipOffer;
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [fields, handleFieldChange] = useFormFields({
-    status : ""
+    status: currentInternshipApplication.status,
   });
-
-  fields.status = currentInternshipApplication.status;
 
   function onConfirmModal(e) {
     e.preventDefault();
@@ -26,7 +23,10 @@ const InternshipApplicationModal = ({
   }
 
   function ChangeStatus() {
-    currentInternshipApplication.status = fields.status;
+    currentInternshipApplication.status =
+      fields.status !== undefined
+        ? fields.status
+        : currentInternshipApplication.status;
     axios
       .post(
         `http://localhost:9090//update/internshipApplication`,
@@ -54,28 +54,28 @@ const InternshipApplicationModal = ({
       <Modal.Body style={{ margin: "0%" }}>
         <Row style={{ textAlign: "center" }}>
           <Col md={12}>
-          <Form>
+            <Form>
               <Container className="cont_inputs">
-              <Form.Group controlId="status">
-                    <Form.Label className="labelFields">
-                      Status de l'application
-                    </Form.Label>
-                    <Form.Select
-                      aria-label="Default select example"
-                      defaultValue={fields.status}
-                      onChange={handleFieldChange}
-                      className="select_form d_block"
-                      required
-                    >
-                      <option value="TAKEN">Accepté</option>
-                      <option value="NOT_TAKEN">Refusé</option>
-                      <option value="WAITING">En attente</option>
-                    </Form.Select>
-                  </Form.Group>
+                <Form.Group controlId="status">
+                  <Form.Label className="labelFields">
+                    Status de l'application
+                  </Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"
+                    defaultValue={currentInternshipApplication.status}
+                    onChange={handleFieldChange}
+                    className="select_form d_block"
+                    required
+                  >
+                    <option value="TAKEN">Accepté</option>
+                    <option value="NOT_TAKEN">Refusé</option>
+                    <option value="WAITING">En attente</option>
+                  </Form.Select>
+                </Form.Group>
               </Container>
             </Form>
           </Col>
-          <hr className="modal_separator mx-auto"/>
+          <hr className="modal_separator mx-auto" />
         </Row>
         <Row style={{ textAlign: "center" }}>
           <Col md={4}>
