@@ -68,4 +68,11 @@ public class InternshipController {
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @PostMapping("/update/internshipApplication")
+    public ResponseEntity<InternshipApplication> updateInternshipApplication(@RequestBody InternshipApplication internshipApplication) {
+        return service.updateInternshipApplication(internshipApplication)
+                .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 }

@@ -24,7 +24,7 @@ public class InternshipApplication extends Entity{
     }
 
     @Builder.Default
-    private ApplicationStatus status = ApplicationStatus.NOT_TAKEN;
+    private ApplicationStatus status = ApplicationStatus.WAITING;
 
     @Field
     private InternshipOffer internshipOffer;
@@ -34,6 +34,6 @@ public class InternshipApplication extends Entity{
 
     public InternshipApplication() {
         super();
-        this.status = ApplicationStatus.NOT_TAKEN;
+        this.status = ApplicationStatus.WAITING;
     }
 }
