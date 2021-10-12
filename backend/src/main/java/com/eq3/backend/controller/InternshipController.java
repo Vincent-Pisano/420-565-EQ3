@@ -52,9 +52,9 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/taken/internshipApplication")
-    public ResponseEntity<List<InternshipApplication>> getAllTakenInternshipApplication() {
-        return service.getAllTakenInternshipApplication()
+    @GetMapping("/getAll/accepted/internshipApplication")
+    public ResponseEntity<List<InternshipApplication>> getAllAcceptedInternshipApplications() {
+        return service.getAllAcceptedInternshipApplications()
                 .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

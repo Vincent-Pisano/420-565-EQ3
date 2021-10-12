@@ -14,9 +14,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class InternshipApplication extends Entity{
 
     public enum ApplicationStatus {
-        NOT_TAKEN,
+        NOT_ACCEPTED,
+        ACCEPTED,
         WAITING,
-        TAKEN
+        VALIDATED
     }
 
     @Builder.Default

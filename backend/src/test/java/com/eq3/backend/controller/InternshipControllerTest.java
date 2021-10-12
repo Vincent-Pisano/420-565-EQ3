@@ -175,14 +175,14 @@ public class InternshipControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllTakenInternshipApplication() throws Exception {
+    public void testGetAllAcceptedInternshipApplications() throws Exception {
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplication();
 
-        when(service.getAllTakenInternshipApplication())
+        when(service.getAllAcceptedInternshipApplications())
                 .thenReturn(Optional.of(expectedInternshipApplicationList));
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/taken/internshipApplication")
+        MvcResult result = mockMvc.perform(get("/getAll/accepted/internshipApplication")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -252,7 +252,7 @@ public class InternshipControllerTest {
     public void testUpdateInternshipApplication() throws Exception {
         //Arrange
         expectedInternshipApplication = getInternshipApplication();
-        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.TAKEN);
+        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.ACCEPTED);
 
         when(service.updateInternshipApplication(expectedInternshipApplication))
                 .thenReturn(Optional.of(expectedInternshipApplication));
@@ -270,6 +270,6 @@ public class InternshipControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipApplication).isNotNull();
-        assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.TAKEN);
+        assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.ACCEPTED);
     }
 }

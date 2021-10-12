@@ -81,8 +81,8 @@ public class InternshipService {
         return optionalStudent.map(internshipApplicationRepository::findAllByStudentAndIsDisabledFalse);
     }
 
-    public Optional<List<InternshipApplication>> getAllTakenInternshipApplication() {
-        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.TAKEN);
+    public Optional<List<InternshipApplication>> getAllAcceptedInternshipApplications() {
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED);
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 

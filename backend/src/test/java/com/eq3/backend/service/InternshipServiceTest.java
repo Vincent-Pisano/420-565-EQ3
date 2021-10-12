@@ -12,14 +12,9 @@ import org.mockito.Mock;
 
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -203,16 +198,16 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllTakenInternshipApplication() {
+    public void testGetAllAcceptedInternshipApplications() {
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplication();
 
-        when(internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.TAKEN))
+        when(internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED))
                 .thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<InternshipApplication>> optionalInternshipApplications =
-                service.getAllTakenInternshipApplication();
+                service.getAllAcceptedInternshipApplications();
 
         //Assert
         List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
@@ -277,7 +272,7 @@ public class InternshipServiceTest {
         //Arrange
         expectedInternshipApplication = getInternshipApplication();
         InternshipApplication givenInternshipApplication = getInternshipApplication();
-        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.TAKEN);
+        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.ACCEPTED);
 
         when(internshipApplicationRepository.findById(expectedInternshipApplication.getId()))
                 .thenReturn(Optional.of(givenInternshipApplication));

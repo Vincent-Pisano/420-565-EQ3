@@ -44,6 +44,10 @@ const InternshipApplicationModal = ({
       });
   }
 
+  function isValidated() {
+    return currentInternshipApplication.status === "VALIDATED";
+  }
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header>
@@ -67,9 +71,18 @@ const InternshipApplicationModal = ({
                     className="select_form d_block"
                     required
                   >
-                    <option value="TAKEN">Accepté</option>
-                    <option value="NOT_TAKEN">Refusé</option>
-                    <option value="WAITING">En attente</option>
+                    <option disabled={isValidated()} value="ACCEPTED">
+                      Acceptée
+                    </option>
+                    <option disabled={isValidated()} value="NOT_ACCEPTED">
+                      Refusée
+                    </option>
+                    <option disabled={isValidated()} value="WAITING">
+                      En attente
+                    </option>
+                    <option disabled value="VALIDATED">
+                      Validée
+                    </option>
                   </Form.Select>
                 </Form.Group>
               </Container>
