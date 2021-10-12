@@ -15,10 +15,10 @@ const InternshipApplicationModal = ({
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [fields, handleFieldChange] = useFormFields({
-    status : currentInternshipApplication.status !== undefined ? currentInternshipApplication.status : "NON"
+    status : ""
   });
 
-  console.log(fields)
+  fields.status = currentInternshipApplication.status;
 
   function onConfirmModal(e) {
     e.preventDefault();
@@ -26,6 +26,7 @@ const InternshipApplicationModal = ({
   }
 
   function ChangeStatus() {
+    currentInternshipApplication.status = fields.status;
     axios
       .post(
         `http://localhost:9090//update/internshipApplication`,
@@ -55,7 +56,7 @@ const InternshipApplicationModal = ({
           <Col md={12}>
           <Form>
               <Container className="cont_inputs">
-              <Form.Group controlId="workField">
+              <Form.Group controlId="status">
                     <Form.Label className="labelFields">
                       Status de l'application
                     </Form.Label>
