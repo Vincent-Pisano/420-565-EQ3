@@ -10,8 +10,8 @@ public class BackendApplication implements CommandLineRunner {
 
     public DocumentService documentService;
 
-    final String DOCUMENT_FILEPATH_INPUT = System.getProperty("user.dir") + "\\src\\main\\ressources\\assets\\documentStage.docx";
-    final String DOCUMENT_FILEPATH_OUTPUT = System.getProperty("user.dir") + "\\src\\main\\ressources\\assets\\documentStageOutput.docx";
+    final String DOCUMENT_FILEPATH_INPUT = System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\contratTemplate.docx";
+    final String DOCUMENT_FILEPATH_OUTPUT = System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\contratTemplateOutput.docx";
 
     public BackendApplication(DocumentService documentService) {
         this.documentService = documentService;
