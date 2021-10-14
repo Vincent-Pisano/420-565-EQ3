@@ -111,7 +111,7 @@ class BackendServiceTest {
     //@Disabled
     public void testGetMonitorByUsername() {
         //Arrange
-        expectedMonitor = getMonitor();
+        expectedMonitor = getMonitorWithId();
 
         when(monitorRepository.findByUsernameAndIsDisabledFalse(expectedMonitor.getUsername()))
                 .thenReturn(Optional.of(expectedMonitor));
@@ -130,10 +130,10 @@ class BackendServiceTest {
     //@Disabled
     public void testAssignSupervisorToStudent() {
         //Arrange
-        expectedStudent = getStudent();
-        expectedSupervisor = getSupervisor();
+        expectedStudent = getStudentWithId();
+        expectedSupervisor = getSupervisorWithId();
         expectedStudent.setSupervisor(expectedSupervisor);
-        Student givenStudent = getStudent();
+        Student givenStudent = getStudentWithId();
 
 
         when(studentRepository.findById(givenStudent.getId())).thenReturn(Optional.of(givenStudent));
@@ -156,7 +156,7 @@ class BackendServiceTest {
     public void testDownloadInternshipOfferDocument() throws IOException {
         //Arrange
         expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setMonitor(getMonitorWithId());
         expectedPDFDocument = getDocument();
         expectedInternshipOffer.setPDFDocument(getDocument());
 
@@ -179,7 +179,7 @@ class BackendServiceTest {
     //Disabled
     public void testDownloadStudentCVDocument() throws IOException {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedStudent.setCVList(getCVList());
         expectedCV = getCV();
         expectedPDFDocument = expectedCV.getPDFDocument();

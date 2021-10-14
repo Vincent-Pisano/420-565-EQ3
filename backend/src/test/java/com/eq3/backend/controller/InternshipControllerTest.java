@@ -52,11 +52,11 @@ public class InternshipControllerTest {
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setMonitor(getMonitorWithId());
         expectedInternshipOffer.setPDFDocument(PDFDocument);
 
         InternshipOffer givenInternshipOffer = getInternshipOffer();
-        givenInternshipOffer.setMonitor(getMonitor());
+        givenInternshipOffer.setMonitor(getMonitorWithId());
 
         when(service.saveInternshipOffer(
                 Mockito.eq(new ObjectMapper().writeValueAsString(givenInternshipOffer)), any(MultipartFile.class))
@@ -85,7 +85,7 @@ public class InternshipControllerTest {
     public void testSaveInternshipOfferWithoutDocument() throws Exception {
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setMonitor(getMonitorWithId());
 
         when(service.saveInternshipOffer(
                 new ObjectMapper().writeValueAsString(expectedInternshipOffer), null))
@@ -155,7 +155,7 @@ public class InternshipControllerTest {
     //@Disabled
     public void testApplyInternshipOffer() throws Exception {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedInternshipOffer = getInternshipOffer();
 
         expectedInternshipApplication = getInternshipApplication();

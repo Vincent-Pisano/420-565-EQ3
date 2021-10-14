@@ -42,7 +42,7 @@ public class AuthServiceTest {
     //@Disabled
     public void testSignUpStudent() {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
 
         //Act
@@ -59,7 +59,7 @@ public class AuthServiceTest {
     //@Disabled
     public void testSignUpMonitor() {
         //Arrange
-        expectedMonitor = getMonitor();
+        expectedMonitor = getMonitorWithId();
         when(monitorRepository.save(expectedMonitor)).thenReturn(expectedMonitor);
 
         //Act
@@ -76,7 +76,7 @@ public class AuthServiceTest {
     //@Disabled
     public void testSignUpSupervisor() {
         //Arrange
-        expectedSupervisor = getSupervisor();
+        expectedSupervisor = getSupervisorWithId();
         when(supervisorRepository.save(expectedSupervisor)).thenReturn(expectedSupervisor);
 
         //Act
@@ -93,7 +93,7 @@ public class AuthServiceTest {
     //@Disabled
     public void testLoginStudent() {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
 
         when(studentRepository.findByUsernameAndPasswordAndIsDisabledFalse(
                 expectedStudent.getUsername(), expectedStudent.getPassword()))
@@ -113,7 +113,7 @@ public class AuthServiceTest {
     //@Disabled
     public void testLoginMonitor() {
         //Arrange
-        expectedMonitor = getMonitor();
+        expectedMonitor = getMonitorWithId();
 
         when(monitorRepository.findByUsernameAndPasswordAndIsDisabledFalse(
                 expectedMonitor.getUsername(), expectedMonitor.getPassword()))
@@ -133,7 +133,7 @@ public class AuthServiceTest {
     //@Disabled
     public void testLoginSupervisor() {
         //Arrange
-        expectedSupervisor = getSupervisor();
+        expectedSupervisor = getSupervisorWithId();
 
         when(supervisorRepository.findByUsernameAndPasswordAndIsDisabledFalse(
                 expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
@@ -153,7 +153,7 @@ public class AuthServiceTest {
     //@Disabled
     public void testLoginInternshipManager() {
         //Arrange
-        expectedInternshipManager = getInternshipManager();
+        expectedInternshipManager = getInternshipManagerWithId();
 
         when(internshipManagerRepository.findByUsernameAndPasswordAndIsDisabledFalse(
                 expectedInternshipManager.getUsername(), expectedInternshipManager.getPassword()))

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
-import static com.eq3.backend.utils.UtilsTest.getStudent;
+import static com.eq3.backend.utils.UtilsTest.getStudentWithId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -48,10 +48,10 @@ public class CVControllerTest {
         when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedStudent.setCVList(getCVList());
 
-        Student givenStudent = getStudent();
+        Student givenStudent = getStudentWithId();
         when(service.saveCV(Mockito.eq(givenStudent.getId()), any(MultipartFile.class)))
                 .thenReturn(Optional.ofNullable(expectedStudent));
 
@@ -75,12 +75,12 @@ public class CVControllerTest {
     //Disabled
     public void testDeleteCV() throws Exception {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         List<CV> expectedListCV = getCVList();
         expectedListCV.remove(0);
         expectedStudent.setCVList(expectedListCV);
 
-        Student givenStudent = getStudent();
+        Student givenStudent = getStudentWithId();
         List<CV> givenListCV = getCVList();
         givenStudent.setCVList(givenListCV);
         CV givenCV = givenListCV.get(0);
@@ -106,13 +106,13 @@ public class CVControllerTest {
         final int NEW_ACTIVE_CV_INDEX = 0;
         final int OLD_ACTIVE_CV_INDEX = 1;
 
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         List<CV> expectedListCV = getCVList();
         CV newActiveCV = expectedListCV.get(NEW_ACTIVE_CV_INDEX);
         newActiveCV.setIsActive(true);
         expectedStudent.setCVList(expectedListCV);
 
-        Student givenStudent = getStudent();
+        Student givenStudent = getStudentWithId();
         List<CV> givenListCV = getCVList();
         CV oldActiveCV = expectedListCV.get(OLD_ACTIVE_CV_INDEX);
         oldActiveCV.setIsActive(true);
@@ -160,7 +160,7 @@ public class CVControllerTest {
     //@Disabled
     public void testValidateCVOfStudent() throws Exception {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         CV expectedCV = getCV();
         expectedCV.getPDFDocument().setContent(null);
         expectedStudent.getCVList().add(expectedCV);

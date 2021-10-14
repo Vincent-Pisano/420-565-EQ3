@@ -20,9 +20,14 @@ public class UtilsTest {
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
 
-    public static Student getStudent(){
+    public static Student getStudentWithId(){
+        Student student = getStudentWithoutId();
+        student.setId("61478hgk58e00c02c02bhd5");
+        return student;
+    }
+
+    public static Student getStudentWithoutId(){
         return Student.builder()
-                .id("61478hgk58e00c02c02bhd5")
                 .username("E1257896")
                 .password("DAJo90l")
                 .email("daniel.jolicoeur5@gmail.com")
@@ -57,9 +62,14 @@ public class UtilsTest {
         return studentsList;
     }
 
-    public static Monitor getMonitor(){
+    public static Monitor getMonitorWithId(){
+        Monitor monitor = getMonitorWithoutId();
+        monitor.setId("61478hgk580000jbhd5");
+        return monitor;
+    }
+
+    public static Monitor getMonitorWithoutId(){
         return Monitor.builder()
-                .id("61478hgk580000jbhd5")
                 .username("M1234313")
                 .password("DAJo90l")
                 .email("Nicolas.lavoie43@gmail.com")
@@ -70,9 +80,14 @@ public class UtilsTest {
                 .build();
     }
 
-    public static Supervisor getSupervisor(){
+    public static Supervisor getSupervisorWithId(){
+        Supervisor supervisor = getSupervisorWithoutId();
+        supervisor.setId("15848hgk58e00c02c02bhd5");
+        return supervisor;
+    }
+
+    public static Supervisor getSupervisorWithoutId(){
         return Supervisor.builder()
-                .id("15848hgk58e00c02c02bhd5")
                 .username("S1298896")
                 .password("JeA55E!")
                 .email("jeanne.dumond@gmail.com")
@@ -107,9 +122,14 @@ public class UtilsTest {
         return supervisorsList;
     }
 
-    public static InternshipManager getInternshipManager(){
+    public static InternshipManager getInternshipManagerWithId(){
+        InternshipManager internshipManager = getInternshipManagerWithoutId();
+        internshipManager.setId("6146tf5eg8e00c02c02bhd5");
+        return internshipManager;
+    }
+
+    public static InternshipManager getInternshipManagerWithoutId(){
         return InternshipManager.builder()
-                .id("6146tf5eg8e00c02c02bhd5")
                 .username("G42415")
                 .password("qWeRtY987")
                 .email("marcel.tremblay@outlook.com")
@@ -163,7 +183,7 @@ public class UtilsTest {
                 .address("189, rue Mont-Goméry")
                 .city("Montréal")
                 .postalCode("JGH5E8")
-                .monitor(getMonitor())
+                .monitor(getMonitorWithId())
                 .build();
         InternshipOffer internshipOffer2 = InternshipOffer.builder()
                 .id("51228hgg58e11c12w02bjd3")
@@ -179,7 +199,7 @@ public class UtilsTest {
                 .address("189, rue Mont-Goméry")
                 .city("Montréal")
                 .postalCode("JGH5E8")
-                .monitor(getMonitor())
+                .monitor(getMonitorWithId())
                 .build();
         List<InternshipOffer> internshipOffers = new ArrayList<>();
         internshipOffers.add(internshipOffer1);

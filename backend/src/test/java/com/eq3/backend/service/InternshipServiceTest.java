@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,14 +57,14 @@ public class InternshipServiceTest {
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
         expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setMonitor(getMonitorWithId());
         expectedInternshipOffer.setPDFDocument(PDFDocument);
 
         lenient().when(internshipOfferRepository.save(any(InternshipOffer.class)))
                 .thenReturn(expectedInternshipOffer);
 
         InternshipOffer givenInternshipOffer = getInternshipOffer();
-        givenInternshipOffer.setMonitor(getMonitor());
+        givenInternshipOffer.setMonitor(getMonitorWithId());
 
         //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
@@ -90,7 +89,7 @@ public class InternshipServiceTest {
     public void testSaveInternshipOfferWithoutDocument() {
         //Arrange
         expectedInternshipOffer = getInternshipOffer();
-        expectedInternshipOffer.setMonitor(getMonitor());
+        expectedInternshipOffer.setMonitor(getMonitorWithId());
         when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
 
         //Act
@@ -115,7 +114,7 @@ public class InternshipServiceTest {
     //Disabled
     public void testSaveInternshipOfferWithObjectNotMappable() {
         //Arrange
-        expectedMonitor = getMonitor();
+        expectedMonitor = getMonitorWithId();
 
         //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
@@ -176,7 +175,7 @@ public class InternshipServiceTest {
     //@Disabled
     public void testApplyInternshipOffer() {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedInternshipOffer = getInternshipOffer();
         expectedInternshipApplication = getInternshipApplication();
 

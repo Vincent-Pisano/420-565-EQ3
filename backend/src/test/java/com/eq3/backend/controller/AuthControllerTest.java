@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
-import static com.eq3.backend.utils.UtilsTest.getStudent;
+import static com.eq3.backend.utils.UtilsTest.getStudentWithId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,7 +39,7 @@ public class AuthControllerTest {
     //@Disabled
     public void testSignUpStudent() throws Exception {
         // Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         when(service.signUp(expectedStudent)).thenReturn(Optional.of(expectedStudent));
 
         // Act
@@ -59,7 +59,7 @@ public class AuthControllerTest {
     //@Disabled
     public void testSignUpMonitor() throws Exception {
         // Arrange
-        expectedMonitor = getMonitor();
+        expectedMonitor = getMonitorWithId();
         when(service.signUp(expectedMonitor)).thenReturn(Optional.of(expectedMonitor));
 
         // Act
@@ -79,7 +79,7 @@ public class AuthControllerTest {
     //@Disabled
     public void testSignUpSupervisor() throws Exception {
         // Arrange
-        expectedSupervisor = getSupervisor();
+        expectedSupervisor = getSupervisorWithId();
         when(service.signUp(expectedSupervisor)).thenReturn(Optional.of(expectedSupervisor));
 
         // Act
@@ -99,7 +99,7 @@ public class AuthControllerTest {
     //@Disabled
     public void testLoginStudent() throws Exception {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         when(service.loginStudent(expectedStudent.getUsername(), expectedStudent.getPassword()))
                 .thenReturn(Optional.of(expectedStudent));
         //Act
@@ -119,7 +119,7 @@ public class AuthControllerTest {
     //@Disabled
     public void testLoginMonitor() throws Exception {
         //Arrange
-        expectedMonitor = getMonitor();
+        expectedMonitor = getMonitorWithId();
         when(service.loginMonitor(expectedMonitor.getUsername(), expectedMonitor.getPassword()))
                 .thenReturn(Optional.of(expectedMonitor));
         //Act
@@ -139,7 +139,7 @@ public class AuthControllerTest {
     //@Disabled
     public void testLoginSupervisor() throws Exception {
         //Arrange
-        expectedSupervisor = getSupervisor();
+        expectedSupervisor = getSupervisorWithId();
         when(service.loginSupervisor(expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
                 .thenReturn(Optional.of(expectedSupervisor));
         //Act
@@ -159,7 +159,7 @@ public class AuthControllerTest {
     //@Disabled
     public void testLoginInternshipManager() throws Exception {
         //Arrange
-        expectedInternshipManager = getInternshipManager();
+        expectedInternshipManager = getInternshipManagerWithId();
         when(service.loginInternshipManager(expectedInternshipManager.getUsername(), expectedInternshipManager.getPassword()))
                 .thenReturn(Optional.of(expectedInternshipManager));
         //Act

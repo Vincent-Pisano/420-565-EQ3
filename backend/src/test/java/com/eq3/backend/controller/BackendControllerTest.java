@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
-import static com.eq3.backend.utils.UtilsTest.getStudent;
+import static com.eq3.backend.utils.UtilsTest.getStudentWithId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -103,7 +103,7 @@ class BackendControllerTest {
     //@Disabled
     public void testGetMonitorByUsername() throws Exception {
         //Arrange
-        expectedMonitor = getMonitor();
+        expectedMonitor = getMonitorWithId();
         when(service.getMonitorByUsername(expectedMonitor.getUsername()))
                 .thenReturn(Optional.of(expectedMonitor));
         //Act
@@ -123,8 +123,8 @@ class BackendControllerTest {
     //@Disabled
     public void testAssignSupervisorToStudent() throws Exception {
         //Arrange
-        expectedStudent = getStudent();
-        expectedSupervisor = getSupervisor();
+        expectedStudent = getStudentWithId();
+        expectedSupervisor = getSupervisorWithId();
         expectedStudent.setSupervisor(expectedSupervisor);
 
         when(service.assignSupervisorToStudent(expectedStudent.getId(), expectedSupervisor.getId()))
@@ -170,7 +170,7 @@ class BackendControllerTest {
     //Disabled
     public void testDownloadStudentCVDocument() throws Exception {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedStudent.setCVList(getCVList());
         expectedCV = getCV();
 

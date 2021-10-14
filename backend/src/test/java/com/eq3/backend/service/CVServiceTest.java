@@ -46,7 +46,7 @@ public class CVServiceTest {
         when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedCVList = getCVList();
         expectedStudent.setCVList(expectedCVList);
 
@@ -70,12 +70,12 @@ public class CVServiceTest {
     //@Disabled
     public void testDeleteCV() throws IOException {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedCVList = getCVList();
         expectedCVList.remove(0);
         expectedStudent.setCVList(expectedCVList);
 
-        Student givenStudent = getStudent();
+        Student givenStudent = getStudentWithId();
         List<CV> givenListCV = getCVList();
         givenStudent.setCVList(givenListCV);
         CV givenCV = givenListCV.get(0);
@@ -104,13 +104,13 @@ public class CVServiceTest {
         final int NEW_ACTIVE_CV_INDEX = 0;
         final int OLD_ACTIVE_CV_INDEX = 1;
 
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         List<CV> expectedListCV = getCVList();
         CV newActiveCV = expectedListCV.get(NEW_ACTIVE_CV_INDEX);
         newActiveCV.setIsActive(true);
         expectedStudent.setCVList(expectedListCV);
 
-        Student givenStudent = getStudent();
+        Student givenStudent = getStudentWithId();
         List<CV> givenListCV = getCVList();
         CV oldActiveCV = expectedListCV.get(OLD_ACTIVE_CV_INDEX);
         oldActiveCV.setIsActive(true);
@@ -159,14 +159,14 @@ public class CVServiceTest {
     //@Disabled
     public void testValidateCVOfStudent() throws IOException {
         //Arrange
-        expectedStudent = getStudent();
+        expectedStudent = getStudentWithId();
         expectedCV = getCV();
         expectedCV.getPDFDocument().setContent(null);
         expectedStudent.getCVList().add(expectedCV);
         expectedCV.setIsActive(true);
         expectedCV.setStatus(CV.CVStatus.VALID);
 
-        Student givenStudent = getStudent();
+        Student givenStudent = getStudentWithId();
         CV givenCV = getCV();
         givenCV.getPDFDocument().setContent(null);
         givenStudent.getCVList().add(givenCV);
