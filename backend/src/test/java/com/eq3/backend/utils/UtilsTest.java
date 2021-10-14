@@ -38,24 +38,8 @@ public class UtilsTest {
     }
 
     public static List<Student> getListOfStudents(){
-        Student student1 = Student.builder()
-                .id("6144343k58e00c02c02bhd5")
-                .username("E1257896")
-                .password("DAJo90l")
-                .email("daniel.jolicoeur5@gmail.com")
-                .firstName("Daniel")
-                .lastName("Jolicoeur")
-                .department(Department.COMPUTER_SCIENCE)
-                .build();
-        Student student2 = Student.builder()
-                .id("61478hgk58e00c02c02bhd2432")
-                .username("E1257896")
-                .password("DAJo90l")
-                .email("daniel.jolicoeur5@gmail.com")
-                .firstName("Daniel")
-                .lastName("Jolicoeur")
-                .department(Department.COMPUTER_SCIENCE)
-                .build();
+        Student student1 = getStudentWithId();
+        Student student2 = getStudentWithId();
         List<Student> studentsList = new ArrayList();
         studentsList.add(student1);
         studentsList.add(student2);
@@ -98,27 +82,11 @@ public class UtilsTest {
     }
 
     public static List<Supervisor> getListOfSupervisors(){
-        Supervisor monitor1 = Supervisor.builder()
-                .id("6144343k58e00c02c02bhd5")
-                .username("E1257896")
-                .password("DAJo90l")
-                .email("daniel.jolicoeur5@gmail.com")
-                .firstName("Daniel")
-                .lastName("Jolicoeur")
-                .department(Department.COMPUTER_SCIENCE)
-                .build();
-        Supervisor monitor2 = Supervisor.builder()
-                .id("61478hgk58e00c02c02bhd2432")
-                .username("E1257896")
-                .password("DAJo90l")
-                .email("daniel.jolicoeur5@gmail.com")
-                .firstName("Daniel")
-                .lastName("Jolicoeur")
-                .department(Department.COMPUTER_SCIENCE)
-                .build();
+        Supervisor supervisor1 = getSupervisorWithId();
+        Supervisor supervisor2 = getSupervisorWithId();
         List<Supervisor> supervisorsList = new ArrayList();
-        supervisorsList.add(monitor1);
-        supervisorsList.add(monitor2);
+        supervisorsList.add(supervisor1);
+        supervisorsList.add(supervisor2);
         return supervisorsList;
     }
 
@@ -169,58 +137,27 @@ public class UtilsTest {
         allWeekDay.add("Wednesday");
         allWeekDay.add("Thursday");
         allWeekDay.add("Friday");
-        InternshipOffer internshipOffer1 = InternshipOffer.builder()
-                .id("91448hkk58e00c02w02bjd4")
-                .jobName("stagiaire développement web")
-                .description("connaissance en REACT")
-                .startDate(new Date())
-                .endDate(new Date())
-                .weeklyWorkTime(37.5)
-                .hourlySalary(19.67)
-                .workDays(allWeekDay)
-                .workShift(InternshipOffer.WorkShift.DAY)
-                .workField(Department.COMPUTER_SCIENCE)
-                .address("189, rue Mont-Goméry")
-                .city("Montréal")
-                .postalCode("JGH5E8")
-                .monitor(getMonitorWithId())
-                .build();
-        InternshipOffer internshipOffer2 = InternshipOffer.builder()
-                .id("51228hgg58e11c12w02bjd3")
-                .jobName("Stagiaire Technicien")
-                .description("Connaissance domaine technique")
-                .startDate(new Date())
-                .endDate(new Date())
-                .weeklyWorkTime(37.5)
-                .hourlySalary(19.67)
-                .workDays(allWeekDay)
-                .workShift(InternshipOffer.WorkShift.DAY)
-                .workField(Department.COMPUTER_SCIENCE)
-                .address("189, rue Mont-Goméry")
-                .city("Montréal")
-                .postalCode("JGH5E8")
-                .monitor(getMonitorWithId())
-                .build();
+
+        InternshipOffer internshipOffer1 = getInternshipOffer();
+        InternshipOffer internshipOffer2 = getInternshipOffer();
+
         List<InternshipOffer> internshipOffers = new ArrayList<>();
         internshipOffers.add(internshipOffer1);
         internshipOffers.add(internshipOffer2);
         return internshipOffers;
     }
 
-    public static List<InternshipApplication> getListOfInternshipApplication() {
-        InternshipApplication internshipApplication1 = InternshipApplication.builder()
-                .id("9144kk58e00c0242w02bjd4")
-                .status(InternshipApplication.ApplicationStatus.ACCEPTED)
+    public static InternshipApplication getInternshipApplication() {
+        return InternshipApplication.builder()
+                .id("91448hkk58e00c02w02bjd4")
+                .status(InternshipApplication.ApplicationStatus.WAITING)
                 .internshipOffer(getInternshipOffer())
-                .student(getStudentWithId())
                 .build();
+    }
 
-        InternshipApplication internshipApplication2 = InternshipApplication.builder()
-                .id("9144kk58e00c0242re2bjd4")
-                .status(InternshipApplication.ApplicationStatus.ACCEPTED)
-                .internshipOffer(getInternshipOffer())
-                .student(getStudentWithId())
-                .build();
+    public static List<InternshipApplication> getListOfInternshipApplication() {
+        InternshipApplication internshipApplication1 = getInternshipApplication();
+        InternshipApplication internshipApplication2 = getInternshipApplication();
 
         List<InternshipApplication> internshipApplications = new ArrayList<>();
         internshipApplications.add(internshipApplication1);
@@ -261,13 +198,4 @@ public class UtilsTest {
                 .document(getDocument())
                 .build();
     }
-
-    public static InternshipApplication getInternshipApplication() {
-        return InternshipApplication.builder()
-                .id("91448hkk58e00c02w02bjd4")
-                .status(InternshipApplication.ApplicationStatus.WAITING)
-                .internshipOffer(getInternshipOffer())
-                .build();
-    }
-
 }
