@@ -164,7 +164,7 @@ public class InternshipControllerTest {
         when(service.getAllInternshipApplicationOfStudent(expectedStudent.getUsername()))
                 .thenReturn(Optional.of(expectedInternshipApplicationList));
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/internshipApplication/" + expectedStudent.getUsername())
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS + expectedStudent.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -184,7 +184,7 @@ public class InternshipControllerTest {
         when(service.getAllAcceptedInternshipApplications())
                 .thenReturn(Optional.of(expectedInternshipApplicationList));
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/accepted/internshipApplication")
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -260,7 +260,7 @@ public class InternshipControllerTest {
                 .thenReturn(Optional.of(expectedInternshipApplication));
 
         //Act
-        MvcResult result = mockMvc.perform(post("/update/internshipApplication")
+        MvcResult result = mockMvc.perform(post(URL_UPDATE_INTERNSHIP_APPLICATION)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedInternshipApplication)))
                 .andReturn();
