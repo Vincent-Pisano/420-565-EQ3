@@ -55,18 +55,17 @@ public class InternshipServiceTest {
         //Arrange
         PDFDocument PDFDocument = getDocument();
         var multipartFile = mock(MultipartFile.class);
-        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
-        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
-
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         expectedInternshipOffer.setPDFDocument(PDFDocument);
 
+        InternshipOffer givenInternshipOffer = getInternshipOfferWithoutId();
+        givenInternshipOffer.setMonitor(getMonitorWithId());
+
+        when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
         lenient().when(internshipOfferRepository.save(any(InternshipOffer.class)))
                 .thenReturn(expectedInternshipOffer);
-
-        InternshipOffer givenInternshipOffer = getInternshipOffer();
-        givenInternshipOffer.setMonitor(getMonitorWithId());
 
         //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
@@ -90,15 +89,17 @@ public class InternshipServiceTest {
     //@Disabled
     public void testSaveInternshipOfferWithoutDocument() {
         //Arrange
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setMonitor(getMonitorWithId());
-        when(internshipOfferRepository.save(expectedInternshipOffer)).thenReturn(expectedInternshipOffer);
+        InternshipOffer givenInternshipOffer = getInternshipOfferWithoutId();
+
+        when(internshipOfferRepository.save(givenInternshipOffer)).thenReturn(expectedInternshipOffer);
 
         //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try {
             optionalInternshipOffer = service.saveInternshipOffer(
-                    new ObjectMapper().writeValueAsString(expectedInternshipOffer), null
+                    new ObjectMapper().writeValueAsString(givenInternshipOffer), null
             );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -219,7 +220,7 @@ public class InternshipServiceTest {
     public void testApplyInternshipOffer() {
         //Arrange
         expectedStudent = getStudentWithId();
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipApplication = getInternshipApplication();
 
         expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
@@ -243,7 +244,7 @@ public class InternshipServiceTest {
     //@Disabled
     public void testValidateInternshipOffer() {
         //Arrange
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setIsValid(true);
 
         when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))

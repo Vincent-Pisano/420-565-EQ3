@@ -148,7 +148,7 @@ class BackendControllerTest {
     //Disabled
     public void testDownloadInternshipOfferDocument() throws Exception {
         // Arrange
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setPDFDocument(getDocument());
 
         when(service.downloadInternshipOfferDocument(expectedInternshipOffer.getId()))

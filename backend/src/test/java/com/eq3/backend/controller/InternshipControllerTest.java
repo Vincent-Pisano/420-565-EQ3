@@ -54,11 +54,11 @@ public class InternshipControllerTest {
         when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         expectedInternshipOffer.setPDFDocument(PDFDocument);
 
-        InternshipOffer givenInternshipOffer = getInternshipOffer();
+        InternshipOffer givenInternshipOffer = getInternshipOfferWithId();
         givenInternshipOffer.setMonitor(getMonitorWithId());
 
         when(service.saveInternshipOffer(
@@ -87,7 +87,7 @@ public class InternshipControllerTest {
     //@Disabled
     public void testSaveInternshipOfferWithoutDocument() throws Exception {
         // Arrange
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setMonitor(getMonitorWithId());
 
         when(service.saveInternshipOffer(
@@ -200,7 +200,7 @@ public class InternshipControllerTest {
     public void testApplyInternshipOffer() throws Exception {
         //Arrange
         expectedStudent = getStudentWithId();
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
 
         expectedInternshipApplication = getInternshipApplication();
         expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
@@ -228,7 +228,7 @@ public class InternshipControllerTest {
     //@Disabled
     public void testValidateInternshipOffer() throws Exception {
         //Arrange
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setIsValid(true);
 
         when(service.validateInternshipOffer(expectedInternshipOffer.getId()))

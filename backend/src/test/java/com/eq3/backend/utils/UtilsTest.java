@@ -106,7 +106,13 @@ public class UtilsTest {
                 .build();
     }
 
-    public static InternshipOffer getInternshipOffer() {
+    public static InternshipOffer getInternshipOfferWithId() {
+        InternshipOffer internshipOffer = getInternshipOfferWithoutId();
+        internshipOffer.setId("91448hkk58e00c02w02bjd4");
+        return internshipOffer;
+    }
+
+    public static InternshipOffer getInternshipOfferWithoutId() {
         List<String> allWeekDay = new ArrayList<>();
         allWeekDay.add("Monday");
         allWeekDay.add("Tuesday");
@@ -114,7 +120,6 @@ public class UtilsTest {
         allWeekDay.add("Thursday");
         allWeekDay.add("Friday");
         return InternshipOffer.builder()
-                .id("91448hkk58e00c02w02bjd4")
                 .jobName("stagiaire développement web")
                 .description("connaissance en REACT")
                 .startDate(new Date())
@@ -131,15 +136,8 @@ public class UtilsTest {
     }
 
     public static List<InternshipOffer> getListOfInternshipOffer() {
-        List<String> allWeekDay = new ArrayList<>();
-        allWeekDay.add("Monday");
-        allWeekDay.add("Tuesday");
-        allWeekDay.add("Wednesday");
-        allWeekDay.add("Thursday");
-        allWeekDay.add("Friday");
-
-        InternshipOffer internshipOffer1 = getInternshipOffer();
-        InternshipOffer internshipOffer2 = getInternshipOffer();
+        InternshipOffer internshipOffer1 = getInternshipOfferWithId();
+        InternshipOffer internshipOffer2 = getInternshipOfferWithId();
 
         List<InternshipOffer> internshipOffers = new ArrayList<>();
         internshipOffers.add(internshipOffer1);
@@ -151,7 +149,7 @@ public class UtilsTest {
         return InternshipApplication.builder()
                 .id("91448hkk58e00c02w02bjd4")
                 .status(InternshipApplication.ApplicationStatus.WAITING)
-                .internshipOffer(getInternshipOffer())
+                .internshipOffer(getInternshipOfferWithId())
                 .build();
     }
 

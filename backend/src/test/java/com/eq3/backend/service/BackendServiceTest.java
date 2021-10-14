@@ -155,7 +155,7 @@ class BackendServiceTest {
     //Disabled
     public void testDownloadInternshipOfferDocument() throws IOException {
         //Arrange
-        expectedInternshipOffer = getInternshipOffer();
+        expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         expectedPDFDocument = getDocument();
         expectedInternshipOffer.setPDFDocument(getDocument());

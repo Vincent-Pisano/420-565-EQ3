@@ -43,10 +43,12 @@ public class AuthServiceTest {
     public void testSignUpStudent() {
         //Arrange
         expectedStudent = getStudentWithId();
-        when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+        Student givenStudent = getStudentWithoutId();
+
+        when(studentRepository.save(givenStudent)).thenReturn(expectedStudent);
 
         //Act
-        final Optional<Student> optionalStudent = service.signUp(expectedStudent);
+        final Optional<Student> optionalStudent = service.signUp(givenStudent);
 
         //Assert
         Student actualStudent = optionalStudent.orElse(null);
@@ -60,10 +62,12 @@ public class AuthServiceTest {
     public void testSignUpMonitor() {
         //Arrange
         expectedMonitor = getMonitorWithId();
-        when(monitorRepository.save(expectedMonitor)).thenReturn(expectedMonitor);
+        Monitor givenMonitor = getMonitorWithoutId();
+
+        when(monitorRepository.save(givenMonitor)).thenReturn(expectedMonitor);
 
         //Act
-        final Optional<Monitor> optionalMonitor = service.signUp(expectedMonitor);
+        final Optional<Monitor> optionalMonitor = service.signUp(givenMonitor);
 
         //Assert
         Monitor actualMonitor = optionalMonitor.orElse(null);
@@ -77,10 +81,12 @@ public class AuthServiceTest {
     public void testSignUpSupervisor() {
         //Arrange
         expectedSupervisor = getSupervisorWithId();
-        when(supervisorRepository.save(expectedSupervisor)).thenReturn(expectedSupervisor);
+        Supervisor givenSupervisor = getSupervisorWithoutId();
+
+        when(supervisorRepository.save(givenSupervisor)).thenReturn(expectedSupervisor);
 
         //Act
-        final Optional<Supervisor> optionalSupervisor = service.signUp(expectedSupervisor);
+        final Optional<Supervisor> optionalSupervisor = service.signUp(givenSupervisor);
 
         //Assert
         Supervisor actualSupervisor = optionalSupervisor.orElse(null);
