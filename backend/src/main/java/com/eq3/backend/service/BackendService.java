@@ -98,7 +98,7 @@ public class BackendService {
     public Optional<PDFDocument> downloadEvaluationDocument(String documentName) {
         Optional<PDFDocument> optionalDocument = Optional.empty();
         Optional<Evaluation> optionalEvaluation =
-                evaluationRepository.findByName(documentName + DOCUMENT_EXTENSION);
+                evaluationRepository.findByName(documentName + EVALUATION_EXTENSION);
         if (optionalEvaluation.isPresent()) {
             Evaluation evaluation = optionalEvaluation.get();
             optionalDocument = Optional.of(evaluation.getDocument());

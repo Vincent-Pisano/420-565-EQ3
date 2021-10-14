@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class Utils {
-    public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
+    public final static String INTERNSHIP_CONTRACT_PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\contratTemplate.docx";
+    public final static String EVALUATION_EXTENSION = "Evaluation.pdf";
+
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {
         PDFDocument PDFDocument = new PDFDocument();
