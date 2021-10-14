@@ -156,39 +156,41 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfStudent() {
-    let hasAlreadyApplied = false;
-    internshipApplications.forEach((_internshipApplication) => {
-      if (_internshipApplication.internshipOffer.id === internshipOffer.id) {
-        hasAlreadyApplied = true;
-      }
-    });
-    if (!hasApplied) {
-      if (!hasAlreadyApplied) {
-        return (
-          <InternshipOfferButtonApply
-            fields={fields}
-            setHasApplied={setHasApplied}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-          />
-        );
+    if (auth.isStudent()) {
+      let hasAlreadyApplied = false;
+      internshipApplications.forEach((_internshipApplication) => {
+        if (_internshipApplication.internshipOffer.id === internshipOffer.id) {
+          hasAlreadyApplied = true;
+        }
+      });
+      if (!hasApplied) {
+        if (!hasAlreadyApplied) {
+          return (
+            <InternshipOfferButtonApply
+              fields={fields}
+              setHasApplied={setHasApplied}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+            />
+          );
+        } else {
+          return (
+            <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
+          );
+        }
       } else {
         return (
-          <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
+          <>
+            <p
+              style={{
+                color: errorMessage.startsWith("Erreur") ? "red" : "green",
+              }}
+            >
+              {errorMessage}
+            </p>
+          </>
         );
       }
-    } else {
-      return (
-        <>
-          <p
-            style={{
-              color: errorMessage.startsWith("Erreur") ? "red" : "green",
-            }}
-          >
-            {errorMessage}
-          </p>
-        </>
-      );
     }
   }
 

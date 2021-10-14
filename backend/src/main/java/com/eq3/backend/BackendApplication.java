@@ -43,7 +43,7 @@ public class BackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Optional<InternshipApplication> optionalInternshipApplication = internshipApplicationRepository.findById("6164b22a34da0229e708be23");
+        //Optional<InternshipApplication> optionalInternshipApplication = internshipApplicationRepository.findById("6164b22a34da0229e708be23");
         /*optionalInternshipApplication.ifPresent(internshipApplication -> {
             Internship internship = new Internship();
             internship.setInternshipApplication(internshipApplication);
@@ -55,13 +55,13 @@ public class BackendApplication implements CommandLineRunner {
             internshipRepository.save(internship);
         });*/
 
-        optionalInternshipApplication.ifPresent(internshipApplication -> {
+        /*optionalInternshipApplication.ifPresent(internshipApplication -> {
             try {
                 documentService.saveInternship(internshipApplication);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
 
     }
 
