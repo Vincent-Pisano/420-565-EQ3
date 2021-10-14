@@ -81,6 +81,11 @@ public class InternshipService {
         return optionalStudent.map(internshipApplicationRepository::findAllByStudentAndIsDisabledFalse);
     }
 
+    public Optional<List<InternshipApplication>> getAllAcceptedInternshipApplications() {
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
     public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
@@ -95,9 +100,15 @@ public class InternshipService {
 
     public Optional<InternshipOffer> validateInternshipOffer(String idOffer) {
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
-        optionalInternshipOffer.ifPresent(internshipOffer -> {
-            internshipOffer.setIsValid(true);
-        });
+        optionalInternshipOffer.ifPresent(internshipOffer -> internshipOffer.setIsValid(true));
         return optionalInternshipOffer.map(internshipOfferRepository::save);
+    }
+
+    public Optional<InternshipApplication> updateInternshipApplication(InternshipApplication internshipApplication) {
+        Optional<InternshipApplication> optionalInternshipApplication =
+                internshipApplicationRepository.findById(internshipApplication.getId());
+
+        return optionalInternshipApplication.map((_internshipApplication) ->
+                internshipApplicationRepository.save(internshipApplication));
     }
 }

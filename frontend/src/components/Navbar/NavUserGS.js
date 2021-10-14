@@ -14,6 +14,9 @@ const NavUserGs = () => {
       <NavDropdown.Item as={Link} className="nav-item-cust" to="/listInternshipOffer">
         Liste Offres
       </NavDropdown.Item>
+      <NavDropdown.Item as={Link} className="nav-item-cust" to="/listInternshipApplication">
+        Liste Applications
+      </NavDropdown.Item>
       <NavDropdown.Item as={Link} className="nav-item-cust" to="/listStudents">
         Liste CV
       </NavDropdown.Item>
