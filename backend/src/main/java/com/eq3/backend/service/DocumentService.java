@@ -25,11 +25,15 @@ public class DocumentService {
             List<XWPFParagraph> xwpfParagraphList = doc.getParagraphs();
             //Iterate over paragraph list and check for the replaceable text in each paragraph
             for (XWPFParagraph xwpfParagraph : xwpfParagraphList) {
+                System.out.println(xwpfParagraph.getRuns());
+                System.out.println("-----------");
                 for (XWPFRun xwpfRun : xwpfParagraph.getRuns()) {
                     String docText = xwpfRun.getText(0);
-                    //replacement and setting position
-                    docText = docText.replace("${name}", "San Pellegrino");
-                    xwpfRun.setText(docText, 0);
+                    if (docText != null) {
+                        //replacement and setting position
+                        docText = docText.replace("GS_NAME", "San Pellegrino");
+                        xwpfRun.setText(docText, 0);
+                    }
                 }
             }
 
