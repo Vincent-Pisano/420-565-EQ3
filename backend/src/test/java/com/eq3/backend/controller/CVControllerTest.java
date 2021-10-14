@@ -4,7 +4,6 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.service.CVService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,10 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
-import static com.eq3.backend.utils.UtilsTest.getStudent;
+import static com.eq3.backend.utils.UtilsURL.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest(CVController.class)
@@ -44,7 +45,7 @@ public class CVControllerTest {
     public void testSaveCV() throws Exception {
         //Arrange
         PDFDocument PDFDocument = getDocument();
-        var multipartFile = Mockito.mock(MultipartFile.class);
+        var multipartFile = mock(MultipartFile.class);
         when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
@@ -52,7 +53,7 @@ public class CVControllerTest {
         expectedStudent.setCVList(getCVList());
 
         Student givenStudent = getStudent();
-        when(service.saveCV(Mockito.eq(givenStudent.getId()), any(MultipartFile.class)))
+        when(service.saveCV(eq(givenStudent.getId()), any(MultipartFile.class)))
                 .thenReturn(Optional.ofNullable(expectedStudent));
 
         //Act
@@ -61,7 +62,7 @@ public class CVControllerTest {
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
 
         MvcResult result =  mockMvc
-                .perform(multipart("/save/CV/"+ givenStudent.getId())
+                .perform(multipart(URL_SAVE_CV + givenStudent.getId())
                         .file("document", multipartFile.getBytes())
                         .contentType(mediaType)).andReturn();
 
@@ -89,7 +90,7 @@ public class CVControllerTest {
                 .thenReturn(Optional.of(expectedStudent));
 
         //Act
-        MvcResult result = mockMvc.perform(delete("/delete/CV/" +
+        MvcResult result = mockMvc.perform(delete(URL_DELETE_CV +
                 givenStudent.getId() + "/" + givenCV.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -124,7 +125,7 @@ public class CVControllerTest {
 
         //Act
         MvcResult result =  mockMvc
-                .perform(post("/update/ActiveCV/" +
+                .perform(post( URL_UPDATE_ACTIVE_CV +
                         givenStudent.getId() + "/"+ givenCV.getId())).andReturn();
 
         //Assert
@@ -143,7 +144,7 @@ public class CVControllerTest {
                 .thenReturn(Optional.of(expectedStudentList));
 
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/student/CVActiveNotValid/")
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_CV_ACTIVE_NOT_VALID)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -170,7 +171,7 @@ public class CVControllerTest {
                 .thenReturn(Optional.of(expectedStudent));
 
         //Act
-        MvcResult result = mockMvc.perform(post("/validate/CV/" + expectedStudent.getId())
+        MvcResult result = mockMvc.perform(post(URL_VALIDATE_CV + expectedStudent.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
 

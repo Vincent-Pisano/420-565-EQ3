@@ -62,7 +62,7 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping("/save/internshipOffer/validate/{idOffer}")
+    @PostMapping("/validate/internshipOffer/{idOffer}")
     public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String idOffer) {
         return service.validateInternshipOffer(idOffer)
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
