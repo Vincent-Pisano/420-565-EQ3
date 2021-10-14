@@ -34,8 +34,10 @@ public class UtilsURL {
     public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
     public final static String URL_GET_ALL_INTERNSHIP_OFFERS = "/getAll/internshipOffer/";
     public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/unvalidated";
+    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/";
+    public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
     public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/";
     public final static String URL_VALIDATE_INTERNSHIP_OFFER = "/validate/internshipOffer/";
-
+    public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";
 
 }
