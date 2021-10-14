@@ -21,9 +21,9 @@ import java.util.Optional;
 import static com.eq3.backend.utils.Utils.INTERNSHIP_CONTRACT_PATH;
 
 @SpringBootApplication
-public class BackendApplication implements CommandLineRunner {
+public class BackendApplication /*implements CommandLineRunner */{
 
-    private DocumentService documentService;
+    /*private DocumentService documentService;
     private InternshipRepository internshipRepository;
     private InternshipApplicationRepository internshipApplicationRepository;
 
@@ -35,16 +35,16 @@ public class BackendApplication implements CommandLineRunner {
         this.documentService = documentService;
         this.internshipRepository = internshipRepository;
         this.internshipApplicationRepository = internshipApplicationRepository;
-    }
+    }*/
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Override
+    /*@Override
     public void run(String... args) throws Exception {
-        //Optional<InternshipApplication> optionalInternshipApplication = internshipApplicationRepository.findById("6164b22a34da0229e708be23");
-        /*optionalInternshipApplication.ifPresent(internshipApplication -> {
+        Optional<InternshipApplication> optionalInternshipApplication = internshipApplicationRepository.findById("6168a6bcce3fbc6d36fdcd34");
+        optionalInternshipApplication.ifPresent(internshipApplication -> {
             Internship internship = new Internship();
             internship.setInternshipApplication(internshipApplication);
             try {
@@ -53,7 +53,7 @@ public class BackendApplication implements CommandLineRunner {
                 e.printStackTrace();
             }
             internshipRepository.save(internship);
-        });*/
+        });
 
         /*optionalInternshipApplication.ifPresent(internshipApplication -> {
             try {
@@ -71,6 +71,6 @@ public class BackendApplication implements CommandLineRunner {
                 .name("contrat_stage_test.pdf")
                 .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(path)))
                 .build();
-    }
+    }*/
 
 }
