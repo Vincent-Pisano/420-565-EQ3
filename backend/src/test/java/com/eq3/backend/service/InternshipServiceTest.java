@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,8 +21,9 @@ import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 public class InternshipServiceTest {
@@ -47,12 +47,14 @@ public class InternshipServiceTest {
     private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
 
+    private List<InternshipApplication> expectedInternshipApplicationList;
+
     @Test
     //@Disabled
     public void testSaveInternshipOfferWithDocument() throws IOException {
         //Arrange
         PDFDocument PDFDocument = getDocument();
-        var multipartFile = Mockito.mock(MultipartFile.class);
+        var multipartFile = mock(MultipartFile.class);
         when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
         when(multipartFile.getBytes()).thenReturn(PDFDocument.getContent().getData());
 
@@ -173,6 +175,47 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllInternshipApplicationOfStudent() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedStudent = getStudentWithId();
+
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedStudent));
+        when(internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(expectedStudent))
+                .thenReturn(expectedInternshipApplicationList);
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllInternshipApplicationOfStudent(expectedStudent.getUsername());
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllAcceptedInternshipApplications() {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+
+        when(internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED))
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllAcceptedInternshipApplications();
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+
+    }
+
+    @Test
+    //@Disabled
     public void testApplyInternshipOffer() {
         //Arrange
         expectedStudent = getStudentWithId();
@@ -219,5 +262,31 @@ public class InternshipServiceTest {
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
         assertThat(actualInternshipOffer).isEqualTo(expectedInternshipOffer);
         assertThat(actualIsValid).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testUpdateInternshipApplication() throws Exception {
+        //Arrange
+        expectedInternshipApplication = getInternshipApplication();
+        InternshipApplication givenInternshipApplication = getInternshipApplication();
+        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.ACCEPTED);
+
+        when(internshipApplicationRepository.findById(expectedInternshipApplication.getId()))
+                .thenReturn(Optional.of(givenInternshipApplication));
+        when(internshipApplicationRepository.save(expectedInternshipApplication))
+                .thenReturn(expectedInternshipApplication);
+
+        //Act
+        final Optional<InternshipApplication> optionalInternshipApplication =
+                service.updateInternshipApplication(expectedInternshipApplication);
+
+        //Assert
+        InternshipApplication actualInternshipApplication = optionalInternshipApplication.orElse(null);
+        InternshipApplication.ApplicationStatus actualStatus = actualInternshipApplication != null ? actualInternshipApplication.getStatus() : null;
+
+        assertThat(optionalInternshipApplication.isPresent()).isTrue();
+        assertThat(actualInternshipApplication).isEqualTo(expectedInternshipApplication);
+        assertThat(actualStatus).isEqualTo(expectedInternshipApplication.getStatus());
     }
 }

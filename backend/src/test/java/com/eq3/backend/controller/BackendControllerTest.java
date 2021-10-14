@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
-import static com.eq3.backend.utils.UtilsTest.getStudentWithId;
+import static com.eq3.backend.utils.UtilsURL.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,7 +49,7 @@ class BackendControllerTest {
         when(service.getAllStudents(Department.COMPUTER_SCIENCE))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/students/" +
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS +
                 Department.COMPUTER_SCIENCE)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -69,7 +69,7 @@ class BackendControllerTest {
         when(service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/students/noSupervisor/" +
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR +
                 Department.COMPUTER_SCIENCE)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -89,7 +89,7 @@ class BackendControllerTest {
         when(service.getAllSupervisors())
                 .thenReturn(Optional.of(expectedSupervisorList));
         //Act
-        MvcResult result = mockMvc.perform(get("/getAll/supervisors/")
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SUPERVISORS)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         //Assert
         MockHttpServletResponse response = result.getResponse();
@@ -107,7 +107,7 @@ class BackendControllerTest {
         when(service.getMonitorByUsername(expectedMonitor.getUsername()))
                 .thenReturn(Optional.of(expectedMonitor));
         //Act
-        MvcResult result = mockMvc.perform(get("/get/monitor/" +
+        MvcResult result = mockMvc.perform(get(URL_GET_MONITOR +
                 expectedMonitor.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -131,7 +131,7 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedStudent));
 
         //Act
-        MvcResult result = mockMvc.perform(post("/assign/supervisor/" +
+        MvcResult result = mockMvc.perform(post(URL_ASSIGN_SUPERVISOR +
                 expectedStudent.getId() + "/" + expectedSupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
@@ -155,7 +155,7 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedInternshipOffer.getPDFDocument()));
 
         //Act
-        MvcResult result = mockMvc.perform(get("/get/internshipOffer/document/" +
+        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT +
                 expectedInternshipOffer.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -178,7 +178,7 @@ class BackendControllerTest {
                 .thenReturn(Optional.ofNullable(expectedCV.getPDFDocument()));
 
         //Act
-        MvcResult result = mockMvc.perform(get("/get/CV/document/" +
+        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_CV_DOCUMENT +
                 expectedStudent.getId() + "/" + expectedCV.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -199,7 +199,7 @@ class BackendControllerTest {
         when(service.downloadEvaluationDocument(expectedDocumentName))
                 .thenReturn(Optional.of(expectedPDFDocument));
         //Act
-        MvcResult result = mockMvc.perform(get("/get/"+ expectedDocumentName +"/evaluation/document")
+        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_EVALUATION_DOCUMENT)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

@@ -9,7 +9,7 @@ const InternshipOfferButtonValidate = ({internshipOfferID, errorMessage, setErro
     function validateInternshipOffer() {
         axios
           .post(
-            `http://localhost:9090/save/internshipOffer/validate/${internshipOfferID}`
+            `http://localhost:9090/validate/internshipOffer/${internshipOfferID}`
           )
           .then((response) => {
             setErrorMessage(

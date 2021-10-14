@@ -4,12 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Data
@@ -18,13 +14,14 @@ import java.util.List;
 public class InternshipApplication extends Entity{
 
     public enum ApplicationStatus {
-        NOT_TAKEN,
+        NOT_ACCEPTED,
+        ACCEPTED,
         WAITING,
-        TAKEN
+        VALIDATED
     }
 
     @Builder.Default
-    private ApplicationStatus status = ApplicationStatus.NOT_TAKEN;
+    private ApplicationStatus status = ApplicationStatus.WAITING;
 
     @Field
     private InternshipOffer internshipOffer;
@@ -34,6 +31,6 @@ public class InternshipApplication extends Entity{
 
     public InternshipApplication() {
         super();
-        this.status = ApplicationStatus.NOT_TAKEN;
+        this.status = ApplicationStatus.WAITING;
     }
 }

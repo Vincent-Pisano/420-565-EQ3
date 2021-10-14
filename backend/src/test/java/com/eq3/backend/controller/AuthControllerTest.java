@@ -2,6 +2,7 @@ package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.AuthService;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
-import static com.eq3.backend.utils.UtilsTest.getStudentWithId;
+import static com.eq3.backend.utils.UtilsURL.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,7 +44,7 @@ public class AuthControllerTest {
         when(service.signUp(expectedStudent)).thenReturn(Optional.of(expectedStudent));
 
         // Act
-        MvcResult result = mockMvc.perform(post("/signUp/student")
+        MvcResult result = mockMvc.perform(post(URL_SIGN_UP_STUDENT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
 
@@ -63,7 +64,7 @@ public class AuthControllerTest {
         when(service.signUp(expectedMonitor)).thenReturn(Optional.of(expectedMonitor));
 
         // Act
-        MvcResult result = mockMvc.perform(post("/signUp/monitor")
+        MvcResult result = mockMvc.perform(post(URL_SIGN_UP_MONITOR)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedMonitor))).andReturn();
 
@@ -83,7 +84,7 @@ public class AuthControllerTest {
         when(service.signUp(expectedSupervisor)).thenReturn(Optional.of(expectedSupervisor));
 
         // Act
-        MvcResult result = mockMvc.perform(post("/signUp/supervisor")
+        MvcResult result = mockMvc.perform(post(URL_SIGN_UP_SUPERVISOR)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(expectedSupervisor))).andReturn();
 
@@ -103,7 +104,7 @@ public class AuthControllerTest {
         when(service.loginStudent(expectedStudent.getUsername(), expectedStudent.getPassword()))
                 .thenReturn(Optional.of(expectedStudent));
         //Act
-        MvcResult result = mockMvc.perform(get("/login/student/" +
+        MvcResult result = mockMvc.perform(get( URL_LOGIN_STUDENT +
                 expectedStudent.getUsername()+"/"+expectedStudent.getPassword())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -123,7 +124,7 @@ public class AuthControllerTest {
         when(service.loginMonitor(expectedMonitor.getUsername(), expectedMonitor.getPassword()))
                 .thenReturn(Optional.of(expectedMonitor));
         //Act
-        MvcResult result = mockMvc.perform(get("/login/monitor/" +
+        MvcResult result = mockMvc.perform(get(URL_LOGIN_MONITOR +
                 expectedMonitor.getUsername()+"/"+expectedMonitor.getPassword())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -143,7 +144,7 @@ public class AuthControllerTest {
         when(service.loginSupervisor(expectedSupervisor.getUsername(), expectedSupervisor.getPassword()))
                 .thenReturn(Optional.of(expectedSupervisor));
         //Act
-        MvcResult result = mockMvc.perform(get("/login/supervisor/" +
+        MvcResult result = mockMvc.perform(get(URL_LOGIN_SUPERVISOR +
                 expectedSupervisor.getUsername()+"/"+expectedSupervisor.getPassword())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -163,7 +164,7 @@ public class AuthControllerTest {
         when(service.loginInternshipManager(expectedInternshipManager.getUsername(), expectedInternshipManager.getPassword()))
                 .thenReturn(Optional.of(expectedInternshipManager));
         //Act
-        MvcResult result = mockMvc.perform(get("/login/internshipManager/" +
+        MvcResult result = mockMvc.perform(get(URL_LOGIN_INTERNSHIP_MANAGER +
                 expectedInternshipManager.getUsername()+"/"+expectedInternshipManager.getPassword())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
