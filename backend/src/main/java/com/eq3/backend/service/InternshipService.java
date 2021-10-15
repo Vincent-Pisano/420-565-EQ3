@@ -22,27 +22,18 @@ public class InternshipService {
     private final StudentRepository studentRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipApplicationRepository internshipApplicationRepository;
+    private final InternshipRepository internshipRepository;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
-                   InternshipApplicationRepository internshipApplicationRepository
+                   InternshipApplicationRepository internshipApplicationRepository,
+                      InternshipRepository internshipRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipApplicationRepository = internshipApplicationRepository;
-    }
-
-    public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
-        InternshipOffer internshipOffer = null;
-        try {
-            internshipOffer = getInternshipOffer(internshipOfferJson, multipartFile);
-        } catch (IOException e) {
-            logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at " +
-                    "saveInternshipOffer in InternshipService : " + e.getMessage());
-        }
-        return internshipOffer == null ? Optional.empty() :
-                Optional.of(internshipOfferRepository.save(internshipOffer));
+        this.internshipRepository = internshipRepository;
     }
 
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
@@ -110,5 +101,22 @@ public class InternshipService {
 
         return optionalInternshipApplication.map((_internshipApplication) ->
                 internshipApplicationRepository.save(internshipApplication));
+    }
+
+    public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
+        InternshipOffer internshipOffer = null;
+        try {
+            internshipOffer = getInternshipOffer(internshipOfferJson, multipartFile);
+        } catch (IOException e) {
+            logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at " +
+                    "saveInternshipOffer in InternshipService : " + e.getMessage());
+        }
+        return internshipOffer == null ? Optional.empty() :
+                Optional.of(internshipOfferRepository.save(internshipOffer));
+    }
+
+    public Optional<Internship> saveInternship(Internship internship) {
+        return internship == null ? Optional.empty() :
+                Optional.of(internshipRepository.save(internship));
     }
 }

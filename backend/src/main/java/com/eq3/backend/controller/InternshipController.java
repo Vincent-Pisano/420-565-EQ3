@@ -1,6 +1,7 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.Department;
+import com.eq3.backend.model.Internship;
 import com.eq3.backend.model.InternshipApplication;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.service.InternshipService;
@@ -79,4 +80,12 @@ public class InternshipController {
                 .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @PostMapping("/save/internship")
+    public ResponseEntity<Internship> saveInternship(@RequestBody Internship internship) {
+        return service.saveInternship(internship)
+                .map(_internship -> ResponseEntity.status(HttpStatus.CREATED).body(_internship))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
 }
