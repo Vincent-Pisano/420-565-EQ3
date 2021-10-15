@@ -207,7 +207,7 @@ class BackendServiceTest {
         expectedPDFDocument = getDocument();
         String givenDocumentName = DOCUMENT_NAME;
 
-        when(evaluationRepository.findByName(givenDocumentName + DOCUMENT_EXTENSION))
+        when(evaluationRepository.getByDocument_NameAndIsDisabledFalse(givenDocumentName + DOCUMENT_EXTENSION))
                 .thenReturn(Optional.of(expectedEvaluation));
         //Act
         Optional<PDFDocument> optionalDocument = service.downloadEvaluationDocument(givenDocumentName);

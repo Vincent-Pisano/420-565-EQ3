@@ -13,8 +13,8 @@ const NavUserMonitor = () => {
       </NavDropdown.Item>
 
       <NavDropdown.Item
-        download
         href={`http://localhost:9090/get/student/evaluation/document`}
+        target="_blank"
       >
         Document d'évalution d'étudiant
       </NavDropdown.Item>
