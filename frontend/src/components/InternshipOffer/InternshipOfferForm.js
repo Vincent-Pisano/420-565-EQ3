@@ -1,7 +1,6 @@
 import axios from "axios";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import auth from "../../services/Auth";
-import { useState, useEffect } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router";
 import { Container, Row, Col, Form } from "react-bootstrap";
@@ -150,7 +149,7 @@ const InternshipOfferForm = () => {
   function checkIfDocumentExist() {
     if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
       return (
-        <InternshipOfferButtonDownload internshipOfferID={internshipOffer.id} />
+        <InternshipOfferButtonDownload internshipOfferID={internshipOffer.id} document={internshipOffer.pdfdocument} />
       );
     }
   }

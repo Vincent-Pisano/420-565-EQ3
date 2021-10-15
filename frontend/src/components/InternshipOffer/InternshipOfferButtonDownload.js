@@ -1,20 +1,40 @@
-import { Container } from "react-bootstrap";
+import React, { useState } from "react";
 
-const InternshipOfferButtonDownload = ({internshipOfferID}) => {
-    return (
-        <Container className="cont_btn_file">
-          <a
-            className="btn_file"
-            href={
+import { Container, Button } from "react-bootstrap";
+import PDFViewer from "../PDF/PDFViewer";
+
+const InternshipOfferButtonDownload = ({ internshipOfferID, document }) => {
+  
+  const [show, setShow] = useState(false);
+  function handleShow() {
+    setShow(!show);
+  }
+
+  function showPDFViewer() {
+    if (show) {
+      return (
+        <Container className="pdf-container">
+          <PDFViewer
+            url={
               "http://localhost:9090/get/internshipOffer/document/" +
               internshipOfferID
             }
-            download
-          >
-            Télécharger le document
-          </a>
+            documentName={document.name}
+          />
         </Container>
       );
-  };
-  export default InternshipOfferButtonDownload;
-  
+    }
+  }
+
+  return (
+    <>
+      <Container className="cont_btn_file">
+        <Button className="btn_submit" onClick={handleShow}>
+          Visualiser le document
+        </Button>
+      </Container>
+      {showPDFViewer()}
+    </>
+  );
+};
+export default InternshipOfferButtonDownload;
