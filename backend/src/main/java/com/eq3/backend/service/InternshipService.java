@@ -22,15 +22,18 @@ public class InternshipService {
     private final StudentRepository studentRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipApplicationRepository internshipApplicationRepository;
+    private final InternshipRepository internshipRepository;
 
     InternshipService(StudentRepository studentRepository,
-                   InternshipOfferRepository internshipOfferRepository,
-                   InternshipApplicationRepository internshipApplicationRepository
+                      InternshipOfferRepository internshipOfferRepository,
+                      InternshipApplicationRepository internshipApplicationRepository,
+                      InternshipRepository internshipRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipApplicationRepository = internshipApplicationRepository;
+        this.internshipRepository = internshipRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -110,5 +113,19 @@ public class InternshipService {
 
         return optionalInternshipApplication.map((_internshipApplication) ->
                 internshipApplicationRepository.save(internshipApplication));
+    }
+
+    public Optional<Internship> internshipStudentSigned(Internship internship, String signature) {
+        internship.setStudentSigned(true);
+        String contract = "";
+
+
+
+        Optional<Internship> optionalInternship =
+                internshipRepository.findById(internship.getId());
+
+
+        return optionalInternship.map((_internshipApplication) ->
+                internshipRepository.save(internship));
     }
 }

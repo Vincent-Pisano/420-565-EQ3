@@ -40,12 +40,16 @@ public class InternshipServiceTest {
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
+    @Mock
+    private InternshipRepository internshipRepository;
+
     //global variables
     private Student expectedStudent;
     private Monitor expectedMonitor;
     private InternshipOffer expectedInternshipOffer;
     private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
+    private Internship expectedInternship;
 
     private List<InternshipApplication> expectedInternshipApplicationList;
 
@@ -290,4 +294,30 @@ public class InternshipServiceTest {
         assertThat(actualInternshipApplication).isEqualTo(expectedInternshipApplication);
         assertThat(actualStatus).isEqualTo(expectedInternshipApplication.getStatus());
     }
+
+    @Test
+    //@Disabled
+    public void testInternshipStudentSigned() throws IOException {
+        //Arrange
+        expectedInternship = getInternship();
+        expectedInternship.setStudentSigned(true);
+
+        when(internshipRepository.findById(expectedInternship.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternship));
+        when(internshipRepository.save(expectedInternship))
+                .thenReturn(expectedInternship);
+
+        //Act
+        final Optional<Internship> optionalInternship =
+                service.internshipStudentSigned(expectedInternship, "Signature");
+
+        //Assert
+        Internship actualInternship = optionalInternship.orElse(null);
+        Boolean actualStudentSigned = actualInternship != null ? actualInternship.getStudentSigned() : false;
+
+        assertThat(optionalInternship.isPresent()).isTrue();
+        assertThat(actualInternship).isEqualTo(expectedInternship);
+        assertThat(actualStudentSigned).isTrue();
+    }
+
 }

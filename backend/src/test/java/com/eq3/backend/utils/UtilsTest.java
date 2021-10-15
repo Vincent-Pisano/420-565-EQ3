@@ -16,6 +16,7 @@ public class UtilsTest {
 
     public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
     public final static String DOCUMENT_NAME = "documentTest";
+    public final static String SIGNATURE_STRING = "signature";
 
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
@@ -194,6 +195,14 @@ public class UtilsTest {
     public static Evaluation getEvaluation() throws IOException {
         return Evaluation.builder()
                 .document(getDocument())
+                .build();
+    }
+
+    public static Internship getInternship() throws IOException {
+        return Internship.builder()
+                .id("994662s17dfv9re02c85gt68dd5")
+                .internshipApplication(getInternshipApplication())
+                .studentSigned(false)
                 .build();
     }
 }
