@@ -3,6 +3,9 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.text.*;
@@ -19,8 +22,10 @@ import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -173,6 +178,7 @@ public class InternshipService {
             paragCadre.setAlignment(Element.ALIGN_CENTER);
             document.add(paragCadre);
 
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!
             Paragraph paragCadreInternshipOwner = new Paragraph("Le gestionnaire de stage, ${GS_name},", standard);
             paragCadreInternshipOwner.setAlignment(Element.ALIGN_CENTER);
             paragCadreInternshipOwner.setSpacingAfter(40f);
@@ -183,43 +189,85 @@ public class InternshipService {
             paragAnd.setSpacingAfter(40f);
             document.add(paragAnd);
 
-            Paragraph paragCadreMonitor = new Paragraph("L’employeur, ${monitor_name},", standard);
+            Paragraph paragCadreMonitor = new Paragraph("L’employeur, " /*+ internshipApplication.getInternshipOffer().getMonitor().getFirstName() + " " + internshipApplication.getInternshipOffer().getMonitor().getLastName()*/ + ",", standard);
             paragCadreMonitor.setAlignment(Element.ALIGN_CENTER);
             paragCadreMonitor.setSpacingAfter(40f);
             document.add(paragCadreMonitor);
 
             document.add(paragAnd);
 
-            Paragraph paragCadreStudent = new Paragraph("L’étudiant(e), ${student_name},", standard);
+            Paragraph paragCadreStudent = new Paragraph("L’étudiant(e), " + internshipApplication.getStudent().getFirstName() + " " + internshipApplication.getStudent().getLastName() + ",", standard);
             paragCadreStudent.setAlignment(Element.ALIGN_CENTER);
             paragCadreStudent.setSpacingAfter(40f);
             document.add(paragCadreStudent);
 
             Paragraph paragCadreConditions = new Paragraph("Conviennent des conditions de stage suivantes :", standard);
             paragCadreConditions.setAlignment(Element.ALIGN_CENTER);
+            paragCadreStudent.setSpacingAfter(10f);
             document.add(paragCadreConditions);
 
-            float [] pointColumnWidths = {150F};
+            Paragraph paragEmptySmall = new Paragraph(" ");
+            document.add(paragEmptySmall);
+
+            float[] pointColumnWidths = {150F};
             PdfPTable table = new PdfPTable(pointColumnWidths);
 
+            Font fontHeader = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+            Chunk c = new Chunk("ENDROIT DU STAGE", fontHeader);
+            Paragraph paragraphHeader = new Paragraph(c);
+
             // Adding cells to the table
-            PdfPCell cell1 = new PdfPCell(new Paragraph("Cell 1"));
-            PdfPCell cell2 = new PdfPCell(new Paragraph("Cell 2"));
-            PdfPCell cell3 = new PdfPCell(new Paragraph("Cell 3"));
+            PdfPCell cell1 = new PdfPCell(paragraphHeader);
+            cell1.setBackgroundColor(new BaseColor(230,230,230));
+            cell1.setUseVariableBorders(true);
+            cell1.setBorderWidthBottom(0f);
+            cell1.setPadding(7);
+
+            PdfPCell cell2 = new PdfPCell(new Paragraph("Adresse : " + internshipApplication.getInternshipOffer().getAddress()));
+            cell2.setUseVariableBorders(true);
+            cell2.setBorderWidthTop(0f);
+            cell2.setPadding(7);
+
+            Chunk c2 = new Chunk("DURÉE DU STAGE", fontHeader);
+            Paragraph paragraphDuration = new Paragraph(c2);
+            PdfPCell cell3 = new PdfPCell(paragraphDuration);
+            cell3.setBackgroundColor(new BaseColor(230,230,230));
+            cell3.setUseVariableBorders(true);
+            cell3.setBorderWidthBottom(0f);
+            cell3.setPadding(7);
+
+            PdfPCell cell4 = new PdfPCell(new Paragraph("Date de début : " + internshipApplication.getInternshipOffer().getStartDate()));
+            cell4.setUseVariableBorders(true);
+            cell4.setBorderWidthTop(0f);
+            cell4.setPadding(7);
+
+            PdfPCell cell5 = new PdfPCell(new Paragraph("Date de fin : " + internshipApplication.getInternshipOffer().getEndDate()));
+            cell5.setUseVariableBorders(true);
+            cell5.setBorderWidthTop(0f);
+            cell5.setPadding(7);
+
+            Duration diff = Duration.between(internshipApplication.getInternshipOffer().getStartDate().toInstant(), internshipApplication.getInternshipOffer().getEndDate().toInstant());
+            long diffWeeks = diff.toDays() / 7;
+            long diffDays = diff.toDays() % 7;
+
+            PdfPCell cell6 = new PdfPCell(new Paragraph("Nombre de semaines : " + /*internshipApplication.getInternshipOffer().getWorkShift()*/ diffWeeks + " et " + diffDays + " jours"));
+            cell6.setUseVariableBorders(true);
+            cell6.setBorderWidthTop(0f);
+            cell6.setPadding(7);
+
             table.addCell(cell1);
-            table.addCell(cell1);
-            table.addCell(cell1);
-            table.addCell(cell1);
-            table.addCell(cell1);
-            table.addCell(cell1);
-            table.addCell(cell1);
+            table.addCell(cell2);
+            table.addCell(cell3);
+            table.addCell(cell4);
+            table.addCell(cell5);
+            table.addCell(cell6);
+            //table.addCell(cell1);
 
             document.add(table);
 
             document.newPage();
             //Ici met les trucs de ta page, pas besoin de faire la partie signature, c'est Jules et Mathis qui vont la faire
             document.add(paragEntente);
-
 
             document.close();
             writer.close();
