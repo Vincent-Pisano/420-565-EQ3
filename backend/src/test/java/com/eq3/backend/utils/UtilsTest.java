@@ -16,7 +16,7 @@ public class UtilsTest {
 
     public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
     public final static String DOCUMENT_NAME = "documentTest";
-    public final static String SIGNATURE_STRING = "signature";
+    public final static String SIGNATURE_STRING = "nom quelconque";
 
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";

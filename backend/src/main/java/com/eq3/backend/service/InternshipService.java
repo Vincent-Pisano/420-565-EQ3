@@ -3,6 +3,15 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static com.eq3.backend.utils.Utils.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,17 +126,56 @@ public class InternshipService {
                 internshipApplicationRepository.save(internshipApplication));
     }
 
-    public Optional<Internship> internshipStudentSigned(Internship internship, String signature) {
+    public Optional<Internship> internshipStudentSigned(Internship internship, String signature) throws IOException {
         internship.setStudentSigned(true);
-        String contract = "";
-
-
-
         Optional<Internship> optionalInternship =
                 internshipRepository.findById(internship.getId());
 
-
+        studentSignDocument(signature);
         return optionalInternship.map((_internshipApplication) ->
                 internshipRepository.save(internship));
+    }
+
+    private void studentSignDocument(String signature) throws IOException {
+        String location = "C:/Users/jules/Desktop/evaluation_stagiaire.pdf";
+        String finalPDF = "C:/Users/jules/Desktop/evaluation_stagiaire_mod.pdf";//Juste pour tester
+        PdfReader pdfReader = new PdfReader(location);
+        PdfWriter pdfWriter = new PdfWriter(finalPDF);
+        PdfDocument pdfDocument = new PdfDocument(pdfReader, pdfWriter);
+        PageSize pageSize = pdfDocument.getDefaultPageSize();
+
+        Document document = new Document(pdfDocument);
+
+        document.add(new Paragraph("Étudiant(e)"));
+
+        float [] pointColumnWidths = {200F, 200F};
+        Table table = new Table(pointColumnWidths);
+        table.setFixedPosition(document.getLeftMargin(), document.getBottomMargin(),
+                pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin());
+
+        Cell cell;
+        Paragraph paraSign = new Paragraph(signature);
+        paraSign.setUnderline(0.3f, -2.5f);
+        cell = new Cell().add(paraSign);
+        cell.setBorder(Border.NO_BORDER);
+        table.addCell(cell);
+
+        Paragraph paraDate = new Paragraph(String.valueOf(LocalDate.now()));
+        paraDate.setUnderline(0.3f, -2.5f);
+        cell = new Cell().add(paraDate);
+        cell.setBorder(Border.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new Cell().add(new Paragraph("Signature"));
+        cell.setBorder(Border.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new Cell().add(new Paragraph("Date"));
+        cell.setBorder(Border.NO_BORDER);
+        table.addCell(cell);
+
+        document.add(table);
+
+        document.close();
     }
 }

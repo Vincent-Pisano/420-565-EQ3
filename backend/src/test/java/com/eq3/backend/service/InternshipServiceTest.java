@@ -309,7 +309,7 @@ public class InternshipServiceTest {
 
         //Act
         final Optional<Internship> optionalInternship =
-                service.internshipStudentSigned(expectedInternship, "Signature");
+                service.internshipStudentSigned(expectedInternship, SIGNATURE_STRING);
 
         //Assert
         Internship actualInternship = optionalInternship.orElse(null);
