@@ -24,11 +24,13 @@ public class BackendApplication implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
-    
+
     public void run(String... args) throws Exception {
         Optional<InternshipApplication> optionalInternshipApplication
-                = internshipApplicationRepository.findById("6168a6bcce3fbc6d36fdcd34");
+                = internshipApplicationRepository.findById("6164b22a34da0229e708be23");
         optionalInternshipApplication
-                .ifPresent(internshipApplication -> internshipService.saveInternship(internshipApplication));
+                .ifPresent(internshipApplication -> {
+                    System.out.println(internshipService.saveInternship(internshipApplication).get());
+                });
     }
 }

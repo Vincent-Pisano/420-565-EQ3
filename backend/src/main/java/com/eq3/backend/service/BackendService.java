@@ -16,18 +16,21 @@ public class BackendService {
     private final MonitorRepository monitorRepository;
     private final SupervisorRepository supervisorRepository;
     private final InternshipOfferRepository internshipOfferRepository;
+    private final InternshipRepository internshipRepository;
     private final EvaluationRepository evaluationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipOfferRepository internshipOfferRepository,
+                   InternshipRepository internshipRepository,
                    EvaluationRepository evaluationRepository
     ) {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
         this.internshipOfferRepository = internshipOfferRepository;
+        this.internshipRepository = internshipRepository;
         this.evaluationRepository = evaluationRepository;
     }
 
@@ -104,6 +107,11 @@ public class BackendService {
             optionalDocument = Optional.of(evaluation.getDocument());
         }
         return optionalDocument;
+    }
+
+    public Optional<PDFDocument> downloadInternshipContractDocument(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+        return optionalInternship.map(Internship::getInternshipContract);
     }
 }
 

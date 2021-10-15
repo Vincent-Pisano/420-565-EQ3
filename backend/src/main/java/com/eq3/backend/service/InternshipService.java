@@ -3,6 +3,8 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static com.eq3.backend.utils.Utils.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @Service
 public class InternshipService {
@@ -123,6 +133,26 @@ public class InternshipService {
     }
 
     private PDFDocument getContract(InternshipApplication internshipApplication) {
-        return null;
+        Document document = new Document();
+        PDFDocument pdfDocument = new PDFDocument();
+        try
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            PdfWriter writer = PdfWriter.getInstance(document, baos);
+            document.open();
+            document.add(new Paragraph("&quot;A Hello World PDF document.&quot;"));
+            document.close();
+            writer.close();
+
+            pdfDocument.setName("HelloWorld.pdf");
+            pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+        } catch (DocumentException e)
+        {
+            e.printStackTrace();
+        }
+        return pdfDocument;
     }
+
+
 }
