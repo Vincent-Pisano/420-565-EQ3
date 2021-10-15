@@ -18,8 +18,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -141,8 +139,7 @@ public class InternshipService {
     private PDFDocument getContract(InternshipApplication internshipApplication) {
         Document document = new Document();
         PDFDocument pdfDocument = new PDFDocument();
-        try
-        {
+        try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             PdfWriter writer = PdfWriter.getInstance(document, baos);
@@ -158,6 +155,7 @@ public class InternshipService {
 
             pdfDocument.setName("Contract.pdf");
             pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
         } catch (Exception e)
         {
             e.printStackTrace();
