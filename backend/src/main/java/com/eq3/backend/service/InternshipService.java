@@ -5,6 +5,8 @@ import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.text.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -19,9 +21,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.font.PdfFont;
@@ -144,11 +143,15 @@ public class InternshipService {
 
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             document.open();
-            document.add(new Paragraph("A Hello World PDF document."));
 
+            Font largeBold = new Font(Font.FontFamily.HELVETICA, 32,
+                    Font.BOLD);
+            Text text = new Text("CONTRAT DE STAGE");
+            Paragraph paragTitle = new Paragraph(text.getText(), largeBold);
+            paragTitle.setSpacingBefore(350);
+            paragTitle.setAlignment(Element.ALIGN_CENTER);
 
-            PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
-            Text text = new Text("Tutorialspoint");
+            document.add(paragTitle);
 
             document.close();
             writer.close();
