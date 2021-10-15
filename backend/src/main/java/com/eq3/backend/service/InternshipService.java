@@ -3,6 +3,8 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.font.constants.StandardFonts;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -23,6 +25,10 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.pdf.PdfDocument;
+
 
 @Service
 public class InternshipService {
@@ -141,13 +147,18 @@ public class InternshipService {
 
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             document.open();
-            document.add(new Paragraph("&quot;A Hello World PDF document.&quot;"));
+            document.add(new Paragraph("A Hello World PDF document."));
+
+
+            PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+            Text text = new Text("Tutorialspoint");
+
             document.close();
             writer.close();
 
-            pdfDocument.setName("HelloWorld.pdf");
+            pdfDocument.setName("Contract.pdf");
             pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
-        } catch (DocumentException e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
