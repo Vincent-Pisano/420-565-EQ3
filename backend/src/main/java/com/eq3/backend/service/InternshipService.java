@@ -18,6 +18,8 @@ import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,14 +146,22 @@ public class InternshipService {
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             document.open();
 
-            Font largeBold = new Font(Font.FontFamily.HELVETICA, 32,
-                    Font.BOLD);
-            Text text = new Text("CONTRAT DE STAGE");
-            Paragraph paragTitle = new Paragraph(text.getText(), largeBold);
-            paragTitle.setSpacingBefore(350);
+            Font largeBold = new Font(Font.FontFamily.HELVETICA, 32, Font.BOLD);
+
+            Paragraph paragEmpty = new Paragraph(" ");
+            paragEmpty.setSpacingAfter(325f);
+
+            Paragraph paragTitle = new Paragraph("CONTRAT DE STAGE", largeBold);
+            paragTitle.setSpacingAfter(350f);
             paragTitle.setAlignment(Element.ALIGN_CENTER);
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            Paragraph paragDate = new Paragraph(LocalDate.now().format(formatter));
+            paragDate.setAlignment(Element.ALIGN_CENTER);
+
+            document.add(paragEmpty);
             document.add(paragTitle);
+            document.add(paragDate);
 
             document.close();
             writer.close();
