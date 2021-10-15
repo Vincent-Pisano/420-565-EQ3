@@ -3,7 +3,11 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -195,9 +199,27 @@ public class InternshipService {
             paragCadreConditions.setAlignment(Element.ALIGN_CENTER);
             document.add(paragCadreConditions);
 
+            float [] pointColumnWidths = {150F};
+            PdfPTable table = new PdfPTable(pointColumnWidths);
+
+            // Adding cells to the table
+            PdfPCell cell1 = new PdfPCell(new Paragraph("Cell 1"));
+            PdfPCell cell2 = new PdfPCell(new Paragraph("Cell 2"));
+            PdfPCell cell3 = new PdfPCell(new Paragraph("Cell 3"));
+            table.addCell(cell1);
+            table.addCell(cell1);
+            table.addCell(cell1);
+            table.addCell(cell1);
+            table.addCell(cell1);
+            table.addCell(cell1);
+            table.addCell(cell1);
+
+            document.add(table);
+
             document.newPage();
             //Ici met les trucs de ta page, pas besoin de faire la partie signature, c'est Jules et Mathis qui vont la faire
             document.add(paragEntente);
+
 
             document.close();
             writer.close();
