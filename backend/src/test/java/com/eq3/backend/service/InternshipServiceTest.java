@@ -38,12 +38,16 @@ public class InternshipServiceTest {
     private InternshipApplicationRepository internshipApplicationRepository;
 
     @Mock
+    private InternshipRepository internshipRepository;
+
+    @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
     //global variables
     private Student expectedStudent;
     private Monitor expectedMonitor;
     private InternshipOffer expectedInternshipOffer;
+    private Internship expectedInternship;
     private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
 
@@ -288,5 +292,25 @@ public class InternshipServiceTest {
         assertThat(optionalInternshipApplication.isPresent()).isTrue();
         assertThat(actualInternshipApplication).isEqualTo(expectedInternshipApplication);
         assertThat(actualStatus).isEqualTo(expectedInternshipApplication.getStatus());
+    }
+
+    @Test
+    //@Disabled
+    public void testSaveInternship() throws IOException {
+        //Arrange
+        expectedInternship = getInternship();
+
+        when(internshipRepository.save(expectedInternship))
+                .thenReturn(expectedInternship);
+
+        //Act
+        final Optional<Internship> optionalInternship =
+                service.saveInternship(expectedInternship);
+
+        //Assert
+        Internship actualInternship = optionalInternship.orElse(null);
+
+        assertThat(optionalInternship.isPresent()).isTrue();
+        assertThat(actualInternship).isEqualTo(expectedInternship);
     }
 }

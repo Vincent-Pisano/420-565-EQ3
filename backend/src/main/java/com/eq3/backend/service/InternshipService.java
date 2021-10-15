@@ -119,4 +119,11 @@ public class InternshipService {
         return internship == null ? Optional.empty() :
                 Optional.of(internshipRepository.save(internship));
     }
+
+    public Optional<InternshipOffer> getInternshipOfferByInternshipApplication(Internship internship) {
+       InternshipApplication internshipApplication = internship.getInternshipApplication();
+       InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+        return internshipOffer == null ? Optional.empty() : Optional.of(internshipOffer);
+    }
+
 }

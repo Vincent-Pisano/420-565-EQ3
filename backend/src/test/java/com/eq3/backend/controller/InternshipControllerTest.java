@@ -43,6 +43,7 @@ public class InternshipControllerTest {
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
     private InternshipApplication expectedInternshipApplication;
+    private Internship expectedInternship;
     private List<InternshipApplication> expectedInternshipApplicationList;
 
     @Test
@@ -273,5 +274,29 @@ public class InternshipControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipApplication).isNotNull();
         assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.ACCEPTED);
+    }
+
+
+    @Test
+    //@Disabled
+    public void testSaveInternship() throws Exception {
+        // Arrange
+        expectedInternship = getInternship();
+
+        when(service.saveInternship(expectedInternship))
+                .thenReturn(Optional.of(expectedInternship));
+
+        // Act
+        MvcResult result = mockMvc.perform(post(SAVE_INTERNSHIP)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        // Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternship
+                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(expectedInternship).isEqualTo(actualInternship);
     }
 }
