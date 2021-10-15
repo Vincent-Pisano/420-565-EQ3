@@ -163,6 +163,15 @@ public class InternshipService {
             document.add(paragTitle);
             document.add(paragDate);
 
+            document.newPage();
+
+            Paragraph parag = new Paragraph(LocalDate.now().format(formatter));
+            parag.setAlignment(Element.ALIGN_CENTER);
+            document.add(parag);
+
+            document.newPage();
+            //Ici met les trucs de ta page, pas besoin de faire la partie signature, c'est Jules et Mathis qui vont la faire
+
             document.close();
             writer.close();
 
