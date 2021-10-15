@@ -3,9 +3,6 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.layout.element.Text;
 import com.itextpdf.text.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -24,10 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.pdf.PdfDocument;
-
 
 @Service
 public class InternshipService {
@@ -147,6 +140,8 @@ public class InternshipService {
             document.open();
 
             Font largeBold = new Font(Font.FontFamily.HELVETICA, 32, Font.BOLD);
+            Font mediumBold = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+            Font standard = new Font(Font.FontFamily.HELVETICA, 12);
 
             Paragraph paragEmpty = new Paragraph(" ");
             paragEmpty.setSpacingAfter(325f);
@@ -165,12 +160,44 @@ public class InternshipService {
 
             document.newPage();
 
-            Paragraph parag = new Paragraph(LocalDate.now().format(formatter));
-            parag.setAlignment(Element.ALIGN_CENTER);
-            document.add(parag);
+            Paragraph paragEntente = new Paragraph("ENTENTE DE STAGE INTERVENUE ENTRE LES PARTIES SUIVANTES", mediumBold);
+            paragEntente.setAlignment(Element.ALIGN_CENTER);
+            paragEntente.setSpacingAfter(50f);
+            document.add(paragEntente);
+
+            Paragraph paragCadre = new Paragraph("Dans le cadre de la formule ATE, les parties citées ci-dessous :", standard);
+            paragCadre.setAlignment(Element.ALIGN_CENTER);
+            document.add(paragCadre);
+
+            Paragraph paragCadreInternshipOwner = new Paragraph("Le gestionnaire de stage, ${GS_name},", standard);
+            paragCadreInternshipOwner.setAlignment(Element.ALIGN_CENTER);
+            paragCadreInternshipOwner.setSpacingAfter(40f);
+            document.add(paragCadreInternshipOwner);
+
+            Paragraph paragAnd = new Paragraph("et", mediumBold);
+            paragAnd.setAlignment(Element.ALIGN_CENTER);
+            paragAnd.setSpacingAfter(40f);
+            document.add(paragAnd);
+
+            Paragraph paragCadreMonitor = new Paragraph("L’employeur, ${monitor_name},", standard);
+            paragCadreMonitor.setAlignment(Element.ALIGN_CENTER);
+            paragCadreMonitor.setSpacingAfter(40f);
+            document.add(paragCadreMonitor);
+
+            document.add(paragAnd);
+
+            Paragraph paragCadreStudent = new Paragraph("L’étudiant(e), ${student_name},", standard);
+            paragCadreStudent.setAlignment(Element.ALIGN_CENTER);
+            paragCadreStudent.setSpacingAfter(40f);
+            document.add(paragCadreStudent);
+
+            Paragraph paragCadreConditions = new Paragraph("Conviennent des conditions de stage suivantes :", standard);
+            paragCadreConditions.setAlignment(Element.ALIGN_CENTER);
+            document.add(paragCadreConditions);
 
             document.newPage();
             //Ici met les trucs de ta page, pas besoin de faire la partie signature, c'est Jules et Mathis qui vont la faire
+            document.add(paragEntente);
 
             document.close();
             writer.close();
