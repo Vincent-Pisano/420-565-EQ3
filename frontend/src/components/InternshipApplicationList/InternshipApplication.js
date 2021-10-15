@@ -31,7 +31,7 @@ const InternshipApplication = ({ internshipApplication, onDoubleClick }) => {
           {" "}
           {internshipOffer.jobName}, {internshipOffer.city}
           {", "}
-          {student.firstName} {student.lastName}
+          { auth.isInternshipManager() ? student.firstName + " " + student.lastName : "" }
         </li>
       </Col>
     </Row>
