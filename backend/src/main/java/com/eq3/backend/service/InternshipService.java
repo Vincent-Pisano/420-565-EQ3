@@ -115,9 +115,10 @@ public class InternshipService {
                 Optional.of(internshipOfferRepository.save(internshipOffer));
     }
 
-    public Optional<Internship> saveInternship(Internship internship) {
-        return internship == null ? Optional.empty() :
-                Optional.of(internshipRepository.save(internship));
+    public Optional<Internship> saveInternship(InternshipApplication internshipApplication){
+        Internship internship = new Internship();
+        internship.setInternshipApplication(internshipApplication);
+        return Optional.of(internshipRepository.save(internship));
     }
 
     public Optional<InternshipOffer> getInternshipOfferByInternshipApplication(Internship internship) {

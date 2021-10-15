@@ -86,6 +86,32 @@ public class InternshipControllerTest {
 
     @Test
     //@Disabled
+    public void testSaveInternship() throws Exception {
+        // Arrange
+        expectedInternship = getInternship();
+        expectedInternshipApplication = getInternshipApplication();
+
+        expectedInternship.setInternshipApplication(expectedInternshipApplication);
+
+        when(service.saveInternship(expectedInternshipApplication))
+                .thenReturn(Optional.of(expectedInternship));
+
+        // Act
+        MvcResult result = mockMvc.perform(post(SAVE_INTERNSHIP)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        // Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternship
+                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(expectedInternship).isEqualTo(actualInternship);
+    }
+
+    @Test
+    //@Disabled
     public void testSaveInternshipOfferWithoutDocument() throws Exception {
         // Arrange
         expectedInternshipOffer = getInternshipOffer();
@@ -276,27 +302,4 @@ public class InternshipControllerTest {
         assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.ACCEPTED);
     }
 
-
-    @Test
-    //@Disabled
-    public void testSaveInternship() throws Exception {
-        // Arrange
-        expectedInternship = getInternship();
-
-        when(service.saveInternship(expectedInternship))
-                .thenReturn(Optional.of(expectedInternship));
-
-        // Act
-        MvcResult result = mockMvc.perform(post(SAVE_INTERNSHIP)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        // Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualInternship
-                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(expectedInternship).isEqualTo(actualInternship);
-    }
 }

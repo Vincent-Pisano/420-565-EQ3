@@ -82,8 +82,8 @@ public class InternshipController {
     }
 
     @PostMapping("/save/internship")
-    public ResponseEntity<Internship> saveInternship(@RequestBody Internship internship) {
-        return service.saveInternship(internship)
+    public ResponseEntity<Internship> saveInternship(@RequestBody InternshipApplication internshipApplication) {
+        return service.saveInternship(internshipApplication)
                 .map(_internship -> ResponseEntity.status(HttpStatus.CREATED).body(_internship))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
