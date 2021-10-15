@@ -93,7 +93,7 @@ public class BackendController {
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
-        headers.add("Content-Disposition", "attachment; filename=" + PDFDocument.getName());
+        headers.add("Content-Disposition", "inline; filename=" + PDFDocument.getName());
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
