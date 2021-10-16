@@ -86,6 +86,8 @@ public class InternshipService {
     }
 
     public Optional<Internship> saveInternship(Internship internship) {
+        internshipApplicationRepository.save(internship.getInternshipApplication());
+        System.out.println(internship);
         internship.setInternshipContract(getContract(internship));
         return Optional.of(internshipRepository.save(internship));
     }
