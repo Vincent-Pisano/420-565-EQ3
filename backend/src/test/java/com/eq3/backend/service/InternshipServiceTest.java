@@ -247,7 +247,7 @@ public class InternshipServiceTest {
         //Arrange
         expectedInternship = getInternship();
         expectedInternshipApplication = getInternshipApplication();
-        expectedInternshipOffer = getInternshipOffer();
+        //expectedInternshipOffer = getInternshipOffer();
 
         expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
         expectedInternship.setInternshipApplication(expectedInternshipApplication);
