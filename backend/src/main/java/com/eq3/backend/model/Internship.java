@@ -12,4 +12,7 @@ public class Internship extends Entity {
 
     @DBRef
     private InternshipApplication internshipApplication;
+
+    public Internship() {
+    }
 }

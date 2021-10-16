@@ -196,4 +196,11 @@ public class UtilsTest {
                 .document(getDocument())
                 .build();
     }
+
+    public static Internship getInternship() throws IOException {
+        return Internship.builder()
+                .id("6141112s17d3gre02ce5gt68dq5")
+                .internshipApplication(getInternshipApplication())
+                .build();
+    }
 }

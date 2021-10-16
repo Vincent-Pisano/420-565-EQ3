@@ -38,12 +38,16 @@ public class InternshipServiceTest {
     private InternshipApplicationRepository internshipApplicationRepository;
 
     @Mock
+    private InternshipRepository internshipRepository;
+
+    @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
     //global variables
     private Student expectedStudent;
     private Monitor expectedMonitor;
     private InternshipOffer expectedInternshipOffer;
+    private Internship expectedInternship;
     private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
 
@@ -136,6 +140,28 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
+    public void testSaveInternship() throws IOException {
+        //Arrange
+        expectedInternship = getInternship();
+        expectedInternshipApplication = getInternshipApplication();
+        expectedInternship.setInternshipApplication(expectedInternshipApplication);
+
+        when(internshipRepository.save(expectedInternship))
+                .thenReturn(expectedInternship);
+
+        //Act
+        final Optional<Internship> optionalInternship =
+                service.saveInternship(expectedInternshipApplication);
+
+        //Assert
+        Internship actualInternship = optionalInternship.orElse(null);
+
+        assertThat(optionalInternship.isPresent()).isTrue();
+        assertThat(actualInternship).isEqualTo(expectedInternship);
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllInternshipOfferByWorkField() {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
@@ -213,6 +239,32 @@ public class InternshipServiceTest {
         assertThat(optionalInternshipApplications.isPresent()).isTrue();
         assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
 
+    }
+
+    @Test
+    @Disabled
+    public void testGetInternshipOfferByInternshipApplication() throws IOException {
+        //Arrange
+        expectedInternship = getInternship();
+        expectedInternshipApplication = getInternshipApplication();
+        expectedInternshipOffer = getInternshipOffer();
+
+        expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
+        expectedInternship.setInternshipApplication(expectedInternshipApplication);
+
+        //when
+
+        // a faire...
+
+        //Act
+        final Optional<List<InternshipOffer>> optionalInternshipOffers =
+                service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE);
+
+        //Assert
+        List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
+
+        assertThat(optionalInternshipOffers.isPresent()).isTrue();
+        assertThat(actualInternshipOffers.size()).isEqualTo(expectedInternshipOfferList.size());
     }
 
     @Test
