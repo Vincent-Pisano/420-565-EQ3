@@ -43,17 +43,20 @@ public class InternshipService {
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
+    private final InternshipManagerRepository internshipManagerRepository;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipApplicationRepository internshipApplicationRepository,
-                   InternshipRepository internshipRepository
+                   InternshipRepository internshipRepository,
+                   InternshipManagerRepository internshipManagerRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
+        this.internshipManagerRepository = internshipManagerRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -87,7 +90,6 @@ public class InternshipService {
 
     public Optional<Internship> saveInternship(Internship internship) {
         internshipApplicationRepository.save(internship.getInternshipApplication());
-        System.out.println(internship);
         internship.setInternshipContract(getContract(internship));
         return Optional.of(internshipRepository.save(internship));
     }
@@ -153,7 +155,6 @@ public class InternshipService {
         PDFDocument pdfDocument = new PDFDocument();
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             document.open();
 
@@ -187,8 +188,8 @@ public class InternshipService {
             paragCadre.setAlignment(Element.ALIGN_CENTER);
             document.add(paragCadre);
 
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!
-            Paragraph paragCadreInternshipOwner = new Paragraph("Le gestionnaire de stage, ${GS_name},", standard);
+            Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByIsDisabledFalse();
+            Paragraph paragCadreInternshipOwner = new Paragraph("Le gestionnaire de stage, " + optionalInternshipManager.get().getFirstName() + " " + optionalInternshipManager.get().getLastName() + ",", standard);
             paragCadreInternshipOwner.setAlignment(Element.ALIGN_CENTER);
             paragCadreInternshipOwner.setSpacingAfter(40f);
             document.add(paragCadreInternshipOwner);
@@ -198,7 +199,7 @@ public class InternshipService {
             paragAnd.setSpacingAfter(40f);
             document.add(paragAnd);
 
-            Paragraph paragCadreMonitor = new Paragraph("L’employeur, " /*+ internshipApplication.getInternshipOffer().getMonitor().getFirstName() + " " + internshipApplication.getInternshipOffer().getMonitor().getLastName()*/ + ",", standard);
+            Paragraph paragCadreMonitor = new Paragraph("L’employeur, " + internshipApplication.getInternshipOffer().getMonitor().getFirstName() + " " + internshipApplication.getInternshipOffer().getMonitor().getLastName() + ",", standard);
             paragCadreMonitor.setAlignment(Element.ALIGN_CENTER);
             paragCadreMonitor.setSpacingAfter(40f);
             document.add(paragCadreMonitor);
@@ -225,14 +226,13 @@ public class InternshipService {
             Chunk c = new Chunk("ENDROIT DU STAGE", fontHeader);
             Paragraph paragraphHeader = new Paragraph(c);
 
-            // Adding cells to the table
             PdfPCell cell1 = new PdfPCell(paragraphHeader);
             cell1.setBackgroundColor(new BaseColor(230,230,230));
             cell1.setUseVariableBorders(true);
             cell1.setBorderWidthBottom(0f);
             cell1.setPadding(7);
 
-            PdfPCell cell2 = new PdfPCell(new Paragraph("Adresse : " + internshipApplication.getInternshipOffer().getAddress()));
+            PdfPCell cell2 = new PdfPCell(new Paragraph("Adresse : " + internshipApplication.getInternshipOffer().getAddress() + ", " + internshipApplication.getInternshipOffer().getCity() + ", " + internshipApplication.getInternshipOffer().getPostalCode()));
             cell2.setUseVariableBorders(true);
             cell2.setBorderWidthTop(0f);
             cell2.setPadding(7);
@@ -245,12 +245,12 @@ public class InternshipService {
             cell3.setBorderWidthBottom(0f);
             cell3.setPadding(7);
 
-            PdfPCell cell4 = new PdfPCell(new Paragraph("Date de début : " + internshipApplication.getInternshipOffer().getStartDate()));
+            PdfPCell cell4 = new PdfPCell(new Paragraph(String.format("Date de début : " + internshipApplication.getInternshipOffer().getStartDate(), formatter)));
             cell4.setUseVariableBorders(true);
             cell4.setBorderWidthTop(0f);
             cell4.setPadding(7);
 
-            PdfPCell cell5 = new PdfPCell(new Paragraph("Date de fin : " + internshipApplication.getInternshipOffer().getEndDate()));
+            PdfPCell cell5 = new PdfPCell(new Paragraph(String.format("Date de fin : " + internshipApplication.getInternshipOffer().getEndDate(), formatter)));
             cell5.setUseVariableBorders(true);
             cell5.setBorderWidthTop(0f);
             cell5.setPadding(7);
@@ -266,10 +266,38 @@ public class InternshipService {
             cell6.setBorderWidthTop(0f);
             cell6.setPadding(7);
 
-            PdfPCell cell7 = new PdfPCell(new Paragraph("Type d'horaire : " + (Workshift == InternshipOffer.WorkShift.DAY ? "Jour" : Workshift == InternshipOffer.WorkShift.NIGHT ? "Nuit" : "Flexibe")));
+            Chunk c3 = new Chunk("HORAIRE DE TRAVAIL", fontHeader);
+            Paragraph paragraphWorkshift = new Paragraph(c3);
+
+            PdfPCell cell7 = new PdfPCell(paragraphWorkshift);
+            cell7.setBackgroundColor(new BaseColor(230,230,230));
             cell7.setUseVariableBorders(true);
-            cell7.setBorderWidthTop(0f);
+            cell7.setBorderWidthBottom(0f);
             cell7.setPadding(7);
+
+            PdfPCell cell8 = new PdfPCell(new Paragraph("Type d'horaire: " + (Workshift == InternshipOffer.WorkShift.DAY ? "Jour" : Workshift == InternshipOffer.WorkShift.NIGHT ? "Nuit" : "Flexibe")));
+            cell8.setUseVariableBorders(true);
+            cell8.setBorderWidthTop(0f);
+            cell8.setPadding(7);
+
+            PdfPCell cell9 = new PdfPCell(new Paragraph("Nombre d'heures total par semaine: " + internshipApplication.getInternshipOffer().getWeeklyWorkTime() + " heures"));
+            cell9.setUseVariableBorders(true);
+            cell9.setBorderWidthTop(0f);
+            cell9.setPadding(7);
+
+            Chunk c4 = new Chunk("SALAIRE", fontHeader);
+            Paragraph paragraphSalary = new Paragraph(c4);
+
+            PdfPCell cell10 = new PdfPCell(paragraphSalary);
+            cell10.setBackgroundColor(new BaseColor(230,230,230));
+            cell10.setUseVariableBorders(true);
+            cell10.setBorderWidthBottom(0f);
+            cell10.setPadding(7);
+
+            PdfPCell cell11 = new PdfPCell(new Paragraph("Salaire horaire: " + String.format("%.2f",internshipApplication.getInternshipOffer().getHourlySalary()) + "$"));
+            cell11.setUseVariableBorders(true);
+            cell11.setBorderWidthTop(0f);
+            cell11.setPadding(7);
 
             table.addCell(cell1);
             table.addCell(cell2);
@@ -278,7 +306,10 @@ public class InternshipService {
             table.addCell(cell5);
             table.addCell(cell6);
             table.addCell(cell7);
-            //table.addCell(cell1);
+            table.addCell(cell8);
+            table.addCell(cell9);
+            table.addCell(cell10);
+            table.addCell(cell11);
 
             document.add(table);
 
