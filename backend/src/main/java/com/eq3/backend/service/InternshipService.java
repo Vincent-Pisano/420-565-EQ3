@@ -314,16 +314,65 @@ public class InternshipService {
             document.add(table);
 
             document.newPage();
-            //Ici met les trucs de ta page, pas besoin de faire la partie signature, c'est Jules et Mathis qui vont la faire
-            document.add(paragEntente);
+
+            Paragraph paragEngagements = new Paragraph("TACHES ET RESPONSABILITES DU STAGIAIRE", mediumBold);
+            paragEngagements.setAlignment(Element.ALIGN_CENTER);
+            paragEngagements.setSpacingAfter(10f);
+            document.add(paragEngagements);
+
+            float[] pointColumnWidths2 = {300F};
+            PdfPTable tableDesc = new PdfPTable(pointColumnWidths2);
+            tableDesc.setSpacingAfter(30f);
+
+            PdfPCell cellDesc = new PdfPCell(new Paragraph(internshipApplication.getInternshipOffer().getDescription()));
+            cellDesc.setUseVariableBorders(true);
+            cellDesc.setPadding(9);
+
+            tableDesc.addCell(cellDesc);
+            document.add(tableDesc);
+
+            Paragraph paragResponsibilities = new Paragraph("RESPONSABILITES", mediumBold);
+            paragResponsibilities.setAlignment(Element.ALIGN_CENTER);
+            paragResponsibilities.setSpacingAfter(30f);
+            document.add(paragResponsibilities);
+
+            Paragraph paragEngagementTitleCollege = new Paragraph("Le Collège s’engage à :", mediumBold);
+            paragEngagementTitleCollege.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementTitleCollege.setSpacingAfter(10f);
+            document.add(paragEngagementTitleCollege);
+
+            Paragraph paragEngagementCollege = new Paragraph(internship.getEngagements().get(COLLEGE_ENGAGEMENT_KEY), standard);
+            paragEngagementCollege.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementCollege.setSpacingAfter(30f);
+            document.add(paragEngagementCollege);
+
+            Paragraph paragEngagementTitleEnterprise = new Paragraph("L’entreprise s’engage à :", mediumBold);
+            paragEngagementTitleEnterprise.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementTitleEnterprise.setSpacingAfter(10f);
+            document.add(paragEngagementTitleEnterprise);
+
+            Paragraph paragEngagementEnterprise = new Paragraph(internship.getEngagements().get(ENTERPRISE_ENGAGEMENT_KEY), standard);
+            paragEngagementEnterprise.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementEnterprise.setSpacingAfter(30f);
+            document.add(paragEngagementEnterprise);
+
+            Paragraph paragEngagementTitleStudent = new Paragraph("L’étudiant s’engage à :", mediumBold);
+            paragEngagementTitleStudent.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementTitleStudent.setSpacingAfter(10f);
+            document.add(paragEngagementTitleStudent);
+
+            Paragraph paragEngagementStudent = new Paragraph(internship.getEngagements().get(STUDENT_ENGAGEMENT_KEY), standard);
+            paragEngagementStudent.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementStudent.setSpacingAfter(30f);
+            document.add(paragEngagementStudent);
 
             document.close();
             writer.close();
 
             pdfDocument.setName("Contract.pdf");
             pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
-        } catch (Exception e)
-        {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return pdfDocument;
