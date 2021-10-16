@@ -250,6 +250,8 @@ public class InternshipService {
             cell5.setBorderWidthTop(0f);
             cell5.setPadding(7);
 
+            InternshipOffer.WorkShift Workshift = internshipApplication.getInternshipOffer().getWorkShift();
+
             Duration diff = Duration.between(internshipApplication.getInternshipOffer().getStartDate().toInstant(), internshipApplication.getInternshipOffer().getEndDate().toInstant());
             long diffWeeks = diff.toDays() / 7;
             long diffDays = diff.toDays() % 7;
@@ -259,12 +261,18 @@ public class InternshipService {
             cell6.setBorderWidthTop(0f);
             cell6.setPadding(7);
 
+            PdfPCell cell7 = new PdfPCell(new Paragraph("Type d'horaire : " + (Workshift == InternshipOffer.WorkShift.DAY ? "Jour" : Workshift == InternshipOffer.WorkShift.NIGHT ? "Nuit" : "Flexibe")));
+            cell7.setUseVariableBorders(true);
+            cell7.setBorderWidthTop(0f);
+            cell7.setPadding(7);
+
             table.addCell(cell1);
             table.addCell(cell2);
             table.addCell(cell3);
             table.addCell(cell4);
             table.addCell(cell5);
             table.addCell(cell6);
+            table.addCell(cell7);
             //table.addCell(cell1);
 
             document.add(table);
