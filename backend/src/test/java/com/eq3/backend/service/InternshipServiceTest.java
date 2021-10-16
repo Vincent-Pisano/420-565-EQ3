@@ -150,8 +150,9 @@ public class InternshipServiceTest {
                 .thenReturn(expectedInternship);
 
         //Act
+        // TODO pas bon
         final Optional<Internship> optionalInternship =
-                service.saveInternship(expectedInternshipApplication);
+                service.saveInternship(expectedInternship);
 
         //Assert
         Internship actualInternship = optionalInternship.orElse(null);

@@ -125,7 +125,8 @@ public class InternshipControllerTest {
 
         expectedInternship.setInternshipApplication(expectedInternshipApplication);
 
-        when(service.saveInternship(expectedInternshipApplication))
+        //TODO pas bon
+        when(service.saveInternship(expectedInternship))
                 .thenReturn(Optional.of(expectedInternship));
 
         // Act
