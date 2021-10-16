@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
-import { useFormFields } from "../../lib/hooksLib";
+import { useHistory } from "react-router";
+import auth from "../../services/Auth";
 import axios from "axios";
 import "../../styles/Form.css";
 
@@ -9,50 +10,45 @@ const InternshipModal = ({
   handleClose,
   currentInternshipApplication,
   showIntershipOffer,
+  internshipApplications,
+  setInternshipApplications,
+  setErrorMessage
 }) => {
   let currentInternshipOffer = currentInternshipApplication.internshipOffer;
+  let history = useHistory();
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
-  const [fields, handleFieldChange] = useFormFields({
-    status: currentInternshipApplication.status,
-  });
 
   function onConfirmModal(e) {
     e.preventDefault();
-    ChangeStatus();
     CreateInternship();
   }
 
-  function ChangeStatus() {
-    currentInternshipApplication.status =
-      fields.status !== undefined
-        ? fields.status
-        : currentInternshipApplication.status;
-    axios
-      .post(
-        `http://localhost:9090/update/internshipApplication`,
-        currentInternshipApplication
-      )
-      .then((response) => {
-        setTimeout(() => {
-          setErrorMessageModal("");
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Confirmation des changements");
-      })
-      .catch((err) => {
-        setErrorMessageModal("Erreur lors de la mise à jour");
-      });
-  }
-
   function CreateInternship() {
+    currentInternshipApplication.student.cvlist = [];
+    currentInternshipApplication.internshipOffer.pdfdocument = undefined;
     axios
       .post(
         `http://localhost:9090//save/internship`,
         currentInternshipApplication
       )
       .then((response) => {
-        console.log(response.data)
+        setInternshipApplications(
+          internshipApplications.filter((internshipApplication) => {
+            return internshipApplication.id !== currentInternshipApplication.id;
+          })
+        );
+        if (internshipApplications.length === 1) {
+          setTimeout(() => {
+            handleClose();
+            history.push({
+              pathname: `/home/${auth.user.username}`,
+            });
+          }, 3000);
+          setErrorMessage(
+            "Plus aucun étudiant à assigner, vous allez être redirigé"
+          );
+        }
         setTimeout(() => {
           setErrorMessageModal("");
           handleClose();
@@ -83,20 +79,14 @@ const InternshipModal = ({
                   <Form.Select
                     aria-label="Default select example"
                     defaultValue={currentInternshipApplication.status}
-                    onChange={handleFieldChange}
+                    onChange={(event) => {currentInternshipApplication.status = event.target.value}}
                     className="select_form d_block"
                     required
                   >
                     <option disabled value="ACCEPTED">
-                      Acceptée
+                      Attente de validation
                     </option>
-                    <option disabled value="NOT_ACCEPTED">
-                      Refusée
-                    </option>
-                    <option disabled value="WAITING">
-                      En attente
-                    </option>
-                    <option value ="VALIDATED" active>
+                    <option value="VALIDATED" active>
                       Validée
                     </option>
                   </Form.Select>

@@ -3,6 +3,7 @@ package com.eq3.backend.controller;
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.InternshipService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -116,7 +117,7 @@ public class InternshipControllerTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     public void testSaveInternship() throws Exception {
         // Arrange
         expectedInternship = getInternship();
@@ -301,5 +302,4 @@ public class InternshipControllerTest {
         assertThat(actualInternshipApplication).isNotNull();
         assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.ACCEPTED);
     }
-
 }

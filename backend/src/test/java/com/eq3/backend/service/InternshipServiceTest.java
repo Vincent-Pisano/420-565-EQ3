@@ -139,7 +139,7 @@ public class InternshipServiceTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     public void testSaveInternship() throws IOException {
         //Arrange
         expectedInternship = getInternship();

@@ -80,6 +80,9 @@ function InternshipApplicationList() {
       handleClose={handleClose}
       currentInternshipApplication={currentInternshipApplication}
       showIntershipOffer={showIntershipOffer}
+      internshipApplications={internshipApplications}
+      setInternshipApplications={setInternshipApplications}
+      setErrorMessage={setErrorMessage}
       />
       </>;
     }

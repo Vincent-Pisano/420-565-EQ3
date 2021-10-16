@@ -65,12 +65,6 @@ public class InternshipService {
                 Optional.of(internshipOfferRepository.save(internshipOffer));
     }
 
-    /*public Optional<Internship> saveInternship(InternshipApplication internshipApplication){
-        Internship internship = new Internship();
-        internship.setInternshipApplication(internshipApplication);
-        return Optional.of(internshipRepository.save(internship));
-    }*/
-
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
         if (multipartFile != null) {
@@ -88,10 +82,15 @@ public class InternshipService {
         return new ObjectMapper().readValue(internshipOfferJson, InternshipOffer.class);
     }
 
-    public Optional<InternshipOffer> getInternshipOfferByInternshipApplication(Internship internship) {
-        InternshipApplication internshipApplication = internship.getInternshipApplication();
-        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-        return internshipOffer == null ? Optional.empty() : Optional.of(internshipOffer);
+    public Optional<Internship> saveInternship(InternshipApplication internshipApplication) {
+        Optional<Internship> optionalInternship =
+                updateInternshipApplication(internshipApplication).map(_internshipApplication -> {
+                    Internship internship = new Internship();
+                    internship.setInternshipApplication(_internshipApplication);
+                    internship.setInternshipContract(getContract(_internshipApplication));
+                    return internship;
+                });
+        return optionalInternship.map(internshipRepository::save);
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
@@ -142,13 +141,6 @@ public class InternshipService {
 
         return optionalInternshipApplication.map((_internshipApplication) ->
                 internshipApplicationRepository.save(internshipApplication));
-    }
-
-    public Optional<Internship> saveInternship(InternshipApplication internshipApplication) {
-        Internship internship = new Internship();
-        internship.setInternshipApplication(internshipApplication);
-        internship.setInternshipContract(getContract(internshipApplication));
-        return Optional.of(internshipRepository.save(internship));
     }
 
     private PDFDocument getContract(InternshipApplication internshipApplication) {
@@ -286,7 +278,6 @@ public class InternshipService {
 
             pdfDocument.setName("Contract.pdf");
             pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
-
         } catch (Exception e)
         {
             e.printStackTrace();

@@ -39,13 +39,6 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/get/internshipOffer/by/internshipApplication")
-    public ResponseEntity<InternshipOffer> getInternshipOfferByInternshipApplication(@RequestBody Internship internship) {
-        return service.getInternshipOfferByInternshipApplication(internship)
-                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
     @GetMapping("/getAll/internshipOffer/{workField}")
     public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferByWorkField(@PathVariable Department workField) {
         return service.getAllInternshipOfferByWorkField(workField)
