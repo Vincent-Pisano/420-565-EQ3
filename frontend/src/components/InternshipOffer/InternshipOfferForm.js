@@ -1,7 +1,6 @@
 import axios from "axios";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import auth from "../../services/Auth";
-import { useState, useEffect } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router";
 import { Container, Row, Col, Form } from "react-bootstrap";
@@ -150,45 +149,47 @@ const InternshipOfferForm = () => {
   function checkIfDocumentExist() {
     if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
       return (
-        <InternshipOfferButtonDownload internshipOfferID={internshipOffer.id} />
+        <InternshipOfferButtonDownload internshipOfferID={internshipOffer.id} document={internshipOffer.pdfdocument} />
       );
     }
   }
 
   function checkIfStudent() {
-    let hasAlreadyApplied = false;
-    internshipApplications.forEach((_internshipApplication) => {
-      if (_internshipApplication.internshipOffer.id === internshipOffer.id) {
-        hasAlreadyApplied = true;
-      }
-    });
-    if (!hasApplied) {
-      if (!hasAlreadyApplied) {
-        return (
-          <InternshipOfferButtonApply
-            fields={fields}
-            setHasApplied={setHasApplied}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-          />
-        );
+    if (auth.isStudent()) {
+      let hasAlreadyApplied = false;
+      internshipApplications.forEach((_internshipApplication) => {
+        if (_internshipApplication.internshipOffer.id === internshipOffer.id) {
+          hasAlreadyApplied = true;
+        }
+      });
+      if (!hasApplied) {
+        if (!hasAlreadyApplied) {
+          return (
+            <InternshipOfferButtonApply
+              fields={fields}
+              setHasApplied={setHasApplied}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+            />
+          );
+        } else {
+          return (
+            <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
+          );
+        }
       } else {
         return (
-          <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
+          <>
+            <p
+              style={{
+                color: errorMessage.startsWith("Erreur") ? "red" : "green",
+              }}
+            >
+              {errorMessage}
+            </p>
+          </>
         );
       }
-    } else {
-      return (
-        <>
-          <p
-            style={{
-              color: errorMessage.startsWith("Erreur") ? "red" : "green",
-            }}
-          >
-            {errorMessage}
-          </p>
-        </>
-      );
     }
   }
 

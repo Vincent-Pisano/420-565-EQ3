@@ -1,5 +1,6 @@
 package com.eq3.backend.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -11,6 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @SuperBuilder(toBuilder = true)
 @Document
 @NoArgsConstructor
+<<<<<<< HEAD
+=======
+@AllArgsConstructor
+>>>>>>> EQ3-16
 public class Evaluation extends Entity{
 
     @Field

@@ -27,9 +27,11 @@ const InternshipApplicationModal = ({
       fields.status !== undefined
         ? fields.status
         : currentInternshipApplication.status;
+        currentInternshipApplication.student.cvlist = []
+        currentInternshipApplication.internshipOffer.pdfdocument = undefined
     axios
       .post(
-        `http://localhost:9090//update/internshipApplication`,
+        `http://localhost:9090/update/internshipApplication`,
         currentInternshipApplication
       )
       .then((response) => {

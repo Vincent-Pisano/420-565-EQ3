@@ -23,7 +23,7 @@ public class InternshipApplication extends Entity{
     @Builder.Default
     private ApplicationStatus status = ApplicationStatus.WAITING;
 
-    @Field
+    @DBRef
     private InternshipOffer internshipOffer;
 
     @DBRef

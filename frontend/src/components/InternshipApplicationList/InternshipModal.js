@@ -1,6 +1,7 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
-import { useFormFields } from "../../lib/hooksLib";
+import { useHistory } from "react-router";
+import auth from "../../services/Auth";
 import axios from "axios";
 import "../../styles/Form.css";
 
@@ -9,58 +10,134 @@ const InternshipModal = ({
   handleClose,
   currentInternshipApplication,
   showIntershipOffer,
+  internshipApplications,
+  setInternshipApplications,
+  setErrorMessage,
 }) => {
   let currentInternshipOffer = currentInternshipApplication.internshipOffer;
+  let history = useHistory();
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
-  const [fields, handleFieldChange] = useFormFields({
-    status: currentInternshipApplication.status,
-  });
+  const [showEngagements, setShowEngagements] = useState(true);
+  const [engagements, setEngagements] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9090/get/default/engagements`)
+      .then((response) => {
+        setEngagements(response.data);
+      })
+      .catch((err) => {
+        setErrorMessageModal("Erreur lors de la requête des engagements");
+      });
+  }, []);
 
   function onConfirmModal(e) {
     e.preventDefault();
-    ChangeStatus();
     CreateInternship();
   }
 
-  function ChangeStatus() {
-    currentInternshipApplication.status =
-      fields.status !== undefined
-        ? fields.status
-        : currentInternshipApplication.status;
-    axios
-      .post(
-        `http://localhost:9090//update/internshipApplication`,
-        currentInternshipApplication
-      )
-      .then((response) => {
-        setTimeout(() => {
-          setErrorMessageModal("");
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Confirmation des changements");
-      })
-      .catch((err) => {
-        setErrorMessageModal("Erreur lors de la mise à jour");
-      });
+  function changeEngagements(event) {
+    setEngagements({
+      ...engagements,
+      [event.currentTarget.id]: event.target.value,
+    });
   }
 
   function CreateInternship() {
-    axios
-      .post(
-        `http://localhost:9090//save/internship`,
-        currentInternshipApplication
-      )
-      .then((response) => {
-        setTimeout(() => {
-          setErrorMessageModal("");
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Confirmation des changements");
-      })
-      .catch((err) => {
-        setErrorMessageModal("Erreur lors de la mise à jour");
-      });
+    if (currentInternshipApplication.status !== "ACCEPTED") {
+      currentInternshipApplication.student.cvlist = [];
+      currentInternshipApplication.internshipOffer.pdfdocument = undefined;
+      let internship = {
+        internshipApplication : currentInternshipApplication,
+        engagements: engagements
+      }
+      axios
+        .post(
+          `http://localhost:9090/save/internship`, internship
+        )
+        .then((response) => {
+          setInternshipApplications(
+            internshipApplications.filter((internshipApplication) => {
+              return (
+                internshipApplication.id !== currentInternshipApplication.id
+              );
+            })
+          );
+          if (internshipApplications.length === 1) {
+            setTimeout(() => {
+              handleClose();
+              history.push({
+                pathname: `/home/${auth.user.username}`,
+              });
+            }, 3000);
+            setErrorMessage(
+              "Plus aucun étudiant à assigner, vous allez être redirigé"
+            );
+          }
+          setTimeout(() => {
+            setErrorMessageModal("");
+            handleClose();
+          }, 1000);
+          setErrorMessageModal("Confirmation des changements");
+        })
+        .catch((err) => {
+          setErrorMessageModal("Erreur lors de la mise à jour");
+        });
+    }
+    else{
+      setTimeout(() => {
+        setErrorMessageModal("");
+        handleClose();
+      }, 1000);
+      setErrorMessageModal("Aucune modification effectuée");
+    }
+  }
+
+  function showEngagementsTextArea() {
+    if (!showEngagements) {
+      return (
+        <>
+          <hr className="modal_separator mx-auto" />
+          <Form.Group controlId="College">
+            <Form.Label className="labelFields">
+              Engagement du collège
+            </Form.Label>
+            <textarea
+              rows="4"
+              cols="50"
+              className="my-3 textarea_form"
+              defaultValue={engagements ? engagements.College : ""}
+              onChange={(event) => changeEngagements(event)}
+            />
+          </Form.Group>
+          <Form.Group controlId="Enterprise">
+            <Form.Label className="labelFields">
+              Engagement de l'entreprise
+            </Form.Label>
+            <textarea
+              rows="4"
+              cols="50"
+              className="my-3 textarea_form"
+              defaultValue={engagements ? engagements.Enterprise : ""}
+              onChange={(event) => changeEngagements(event)}
+            />
+          </Form.Group>
+          <Form.Group controlId="Student">
+            <Form.Label className="labelFields">
+              Engagement de l'étudiant
+            </Form.Label>
+            <textarea
+              rows="4"
+              cols="50"
+              className="my-3 textarea_form"
+              defaultValue={engagements ? engagements.Student : ""}
+              onChange={(event) => changeEngagements(event)}
+            />
+          </Form.Group>
+        </>
+      );
+    }
   }
 
   return (
@@ -82,24 +159,38 @@ const InternshipModal = ({
                   <Form.Select
                     aria-label="Default select example"
                     defaultValue={currentInternshipApplication.status}
-                    onChange={handleFieldChange}
+                    onChange={(event) => {
+                      currentInternshipApplication.status = event.target.value;
+                    }}
                     className="select_form d_block"
                     required
                   >
                     <option disabled value="ACCEPTED">
-                      Acceptée
+                      Attente de validation
                     </option>
-                    <option disabled value="NOT_ACCEPTED">
-                      Refusée
-                    </option>
-                    <option disabled value="WAITING">
-                      En attente
-                    </option>
-                    <option value ="VALIDATED" active>
-                      Validée
-                    </option>
+                    <option value="VALIDATED">Validée</option>
                   </Form.Select>
                 </Form.Group>
+                <Container fluid>
+                  <Form.Group className="mb-3 checkboxes">
+                    <Row>
+                      <Col sm={10}>
+                        <Form.Label className="mt-3 px-0">
+                          <span>Engagements par défaut</span>
+                        </Form.Label>
+                      </Col>
+                      <Col sm={2}>
+                        <Form.Check
+                          className="checkboxes_input mt-3"
+                          type="checkbox"
+                          onChange={() => setShowEngagements(!showEngagements)}
+                          defaultChecked={showEngagements}
+                        />
+                      </Col>
+                    </Row>
+                  </Form.Group>
+                </Container>
+                {showEngagementsTextArea()}
               </Container>
             </Form>
           </Col>

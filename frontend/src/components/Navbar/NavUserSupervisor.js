@@ -13,8 +13,8 @@ const NavUserSupervisor = () => {
       </NavDropdown.Item>
 
       <NavDropdown.Item
-        download
         href={`http://localhost:9090/get/enterprise/evaluation/document`}
+        target="_blank"
       >
         Document d'évalution d'entreprise
       </NavDropdown.Item>

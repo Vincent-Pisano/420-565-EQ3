@@ -74,14 +74,19 @@ function InternshipApplicationList() {
         />
       );
     } else if (auth.isInternshipManager()) {
-      return <>
-      <InternshipModal
-      show={show}
-      handleClose={handleClose}
-      currentInternshipApplication={currentInternshipApplication}
-      showIntershipOffer={showIntershipOffer}
-      />
-      </>;
+      return (
+        <>
+          <InternshipModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+            showIntershipOffer={showIntershipOffer}
+            internshipApplications={internshipApplications}
+            setInternshipApplications={setInternshipApplications}
+            setErrorMessage={setErrorMessage}
+          />
+        </>
+      );
     }
   }
 
