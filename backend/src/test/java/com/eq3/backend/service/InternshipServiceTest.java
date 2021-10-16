@@ -248,11 +248,7 @@ public class InternshipServiceTest {
         //Arrange
         expectedInternship = getInternship();
         expectedInternshipApplication = getInternshipApplication();
-<<<<<<< HEAD
-        //expectedInternshipOffer = getInternshipOffer();
-=======
         expectedInternshipOffer = getInternshipOfferWithId();
->>>>>>> EQ3-16
 
         expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
         expectedInternship.setInternshipApplication(expectedInternshipApplication);

@@ -12,10 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @SuperBuilder(toBuilder = true)
 @Document
 @NoArgsConstructor
-<<<<<<< HEAD
-=======
 @AllArgsConstructor
->>>>>>> EQ3-16
 public class Evaluation extends Entity{
 
     @Field
