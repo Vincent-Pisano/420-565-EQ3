@@ -13,7 +13,6 @@ import static com.eq3.backend.utils.Utils.getDefaultEngagements;
 @Data
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor
 public class Internship extends Entity {
 
     public final static Map<String, String> DEFAULT_ENGAGEMENTS = getDefaultEngagements();
@@ -25,5 +24,10 @@ public class Internship extends Entity {
     private InternshipApplication internshipApplication;
 
     private PDFDocument internshipContract;
+
+    public Internship() {
+        super();
+        engagements = DEFAULT_ENGAGEMENTS;
+    }
 
 }
