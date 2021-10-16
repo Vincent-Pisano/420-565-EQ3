@@ -274,3 +274,10 @@
   justify-content: center;
   align-items: center;
 }
+
+.textarea_form {
+  display: "block";
+  margin: "auto";
+  width:"90%";
+  border-color:"#999";
+}

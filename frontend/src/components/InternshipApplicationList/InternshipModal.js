@@ -12,12 +12,13 @@ const InternshipModal = ({
   showIntershipOffer,
   internshipApplications,
   setInternshipApplications,
-  setErrorMessage
+  setErrorMessage,
 }) => {
   let currentInternshipOffer = currentInternshipApplication.internshipOffer;
   let history = useHistory();
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
+  const [showEngagements, setShowEngagements] = useState(true);
 
   function onConfirmModal(e) {
     e.preventDefault();
@@ -60,6 +61,34 @@ const InternshipModal = ({
       });
   }
 
+  function showEngagementsTextArea() {
+    if (!showEngagements) {
+      return (
+        <>
+          <hr className="modal_separator mx-auto" />
+          <Form.Group controlId="status">
+            <Form.Label className="labelFields">
+              Engagement du collège
+            </Form.Label>
+            <textarea className="my-3 select_form" />
+          </Form.Group>
+          <Form.Group controlId="status">
+            <Form.Label className="labelFields">
+              Engagement de l'entreprise
+            </Form.Label>
+            <textarea className="my-3 select_form" />
+          </Form.Group>
+          <Form.Group controlId="status">
+            <Form.Label className="labelFields">
+              Engagement de l'étudiant
+            </Form.Label>
+            <textarea className="my-3 select_form" />
+          </Form.Group>
+        </>
+      );
+    }
+  }
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header>
@@ -79,7 +108,9 @@ const InternshipModal = ({
                   <Form.Select
                     aria-label="Default select example"
                     defaultValue={currentInternshipApplication.status}
-                    onChange={(event) => {currentInternshipApplication.status = event.target.value}}
+                    onChange={(event) => {
+                      currentInternshipApplication.status = event.target.value;
+                    }}
                     className="select_form d_block"
                     required
                   >
@@ -91,6 +122,26 @@ const InternshipModal = ({
                     </option>
                   </Form.Select>
                 </Form.Group>
+                <Container fluid>
+                  <Form.Group className="mb-3" controlId="Sunday">
+                    <Row>
+                      <Col xs={9}>
+                        <Form.Label className="labelFields mt-3">
+                          <span>Engagements pré-enregistrés</span>
+                        </Form.Label>
+                      </Col>
+                      <Col xs={3}>
+                        <Form.Check
+                          className="checkboxes_input mt-3"
+                          type="checkbox"
+                          onChange={() => setShowEngagements(!showEngagements)}
+                          defaultChecked={showEngagements}
+                        />
+                      </Col>
+                    </Row>
+                  </Form.Group>
+                </Container>
+                {showEngagementsTextArea()}
               </Container>
             </Form>
           </Col>
