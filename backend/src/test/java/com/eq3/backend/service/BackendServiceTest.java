@@ -203,19 +203,15 @@ class BackendServiceTest {
     //@Disabled
     public void testDownloadEvaluationDocument() throws IOException {
         //Arrange
-        expectedEvaluation = getEvaluation();
-        expectedPDFDocument = getDocument();
-        String givenDocumentName = DOCUMENT_NAME;
+        expectedEvaluation = getEvaluation("student");
 
-        when(evaluationRepository.getByDocument_NameAndIsDisabledFalse(givenDocumentName + DOCUMENT_EXTENSION))
-                .thenReturn(Optional.of(expectedEvaluation));
         //Act
-        Optional<PDFDocument> optionalDocument = service.downloadEvaluationDocument(givenDocumentName);
+        Optional<PDFDocument> optionalDocument = service.downloadEvaluationDocument(DOCUMENT_NAME);
 
         //Assert
         PDFDocument actualPDFDocument = optionalDocument.orElse(null);
 
         assertThat(optionalDocument.isPresent()).isTrue();
-        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+        assertThat(actualPDFDocument).isEqualTo(expectedEvaluation.getDocument());
     }
 }

@@ -243,32 +243,6 @@ public class InternshipServiceTest {
     }
 
     @Test
-    @Disabled
-    public void testGetInternshipOfferByInternshipApplication() throws IOException {
-        //Arrange
-        expectedInternship = getInternship();
-        expectedInternshipApplication = getInternshipApplication();
-        expectedInternshipOffer = getInternshipOfferWithId();
-
-        expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
-        expectedInternship.setInternshipApplication(expectedInternshipApplication);
-
-        //when
-
-        // a faire...
-
-        //Act
-        final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE);
-
-        //Assert
-        List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
-
-        assertThat(optionalInternshipOffers.isPresent()).isTrue();
-        assertThat(actualInternshipOffers.size()).isEqualTo(expectedInternshipOfferList.size());
-    }
-
-    @Test
     //@Disabled
     public void testApplyInternshipOffer() {
         //Arrange

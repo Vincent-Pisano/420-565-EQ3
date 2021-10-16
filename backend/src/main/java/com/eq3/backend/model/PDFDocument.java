@@ -12,6 +12,5 @@ public class PDFDocument {
 
     private String name;
 
-
     private Binary content;
 }
