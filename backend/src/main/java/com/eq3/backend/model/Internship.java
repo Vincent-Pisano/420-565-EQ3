@@ -8,12 +8,14 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Map;
+import static com.eq3.backend.utils.Utils.getDefaultEngagements;
 
 @Data
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor
 public class Internship extends Entity {
+
+    public final static Map<String, String> DEFAULT_ENGAGEMENTS = getDefaultEngagements();
 
     @Transient
     private Map<String, String> engagements;
@@ -22,5 +24,10 @@ public class Internship extends Entity {
     private InternshipApplication internshipApplication;
 
     private PDFDocument internshipContract;
+    
+    public Internship() {
+        super();
+        engagements = DEFAULT_ENGAGEMENTS;
+    }
 
 }
