@@ -16,4 +16,5 @@ public class Internship extends Entity {
     private InternshipApplication internshipApplication;
 
     private PDFDocument internshipContract;
+
 }

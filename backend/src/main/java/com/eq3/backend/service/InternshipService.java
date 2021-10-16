@@ -65,6 +65,12 @@ public class InternshipService {
                 Optional.of(internshipOfferRepository.save(internshipOffer));
     }
 
+    /*public Optional<Internship> saveInternship(InternshipApplication internshipApplication){
+        Internship internship = new Internship();
+        internship.setInternshipApplication(internshipApplication);
+        return Optional.of(internshipRepository.save(internship));
+    }*/
+
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
         if (multipartFile != null) {
@@ -80,6 +86,12 @@ public class InternshipService {
 
     private InternshipOffer mapInternshipOffer(String internshipOfferJson) throws IOException {
         return new ObjectMapper().readValue(internshipOfferJson, InternshipOffer.class);
+    }
+
+    public Optional<InternshipOffer> getInternshipOfferByInternshipApplication(Internship internship) {
+        InternshipApplication internshipApplication = internship.getInternshipApplication();
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+        return internshipOffer == null ? Optional.empty() : Optional.of(internshipOffer);
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
@@ -281,6 +293,4 @@ public class InternshipService {
         }
         return pdfDocument;
     }
-
-
 }

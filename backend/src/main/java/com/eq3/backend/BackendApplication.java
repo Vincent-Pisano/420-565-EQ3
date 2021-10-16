@@ -12,25 +12,25 @@ import java.util.Optional;
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
 
-    private InternshipService internshipService;
+    /*private InternshipService internshipService;
     private InternshipApplicationRepository internshipApplicationRepository;
 
     public BackendApplication(InternshipService internshipService,
                               InternshipApplicationRepository internshipApplicationRepository) {
         this.internshipService = internshipService;
         this.internshipApplicationRepository = internshipApplicationRepository;
-    }
+    }*/
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
 
     public void run(String... args) throws Exception {
-        Optional<InternshipApplication> optionalInternshipApplication
+        /*Optional<InternshipApplication> optionalInternshipApplication
                 = internshipApplicationRepository.findById("6164b22a34da0229e708be23");
         optionalInternshipApplication
                 .ifPresent(internshipApplication -> {
                     System.out.println(internshipService.saveInternship(internshipApplication).get());
-                });
+                });*/
     }
 }

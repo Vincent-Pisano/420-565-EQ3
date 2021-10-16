@@ -6,6 +6,7 @@ import "../../styles/List.css";
 import { Container } from "react-bootstrap";
 import InternshipApplication from "./InternshipApplication";
 import InternshipApplicationModal from "./InternshipApplicationModal";
+import InternshipModal from "./InternshipModal";
 
 function InternshipApplicationList() {
   let user = auth.user;
@@ -73,7 +74,14 @@ function InternshipApplicationList() {
         />
       );
     } else if (auth.isInternshipManager()) {
-      return <></>;
+      return <>
+      <InternshipModal
+      show={show}
+      handleClose={handleClose}
+      currentInternshipApplication={currentInternshipApplication}
+      showIntershipOffer={showIntershipOffer}
+      />
+      </>;
     }
   }
 

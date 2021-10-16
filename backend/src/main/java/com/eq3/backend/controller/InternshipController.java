@@ -1,6 +1,7 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.Department;
+import com.eq3.backend.model.Internship;
 import com.eq3.backend.model.InternshipApplication;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.service.InternshipService;
@@ -27,6 +28,20 @@ public class InternshipController {
     public ResponseEntity<InternshipOffer> saveInternshipOffer(@RequestPart(name = "internshipOffer") String internshipOfferJson,
                                                                @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
         return service.saveInternshipOffer(internshipOfferJson, multipartFile)
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/save/internship")
+    public ResponseEntity<Internship> saveInternship(@RequestBody InternshipApplication internshipApplication) {
+        return service.saveInternship(internshipApplication)
+                .map(_internship -> ResponseEntity.status(HttpStatus.CREATED).body(_internship))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/get/internshipOffer/by/internshipApplication")
+    public ResponseEntity<InternshipOffer> getInternshipOfferByInternshipApplication(@RequestBody Internship internship) {
+        return service.getInternshipOfferByInternshipApplication(internship)
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
