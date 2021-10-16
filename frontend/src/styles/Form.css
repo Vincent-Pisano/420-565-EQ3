@@ -276,8 +276,17 @@
 }
 
 .textarea_form {
-  display: "block";
-  margin: "auto";
-  width:"90%";
-  border-color:"#999";
+  width: 90%;
+  border: none;
+  border: 1px solid #b0bec5;
+  background-color: transparent;
+  font-size: 20px;
+  outline: none;
+  transition: all 0.5s;
+
+  margin: 5% 5%;
+  padding: 0% 2%;
+  opacity: 1;
+  font-size: 20px;
+  display: block;
 }

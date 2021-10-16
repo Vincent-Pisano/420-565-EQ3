@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import { useHistory } from "react-router";
 import auth from "../../services/Auth";
@@ -19,46 +19,76 @@ const InternshipModal = ({
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [showEngagements, setShowEngagements] = useState(true);
+  const [engagements, setEngagements] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9090/get/default/engagements`)
+      .then((response) => {
+        setEngagements(response.data);
+      })
+      .catch((err) => {
+        setErrorMessageModal("Erreur lors de la requête des engagements");
+      });
+  }, []);
 
   function onConfirmModal(e) {
     e.preventDefault();
     CreateInternship();
   }
 
+  function changeEngagements(event) {
+    setEngagements({
+      ...engagements,
+      [event.currentTarget.id]: event.target.value,
+    });
+  }
+
   function CreateInternship() {
-    currentInternshipApplication.student.cvlist = [];
-    currentInternshipApplication.internshipOffer.pdfdocument = undefined;
-    axios
-      .post(
-        `http://localhost:9090//save/internship`,
-        currentInternshipApplication
-      )
-      .then((response) => {
-        setInternshipApplications(
-          internshipApplications.filter((internshipApplication) => {
-            return internshipApplication.id !== currentInternshipApplication.id;
-          })
-        );
-        if (internshipApplications.length === 1) {
-          setTimeout(() => {
-            handleClose();
-            history.push({
-              pathname: `/home/${auth.user.username}`,
-            });
-          }, 3000);
-          setErrorMessage(
-            "Plus aucun étudiant à assigner, vous allez être redirigé"
+    if (currentInternshipApplication.status !== "ACCEPTED") {
+      currentInternshipApplication.student.cvlist = [];
+      currentInternshipApplication.internshipOffer.pdfdocument = undefined;
+      axios
+        .post(
+          `http://localhost:9090/save/internship`,
+          currentInternshipApplication
+        )
+        .then((response) => {
+          setInternshipApplications(
+            internshipApplications.filter((internshipApplication) => {
+              return (
+                internshipApplication.id !== currentInternshipApplication.id
+              );
+            })
           );
-        }
-        setTimeout(() => {
-          setErrorMessageModal("");
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Confirmation des changements");
-      })
-      .catch((err) => {
-        setErrorMessageModal("Erreur lors de la mise à jour");
-      });
+          if (internshipApplications.length === 1) {
+            setTimeout(() => {
+              handleClose();
+              history.push({
+                pathname: `/home/${auth.user.username}`,
+              });
+            }, 3000);
+            setErrorMessage(
+              "Plus aucun étudiant à assigner, vous allez être redirigé"
+            );
+          }
+          setTimeout(() => {
+            setErrorMessageModal("");
+            handleClose();
+          }, 1000);
+          setErrorMessageModal("Confirmation des changements");
+        })
+        .catch((err) => {
+          setErrorMessageModal("Erreur lors de la mise à jour");
+        });
+    }
+    else{
+      setTimeout(() => {
+        setErrorMessageModal("");
+        handleClose();
+      }, 1000);
+      setErrorMessageModal("Aucune modification effectuée");
+    }
   }
 
   function showEngagementsTextArea() {
@@ -66,23 +96,41 @@ const InternshipModal = ({
       return (
         <>
           <hr className="modal_separator mx-auto" />
-          <Form.Group controlId="status">
+          <Form.Group controlId="College">
             <Form.Label className="labelFields">
               Engagement du collège
             </Form.Label>
-            <textarea className="my-3 select_form" />
+            <textarea
+              rows="4"
+              cols="50"
+              className="my-3 textarea_form"
+              defaultValue={engagements ? engagements.College : ""}
+              onChange={(event) => changeEngagements(event)}
+            />
           </Form.Group>
-          <Form.Group controlId="status">
+          <Form.Group controlId="Enterprise">
             <Form.Label className="labelFields">
               Engagement de l'entreprise
             </Form.Label>
-            <textarea className="my-3 select_form" />
+            <textarea
+              rows="4"
+              cols="50"
+              className="my-3 textarea_form"
+              defaultValue={engagements ? engagements.Enterprise : ""}
+              onChange={(event) => changeEngagements(event)}
+            />
           </Form.Group>
-          <Form.Group controlId="status">
+          <Form.Group controlId="Student">
             <Form.Label className="labelFields">
               Engagement de l'étudiant
             </Form.Label>
-            <textarea className="my-3 select_form" />
+            <textarea
+              rows="4"
+              cols="50"
+              className="my-3 textarea_form"
+              defaultValue={engagements ? engagements.Student : ""}
+              onChange={(event) => changeEngagements(event)}
+            />
           </Form.Group>
         </>
       );
@@ -117,20 +165,18 @@ const InternshipModal = ({
                     <option disabled value="ACCEPTED">
                       Attente de validation
                     </option>
-                    <option value="VALIDATED" active>
-                      Validée
-                    </option>
+                    <option value="VALIDATED">Validée</option>
                   </Form.Select>
                 </Form.Group>
                 <Container fluid>
-                  <Form.Group className="mb-3" controlId="Sunday">
+                  <Form.Group className="mb-3 checkboxes">
                     <Row>
-                      <Col xs={9}>
-                        <Form.Label className="labelFields mt-3">
-                          <span>Engagements pré-enregistrés</span>
+                      <Col sm={10}>
+                        <Form.Label className="mt-3 px-0">
+                          <span>Engagements par défaut</span>
                         </Form.Label>
                       </Col>
-                      <Col xs={3}>
+                      <Col sm={2}>
                         <Form.Check
                           className="checkboxes_input mt-3"
                           type="checkbox"

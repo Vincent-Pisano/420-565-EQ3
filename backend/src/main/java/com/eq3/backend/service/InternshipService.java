@@ -2,6 +2,7 @@ package com.eq3.backend.service;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
+import com.eq3.backend.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.DeviceRgb;
@@ -27,6 +28,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.itextpdf.text.pdf.PdfWriter;
@@ -91,6 +93,10 @@ public class InternshipService {
                     return internship;
                 });
         return optionalInternship.map(internshipRepository::save);
+    }
+
+    public Optional<Map<String, String>> getDefaultEngagements() {
+        return Optional.of(Utils.getDefaultEngagements());
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
@@ -256,7 +262,7 @@ public class InternshipService {
             long diffWeeks = diff.toDays() / 7;
             long diffDays = diff.toDays() % 7;
 
-            PdfPCell cell6 = new PdfPCell(new Paragraph("Nombre de semaines : " + /*internshipApplication.getInternshipOffer().getWorkShift()*/ diffWeeks + " et " + diffDays + " jours"));
+            PdfPCell cell6 = new PdfPCell(new Paragraph("Nombre de semaines : " + diffWeeks + (diffDays != 0 ? " (et " + diffDays + " jours)" : "")));
             cell6.setUseVariableBorders(true);
             cell6.setBorderWidthTop(0f);
             cell6.setPadding(7);
