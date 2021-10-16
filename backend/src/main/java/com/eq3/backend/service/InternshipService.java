@@ -320,8 +320,7 @@ public class InternshipService {
             paragEngagements.setSpacingAfter(10f);
             document.add(paragEngagements);
 
-            float[] pointColumnWidths2 = {300F};
-            PdfPTable tableDesc = new PdfPTable(pointColumnWidths2);
+            PdfPTable tableDesc = new PdfPTable(pointColumnWidths);
             tableDesc.setSpacingAfter(30f);
 
             PdfPCell cellDesc = new PdfPCell(new Paragraph(internshipApplication.getInternshipOffer().getDescription()));
@@ -333,7 +332,7 @@ public class InternshipService {
 
             Paragraph paragResponsibilities = new Paragraph("RESPONSABILITES", mediumBold);
             paragResponsibilities.setAlignment(Element.ALIGN_CENTER);
-            paragResponsibilities.setSpacingAfter(30f);
+            paragResponsibilities.setSpacingAfter(10f);
             document.add(paragResponsibilities);
 
             Paragraph paragEngagementTitleCollege = new Paragraph("Le Collège s’engage à :", mediumBold);
@@ -343,7 +342,7 @@ public class InternshipService {
 
             Paragraph paragEngagementCollege = new Paragraph(internship.getEngagements().get(COLLEGE_ENGAGEMENT_KEY), standard);
             paragEngagementCollege.setAlignment(Element.ALIGN_LEFT);
-            paragEngagementCollege.setSpacingAfter(30f);
+            paragEngagementCollege.setSpacingAfter(15f);
             document.add(paragEngagementCollege);
 
             Paragraph paragEngagementTitleEnterprise = new Paragraph("L’entreprise s’engage à :", mediumBold);
@@ -353,7 +352,7 @@ public class InternshipService {
 
             Paragraph paragEngagementEnterprise = new Paragraph(internship.getEngagements().get(ENTERPRISE_ENGAGEMENT_KEY), standard);
             paragEngagementEnterprise.setAlignment(Element.ALIGN_LEFT);
-            paragEngagementEnterprise.setSpacingAfter(30f);
+            paragEngagementEnterprise.setSpacingAfter(15f);
             document.add(paragEngagementEnterprise);
 
             Paragraph paragEngagementTitleStudent = new Paragraph("L’étudiant s’engage à :", mediumBold);
@@ -365,6 +364,149 @@ public class InternshipService {
             paragEngagementStudent.setAlignment(Element.ALIGN_LEFT);
             paragEngagementStudent.setSpacingAfter(30f);
             document.add(paragEngagementStudent);
+
+            Paragraph paragSignature = new Paragraph("SIGNATURES", mediumBold);
+            paragSignature.setAlignment(Element.ALIGN_CENTER);
+            paragSignature.setSpacingAfter(20f);
+            document.add(paragSignature);
+
+            Paragraph paragEngagementContract = new Paragraph("Les parties s’engagent à respecter cette entente de stage", mediumBold);
+            paragEngagementContract.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementContract.setSpacingAfter(20f);
+            document.add(paragEngagementContract);
+
+            Paragraph paragEngagementContractAll = new Paragraph("En foi de quoi les parties ont signé, ", mediumBold);
+            paragEngagementContractAll.setAlignment(Element.ALIGN_LEFT);
+            paragEngagementContractAll.setSpacingAfter(20f);
+            document.add(paragEngagementContractAll);
+
+            Paragraph paragEngagementContractStudent = new Paragraph("L’étudiant(e) :", mediumBold);
+            paragEngagementContractStudent.setAlignment(Element.ALIGN_CENTER);
+            paragEngagementContractStudent.setSpacingAfter(20f);
+            document.add(paragEngagementContractStudent);
+
+            float[] pointColumnWidthsSignatures = {150F, 150F};
+
+            PdfPTable tableSignatureStudent = new PdfPTable(pointColumnWidthsSignatures);
+            tableDesc.setSpacingAfter(30f);
+
+            PdfPCell cellStudentSignature = new PdfPCell(new Paragraph("Signature Étudiant (à changer)"));
+            cellStudentSignature.setUseVariableBorders(true);
+            cellStudentSignature.setBorderWidthLeft(0f);
+            cellStudentSignature.setBorderWidthRight(0f);
+            cellStudentSignature.setBorderWidthTop(0f);
+            cellStudentSignature.setPadding(3);
+            tableSignatureStudent.addCell(cellStudentSignature);
+
+            PdfPCell cellStudentDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
+            cellStudentDateSignature.setUseVariableBorders(true);
+            cellStudentDateSignature.setBorderWidthLeft(0f);
+            cellStudentDateSignature.setBorderWidthRight(0f);
+            cellStudentDateSignature.setBorderWidthTop(0f);
+            cellStudentDateSignature.setPadding(3);
+            tableSignatureStudent.addCell(cellStudentDateSignature);
+
+            PdfPCell cellStudentNameSignature = new PdfPCell(new Paragraph(internshipApplication.getStudent().getFirstName() + " " + internshipApplication.getStudent().getLastName()));
+            cellStudentNameSignature.setUseVariableBorders(true);
+            cellStudentNameSignature.setBorderWidthLeft(0f);
+            cellStudentNameSignature.setBorderWidthRight(0f);
+            cellStudentNameSignature.setBorderWidthBottom(0f);
+            cellStudentNameSignature.setPadding(3);
+            tableSignatureStudent.addCell(cellStudentNameSignature);
+
+            PdfPCell cellStudentDateTitleSignature = new PdfPCell(new Paragraph("Date"));
+            cellStudentDateTitleSignature.setUseVariableBorders(true);
+            cellStudentDateTitleSignature.setBorderWidthLeft(0f);
+            cellStudentDateTitleSignature.setBorderWidthRight(0f);
+            cellStudentDateTitleSignature.setBorderWidthBottom(0f);
+            cellStudentDateTitleSignature.setPadding(3);
+            tableSignatureStudent.addCell(cellStudentDateTitleSignature);
+
+            document.add(tableSignatureStudent);
+
+            Paragraph paragEngagementContractEnterprise = new Paragraph("L’employeur :", mediumBold);
+            paragEngagementContractEnterprise.setAlignment(Element.ALIGN_CENTER);
+            paragEngagementContractEnterprise.setSpacingAfter(20f);
+            document.add(paragEngagementContractEnterprise);
+
+            PdfPTable tableSignatureEnterprise = new PdfPTable(pointColumnWidthsSignatures);
+            tableDesc.setSpacingAfter(30f);
+
+            PdfPCell cellEnterpriseSignature = new PdfPCell(new Paragraph("Signature Entreprise (à changer)"));
+            cellEnterpriseSignature.setUseVariableBorders(true);
+            cellEnterpriseSignature.setBorderWidthLeft(0f);
+            cellEnterpriseSignature.setBorderWidthRight(0f);
+            cellEnterpriseSignature.setBorderWidthTop(0f);
+            cellEnterpriseSignature.setPadding(3);
+            tableSignatureEnterprise.addCell(cellEnterpriseSignature);
+
+            PdfPCell cellEnterpriseDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
+            cellEnterpriseDateSignature.setUseVariableBorders(true);
+            cellEnterpriseDateSignature.setBorderWidthLeft(0f);
+            cellEnterpriseDateSignature.setBorderWidthRight(0f);
+            cellEnterpriseDateSignature.setBorderWidthTop(0f);
+            cellEnterpriseDateSignature.setPadding(3);
+            tableSignatureEnterprise.addCell(cellEnterpriseDateSignature);
+
+            PdfPCell cellEnterpriseNameSignature = new PdfPCell(new Paragraph(internshipApplication.getInternshipOffer().getMonitor().getFirstName() + " " + internshipApplication.getInternshipOffer().getMonitor().getLastName()));
+            cellEnterpriseNameSignature.setUseVariableBorders(true);
+            cellEnterpriseNameSignature.setBorderWidthLeft(0f);
+            cellEnterpriseNameSignature.setBorderWidthRight(0f);
+            cellEnterpriseNameSignature.setBorderWidthBottom(0f);
+            cellEnterpriseNameSignature.setPadding(3);
+            tableSignatureEnterprise.addCell(cellEnterpriseNameSignature);
+
+            PdfPCell cellEnterpriseDateTitleSignature = new PdfPCell(new Paragraph("Date"));
+            cellEnterpriseDateTitleSignature.setUseVariableBorders(true);
+            cellEnterpriseDateTitleSignature.setBorderWidthLeft(0f);
+            cellEnterpriseDateTitleSignature.setBorderWidthRight(0f);
+            cellEnterpriseDateTitleSignature.setBorderWidthBottom(0f);
+            cellEnterpriseDateTitleSignature.setPadding(3);
+            tableSignatureEnterprise.addCell(cellEnterpriseDateTitleSignature);
+
+            document.add(tableSignatureEnterprise);
+
+            Paragraph paragEngagementContractInternshipOwner = new Paragraph("Le gestionnaire de stage :", mediumBold);
+            paragEngagementContractInternshipOwner.setAlignment(Element.ALIGN_CENTER);
+            paragEngagementContractInternshipOwner.setSpacingAfter(20f);
+            document.add(paragEngagementContractInternshipOwner);
+
+            PdfPTable tableSignatureInternshipOwner = new PdfPTable(pointColumnWidthsSignatures);
+            tableDesc.setSpacingAfter(30f);
+
+            PdfPCell cellInternshipOwnerSignature = new PdfPCell(new Paragraph("Signature GS (à changer)"));
+            cellInternshipOwnerSignature.setUseVariableBorders(true);
+            cellInternshipOwnerSignature.setBorderWidthLeft(0f);
+            cellInternshipOwnerSignature.setBorderWidthRight(0f);
+            cellInternshipOwnerSignature.setBorderWidthTop(0f);
+            cellInternshipOwnerSignature.setPadding(3);
+            tableSignatureInternshipOwner.addCell(cellInternshipOwnerSignature);
+
+            PdfPCell cellInternshipOwnerDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
+            cellInternshipOwnerDateSignature.setUseVariableBorders(true);
+            cellInternshipOwnerDateSignature.setBorderWidthLeft(0f);
+            cellInternshipOwnerDateSignature.setBorderWidthRight(0f);
+            cellInternshipOwnerDateSignature.setBorderWidthTop(0f);
+            cellInternshipOwnerDateSignature.setPadding(3);
+            tableSignatureInternshipOwner.addCell(cellInternshipOwnerDateSignature);
+
+            PdfPCell cellInternshipOwnerNameSignature = new PdfPCell(new Paragraph(optionalInternshipManager.get().getFirstName() + " " + optionalInternshipManager.get().getLastName()));
+            cellInternshipOwnerNameSignature.setUseVariableBorders(true);
+            cellInternshipOwnerNameSignature.setBorderWidthLeft(0f);
+            cellInternshipOwnerNameSignature.setBorderWidthRight(0f);
+            cellInternshipOwnerNameSignature.setBorderWidthBottom(0f);
+            cellInternshipOwnerNameSignature.setPadding(3);
+            tableSignatureInternshipOwner.addCell(cellInternshipOwnerNameSignature);
+
+            PdfPCell cellInternshipOwnerDateTitleSignature = new PdfPCell(new Paragraph("Date"));
+            cellInternshipOwnerDateTitleSignature.setUseVariableBorders(true);
+            cellInternshipOwnerDateTitleSignature.setBorderWidthLeft(0f);
+            cellInternshipOwnerDateTitleSignature.setBorderWidthRight(0f);
+            cellInternshipOwnerDateTitleSignature.setBorderWidthBottom(0f);
+            cellInternshipOwnerDateTitleSignature.setPadding(3);
+            tableSignatureInternshipOwner.addCell(cellInternshipOwnerDateTitleSignature);
+
+            document.add(tableSignatureInternshipOwner);
 
             document.close();
             writer.close();
