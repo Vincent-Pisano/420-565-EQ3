@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.Optional;
 
 import static com.eq3.backend.generator.GenerateContract.generatePdfContract;
 
@@ -92,10 +93,6 @@ public class InternshipService {
             e.printStackTrace();
         }
         return pdfDocument;
-    }
-
-    public Optional<Map<String, String>> getDefaultEngagements() {
-        return Optional.of(Internship.DEFAULT_ENGAGEMENTS);
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {

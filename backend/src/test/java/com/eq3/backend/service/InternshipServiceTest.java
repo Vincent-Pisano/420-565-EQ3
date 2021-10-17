@@ -43,6 +43,9 @@ public class InternshipServiceTest {
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
+    @Mock
+    private InternshipManagerRepository internshipManagerRepository;
+
     //global variables
     private Student expectedStudent;
     private Monitor expectedMonitor;
@@ -139,20 +142,28 @@ public class InternshipServiceTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSaveInternship() throws IOException {
         //Arrange
         expectedInternship = getInternship();
         expectedInternshipApplication = getInternshipApplication();
-        expectedInternship.setInternshipApplication(expectedInternshipApplication);
 
-        when(internshipRepository.save(expectedInternship))
+        expectedInternship.setInternshipContract(getDocument());
+        expectedInternship.setInternshipApplication(expectedInternshipApplication);
+        expectedInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        Internship givenInternship = getInternship();
+        givenInternship.setInternshipApplication(expectedInternshipApplication);
+        givenInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        when(internshipRepository.save(givenInternship))
                 .thenReturn(expectedInternship);
+        when(internshipManagerRepository.findByIsDisabledFalse())
+                .thenReturn(Optional.of(getInternshipManagerWithId()));
 
         //Act
-        // TODO pas bon
         final Optional<Internship> optionalInternship =
-                service.saveInternship(expectedInternship);
+                service.saveInternship(givenInternship);
 
         //Assert
         Internship actualInternship = optionalInternship.orElse(null);

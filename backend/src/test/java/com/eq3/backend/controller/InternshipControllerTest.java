@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
@@ -47,11 +48,12 @@ public class InternshipControllerTest {
     private InternshipApplication expectedInternshipApplication;
     private Internship expectedInternship;
     private List<InternshipApplication> expectedInternshipApplicationList;
+    private Map<String, String> expectedEngagements;
 
     @Test
     //Disabled
     public void testSaveInternshipOfferWithDocument() throws Exception {
-        // Arrange
+        //Arrange
         PDFDocument PDFDocument = getDocument();
         var multipartFile = mock(MultipartFile.class);
         when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
@@ -68,7 +70,7 @@ public class InternshipControllerTest {
                 eq(new ObjectMapper().writeValueAsString(givenInternshipOffer)), any(MultipartFile.class))
         ).thenReturn(Optional.of(expectedInternshipOffer));
 
-        // Act
+        //Act
         HashMap<String, String> contentTypeParams = new HashMap<>();
         contentTypeParams.put("boundary", "----WebKitFormBoundary");
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
@@ -80,7 +82,7 @@ public class InternshipControllerTest {
                         .file("document", multipartFile.getBytes())
                         .contentType(mediaType)).andReturn();
 
-        // Assert
+        //Assert
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
@@ -89,7 +91,7 @@ public class InternshipControllerTest {
     @Test
     //@Disabled
     public void testSaveInternshipOfferWithoutDocument() throws Exception {
-        // Arrange
+        //Arrange
         expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setMonitor(getMonitorWithId());
 
@@ -97,7 +99,7 @@ public class InternshipControllerTest {
                 new ObjectMapper().writeValueAsString(expectedInternshipOffer), null))
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
-        // Act
+        //Act
         HashMap<String, String> contentTypeParams = new HashMap<>();
         contentTypeParams.put("boundary", "----WebKitFormBoundary");
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
@@ -108,7 +110,7 @@ public class InternshipControllerTest {
                                 new ObjectMapper().writeValueAsString(expectedInternshipOffer).getBytes())
                         .contentType(mediaType)).andReturn();
 
-        // Assert
+        //Assert
         MockHttpServletResponse response = result.getResponse();
         var actualInternshipOffer
                 = new ObjectMapper().readValue(response.getContentAsString(), InternshipOffer.class);
@@ -118,30 +120,33 @@ public class InternshipControllerTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSaveInternship() throws Exception {
-        // Arrange
+        //Arrange
         expectedInternship = getInternship();
         expectedInternshipApplication = getInternshipApplication();
 
+        expectedInternship.setInternshipContract(getDocument());
         expectedInternship.setInternshipApplication(expectedInternshipApplication);
+        expectedInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
 
-        //TODO pas bon
-        when(service.saveInternship(expectedInternship))
+        Internship givenInternship = getInternship();
+        givenInternship.setInternshipApplication(expectedInternshipApplication);
+        givenInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        when(service.saveInternship(givenInternship))
                 .thenReturn(Optional.of(expectedInternship));
 
-        // Act
-        MvcResult result = mockMvc.perform(post(SAVE_INTERNSHIP)
-                .contentType(MediaType.APPLICATION_JSON))
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_SAVE_INTERNSHIP)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(givenInternship).getBytes()))
                 .andReturn();
 
-        // Assert
+        //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualInternship
-                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(expectedInternship).isEqualTo(actualInternship);
     }
 
     @Test
@@ -344,5 +349,25 @@ public class InternshipControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipApplication).isNotNull();
         assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.ACCEPTED);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetEngagements() throws Exception {
+        //Arrange
+        expectedEngagements = Internship.DEFAULT_ENGAGEMENTS;
+
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ENGAGEMENTS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualEngagements = new ObjectMapper().readValue(response.getContentAsString(), Map.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualEngagements).isNotNull();
+        assertThat(expectedEngagements.size()).isEqualTo(actualEngagements.size());
+
     }
 }
