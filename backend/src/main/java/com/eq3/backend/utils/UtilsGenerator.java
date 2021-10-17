@@ -43,5 +43,29 @@ public class UtilsGenerator {
     public final static String DURATION = "DURÉE DU STAGE";
     public final static String TERMS_OF_CONDITION = "Conviennent des conditions de stage suivantes :";
     public final static String PLACE = "ENDROIT DU STAGE";
-
+    public final static String ADDRESS = "Adresse : ";
+    public final static String START_DATE = "Date de début : ";
+    public final static String END_DATE = "Date de fin : ";
+    public final static String NUMBER_WEEKS = "Nombre de semaines : ";
+    public final static String WORK_HOURS = "HORAIRE DE TRAVAIL";
+    public final static String WORKSHIFT_TYPE = "Type d'horaire: ";
+    public final static String DAY = "Jour";
+    public final static String NIGHT = "Nuit";
+    public final static String FLEXIBLE = "Flexible";
+    public final static String NOTHING = "";
+    public final static String AND_DAY = " (et ";
+    public final static String END_DAY = " jours)";
+    public final static String DOUBLE_FORMAT = "%.2f";
+    public final static String TOTAL_HOURS = "Nombre d'heures total par semaine: ";
+    public final static String HOURS = " heures";
+    public final static String SALARY_HOURS = "Salaire horaire: ";
+    public final static String DOLLAR = "$";
+    public final static String TASKS_RESPONSIBILITIES = "TACHES ET RESPONSABILITES DU STAGIAIRE";
+    public final static String RESPONSIBILITIES = "RESPONSABILITES";
+    public final static String SIGNATURES = "SIGNATURES";
+    public final static String ONCE_SIGNED = "En foi de quoi les parties ont signé, ";
+    public final static String COLLEGE_COMMITSMENTS = "Le Collège s’engage à :";
+    public final static String ENTERPRISE_COMMITSMENTS = "L’entreprise s’engage à :";
+    public final static String STUDENT_COMMITSMENTS = "L’étudiant s’engage à :";
+    public final static String CONTRACT_CONDITIONS = "Les parties s’engagent à respecter cette entente de stage";
 }

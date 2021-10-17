@@ -46,9 +46,9 @@ public class GenerateContract {
         paragCadre.setAlignment(Element.ALIGN_CENTER);
         document.add(paragCadre);
 
-        Paragraph paragCadreInternshipOwner = new Paragraph(INTERNSHIP_MANAGER + internshipManager.getFirstName() +
+        Paragraph paragCadreInternshipManager = new Paragraph(INTERNSHIP_MANAGER + internshipManager.getFirstName() +
                 EMPTY + internshipManager.getLastName() + COMA, STANDARD);
-        setUpParag(document, paragCadreInternshipOwner, paragCadreInternshipOwner, Element.ALIGN_CENTER, MEDIUM_SPACE);
+        setUpParag(document, paragCadreInternshipManager, paragCadreInternshipManager, Element.ALIGN_CENTER, MEDIUM_SPACE);
 
         document.add(paragAnd);
 
@@ -74,7 +74,7 @@ public class GenerateContract {
         setUpTitleCell(cell1);
         table.addCell(cell1);
 
-        PdfPCell cell2 = new PdfPCell(new Paragraph("Adresse : " + internshipOffer.getAddress() + COMA + EMPTY +
+        PdfPCell cell2 = new PdfPCell(new Paragraph(ADDRESS + internshipOffer.getAddress() + COMA + EMPTY +
                 internshipOffer.getCity() + COMA + EMPTY + internshipOffer.getPostalCode()));
         setUpCell(cell2);
         table.addCell(cell2);
@@ -84,33 +84,33 @@ public class GenerateContract {
         setUpTitleCell(cell3);
         table.addCell(cell3);
 
-        PdfPCell cell4 = new PdfPCell(new Paragraph(String.format("Date de début : " + internshipOffer.getStartDate(), DATE_FORMATTER)));
+        PdfPCell cell4 = new PdfPCell(new Paragraph(String.format(START_DATE + internshipOffer.getStartDate(), DATE_FORMATTER)));
         setUpCell(cell4);
         table.addCell(cell4);
 
-        PdfPCell cell5 = new PdfPCell(new Paragraph(String.format("Date de fin : " + internshipOffer.getEndDate(), DATE_FORMATTER)));
+        PdfPCell cell5 = new PdfPCell(new Paragraph(String.format(END_DATE + internshipOffer.getEndDate(), DATE_FORMATTER)));
         setUpCell(cell5);
         table.addCell(cell5);
 
         Duration diff = Duration.between(internshipOffer.getStartDate().toInstant(), internshipOffer.getEndDate().toInstant());
         long diffWeeks = diff.toDays() / 7;
         long diffDays = diff.toDays() % 7;
-        PdfPCell cell6 = new PdfPCell(new Paragraph("Nombre de semaines : " + diffWeeks + (diffDays != 0 ? " (et " + diffDays + " jours)" : "")));
+        PdfPCell cell6 = new PdfPCell(new Paragraph(NUMBER_WEEKS + diffWeeks + (diffDays != 0 ?
+                AND_DAY + diffDays + END_DAY : NOTHING)));
         setUpCell(cell6);
         table.addCell(cell6);
 
-        Chunk c3 = new Chunk("HORAIRE DE TRAVAIL", MEDIUM_BOLD);
-        Paragraph paragraphWorkshift = new Paragraph(c3);
-
-        PdfPCell cell7 = new PdfPCell(paragraphWorkshift);
+        Chunk c3 = new Chunk(WORK_HOURS, MEDIUM_BOLD);
+        PdfPCell cell7 = new PdfPCell(new Paragraph(c3));
         setUpTitleCell(cell7);
         table.addCell(cell7);
 
-        PdfPCell cell8 = new PdfPCell(new Paragraph("Type d'horaire: " + (workShift == InternshipOffer.WorkShift.DAY ? "Jour" : workShift == InternshipOffer.WorkShift.NIGHT ? "Nuit" : "Flexibe")));
+        PdfPCell cell8 = new PdfPCell(new Paragraph(WORKSHIFT_TYPE + (workShift == InternshipOffer.WorkShift.DAY ?
+                DAY : workShift == InternshipOffer.WorkShift.NIGHT ? NIGHT : FLEXIBLE)));
         setUpCell(cell8);
         table.addCell(cell8);
 
-        PdfPCell cell9 = new PdfPCell(new Paragraph("Nombre d'heures total par semaine: " + internshipOffer.getWeeklyWorkTime() + " heures"));
+        PdfPCell cell9 = new PdfPCell(new Paragraph(TOTAL_HOURS + internshipOffer.getWeeklyWorkTime() + HOURS));
         setUpCell(cell9);
         table.addCell(cell9);
 
@@ -119,14 +119,14 @@ public class GenerateContract {
         setUpTitleCell(cell10);
         table.addCell(cell10);
 
-        PdfPCell cell11 = new PdfPCell(new Paragraph("Salaire horaire: " + String.format("%.2f",internshipOffer.getHourlySalary()) + "$"));
+        PdfPCell cell11 = new PdfPCell(new Paragraph(SALARY_HOURS + String.format(DOUBLE_FORMAT, internshipOffer.getHourlySalary()) + DOLLAR));
         setUpCell(cell11);
         table.addCell(cell11);
 
         document.add(table);
         document.newPage();
 
-        Paragraph paragEngagements = new Paragraph("TACHES ET RESPONSABILITES DU STAGIAIRE", MEDIUM_BOLD);
+        Paragraph paragEngagements = new Paragraph(TASKS_RESPONSIBILITIES, MEDIUM_BOLD);
         setUpParag(document, paragEngagements, paragEngagements, Element.ALIGN_CENTER, TINY_SPACE);
 
         PdfPTable tableDesc = new PdfPTable(pointColumnWidths);
@@ -139,39 +139,40 @@ public class GenerateContract {
         tableDesc.addCell(cellDesc);
         document.add(tableDesc);
 
-        Paragraph paragResponsibilities = new Paragraph("RESPONSABILITES", MEDIUM_BOLD);
+        Paragraph paragResponsibilities = new Paragraph(RESPONSIBILITIES, MEDIUM_BOLD);
         setUpParag(document, paragResponsibilities, paragResponsibilities, Element.ALIGN_CENTER, TINY_SPACE);
 
-        Paragraph paragEngagementTitleCollege = new Paragraph("Le Collège s’engage à :", MEDIUM_BOLD);
+        Paragraph paragEngagementTitleCollege = new Paragraph(COLLEGE_COMMITSMENTS, MEDIUM_BOLD);
         setUpParag(document, paragEngagementTitleCollege, paragEngagementTitleCollege, Element.ALIGN_LEFT, TINY_SPACE);
 
         Paragraph paragEngagementCollege = new Paragraph(internship.getEngagements().get(COLLEGE_ENGAGEMENT_KEY), STANDARD);
         setUpParag(document, paragEngagementCollege, paragEngagementCollege, Element.ALIGN_LEFT, SMALLER_SPACE);
 
-        Paragraph paragEngagementTitleEnterprise = new Paragraph("L’entreprise s’engage à :", MEDIUM_BOLD);
+        Paragraph paragEngagementTitleEnterprise = new Paragraph(ENTERPRISE_COMMITSMENTS, MEDIUM_BOLD);
         setUpParag(document, paragEngagementTitleEnterprise, paragEngagementTitleEnterprise, Element.ALIGN_LEFT, TINY_SPACE);
 
         Paragraph paragEngagementEnterprise = new Paragraph(internship.getEngagements().get(ENTERPRISE_ENGAGEMENT_KEY), STANDARD);
         setUpParag(document, paragEngagementEnterprise, paragEngagementEnterprise, Element.ALIGN_LEFT, SMALLER_SPACE);
 
-        Paragraph paragEngagementTitleStudent = new Paragraph("L’étudiant s’engage à :", MEDIUM_BOLD);
+        Paragraph paragEngagementTitleStudent = new Paragraph(STUDENT_COMMITSMENTS, MEDIUM_BOLD);
         setUpParag(document, paragEngagementTitleStudent, paragEngagementTitleStudent, Element.ALIGN_LEFT, TINY_SPACE);
 
         Paragraph paragEngagementStudent = new Paragraph(internship.getEngagements().get(STUDENT_ENGAGEMENT_KEY), STANDARD);
         setUpParag(document, paragEngagementStudent, paragEngagementStudent, Element.ALIGN_LEFT, BELOW_MEDIUM_SPACE);
 
-        Paragraph paragSignature = new Paragraph("SIGNATURES", MEDIUM_BOLD);
+        Paragraph paragSignature = new Paragraph(SIGNATURES, MEDIUM_BOLD);
         setUpParag(document, paragSignature, paragSignature, Element.ALIGN_CENTER, SMALL_SPACE);
 
-        Paragraph paragEngagementContract = new Paragraph("Les parties s’engagent à respecter cette entente de stage", MEDIUM_BOLD);
+        Paragraph paragEngagementContract = new Paragraph(CONTRACT_CONDITIONS, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContract, paragEngagementContract, Element.ALIGN_LEFT, SMALL_SPACE);
 
-        Paragraph paragEngagementContractAll = new Paragraph("En foi de quoi les parties ont signé, ", MEDIUM_BOLD);
+        Paragraph paragEngagementContractAll = new Paragraph(ONCE_SIGNED, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractAll, paragEngagementContractAll, Element.ALIGN_LEFT, SMALL_SPACE);
 
         Paragraph paragEngagementContractStudent = new Paragraph(STUDENT, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractStudent, paragEngagementContractStudent, Element.ALIGN_CENTER, SMALL_SPACE);
 
+        //TABLE SIGNATURE STUDENT
         PdfPTable tableSignatureStudent = new PdfPTable(pointColumnWidthsSignatures);
         tableDesc.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
@@ -188,10 +189,12 @@ public class GenerateContract {
         setUpBottomSignatureCell(tableSignatureStudent, cellStudentDateTitleSignature);
 
         document.add(tableSignatureStudent);
+        //FIN TABLE SIGNATURE STUDENT
 
         Paragraph paragEngagementContractEnterprise = new Paragraph(EMPLOYER, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractEnterprise, paragEngagementContractEnterprise, Element.ALIGN_CENTER, SMALL_SPACE);
 
+        //TABLE SIGNATURE ENTERPRISE
         PdfPTable tableSignatureEnterprise = new PdfPTable(pointColumnWidthsSignatures);
         tableDesc.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
@@ -208,26 +211,29 @@ public class GenerateContract {
         setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseDateTitleSignature);
 
         document.add(tableSignatureEnterprise);
+        //FIN TABLE SIGNATURE ENTERPRISE
 
-        Paragraph paragEngagementContractInternshipOwner = new Paragraph(INTERNSHIP_MANAGER, MEDIUM_BOLD);
-        setUpParag(document, paragEngagementContractInternshipOwner, paragEngagementContractInternshipOwner, Element.ALIGN_CENTER, SMALL_SPACE);
+        Paragraph paragEngagementContractInternshipManager = new Paragraph(INTERNSHIP_MANAGER, MEDIUM_BOLD);
+        setUpParag(document, paragEngagementContractInternshipManager, paragEngagementContractInternshipManager, Element.ALIGN_CENTER, SMALL_SPACE);
 
-        PdfPTable tableSignatureInternshipOwner = new PdfPTable(pointColumnWidthsSignatures);
-        tableDesc.setSpacingAfter(BELOW_MEDIUM_SPACE);
+        //TABLE SIGNATURE INTERNSHIPMANAGER
+        PdfPTable tableSignatureInternshipManager = new PdfPTable(pointColumnWidthsSignatures);
+        tableSignatureInternshipManager.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
-        PdfPCell cellInternshipOwnerSignature = new PdfPCell(new Paragraph("Signature GS (à changer)"));
-        setUpTopSignatureCell(tableSignatureInternshipOwner, cellInternshipOwnerSignature);
+        PdfPCell cellInternshipManagerSignature = new PdfPCell(new Paragraph("Signature GS (à changer)"));
+        setUpTopSignatureCell(tableSignatureInternshipManager, cellInternshipManagerSignature);
 
-        PdfPCell cellInternshipOwnerDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
-        setUpTopSignatureCell(tableSignatureInternshipOwner, cellInternshipOwnerDateSignature);
+        PdfPCell cellInternshipManagerDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
+        setUpTopSignatureCell(tableSignatureInternshipManager, cellInternshipManagerDateSignature);
 
-        PdfPCell cellInternshipOwnerNameSignature = new PdfPCell(new Paragraph(internshipManager.getFirstName() + EMPTY + internshipManager.getLastName()));
-        setUpBottomSignatureCell(tableSignatureInternshipOwner, cellInternshipOwnerNameSignature);
+        PdfPCell cellInternshipManagerNameSignature = new PdfPCell(new Paragraph(internshipManager.getFirstName() + EMPTY + internshipManager.getLastName()));
+        setUpBottomSignatureCell(tableSignatureInternshipManager, cellInternshipManagerNameSignature);
 
-        PdfPCell cellInternshipOwnerDateTitleSignature = new PdfPCell(new Paragraph(DATE));
-        setUpBottomSignatureCell(tableSignatureInternshipOwner, cellInternshipOwnerDateTitleSignature);
+        PdfPCell cellInternshipManagerDateTitleSignature = new PdfPCell(new Paragraph(DATE));
+        setUpBottomSignatureCell(tableSignatureInternshipManager, cellInternshipManagerDateTitleSignature);
 
-        document.add(tableSignatureInternshipOwner);
+        document.add(tableSignatureInternshipManager);
+        //FIN TABLE SIGNATURE INTERNSHIPMANAGER
 
         document.close();
         writer.close();
@@ -250,7 +256,8 @@ public class GenerateContract {
         document.add(paragDate);
     }
 
-    private static void setUpParag(Document document, Paragraph paragCadreStudent, Paragraph paragCadreConditions, int alignCenter, float spaceAfter) throws DocumentException {
+    private static void setUpParag(Document document, Paragraph paragCadreStudent, Paragraph paragCadreConditions,
+                                   int alignCenter, float spaceAfter) throws DocumentException {
         paragCadreConditions.setAlignment(alignCenter);
         paragCadreStudent.setSpacingAfter(spaceAfter);
         document.add(paragCadreConditions);
