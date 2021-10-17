@@ -3,6 +3,7 @@ package com.eq3.backend.controller;
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
 
+import org.bson.types.Binary;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,11 +28,11 @@ public class BackendController {
     @PostMapping(value = "/save/signature/{username}",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
-    public ResponseEntity<Boolean> saveSignature(@PathVariable String username,
-                                                 @RequestPart(name = "signature") MultipartFile multipartFile) {
+    public ResponseEntity<Binary> saveSignature(@PathVariable String username,
+                                                @RequestPart(name = "signature") MultipartFile multipartFile) {
         return service.saveSignature(username, multipartFile)
-                ? ResponseEntity.status(HttpStatus.CREATED).build()
-                : ResponseEntity.status(HttpStatus.CONFLICT).build();
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @GetMapping("/getAll/students/{department}")

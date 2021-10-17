@@ -41,17 +41,23 @@ public class BackendService {
         this.evaluationRepository = evaluationRepository;
     }
 
-    public Boolean saveSignature(String username, MultipartFile signature) {
-        Boolean flag = false;
+    public Optional<Binary> saveSignature(String username, MultipartFile signature) {
+        Optional<Binary> optionalBinary = Optional.empty();
+        Binary image = null;
         try {
+            image = new Binary(BsonBinarySubType.BINARY, signature.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (image != null) {
             switch (username.charAt(0)) {
                 case 'G' :
                     Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
                     if (optionalInternshipManager.isPresent()) {
                         InternshipManager internshipManager = optionalInternshipManager.get();
-                        internshipManager.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        internshipManager.setSignature(image);
                         internshipManagerRepository.save(internshipManager);
-                        flag = true;
+                        optionalBinary = Optional.of(image);
                     }
                     break;
 
@@ -59,9 +65,9 @@ public class BackendService {
                     Optional<Supervisor> optionalSupervisor = supervisorRepository.findByUsernameAndIsDisabledFalse(username);
                     if (optionalSupervisor.isPresent()) {
                         Supervisor supervisor = optionalSupervisor.get();
-                        supervisor.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        supervisor.setSignature(image);
                         supervisorRepository.save(supervisor);
-                        flag = true;
+                        optionalBinary = Optional.of(image);
                     }
                     break;
 
@@ -69,9 +75,9 @@ public class BackendService {
                     Optional<Monitor> optionalMonitor = monitorRepository.findByUsernameAndIsDisabledFalse(username);
                     if (optionalMonitor.isPresent()) {
                         Monitor monitor = optionalMonitor.get();
-                        monitor.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        monitor.setSignature(image);
                         monitorRepository.save(monitor);
-                        flag = true;
+                        optionalBinary = Optional.of(image);
                     }
                     break;
 
@@ -79,16 +85,14 @@ public class BackendService {
                     Optional<Student> optionalStudent = studentRepository.findByUsernameAndIsDisabledFalse(username);
                     if (optionalStudent.isPresent()) {
                         Student student = optionalStudent.get();
-                        student.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        student.setSignature(image);
                         studentRepository.save(student);
-                        flag = true;
+                        optionalBinary = Optional.of(image);
                     }
                     break;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return flag;
+        return optionalBinary;
     }
 
 

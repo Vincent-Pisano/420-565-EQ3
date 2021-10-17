@@ -34,15 +34,15 @@ function Home() {
 
   function saveSignature(signature) {
     console.log(signature);
-    if (signature.type === "image/png" || signature.type === "image/jpeg") {
-      setHasASignature(true)
+    if (signature.type === "image/png") {
       let formData = new FormData();
       formData.append("signature", signature);
       axios
         .post(`http://localhost:9090/save/signature/${user.username}`, formData)
         .then((response) => {
-          user.signature = signature;
+          user.signature = response.data;
           auth.user = user;
+          setHasASignature(true)
         })
         .catch((error) => {
           setErrorMessage("Erreur lors de la sauvegarde de la signature");
@@ -70,7 +70,7 @@ function Home() {
                 saveSignature(e.target.files[0]);
               }}
               className="input_file_form"
-              accept="image/png, image/jpeg"
+              accept="image/png"
             />
           </Form.Group>
         </Form>

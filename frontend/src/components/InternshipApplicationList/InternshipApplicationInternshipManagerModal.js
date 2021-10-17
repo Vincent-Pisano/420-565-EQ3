@@ -49,7 +49,8 @@ const InternshipApplicationInternshipManagerModal = ({
       currentInternshipApplication.student.cvlist = [];
       currentInternshipApplication.student.signature = undefined;
       currentInternshipApplication.internshipOffer.pdfdocument = undefined;
-      currentInternshipApplication.internshipOffer.monitor.signature = undefined;
+      currentInternshipApplication.internshipOffer.monitor.signature =
+        undefined;
       let internship = {
         internshipApplication: currentInternshipApplication,
         engagements: engagements,

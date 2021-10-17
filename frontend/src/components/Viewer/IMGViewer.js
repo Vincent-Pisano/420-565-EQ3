@@ -3,9 +3,12 @@ import Viewer from "react-viewer";
 import { Container, Button } from "react-bootstrap";
 
 const ImgViewer = (image) => {
-  console.log(image);
+  let blob = new Blob([image.image.data], { type: 'image/png' });
 
-  const objectURL = URL.createObjectURL(image)
+  console.log(blob)
+
+  const objectURL = URL.createObjectURL(blob)
+  console.log(objectURL)
   const [visible, setVisible] = React.useState(false);
 
   return (
