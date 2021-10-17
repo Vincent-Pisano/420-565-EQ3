@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -161,12 +164,15 @@ public class BackendService {
 
     public Optional<PDFDocument> downloadEvaluationDocument(String documentName) {
         Optional<PDFDocument> optionalDocument = Optional.empty();
-        Optional<Evaluation> optionalEvaluation =
-                evaluationRepository.getByDocument_NameAndIsDisabledFalse(documentName + EVALUATION_EXTENSION);
-
-        if (optionalEvaluation.isPresent()) {
-            Evaluation evaluation = optionalEvaluation.get();
-            optionalDocument = Optional.of(evaluation.getDocument());
+        try {
+            Path pdfPath = Paths.get(System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\" + documentName + "Evaluation.pdf");
+            optionalDocument = Optional.of(PDFDocument.builder()
+                    .name(documentName + "Evaluation.pdf")
+                    .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
+                    .build());
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
         return optionalDocument;
     }

@@ -15,12 +15,15 @@ import java.util.List;
 public class UtilsTest {
 
     public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
-    public final static String DOCUMENT_NAME = "documentTest";
+    public final static String DOCUMENT_NAME = "student";
 
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
     public final static String IMAGE_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\image.png";
+
+    public final static String PDF_EVALUATION_FILEPATH =
+            System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\studentEvaluation.pdf";
 
     public static Student getStudentWithId(){
         Student student = getStudentWithoutId();
@@ -173,6 +176,14 @@ public class UtilsTest {
                 .build();
     }
 
+    public static PDFDocument getEvaluationDocument(String documentName) throws IOException {
+        Path pdfPath = Paths.get(PDF_EVALUATION_FILEPATH);
+        return PDFDocument.builder()
+                .name(documentName + DOCUMENT_EXTENSION)
+                .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
+                .build();
+    }
+
     public static CV getCV() throws IOException {
         return CV.builder()
                 .id("614662s17dfv9re02c85gt68dd5")
@@ -193,9 +204,9 @@ public class UtilsTest {
         return cvList;
     }
 
-    public static Evaluation getEvaluation() throws IOException {
+    public static Evaluation getEvaluation(String documentName) throws IOException {
         return Evaluation.builder()
-                .document(getDocument())
+                .document(getEvaluationDocument(documentName))
                 .build();
     }
 

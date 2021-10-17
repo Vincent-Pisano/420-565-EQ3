@@ -2,16 +2,7 @@ package com.eq3.backend.service;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
-import com.eq3.backend.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.kernel.colors.Color;
-import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -23,14 +14,10 @@ import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 
-import com.itextpdf.text.pdf.PdfWriter;
+import static com.eq3.backend.generator.GenerateContract.generatePdfContract;
 
 @Service
 public class InternshipService {
@@ -41,17 +28,20 @@ public class InternshipService {
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
+    private final InternshipManagerRepository internshipManagerRepository;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipApplicationRepository internshipApplicationRepository,
-                   InternshipRepository internshipRepository
+                   InternshipRepository internshipRepository,
+                   InternshipManagerRepository internshipManagerRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
+        this.internshipManagerRepository = internshipManagerRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -85,9 +75,23 @@ public class InternshipService {
 
     public Optional<Internship> saveInternship(Internship internship) {
         internshipApplicationRepository.save(internship.getInternshipApplication());
-        System.out.println(internship);
         internship.setInternshipContract(getContract(internship));
         return Optional.of(internshipRepository.save(internship));
+    }
+
+    private PDFDocument getContract(Internship internship) {
+        PDFDocument pdfDocument = new PDFDocument();
+        Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByIsDisabledFalse();
+
+        try{
+            ByteArrayOutputStream baos = generatePdfContract(internship, optionalInternshipManager);
+            pdfDocument.setName("Contract.pdf");
+            pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pdfDocument;
     }
 
     public Optional<Map<String, String>> getDefaultEngagements() {
@@ -163,155 +167,4 @@ public class InternshipService {
                 internshipApplicationRepository.save(internshipApplication));
     }
 
-    private PDFDocument getContract(Internship internship) {
-        InternshipApplication internshipApplication = internship.getInternshipApplication();
-
-        Document document = new Document();
-        PDFDocument pdfDocument = new PDFDocument();
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            PdfWriter writer = PdfWriter.getInstance(document, baos);
-            document.open();
-
-            Font largeBold = new Font(Font.FontFamily.HELVETICA, 32, Font.BOLD);
-            Font mediumBold = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-            Font standard = new Font(Font.FontFamily.HELVETICA, 12);
-
-            Paragraph paragEmpty = new Paragraph(" ");
-            paragEmpty.setSpacingAfter(325f);
-
-            Paragraph paragTitle = new Paragraph("CONTRAT DE STAGE", largeBold);
-            paragTitle.setSpacingAfter(350f);
-            paragTitle.setAlignment(Element.ALIGN_CENTER);
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            Paragraph paragDate = new Paragraph(LocalDate.now().format(formatter));
-            paragDate.setAlignment(Element.ALIGN_CENTER);
-
-            document.add(paragEmpty);
-            document.add(paragTitle);
-            document.add(paragDate);
-
-            document.newPage();
-
-            Paragraph paragEntente = new Paragraph("ENTENTE DE STAGE INTERVENUE ENTRE LES PARTIES SUIVANTES", mediumBold);
-            paragEntente.setAlignment(Element.ALIGN_CENTER);
-            paragEntente.setSpacingAfter(50f);
-            document.add(paragEntente);
-
-            Paragraph paragCadre = new Paragraph("Dans le cadre de la formule ATE, les parties citées ci-dessous :", standard);
-            paragCadre.setAlignment(Element.ALIGN_CENTER);
-            document.add(paragCadre);
-
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!
-            Paragraph paragCadreInternshipOwner = new Paragraph("Le gestionnaire de stage, ${GS_name},", standard);
-            paragCadreInternshipOwner.setAlignment(Element.ALIGN_CENTER);
-            paragCadreInternshipOwner.setSpacingAfter(40f);
-            document.add(paragCadreInternshipOwner);
-
-            Paragraph paragAnd = new Paragraph("et", mediumBold);
-            paragAnd.setAlignment(Element.ALIGN_CENTER);
-            paragAnd.setSpacingAfter(40f);
-            document.add(paragAnd);
-
-            Paragraph paragCadreMonitor = new Paragraph("L’employeur, " /*+ internshipApplication.getInternshipOffer().getMonitor().getFirstName() + " " + internshipApplication.getInternshipOffer().getMonitor().getLastName()*/ + ",", standard);
-            paragCadreMonitor.setAlignment(Element.ALIGN_CENTER);
-            paragCadreMonitor.setSpacingAfter(40f);
-            document.add(paragCadreMonitor);
-
-            document.add(paragAnd);
-
-            Paragraph paragCadreStudent = new Paragraph("L’étudiant(e), " + internshipApplication.getStudent().getFirstName() + " " + internshipApplication.getStudent().getLastName() + ",", standard);
-            paragCadreStudent.setAlignment(Element.ALIGN_CENTER);
-            paragCadreStudent.setSpacingAfter(40f);
-            document.add(paragCadreStudent);
-
-            Paragraph paragCadreConditions = new Paragraph("Conviennent des conditions de stage suivantes :", standard);
-            paragCadreConditions.setAlignment(Element.ALIGN_CENTER);
-            paragCadreStudent.setSpacingAfter(10f);
-            document.add(paragCadreConditions);
-
-            Paragraph paragEmptySmall = new Paragraph(" ");
-            document.add(paragEmptySmall);
-
-            float[] pointColumnWidths = {150F};
-            PdfPTable table = new PdfPTable(pointColumnWidths);
-
-            Font fontHeader = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-            Chunk c = new Chunk("ENDROIT DU STAGE", fontHeader);
-            Paragraph paragraphHeader = new Paragraph(c);
-
-            // Adding cells to the table
-            PdfPCell cell1 = new PdfPCell(paragraphHeader);
-            cell1.setBackgroundColor(new BaseColor(230,230,230));
-            cell1.setUseVariableBorders(true);
-            cell1.setBorderWidthBottom(0f);
-            cell1.setPadding(7);
-
-            PdfPCell cell2 = new PdfPCell(new Paragraph("Adresse : " + internshipApplication.getInternshipOffer().getAddress()));
-            cell2.setUseVariableBorders(true);
-            cell2.setBorderWidthTop(0f);
-            cell2.setPadding(7);
-
-            Chunk c2 = new Chunk("DURÉE DU STAGE", fontHeader);
-            Paragraph paragraphDuration = new Paragraph(c2);
-            PdfPCell cell3 = new PdfPCell(paragraphDuration);
-            cell3.setBackgroundColor(new BaseColor(230,230,230));
-            cell3.setUseVariableBorders(true);
-            cell3.setBorderWidthBottom(0f);
-            cell3.setPadding(7);
-
-            PdfPCell cell4 = new PdfPCell(new Paragraph("Date de début : " + internshipApplication.getInternshipOffer().getStartDate()));
-            cell4.setUseVariableBorders(true);
-            cell4.setBorderWidthTop(0f);
-            cell4.setPadding(7);
-
-            PdfPCell cell5 = new PdfPCell(new Paragraph("Date de fin : " + internshipApplication.getInternshipOffer().getEndDate()));
-            cell5.setUseVariableBorders(true);
-            cell5.setBorderWidthTop(0f);
-            cell5.setPadding(7);
-
-            InternshipOffer.WorkShift Workshift = internshipApplication.getInternshipOffer().getWorkShift();
-
-            Duration diff = Duration.between(internshipApplication.getInternshipOffer().getStartDate().toInstant(), internshipApplication.getInternshipOffer().getEndDate().toInstant());
-            long diffWeeks = diff.toDays() / 7;
-            long diffDays = diff.toDays() % 7;
-
-            PdfPCell cell6 = new PdfPCell(new Paragraph("Nombre de semaines : " + diffWeeks + (diffDays != 0 ? " (et " + diffDays + " jours)" : "")));
-            cell6.setUseVariableBorders(true);
-            cell6.setBorderWidthTop(0f);
-            cell6.setPadding(7);
-
-            PdfPCell cell7 = new PdfPCell(new Paragraph("Type d'horaire : " + (Workshift == InternshipOffer.WorkShift.DAY ? "Jour" : Workshift == InternshipOffer.WorkShift.NIGHT ? "Nuit" : "Flexibe")));
-            cell7.setUseVariableBorders(true);
-            cell7.setBorderWidthTop(0f);
-            cell7.setPadding(7);
-
-            table.addCell(cell1);
-            table.addCell(cell2);
-            table.addCell(cell3);
-            table.addCell(cell4);
-            table.addCell(cell5);
-            table.addCell(cell6);
-            table.addCell(cell7);
-            //table.addCell(cell1);
-
-            document.add(table);
-
-            document.newPage();
-            //Ici met les trucs de ta page, pas besoin de faire la partie signature, c'est Jules et Mathis qui vont la faire
-            document.add(paragEntente);
-
-            document.close();
-            writer.close();
-
-            pdfDocument.setName("Contract.pdf");
-            pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return pdfDocument;
-    }
 }

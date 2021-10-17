@@ -11,5 +11,8 @@ public interface InternshipManagerRepository extends MongoRepository<InternshipM
     Optional<InternshipManager> findByUsernameAndPasswordAndIsDisabledFalse(String username, String password);
 
     Optional<InternshipManager> findByUsernameAndIsDisabledFalse(String username);
+
+    Optional<InternshipManager> findByIsDisabledFalse();
+
 }
 
