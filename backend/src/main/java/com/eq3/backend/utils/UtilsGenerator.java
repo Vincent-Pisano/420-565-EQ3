@@ -15,6 +15,20 @@ public class UtilsGenerator {
 
     public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    public final static float WIDTH = 150F;
+    public final static float NO_SPACE = 0f;
+    public final static float TINY_SPACE = 10f;
+    public final static float SMALLER_SPACE = 15f;
+    public final static float SMALL_SPACE = 20f;
+    public final static float BELOW_MEDIUM_SPACE = 30f;
+    public final static float MEDIUM_SPACE = 40f;
+    public final static float LARGE_SPACE = 50f;
+    public final static float START_SPACE = 325f;
+    public final static float END_SPACE = 350f;
+
+    public final static int PADDING_TABLE_CONDITIONS = 7;
+    public final static int PADDING_TABLE_SIGNATURES = 3;
+
     public final static String CONTRACT_TITLE = "CONTRAT DE STAGE";
     public final static String AGREEMENT_BETWEEN = "ENTENTE DE STAGE INTERVENUE ENTRE LES PARTIES SUIVANTES";
     public final static String STUDENT = "L’étudiant(e): ";
@@ -25,5 +39,9 @@ public class UtilsGenerator {
     public final static String SALARY = "SALAIRE";
     public final static String EMPTY = " ";
     public final static String PARTICIPANTS = "Dans le cadre de la formule ATE, les parties citées ci-dessous :";
+    public final static String COMA = ",";
+    public final static String DURATION = "DURÉE DU STAGE";
+    public final static String TERMS_OF_CONDITION = "Conviennent des conditions de stage suivantes :";
+    public final static String PLACE = "ENDROIT DU STAGE";
 
 }
