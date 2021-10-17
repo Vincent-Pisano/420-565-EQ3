@@ -39,6 +39,9 @@ class BackendServiceTest {
     @Mock
     private EvaluationRepository evaluationRepository;
 
+    @Mock
+    private InternshipRepository internshipRepository;
+
     //global variables
     private Student expectedStudent;
     private List<Student> expectedStudentList;
@@ -49,6 +52,7 @@ class BackendServiceTest {
     private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
+    private Internship expectedInternship;
 
     @Test
     //@Disabled
@@ -216,5 +220,24 @@ class BackendServiceTest {
     }
 
     @Test
-    
+    //@Disabled
+    public void testDownloadInternshipContractDocument() throws IOException {
+        //Arrange
+        expectedPDFDocument = getDocument();
+        expectedInternship = getInternship();
+        expectedInternship.setInternshipContract(expectedPDFDocument);
+
+        when(internshipRepository.findById(getInternship().getId()))
+                .thenReturn(Optional.ofNullable(expectedInternship));
+
+        //Act
+        Optional<PDFDocument> optionalContract = service.downloadInternshipContractDocument(
+                getInternship().getId());
+
+        //Assert
+        PDFDocument actualPDFDocument = optionalContract.orElse(null);
+
+        assertThat(optionalContract.isPresent()).isTrue();
+        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+    }
 }
