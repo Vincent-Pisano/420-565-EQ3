@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -21,6 +22,16 @@ public class BackendController {
 
     public BackendController(BackendService service) {
         this.service = service;
+    }
+
+    @PostMapping(value = "/save/signature/{username}",
+            produces = "application/json;charset=utf8",
+            consumes = { "multipart/form-data" })
+    public ResponseEntity<Boolean> saveSignature(@PathVariable String username,
+                                                 @RequestPart(name = "signature") MultipartFile multipartFile) {
+        return service.saveSignature(username, multipartFile)
+                ? ResponseEntity.status(HttpStatus.CREATED).build()
+                : ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     @GetMapping("/getAll/students/{department}")

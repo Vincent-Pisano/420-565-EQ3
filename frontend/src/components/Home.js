@@ -14,6 +14,7 @@ function Home() {
 
   let dateFormat = formatDate(user.creationDate);
   const [errorMessage, setErrorMessage] = useState("");
+  const [hasASignature, setHasASignature] = useState(user.signature !== undefined && user.signature !== null );
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -34,7 +35,7 @@ function Home() {
   function saveSignature(signature) {
     console.log(signature);
     if (signature.type === "image/png" || signature.type === "image/jpeg") {
-
+      setHasASignature(true)
       let formData = new FormData();
       formData.append("signature", signature);
 
@@ -43,7 +44,7 @@ function Home() {
       auth.user = user;
 
       axios
-        .post(`http://localhost:9090/save/signature/${user.id}`, formData)
+        .post(`http://localhost:9090/save/signature/${user.username}`, formData)
         .then((response) => {})
         .catch((error) => {
           setErrorMessage("Erreur lors de la sauvegarde de la signature");
@@ -54,10 +55,9 @@ function Home() {
   }
 
   function checkSignature() {
-    if (user.signature !== undefined) {
+    if (hasASignature) {
       return (
         <>
-          
           <ImgViewer image={user.signature}/>
         </>
       );

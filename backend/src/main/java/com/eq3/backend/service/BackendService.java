@@ -2,8 +2,12 @@ package com.eq3.backend.service;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +19,7 @@ public class BackendService {
     private final StudentRepository studentRepository;
     private final MonitorRepository monitorRepository;
     private final SupervisorRepository supervisorRepository;
+    private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipRepository internshipRepository;
     private final EvaluationRepository evaluationRepository;
@@ -22,6 +27,7 @@ public class BackendService {
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
+                   InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipRepository internshipRepository,
                    EvaluationRepository evaluationRepository
@@ -29,9 +35,60 @@ public class BackendService {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
+        this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipRepository = internshipRepository;
         this.evaluationRepository = evaluationRepository;
+    }
+
+    public Boolean saveSignature(String username, MultipartFile signature) {
+        Boolean flag = false;
+        try {
+            switch (username.charAt(0)) {
+                case 'G' :
+                    Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
+                    if (optionalInternshipManager.isPresent()) {
+                        InternshipManager internshipManager = optionalInternshipManager.get();
+                        internshipManager.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        internshipManagerRepository.save(internshipManager);
+                        flag = true;
+                    }
+                    break;
+
+                case 'S' :
+                    Optional<Supervisor> optionalSupervisor = supervisorRepository.findByUsernameAndIsDisabledFalse(username);
+                    if (optionalSupervisor.isPresent()) {
+                        Supervisor supervisor = optionalSupervisor.get();
+                        supervisor.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        supervisorRepository.save(supervisor);
+                        flag = true;
+                    }
+                    break;
+
+                case 'M' :
+                    Optional<Monitor> optionalMonitor = monitorRepository.findByUsernameAndIsDisabledFalse(username);
+                    if (optionalMonitor.isPresent()) {
+                        Monitor monitor = optionalMonitor.get();
+                        monitor.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        monitorRepository.save(monitor);
+                        flag = true;
+                    }
+                    break;
+
+                case 'E' :
+                    Optional<Student> optionalStudent = studentRepository.findByUsernameAndIsDisabledFalse(username);
+                    if (optionalStudent.isPresent()) {
+                        Student student = optionalStudent.get();
+                        student.setSignature(new Binary(BsonBinarySubType.BINARY, signature.getBytes()));
+                        studentRepository.save(student);
+                        flag = true;
+                    }
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return flag;
     }
 
 
