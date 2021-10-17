@@ -340,13 +340,14 @@ class BackendServiceTest {
         expectedPDFDocument = getDocument();
         expectedInternship = getInternship();
         expectedInternship.setInternshipContract(expectedPDFDocument);
+        InternshipApplication internshipApplication = expectedInternship.getInternshipApplication();
 
-        when(internshipRepository.findById(getInternship().getId()))
+        when(internshipRepository.findByInternshipApplication_Id(internshipApplication.getId()))
                 .thenReturn(Optional.ofNullable(expectedInternship));
 
         //Act
         Optional<PDFDocument> optionalContract = service.downloadInternshipContractDocument(
-                getInternship().getId());
+                internshipApplication.getId());
 
         //Assert
         PDFDocument actualPDFDocument = optionalContract.orElse(null);

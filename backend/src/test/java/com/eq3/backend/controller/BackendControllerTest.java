@@ -348,12 +348,13 @@ class BackendControllerTest {
     public void testDownloadInternshipContractDocument() throws Exception {
         //Arrange
         expectedPDFDocument = getDocument();
+        InternshipApplication internshipApplication = getInternshipApplication();
 
-        when(service.downloadInternshipContractDocument(getInternship().getId()))
+        when(service.downloadInternshipContractDocument(internshipApplication.getId()))
                 .thenReturn(Optional.ofNullable(expectedPDFDocument));
 
         //Act
-        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_CONTRACT + getInternship().getId())
+        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_CONTRACT + internshipApplication.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

@@ -177,8 +177,8 @@ public class BackendService {
         return optionalDocument;
     }
 
-    public Optional<PDFDocument> downloadInternshipContractDocument(String idInternship) {
-        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+    public Optional<PDFDocument> downloadInternshipContractDocument(String idInternshipApplication) {
+        Optional<Internship> optionalInternship = internshipRepository.findByInternshipApplication_Id(idInternshipApplication);
         return optionalInternship.map(Internship::getInternshipContract);
     }
 }
