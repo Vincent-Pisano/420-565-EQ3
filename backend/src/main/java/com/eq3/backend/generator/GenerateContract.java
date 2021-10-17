@@ -39,9 +39,10 @@ public class GenerateContract {
         generateTitlePage(document);
         document.newPage();
 
-        Paragraph paragEntente = new Paragraph(AGREEMENT_BETWEEN, MEDIUM_BOLD);
-        setUpParag(document, paragEntente, paragEntente, Element.ALIGN_CENTER, LARGE_SPACE);
+        Paragraph paragAgreement = new Paragraph(AGREEMENT_BETWEEN, MEDIUM_BOLD);
+        setUpParag(document, paragAgreement, paragAgreement, Element.ALIGN_CENTER, LARGE_SPACE);
 
+        //PARTICIPANTS
         Paragraph paragCadre = new Paragraph(PARTICIPANTS, STANDARD);
         paragCadre.setAlignment(Element.ALIGN_CENTER);
         document.add(paragCadre);
@@ -61,84 +62,90 @@ public class GenerateContract {
         Paragraph paragCadreStudent = new Paragraph(STUDENT + student.getFirstName() +
                 EMPTY + student.getLastName() + COMA, STANDARD);
         setUpParag(document, paragCadreStudent, paragCadreStudent, Element.ALIGN_CENTER, MEDIUM_SPACE);
+        //END PARTICIPANTS
 
         Paragraph paragCadreConditions = new Paragraph(TERMS_OF_CONDITION, STANDARD);
         setUpParag(document, paragCadreStudent, paragCadreConditions, Element.ALIGN_CENTER, TINY_SPACE);
 
         document.add(paragEmptySmall);
 
-        PdfPTable table = new PdfPTable(pointColumnWidths);
+        //TABLE DETAILS INTERNSHIP
+        PdfPTable tableDetailsInternship = new PdfPTable(pointColumnWidths);
 
-        Chunk c = new Chunk(PLACE, MEDIUM_BOLD);
-        PdfPCell cell1 = new PdfPCell(new Paragraph(c));
-        setUpTitleCell(cell1);
-        table.addCell(cell1);
+        Chunk chunkPlace = new Chunk(PLACE, MEDIUM_BOLD);
+        PdfPCell cellPlaceHeader = new PdfPCell(new Paragraph(chunkPlace));
+        setUpTitleCell(cellPlaceHeader);
+        tableDetailsInternship.addCell(cellPlaceHeader);
 
-        PdfPCell cell2 = new PdfPCell(new Paragraph(ADDRESS + internshipOffer.getAddress() + COMA + EMPTY +
+        PdfPCell cellPlace = new PdfPCell(new Paragraph(ADDRESS + internshipOffer.getAddress() + COMA + EMPTY +
                 internshipOffer.getCity() + COMA + EMPTY + internshipOffer.getPostalCode()));
-        setUpCell(cell2);
-        table.addCell(cell2);
+        setUpCell(cellPlace);
+        tableDetailsInternship.addCell(cellPlace);
 
-        Chunk c2 = new Chunk(DURATION, MEDIUM_BOLD);
-        PdfPCell cell3 = new PdfPCell(new Paragraph(c2));
-        setUpTitleCell(cell3);
-        table.addCell(cell3);
+        Chunk chunkDuration = new Chunk(DURATION, MEDIUM_BOLD);
+        PdfPCell cellDurationHeader = new PdfPCell(new Paragraph(chunkDuration));
+        setUpTitleCell(cellDurationHeader);
+        tableDetailsInternship.addCell(cellDurationHeader);
 
-        PdfPCell cell4 = new PdfPCell(new Paragraph(String.format(START_DATE + internshipOffer.getStartDate(), DATE_FORMATTER)));
-        setUpCell(cell4);
-        table.addCell(cell4);
+        PdfPCell cellStartDate = new PdfPCell(new Paragraph(String.format(START_DATE + internshipOffer.getStartDate(), DATE_FORMATTER)));
+        setUpCell(cellStartDate);
+        tableDetailsInternship.addCell(cellStartDate);
 
-        PdfPCell cell5 = new PdfPCell(new Paragraph(String.format(END_DATE + internshipOffer.getEndDate(), DATE_FORMATTER)));
-        setUpCell(cell5);
-        table.addCell(cell5);
+        PdfPCell cellEndDate = new PdfPCell(new Paragraph(String.format(END_DATE + internshipOffer.getEndDate(), DATE_FORMATTER)));
+        setUpCell(cellEndDate);
+        tableDetailsInternship.addCell(cellEndDate);
 
         Duration diff = Duration.between(internshipOffer.getStartDate().toInstant(), internshipOffer.getEndDate().toInstant());
         long diffWeeks = diff.toDays() / 7;
         long diffDays = diff.toDays() % 7;
-        PdfPCell cell6 = new PdfPCell(new Paragraph(NUMBER_WEEKS + diffWeeks + (diffDays != 0 ?
+        PdfPCell cellDuration = new PdfPCell(new Paragraph(NUMBER_WEEKS + diffWeeks + (diffDays != 0 ?
                 AND_DAY + diffDays + END_DAY : NOTHING)));
-        setUpCell(cell6);
-        table.addCell(cell6);
+        setUpCell(cellDuration);
+        tableDetailsInternship.addCell(cellDuration);
 
-        Chunk c3 = new Chunk(WORK_HOURS, MEDIUM_BOLD);
-        PdfPCell cell7 = new PdfPCell(new Paragraph(c3));
-        setUpTitleCell(cell7);
-        table.addCell(cell7);
+        Chunk chunkWorkshiftHeader = new Chunk(WORK_HOURS, MEDIUM_BOLD);
+        PdfPCell cellWorkshiftHeader = new PdfPCell(new Paragraph(chunkWorkshiftHeader));
+        setUpTitleCell(cellWorkshiftHeader);
+        tableDetailsInternship.addCell(cellWorkshiftHeader);
 
-        PdfPCell cell8 = new PdfPCell(new Paragraph(WORKSHIFT_TYPE + (workShift == InternshipOffer.WorkShift.DAY ?
+        PdfPCell cellWorkshiftType = new PdfPCell(new Paragraph(WORKSHIFT_TYPE + (workShift == InternshipOffer.WorkShift.DAY ?
                 DAY : workShift == InternshipOffer.WorkShift.NIGHT ? NIGHT : FLEXIBLE)));
-        setUpCell(cell8);
-        table.addCell(cell8);
+        setUpCell(cellWorkshiftType);
+        tableDetailsInternship.addCell(cellWorkshiftType);
 
-        PdfPCell cell9 = new PdfPCell(new Paragraph(TOTAL_HOURS + internshipOffer.getWeeklyWorkTime() + HOURS));
-        setUpCell(cell9);
-        table.addCell(cell9);
+        PdfPCell cellWorkshiftHours = new PdfPCell(new Paragraph(TOTAL_HOURS + internshipOffer.getWeeklyWorkTime() + HOURS));
+        setUpCell(cellWorkshiftHours);
+        tableDetailsInternship.addCell(cellWorkshiftHours);
 
-        Chunk c4 = new Chunk(SALARY, MEDIUM_BOLD);
-        PdfPCell cell10 = new PdfPCell(new Paragraph(c4));
-        setUpTitleCell(cell10);
-        table.addCell(cell10);
+        Chunk chunkSalaryHeader = new Chunk(SALARY, MEDIUM_BOLD);
+        PdfPCell cellSalaryHeader = new PdfPCell(new Paragraph(chunkSalaryHeader));
+        setUpTitleCell(cellSalaryHeader);
+        tableDetailsInternship.addCell(cellSalaryHeader);
 
-        PdfPCell cell11 = new PdfPCell(new Paragraph(SALARY_HOURS + String.format(DOUBLE_FORMAT, internshipOffer.getHourlySalary()) + DOLLAR));
-        setUpCell(cell11);
-        table.addCell(cell11);
+        PdfPCell cellSalaryHourly = new PdfPCell(new Paragraph(SALARY_HOURS + String.format(DOUBLE_FORMAT, internshipOffer.getHourlySalary()) + DOLLAR));
+        setUpCell(cellSalaryHourly);
+        tableDetailsInternship.addCell(cellSalaryHourly);
 
-        document.add(table);
+        document.add(tableDetailsInternship);
         document.newPage();
+        //END TABLE DETAILS INTERNSHIP
 
         Paragraph paragEngagements = new Paragraph(TASKS_RESPONSIBILITIES, MEDIUM_BOLD);
         setUpParag(document, paragEngagements, paragEngagements, Element.ALIGN_CENTER, TINY_SPACE);
 
-        PdfPTable tableDesc = new PdfPTable(pointColumnWidths);
-        tableDesc.setSpacingAfter(BELOW_MEDIUM_SPACE);
+        //TABLE TASKS RESPONSIBILITIES
+        PdfPTable tableTasksResponsibilities = new PdfPTable(pointColumnWidths);
+        tableTasksResponsibilities.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
         PdfPCell cellDesc = new PdfPCell(new Paragraph(internshipOffer.getDescription()));
         cellDesc.setUseVariableBorders(true);
         cellDesc.setPadding(9);
 
-        tableDesc.addCell(cellDesc);
-        document.add(tableDesc);
+        tableTasksResponsibilities.addCell(cellDesc);
+        document.add(tableTasksResponsibilities);
+        //END TABLE TASKS RESPONSIBILITIES
 
+        //RESPONSIBILITIES
         Paragraph paragResponsibilities = new Paragraph(RESPONSIBILITIES, MEDIUM_BOLD);
         setUpParag(document, paragResponsibilities, paragResponsibilities, Element.ALIGN_CENTER, TINY_SPACE);
 
@@ -171,10 +178,11 @@ public class GenerateContract {
 
         Paragraph paragEngagementContractStudent = new Paragraph(STUDENT, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractStudent, paragEngagementContractStudent, Element.ALIGN_CENTER, SMALL_SPACE);
+        //END RESPONSIBILITIES
 
         //TABLE SIGNATURE STUDENT
         PdfPTable tableSignatureStudent = new PdfPTable(pointColumnWidthsSignatures);
-        tableDesc.setSpacingAfter(BELOW_MEDIUM_SPACE);
+        tableTasksResponsibilities.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
         PdfPCell cellStudentSignature = new PdfPCell(new Paragraph("Signature Étudiant (à changer)"));
         setUpTopSignatureCell(tableSignatureStudent, cellStudentSignature);
@@ -189,14 +197,14 @@ public class GenerateContract {
         setUpBottomSignatureCell(tableSignatureStudent, cellStudentDateTitleSignature);
 
         document.add(tableSignatureStudent);
-        //FIN TABLE SIGNATURE STUDENT
+        //END TABLE SIGNATURE STUDENT
 
         Paragraph paragEngagementContractEnterprise = new Paragraph(EMPLOYER, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractEnterprise, paragEngagementContractEnterprise, Element.ALIGN_CENTER, SMALL_SPACE);
 
         //TABLE SIGNATURE ENTERPRISE
         PdfPTable tableSignatureEnterprise = new PdfPTable(pointColumnWidthsSignatures);
-        tableDesc.setSpacingAfter(BELOW_MEDIUM_SPACE);
+        tableTasksResponsibilities.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
         PdfPCell cellEnterpriseSignature = new PdfPCell(new Paragraph("Signature Entreprise (à changer)"));
         setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseSignature);
@@ -211,7 +219,7 @@ public class GenerateContract {
         setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseDateTitleSignature);
 
         document.add(tableSignatureEnterprise);
-        //FIN TABLE SIGNATURE ENTERPRISE
+        //END TABLE SIGNATURE ENTERPRISE
 
         Paragraph paragEngagementContractInternshipManager = new Paragraph(INTERNSHIP_MANAGER, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractInternshipManager, paragEngagementContractInternshipManager, Element.ALIGN_CENTER, SMALL_SPACE);
@@ -233,7 +241,7 @@ public class GenerateContract {
         setUpBottomSignatureCell(tableSignatureInternshipManager, cellInternshipManagerDateTitleSignature);
 
         document.add(tableSignatureInternshipManager);
-        //FIN TABLE SIGNATURE INTERNSHIPMANAGER
+        //END TABLE SIGNATURE INTERNSHIPMANAGER
 
         document.close();
         writer.close();
@@ -256,11 +264,11 @@ public class GenerateContract {
         document.add(paragDate);
     }
 
-    private static void setUpParag(Document document, Paragraph paragCadreStudent, Paragraph paragCadreConditions,
+    private static void setUpParag(Document document, Paragraph paragraph, Paragraph paragraphCenter,
                                    int alignCenter, float spaceAfter) throws DocumentException {
-        paragCadreConditions.setAlignment(alignCenter);
-        paragCadreStudent.setSpacingAfter(spaceAfter);
-        document.add(paragCadreConditions);
+        paragraphCenter.setAlignment(alignCenter);
+        paragraph.setSpacingAfter(spaceAfter);
+        document.add(paragraphCenter);
     }
 
     private static void setUpBottomSignatureCell(PdfPTable tableSignature, PdfPCell bottomCell) {
