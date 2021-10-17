@@ -19,6 +19,8 @@ public class UtilsTest {
 
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
+    public final static String IMAGE_FILEPATH =
+            System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\image.png";
 
     public static Student getStudentWithId(){
         Student student = getStudentWithoutId();
@@ -202,5 +204,10 @@ public class UtilsTest {
                 .id("6141112s17d3gre02ce5gt68dq5")
                 .internshipApplication(getInternshipApplication())
                 .build();
+    }
+
+    public static Binary getImage() throws IOException {
+        Path imagePDF = Paths.get(PDF_FILEPATH);
+        return new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(imagePDF));
     }
 }

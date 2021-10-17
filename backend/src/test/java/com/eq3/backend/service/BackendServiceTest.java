@@ -3,11 +3,15 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,8 +19,9 @@ import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.lenient;
+import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BackendServiceTest {
@@ -34,6 +39,9 @@ class BackendServiceTest {
     private SupervisorRepository supervisorRepository;
 
     @Mock
+    private InternshipManagerRepository internshipManagerRepository;
+
+    @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
     @Mock
@@ -41,6 +49,7 @@ class BackendServiceTest {
 
     //global variables
     private Student expectedStudent;
+    private InternshipManager expectedInternshipManager;
     private List<Student> expectedStudentList;
     private List<Supervisor> expectedSupervisorList;
     private Monitor expectedMonitor;
@@ -49,6 +58,111 @@ class BackendServiceTest {
     private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
+    private Binary expectedImage;
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfInternshipManager() throws IOException {
+        //Arrange
+        expectedImage = getImage();
+        expectedInternshipManager = getInternshipManagerWithId();
+        expectedInternshipManager.setSignature(expectedImage);
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(internshipManagerRepository.findByUsernameAndIsDisabledFalse(expectedInternshipManager.getUsername()))
+            .thenReturn(Optional.ofNullable(expectedInternshipManager));
+        when(internshipManagerRepository.save(any(InternshipManager.class)))
+                .thenReturn(expectedInternshipManager);
+
+        //Act
+        Optional<Binary> optionalImage =
+                service.saveSignature(expectedInternshipManager.getUsername(), multipartFile);
+
+        //Assert
+        Binary actualBinary = optionalImage.orElse(null);
+
+        assertThat(optionalImage.isPresent()).isTrue();
+        assertThat(actualBinary.getData()).isEqualTo(expectedImage.getData());
+    }
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfSupervisor() throws IOException {
+        //Arrange
+        expectedImage = getImage();
+        expectedSupervisor = getSupervisorWithId();
+        expectedSupervisor.setSignature(expectedImage);
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(supervisorRepository.findByUsernameAndIsDisabledFalse(expectedSupervisor.getUsername()))
+                .thenReturn(Optional.ofNullable(expectedSupervisor));
+        when(supervisorRepository.save(any(Supervisor.class)))
+                .thenReturn(expectedSupervisor);
+
+        //Act
+        Optional<Binary> optionalImage =
+                service.saveSignature(expectedSupervisor.getUsername(), multipartFile);
+
+        //Assert
+        Binary actualBinary = optionalImage.orElse(null);
+
+        assertThat(optionalImage.isPresent()).isTrue();
+        assertThat(actualBinary.getData()).isEqualTo(expectedImage.getData());
+    }
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfMonitor() throws IOException {
+        //Arrange
+        expectedImage = getImage();
+        expectedMonitor = getMonitorWithId();
+        expectedMonitor.setSignature(expectedImage);
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(monitorRepository.findByUsernameAndIsDisabledFalse(expectedMonitor.getUsername()))
+                .thenReturn(Optional.ofNullable(expectedMonitor));
+        when(monitorRepository.save(any(Monitor.class)))
+                .thenReturn(expectedMonitor);
+
+        //Act
+        Optional<Binary> optionalImage =
+                service.saveSignature(expectedMonitor.getUsername(), multipartFile);
+
+        //Assert
+        Binary actualBinary = optionalImage.orElse(null);
+
+        assertThat(optionalImage.isPresent()).isTrue();
+        assertThat(actualBinary.getData()).isEqualTo(expectedImage.getData());
+    }
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfStudent() throws IOException {
+        //Arrange
+        expectedImage = getImage();
+        expectedStudent = getStudentWithId();
+        expectedStudent.setSignature(expectedImage);
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(studentRepository.findByUsernameAndIsDisabledFalse(expectedStudent.getUsername()))
+                .thenReturn(Optional.ofNullable(expectedStudent));
+        when(studentRepository.save(any(Student.class)))
+                .thenReturn(expectedStudent);
+
+        //Act
+        Optional<Binary> optionalImage =
+                service.saveSignature(expectedStudent.getUsername(), multipartFile);
+
+        //Assert
+        Binary actualBinary = optionalImage.orElse(null);
+
+        assertThat(optionalImage.isPresent()).isTrue();
+        assertThat(actualBinary.getData()).isEqualTo(expectedImage.getData());
+    }
 
     @Test
     //@Disabled

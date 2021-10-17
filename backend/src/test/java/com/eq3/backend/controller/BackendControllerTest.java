@@ -3,6 +3,7 @@ package com.eq3.backend.controller;
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.Binary;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,12 +13,19 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static com.eq3.backend.utils.UtilsURL.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -32,6 +40,7 @@ class BackendControllerTest {
 
     //global variables
     private Student expectedStudent;
+    private InternshipManager expectedInternshipManager;
     private List<Student> expectedStudentList;
     private List<Supervisor> expectedSupervisorList;
     private Monitor expectedMonitor;
@@ -40,6 +49,131 @@ class BackendControllerTest {
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
     private String expectedDocumentName;
+    private Binary expectedImage;
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfInternshipManager() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        expectedInternshipManager = getInternshipManagerWithId();
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(service.saveSignature(eq(expectedInternshipManager.getId()), any()))
+        .thenReturn(Optional.of(expectedImage));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart(URL_SAVE_SIGNATURE +
+                        expectedInternshipManager.getId())
+                        .file("signature", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        String content = response.getContentAsString();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(content.length()).isGreaterThan(0);
+    }
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfSupervisor() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        expectedSupervisor = getSupervisorWithId();
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(service.saveSignature(eq(expectedSupervisor.getId()), any()))
+                .thenReturn(Optional.of(expectedImage));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart(URL_SAVE_SIGNATURE +
+                        expectedSupervisor.getId())
+                        .file("signature", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        String content = response.getContentAsString();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(content.length()).isGreaterThan(0);
+    }
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfMonitor() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        expectedMonitor = getMonitorWithId();
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(service.saveSignature(eq(expectedMonitor.getId()), any()))
+                .thenReturn(Optional.of(expectedImage));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart(URL_SAVE_SIGNATURE +
+                        expectedMonitor.getId())
+                        .file("signature", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        String content = response.getContentAsString();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(content.length()).isGreaterThan(0);
+    }
+
+    @Test
+    //@Disabled
+    public void testSaveSignatureOfStudent() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        expectedStudent = getStudentWithId();
+        var multipartFile = mock(MultipartFile.class);
+
+        when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
+        when(service.saveSignature(eq(expectedStudent.getId()), any()))
+                .thenReturn(Optional.of(expectedImage));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart(URL_SAVE_SIGNATURE +
+                        expectedStudent.getId())
+                        .file("signature", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        String content = response.getContentAsString();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(content.length()).isGreaterThan(0);
+    }
 
     @Test
     //@Disabled

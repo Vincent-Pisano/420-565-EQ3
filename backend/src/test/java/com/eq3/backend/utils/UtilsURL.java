@@ -14,6 +14,7 @@ public class UtilsURL {
     public final static String URL_LOGIN_INTERNSHIP_MANAGER = "/login/internshipManager/";
 
     // BackendController
+    public final static String URL_SAVE_SIGNATURE = "/save/signature/";
     public final static String URL_GET_ALL_STUDENTS = "/getAll/students/";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = "/getAll/students/noSupervisor/";
     public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors";
