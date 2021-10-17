@@ -4,7 +4,7 @@ import { useFormFields } from "../../lib/hooksLib";
 import axios from "axios";
 import "../../styles/Form.css";
 
-const InternshipApplicationModal = ({
+const InternshipApplicationStudentModal = ({
   show,
   handleClose,
   currentInternshipApplication,
@@ -27,8 +27,8 @@ const InternshipApplicationModal = ({
       fields.status !== undefined
         ? fields.status
         : currentInternshipApplication.status;
-        currentInternshipApplication.student.cvlist = []
-        currentInternshipApplication.internshipOffer.pdfdocument = undefined
+    currentInternshipApplication.student.cvlist = [];
+    currentInternshipApplication.internshipOffer.pdfdocument = undefined;
     axios
       .post(
         `http://localhost:9090/update/internshipApplication`,
@@ -143,4 +143,4 @@ const InternshipApplicationModal = ({
   );
 };
 
-export default InternshipApplicationModal;
+export default InternshipApplicationStudentModal;

@@ -50,14 +50,12 @@ const InternshipOfferForm = () => {
     if (auth.isStudent() && internshipOffer !== undefined) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/${user.username}`
+          `http://localhost:9090/getAll/internshipApplication/student/${user.username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);
         })
-        .catch((err) => {
-          setErrorMessage("Aucune Application enregistrée pour le moment");
-        });
+        .catch((err) => {});
     }
   }, [internshipOffer, user.username]);
 
@@ -149,7 +147,10 @@ const InternshipOfferForm = () => {
   function checkIfDocumentExist() {
     if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
       return (
-        <InternshipOfferButtonDownload internshipOfferID={internshipOffer.id} document={internshipOffer.pdfdocument} />
+        <InternshipOfferButtonDownload
+          internshipOfferID={internshipOffer.id}
+          document={internshipOffer.pdfdocument}
+        />
       );
     }
   }

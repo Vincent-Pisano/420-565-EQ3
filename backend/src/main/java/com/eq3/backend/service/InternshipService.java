@@ -27,10 +27,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -105,6 +103,13 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
+    public Optional<List<InternshipOffer>> getAllInternshipOfferOfMonitor(String idMonitor) {
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByMonitor_IdAndIsDisabledFalse(idMonitor);
+
+        return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+    }
+
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
@@ -112,11 +117,23 @@ public class InternshipService {
 
     public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String studentUsername) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
-        return optionalStudent.map(internshipApplicationRepository::findAllByStudentAndIsDisabledFalse);
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+
+        if (optionalStudent.isPresent())
+            internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(optionalStudent.get());
+
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationOfInternshipOffer(String id) {
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByInternshipOffer_IdAndStatusIsNotAcceptedAndIsDisabledFalse(id);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
     public Optional<List<InternshipApplication>> getAllAcceptedInternshipApplications() {
-        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED);
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED);
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
