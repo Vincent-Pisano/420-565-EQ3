@@ -139,20 +139,27 @@ public class InternshipServiceTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSaveInternship() throws IOException {
         //Arrange
         expectedInternship = getInternship();
         expectedInternshipApplication = getInternshipApplication();
-        expectedInternship.setInternshipApplication(expectedInternshipApplication);
 
-        when(internshipRepository.save(expectedInternship))
+        expectedInternship.setInternshipContract(getDocument());
+        expectedInternship.setInternshipApplication(expectedInternshipApplication);
+        expectedInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        Internship givenInternship = getInternship();
+        givenInternship.setInternshipApplication(expectedInternshipApplication);
+        givenInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        when(internshipRepository.save(givenInternship))
                 .thenReturn(expectedInternship);
+        when()
 
         //Act
-        // TODO pas bon
         final Optional<Internship> optionalInternship =
-                service.saveInternship(expectedInternship);
+                service.saveInternship(givenInternship);
 
         //Assert
         Internship actualInternship = optionalInternship.orElse(null);

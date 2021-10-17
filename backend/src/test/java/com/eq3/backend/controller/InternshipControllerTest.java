@@ -52,7 +52,7 @@ public class InternshipControllerTest {
     @Test
     //Disabled
     public void testSaveInternshipOfferWithDocument() throws Exception {
-        // Arrange
+        //Arrange
         PDFDocument PDFDocument = getDocument();
         var multipartFile = mock(MultipartFile.class);
         when(multipartFile.getOriginalFilename()).thenReturn(PDFDocument.getName());
@@ -69,7 +69,7 @@ public class InternshipControllerTest {
                 eq(new ObjectMapper().writeValueAsString(givenInternshipOffer)), any(MultipartFile.class))
         ).thenReturn(Optional.of(expectedInternshipOffer));
 
-        // Act
+        //Act
         HashMap<String, String> contentTypeParams = new HashMap<>();
         contentTypeParams.put("boundary", "----WebKitFormBoundary");
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
@@ -81,7 +81,7 @@ public class InternshipControllerTest {
                         .file("document", multipartFile.getBytes())
                         .contentType(mediaType)).andReturn();
 
-        // Assert
+        //Assert
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
@@ -90,7 +90,7 @@ public class InternshipControllerTest {
     @Test
     //@Disabled
     public void testSaveInternshipOfferWithoutDocument() throws Exception {
-        // Arrange
+        //Arrange
         expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setMonitor(getMonitorWithId());
 
@@ -98,7 +98,7 @@ public class InternshipControllerTest {
                 new ObjectMapper().writeValueAsString(expectedInternshipOffer), null))
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
-        // Act
+        //Act
         HashMap<String, String> contentTypeParams = new HashMap<>();
         contentTypeParams.put("boundary", "----WebKitFormBoundary");
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
@@ -109,7 +109,7 @@ public class InternshipControllerTest {
                                 new ObjectMapper().writeValueAsString(expectedInternshipOffer).getBytes())
                         .contentType(mediaType)).andReturn();
 
-        // Assert
+        //Assert
         MockHttpServletResponse response = result.getResponse();
         var actualInternshipOffer
                 = new ObjectMapper().readValue(response.getContentAsString(), InternshipOffer.class);
@@ -119,30 +119,33 @@ public class InternshipControllerTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSaveInternship() throws Exception {
-        // Arrange
+        //Arrange
         expectedInternship = getInternship();
         expectedInternshipApplication = getInternshipApplication();
 
+        expectedInternship.setInternshipContract(getDocument());
         expectedInternship.setInternshipApplication(expectedInternshipApplication);
+        expectedInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
 
-        //TODO pas bon
-        when(service.saveInternship(expectedInternship))
+        Internship givenInternship = getInternship();
+        givenInternship.setInternshipApplication(expectedInternshipApplication);
+        givenInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        when(service.saveInternship(givenInternship))
                 .thenReturn(Optional.of(expectedInternship));
 
-        // Act
-        MvcResult result = mockMvc.perform(post(SAVE_INTERNSHIP)
-                .contentType(MediaType.APPLICATION_JSON))
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_SAVE_INTERNSHIP)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(givenInternship).getBytes()))
                 .andReturn();
 
-        // Assert
+        //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualInternship
-                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(expectedInternship).isEqualTo(actualInternship);
     }
 
     @Test

@@ -32,7 +32,7 @@ public class UtilsURL {
 
     // InternshipController
     public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
-    public final static String SAVE_INTERNSHIP = "/save/internship";
+    public final static String URL_SAVE_INTERNSHIP = "/save/internship";
     public final static String URL_GET_ALL_INTERNSHIP_OFFERS = "/getAll/internshipOffer/";
     public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/unvalidated";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/";
