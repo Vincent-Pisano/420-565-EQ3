@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import auth from "../services/Auth";
+import axios from "axios";
 import "../App.css";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
+import ImgViewer from "../components/Viewer/IMGViewer";
 import "./../styles/Home.css";
+import "./../styles/Form.css";
 
 function Home() {
   let user = auth.user;
 
   let dateFormat = formatDate(user.creationDate);
+  const [errorMessage, setErrorMessage] = useState("");
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -27,11 +31,60 @@ function Home() {
     }
   }
 
+  function saveSignature(signature) {
+    console.log(signature);
+    if (signature.type === "image/png" || signature.type === "image/jpeg") {
+
+      let formData = new FormData();
+      formData.append("signature", signature);
+
+      //à mettre dans then plus tard
+      user.signature = signature;
+      auth.user = user;
+
+      axios
+        .post(`http://localhost:9090/save/signature/${user.id}`, formData)
+        .then((response) => {})
+        .catch((error) => {
+          setErrorMessage("Erreur lors de la sauvegarde de la signature");
+        });
+    } else {
+      setErrorMessage("Sélectionnez une image PNG/JPG");
+    }
+  }
+
+  function checkSignature() {
+    if (user.signature !== undefined) {
+      return (
+        <>
+          
+          <ImgViewer image={user.signature}/>
+        </>
+      );
+    } else {
+      return (
+        <Form className="mb-5 mt-2">
+          <Form.Group controlId="document" className="cont_file_form">
+            <Form.Label className="labelFields">Signature</Form.Label>
+            <Form.Control
+              type="file"
+              onChange={(e) => {
+                saveSignature(e.target.files[0]);
+              }}
+              className="input_file_form"
+              accept="image/png, image/jpeg"
+            />
+          </Form.Group>
+        </Form>
+      );
+    }
+  }
+
   return (
     <>
       <Container className="cont_home">
         <Row className="cont_central">
-          <Col xs={12} md={3}>
+          <Col xs={12} md={4}>
             <Row>
               <Card bg="secondary" text="white" className="pfp_card">
                 <br />
@@ -47,9 +100,17 @@ function Home() {
                 </Card.Body>
                 <br />
               </Card>
+              {checkSignature()}
+              <p
+                style={{
+                  color: "red",
+                }}
+              >
+                {errorMessage}
+              </p>
             </Row>
           </Col>
-          <Col xs={12} md={9}>
+          <Col xs={12} md={8}>
             {checkIfStudent()}
           </Col>
         </Row>
