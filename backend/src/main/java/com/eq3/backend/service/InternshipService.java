@@ -2,13 +2,7 @@ package com.eq3.backend.service;
 
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
-import com.eq3.backend.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.kernel.colors.Color;
-import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Table;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -26,8 +20,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -88,11 +80,11 @@ public class InternshipService {
         return new ObjectMapper().readValue(internshipOfferJson, InternshipOffer.class);
     }
 
-    public Optional<Internship> saveInternship(Internship internship) {
+    /*public Optional<Internship> saveInternship(Internship internship) {
         internshipApplicationRepository.save(internship.getInternshipApplication());
         internship.setInternshipContract(getContract(internship));
         return Optional.of(internshipRepository.save(internship));
-    }
+    }*/
 
     public Optional<Map<String, String>> getDefaultEngagements() {
         return Optional.of(Internship.DEFAULT_ENGAGEMENTS);
@@ -148,7 +140,7 @@ public class InternshipService {
                 internshipApplicationRepository.save(internshipApplication));
     }
 
-    private PDFDocument getContract(Internship internship) {
+    /*private PDFDocument getContract(Internship internship) {
         InternshipApplication internshipApplication = internship.getInternshipApplication();
 
         Document document = new Document();
@@ -518,5 +510,5 @@ public class InternshipService {
             e.printStackTrace();
         }
         return pdfDocument;
-    }
+    }*/
 }
