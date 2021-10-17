@@ -3,6 +3,8 @@ package com.eq3.backend.utils;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 
 public class UtilsGenerator {
@@ -14,6 +16,7 @@ public class UtilsGenerator {
     public final static BaseColor BG_COLOR = new BaseColor(230,230,230);
 
     public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public final static DateFormat FORMATTER_START_END = new SimpleDateFormat("dd-MM-yyyy");
 
     public final static float WIDTH = 150F;
     public final static float NO_SPACE = 0f;

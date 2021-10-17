@@ -7,8 +7,11 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.Utils.*;
@@ -87,11 +90,13 @@ public class GenerateContract {
         setUpTitleCell(cellDurationHeader);
         tableDetailsInternship.addCell(cellDurationHeader);
 
-        PdfPCell cellStartDate = new PdfPCell(new Paragraph(String.format(START_DATE + internshipOffer.getStartDate(), DATE_FORMATTER)));
+        String dateStartFormatted = FORMATTER_START_END.format(internshipOffer.getStartDate());
+        PdfPCell cellStartDate = new PdfPCell(new Paragraph(START_DATE + dateStartFormatted));
         setUpCell(cellStartDate);
         tableDetailsInternship.addCell(cellStartDate);
 
-        PdfPCell cellEndDate = new PdfPCell(new Paragraph(String.format(END_DATE + internshipOffer.getEndDate(), DATE_FORMATTER)));
+        String dateEndFormatted = FORMATTER_START_END.format(internshipOffer.getEndDate());
+        PdfPCell cellEndDate = new PdfPCell(new Paragraph(END_DATE + dateEndFormatted));
         setUpCell(cellEndDate);
         tableDetailsInternship.addCell(cellEndDate);
 
