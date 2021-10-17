@@ -86,12 +86,14 @@ public class InternshipService {
     }
 
     public Optional<Internship> saveInternship(Internship internship) {
+        internshipApplicationRepository.save(internship.getInternshipApplication());
+        System.out.println(internship);
         internship.setInternshipContract(getContract(internship));
         return Optional.of(internshipRepository.save(internship));
     }
 
     public Optional<Map<String, String>> getDefaultEngagements() {
-        return Optional.of(Utils.getDefaultEngagements());
+        return Optional.of(Internship.DEFAULT_ENGAGEMENTS);
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {

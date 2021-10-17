@@ -99,11 +99,12 @@ const InternshipModal = ({
       return (
         <>
           <hr className="modal_separator mx-auto" />
-          <Form.Group controlId="College">
+          <Form.Group>
             <Form.Label className="labelFields">
               Engagement du collège
             </Form.Label>
             <textarea
+              id="College"
               rows="4"
               cols="50"
               className="my-3 textarea_form"
@@ -111,11 +112,12 @@ const InternshipModal = ({
               onChange={(event) => changeEngagements(event)}
             />
           </Form.Group>
-          <Form.Group controlId="Enterprise">
+          <Form.Group>
             <Form.Label className="labelFields">
               Engagement de l'entreprise
             </Form.Label>
             <textarea
+              id="Enterprise"
               rows="4"
               cols="50"
               className="my-3 textarea_form"
@@ -123,11 +125,12 @@ const InternshipModal = ({
               onChange={(event) => changeEngagements(event)}
             />
           </Form.Group>
-          <Form.Group controlId="Student">
+          <Form.Group>
             <Form.Label className="labelFields">
               Engagement de l'étudiant
             </Form.Label>
             <textarea
+              id="Student"
               rows="4"
               cols="50"
               className="my-3 textarea_form"
