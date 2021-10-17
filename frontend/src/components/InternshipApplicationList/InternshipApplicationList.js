@@ -109,6 +109,7 @@ function InternshipApplicationList() {
           <InternshipApplicationMonitorModal
             show={show}
             handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
           />
         </>
       );

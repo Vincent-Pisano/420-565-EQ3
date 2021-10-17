@@ -31,8 +31,7 @@ const InternshipApplication = ({ internshipApplication, onDoubleClick }) => {
       <Col xs={9} className="list_node_text">
         <li>
           {" "}
-          {internshipOffer.jobName}, {internshipOffer.city}
-          {", "}
+          {!auth.isMonitor() ? internshipOffer.jobName + ", " + internshipOffer.city +  ", " : ""}
           {auth.isInternshipManager() || auth.isMonitor()
             ? student.firstName + " " + student.lastName
             : ""}
