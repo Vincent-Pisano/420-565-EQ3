@@ -47,7 +47,9 @@ const InternshipApplicationInternshipManagerModal = ({
   function CreateInternship() {
     if (currentInternshipApplication.status !== "ACCEPTED") {
       currentInternshipApplication.student.cvlist = [];
+      currentInternshipApplication.student.signature = undefined;
       currentInternshipApplication.internshipOffer.pdfdocument = undefined;
+      currentInternshipApplication.internshipOffer.monitor.signature = undefined;
       let internship = {
         internshipApplication: currentInternshipApplication,
         engagements: engagements,

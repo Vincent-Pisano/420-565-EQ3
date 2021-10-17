@@ -38,14 +38,12 @@ function Home() {
       setHasASignature(true)
       let formData = new FormData();
       formData.append("signature", signature);
-
-      //à mettre dans then plus tard
-      user.signature = signature;
-      auth.user = user;
-
       axios
         .post(`http://localhost:9090/save/signature/${user.username}`, formData)
-        .then((response) => {})
+        .then((response) => {
+          user.signature = signature;
+          auth.user = user;
+        })
         .catch((error) => {
           setErrorMessage("Erreur lors de la sauvegarde de la signature");
         });

@@ -95,6 +95,7 @@ const InternshipOfferForm = () => {
 
   function saveInternshipOffer() {
     let formData = new FormData();
+    fields.monitor.signature = undefined;
     formData.append("internshipOffer", JSON.stringify(fields));
     formData.append("document", document);
     axios

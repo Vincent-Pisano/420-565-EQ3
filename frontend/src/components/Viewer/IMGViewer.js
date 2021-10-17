@@ -5,7 +5,7 @@ import { Container, Button } from "react-bootstrap";
 const ImgViewer = (image) => {
   console.log(image);
 
-  //const objectURL = URL.createObjectURL(image)
+  const objectURL = URL.createObjectURL(image)
   const [visible, setVisible] = React.useState(false);
 
   return (
@@ -25,7 +25,7 @@ const ImgViewer = (image) => {
         onClose={() => {
           setVisible(false);
         }}
-        images={[{ src: "https://www.akibagamers.it/wp-content/uploads/2019/12/bakamitai.jpg", alt: "" }]}
+        images={[{ src: objectURL, alt: "" }]}
       />
     </div>
   );

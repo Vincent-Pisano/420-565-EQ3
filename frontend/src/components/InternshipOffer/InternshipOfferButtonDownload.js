@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Container, Button } from "react-bootstrap";
-import PDFViewer from "../PDF/PDFViewer";
+import PDFViewer from "../Viewer/PDFViewer";
 
 const InternshipOfferButtonDownload = ({ internshipOfferID, document }) => {
   
