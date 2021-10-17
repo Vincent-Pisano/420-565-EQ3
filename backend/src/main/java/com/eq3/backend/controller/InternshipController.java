@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:3006")
@@ -42,7 +43,7 @@ public class InternshipController {
 
     @GetMapping("/get/default/engagements")
     public ResponseEntity<Map<String, String>> getEngagements() {
-        return service.getDefaultEngagements()
+        return Optional.of(Internship.DEFAULT_ENGAGEMENTS)
                 .map(_mapDefaultEngagements -> ResponseEntity.status(HttpStatus.CREATED).body(_mapDefaultEngagements))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

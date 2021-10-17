@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
@@ -46,6 +47,7 @@ public class InternshipControllerTest {
     private InternshipApplication expectedInternshipApplication;
     private Internship expectedInternship;
     private List<InternshipApplication> expectedInternshipApplicationList;
+    private Map<String, String> expectedEngagements;
 
     @Test
     //Disabled
@@ -302,5 +304,25 @@ public class InternshipControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipApplication).isNotNull();
         assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.ACCEPTED);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetEngagements() throws Exception {
+        //Arrange
+        expectedEngagements = Internship.DEFAULT_ENGAGEMENTS;
+
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ENGAGEMENTS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualEngagements = new ObjectMapper().readValue(response.getContentAsString(), Map.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualEngagements).isNotNull();
+        assertThat(expectedEngagements.size()).isEqualTo(actualEngagements.size());
+
     }
 }

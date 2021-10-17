@@ -3,9 +3,6 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -17,14 +14,9 @@ import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import com.itextpdf.text.pdf.PdfWriter;
 
 import static com.eq3.backend.generator.GenerateContract.generatePdfContract;
 
@@ -101,10 +93,6 @@ public class InternshipService {
             e.printStackTrace();
         }
         return pdfDocument;
-    }
-
-    public Optional<Map<String, String>> getDefaultEngagements() {
-        return Optional.of(Internship.DEFAULT_ENGAGEMENTS);
     }
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
