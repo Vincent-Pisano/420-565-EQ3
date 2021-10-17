@@ -135,6 +135,7 @@ public class UtilsTest {
                 .address("189, rue Mont-Goméry")
                 .city("Montréal")
                 .postalCode("JGH5E8")
+                .monitor(getMonitorWithId())
                 .build();
     }
 
@@ -153,6 +154,7 @@ public class UtilsTest {
                 .id("91448hkk58e00c02w02bjd4")
                 .status(InternshipApplication.ApplicationStatus.WAITING)
                 .internshipOffer(getInternshipOfferWithId())
+                .student(getStudentWithId())
                 .build();
     }
 

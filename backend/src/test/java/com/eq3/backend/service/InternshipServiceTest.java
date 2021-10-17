@@ -43,6 +43,9 @@ public class InternshipServiceTest {
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
+    @Mock
+    private InternshipManagerRepository internshipManagerRepository;
+
     //global variables
     private Student expectedStudent;
     private Monitor expectedMonitor;
@@ -155,7 +158,8 @@ public class InternshipServiceTest {
 
         when(internshipRepository.save(givenInternship))
                 .thenReturn(expectedInternship);
-        when()
+        when(internshipManagerRepository.findByIsDisabledFalse())
+                .thenReturn(Optional.of(getInternshipManagerWithId()));
 
         //Act
         final Optional<Internship> optionalInternship =
