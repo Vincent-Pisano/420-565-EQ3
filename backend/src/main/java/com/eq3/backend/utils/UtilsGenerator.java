@@ -22,6 +22,8 @@ public class UtilsGenerator {
     public final static String EMPLOYER = "L’employeur: ";
     public final static String DATE = "Date";
     public final static String AND = "et";
-    public final static String SALARY = "Salaire";
+    public final static String SALARY = "SALAIRE";
+    public final static String EMPTY = " ";
+    public final static String PARTICIPANTS = "Dans le cadre de la formule ATE, les parties citées ci-dessous :";
 
 }

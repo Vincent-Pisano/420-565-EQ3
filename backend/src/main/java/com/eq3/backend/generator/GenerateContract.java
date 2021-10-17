@@ -16,18 +16,13 @@ import static com.eq3.backend.utils.UtilsGenerator.*;
 
 public class GenerateContract {
 
-    public static Document generatePdfContract(Internship internship, Optional<InternshipManager> optionalInternshipManager) throws Exception{
-
+    public static ByteArrayOutputStream generatePdfContract(Internship internship, Optional<InternshipManager> optionalInternshipManager) throws Exception{
         InternshipManager internshipManager = optionalInternshipManager.get();
         InternshipApplication internshipApplication = internship.getInternshipApplication();
         InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
         Monitor monitor = internshipOffer.getMonitor();
 
         Document document = new Document();
-        Paragraph paragEmptySmall = new Paragraph(" ");
-        Paragraph paragAnd = new Paragraph(AND, MEDIUM_BOLD);
-        setUpParag(document, paragAnd, paragAnd, Element.ALIGN_CENTER, 40f);
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
@@ -36,22 +31,30 @@ public class GenerateContract {
 
         document.newPage();
 
+        Paragraph paragEmptySmall = new Paragraph(EMPTY);
+
+        Paragraph paragAnd = new Paragraph(AND, MEDIUM_BOLD);
+        paragAnd.setAlignment(Element.ALIGN_CENTER);
+        paragAnd.setSpacingAfter(40f);
+
         Paragraph paragEntente = new Paragraph(AGREEMENT_BETWEEN, MEDIUM_BOLD);
         setUpParag(document, paragEntente, paragEntente, Element.ALIGN_CENTER, 50f);
 
-        Paragraph paragCadre = new Paragraph("Dans le cadre de la formule ATE, les parties citées ci-dessous :", STANDARD);
+        Paragraph paragCadre = new Paragraph(PARTICIPANTS, STANDARD);
         paragCadre.setAlignment(Element.ALIGN_CENTER);
         document.add(paragCadre);
 
-        Paragraph paragCadreInternshipOwner = new Paragraph(INTERNSHIP_MANAGER + internshipManager.getFirstName() + " " + internshipManager.getLastName() + ",", STANDARD);
+        Paragraph paragCadreInternshipOwner = new Paragraph(INTERNSHIP_MANAGER + internshipManager.getFirstName() + EMPTY + internshipManager.getLastName() + ",", STANDARD);
         setUpParag(document, paragCadreInternshipOwner, paragCadreInternshipOwner, Element.ALIGN_CENTER, 40f);
 
-        Paragraph paragCadreMonitor = new Paragraph(EMPLOYER + monitor.getFirstName() + " " + monitor.getLastName() + ",", STANDARD);
+        document.add(paragAnd);
+
+        Paragraph paragCadreMonitor = new Paragraph(EMPLOYER + monitor.getFirstName() + EMPTY + monitor.getLastName() + ",", STANDARD);
         setUpParag(document, paragCadreMonitor, paragCadreMonitor, Element.ALIGN_CENTER, 40f);
 
         document.add(paragAnd);
 
-        Paragraph paragCadreStudent = new Paragraph(STUDENT + internshipApplication.getStudent().getFirstName() + " " + internshipApplication.getStudent().getLastName() + ",", STANDARD);
+        Paragraph paragCadreStudent = new Paragraph(STUDENT + internshipApplication.getStudent().getFirstName() + EMPTY + internshipApplication.getStudent().getLastName() + ",", STANDARD);
         setUpParag(document, paragCadreStudent, paragCadreStudent, Element.ALIGN_CENTER, 40f);
 
         Paragraph paragCadreConditions = new Paragraph("Conviennent des conditions de stage suivantes :", STANDARD);
@@ -104,7 +107,7 @@ public class GenerateContract {
         PdfPCell cell9 = new PdfPCell(new Paragraph("Nombre d'heures total par semaine: " + internshipOffer.getWeeklyWorkTime() + " heures"));
         setUpCell(cell9);
 
-        Chunk c4 = new Chunk("SALAIRE", fontHeader);
+        Chunk c4 = new Chunk(SALARY, fontHeader);
         Paragraph paragraphSalary = new Paragraph(c4);
 
         PdfPCell cell10 = new PdfPCell(paragraphSalary);
@@ -185,7 +188,7 @@ public class GenerateContract {
         PdfPCell cellStudentDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
         setUpTopSignatureCell(tableSignatureStudent, cellStudentDateSignature);
 
-        PdfPCell cellStudentNameSignature = new PdfPCell(new Paragraph(internshipApplication.getStudent().getFirstName() + " " + internshipApplication.getStudent().getLastName()));
+        PdfPCell cellStudentNameSignature = new PdfPCell(new Paragraph(internshipApplication.getStudent().getFirstName() + EMPTY + internshipApplication.getStudent().getLastName()));
         setUpBottomSignatureCell(tableSignatureStudent, cellStudentNameSignature);
 
         PdfPCell cellStudentDateTitleSignature = new PdfPCell(new Paragraph(DATE));
@@ -236,11 +239,11 @@ public class GenerateContract {
         document.close();
         writer.close();
 
-        return document;
+        return baos;
     }
 
     private static void generateTitlePage(Document document) throws DocumentException {
-        Paragraph paragEmpty = new Paragraph(" ");
+        Paragraph paragEmpty = new Paragraph(EMPTY);
         paragEmpty.setSpacingAfter(325f);
 
         Paragraph paragTitle = new Paragraph(CONTRACT_TITLE, LARGE_BOLD);
@@ -261,35 +264,35 @@ public class GenerateContract {
         document.add(paragCadreConditions);
     }
 
-    private static void setUpBottomSignatureCell(PdfPTable tableSignatureStudent, PdfPCell cellStudentNameSignature) {
-        cellStudentNameSignature.setUseVariableBorders(true);
-        cellStudentNameSignature.setBorderWidthLeft(0f);
-        cellStudentNameSignature.setBorderWidthRight(0f);
-        cellStudentNameSignature.setBorderWidthBottom(0f);
-        cellStudentNameSignature.setPadding(3);
-        tableSignatureStudent.addCell(cellStudentNameSignature);
+    private static void setUpBottomSignatureCell(PdfPTable tableSignatureStudent, PdfPCell bottomCell) {
+        bottomCell.setUseVariableBorders(true);
+        bottomCell.setBorderWidthLeft(0f);
+        bottomCell.setBorderWidthRight(0f);
+        bottomCell.setBorderWidthBottom(0f);
+        bottomCell.setPadding(3);
+        tableSignatureStudent.addCell(bottomCell);
     }
 
-    private static void setUpTopSignatureCell(PdfPTable tableSignatureStudent, PdfPCell cellStudentSignature) {
-        cellStudentSignature.setUseVariableBorders(true);
-        cellStudentSignature.setBorderWidthLeft(0f);
-        cellStudentSignature.setBorderWidthRight(0f);
-        cellStudentSignature.setBorderWidthTop(0f);
-        cellStudentSignature.setPadding(3);
-        tableSignatureStudent.addCell(cellStudentSignature);
+    private static void setUpTopSignatureCell(PdfPTable tableSignatureStudent, PdfPCell topCell) {
+        topCell.setUseVariableBorders(true);
+        topCell.setBorderWidthLeft(0f);
+        topCell.setBorderWidthRight(0f);
+        topCell.setBorderWidthTop(0f);
+        topCell.setPadding(3);
+        tableSignatureStudent.addCell(topCell);
     }
 
-    private static void setUpCell(PdfPCell cell2) {
-        cell2.setUseVariableBorders(true);
-        cell2.setBorderWidthTop(0f);
-        cell2.setPadding(7);
+    private static void setUpCell(PdfPCell cell) {
+        cell.setUseVariableBorders(true);
+        cell.setBorderWidthTop(0f);
+        cell.setPadding(7);
     }
 
-    private static void setUpTitleCell(PdfPCell cell1) {
-        cell1.setBackgroundColor(BG_COLOR);
-        cell1.setUseVariableBorders(true);
-        cell1.setBorderWidthBottom(0f);
-        cell1.setPadding(7);
+    private static void setUpTitleCell(PdfPCell cell) {
+        cell.setBackgroundColor(BG_COLOR);
+        cell.setUseVariableBorders(true);
+        cell.setBorderWidthBottom(0f);
+        cell.setPadding(7);
     }
 
 }
