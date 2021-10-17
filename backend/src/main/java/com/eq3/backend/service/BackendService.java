@@ -163,7 +163,7 @@ public class BackendService {
         Optional<PDFDocument> optionalDocument = Optional.empty();
         Optional<Evaluation> optionalEvaluation =
                 evaluationRepository.getByDocument_NameAndIsDisabledFalse(documentName + EVALUATION_EXTENSION);
-        
+
         if (optionalEvaluation.isPresent()) {
             Evaluation evaluation = optionalEvaluation.get();
             optionalDocument = Optional.of(evaluation.getDocument());

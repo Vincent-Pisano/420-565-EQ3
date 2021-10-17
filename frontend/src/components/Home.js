@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import auth from "../services/Auth";
 import axios from "axios";
 import "../App.css";
-import { Container, Row, Col, Card, Form } from "react-bootstrap";
+import { Container, Button, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
-import ImgViewer from "../components/Viewer/IMGViewer";
 import "./../styles/Home.css";
 import "./../styles/Form.css";
 
@@ -48,16 +47,21 @@ function Home() {
           setErrorMessage("Erreur lors de la sauvegarde de la signature");
         });
     } else {
-      setErrorMessage("Sélectionnez une image PNG/JPG");
+      setErrorMessage("Sélectionnez une image PNG");
     }
   }
 
   function checkSignature() {
     if (hasASignature) {
       return (
-        <>
-          <ImgViewer image={user.signature}/>
-        </>
+        <Container className="cont_btn_file">
+        <p
+          className="btn_submit"
+           disabled
+        >
+          Signature déposée
+        </p>
+      </Container>
       );
     } else {
       return (

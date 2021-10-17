@@ -66,7 +66,7 @@ class BackendServiceTest {
         //Arrange
         expectedImage = getImage();
         expectedInternshipManager = getInternshipManagerWithId();
-        expectedInternshipManager.setSignature(expectedImage);
+        expectedInternshipManager.setSignature(expectedImage.getData());
         var multipartFile = mock(MultipartFile.class);
 
         when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
@@ -92,7 +92,7 @@ class BackendServiceTest {
         //Arrange
         expectedImage = getImage();
         expectedSupervisor = getSupervisorWithId();
-        expectedSupervisor.setSignature(expectedImage);
+        expectedSupervisor.setSignature(expectedImage.getData());
         var multipartFile = mock(MultipartFile.class);
 
         when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
@@ -118,7 +118,7 @@ class BackendServiceTest {
         //Arrange
         expectedImage = getImage();
         expectedMonitor = getMonitorWithId();
-        expectedMonitor.setSignature(expectedImage);
+        expectedMonitor.setSignature(expectedImage.getData());
         var multipartFile = mock(MultipartFile.class);
 
         when(multipartFile.getBytes()).thenReturn(expectedImage.getData());
@@ -144,7 +144,7 @@ class BackendServiceTest {
         //Arrange
         expectedImage = getImage();
         expectedStudent = getStudentWithId();
-        expectedStudent.setSignature(expectedImage);
+        expectedStudent.setSignature(expectedImage.getData());
         var multipartFile = mock(MultipartFile.class);
 
         when(multipartFile.getBytes()).thenReturn(expectedImage.getData());

@@ -1,9 +1,11 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
+import com.eq3.backend.repository.InternshipManagerRepository;
 import com.eq3.backend.service.BackendService;
 
 import org.bson.types.Binary;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +23,8 @@ public class BackendController {
 
     private final BackendService service;
 
-    public BackendController(BackendService service) {
+    public BackendController(
+            BackendService service) {
         this.service = service;
     }
 
