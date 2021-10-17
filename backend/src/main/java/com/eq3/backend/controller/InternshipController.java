@@ -90,7 +90,8 @@ public class InternshipController {
     }
 
     @PostMapping("/apply/internshipOffer/{username}")
-    public ResponseEntity<InternshipApplication> applyInternshipOffer(@PathVariable String username, @RequestBody InternshipOffer internshipOffer) {
+    public ResponseEntity<InternshipApplication> applyInternshipOffer(@PathVariable String username,
+                                                                      @RequestBody InternshipOffer internshipOffer) {
         return service.applyInternshipOffer(username, internshipOffer)
                 .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());

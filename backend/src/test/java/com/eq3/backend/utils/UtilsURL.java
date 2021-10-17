@@ -33,10 +33,12 @@ public class UtilsURL {
     // InternshipController
     public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
     public final static String SAVE_INTERNSHIP = "/save/internship";
-    public final static String URL_GET_ALL_INTERNSHIP_OFFERS = "/getAll/internshipOffer/";
+    public final static String URL_GET_ALL_INTERNSHIP_OFFERS_WORK_FIELD = "/getAll/internshipOffer/";
     public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/unvalidated";
-    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/student/";
+    public final static String URL_GET_ALL__INTERNSHIP_OFFERS_MONITOR = "/getAll/internshipOffer/monitor/";
+    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_STUDENT = "/getAll/internshipApplication/student/";
     public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
+    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_BY_INTERNSHIP_OFFER = "/getAll/internshipApplication/internshipOffer/";
     public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/";
     public final static String URL_VALIDATE_INTERNSHIP_OFFER = "/validate/internshipOffer/";
     public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";

@@ -41,6 +41,7 @@ public class InternshipControllerTest {
 
     //global variables
     private Student expectedStudent;
+    private Monitor expectedMonitor;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
     private InternshipApplication expectedInternshipApplication;
@@ -152,7 +153,7 @@ public class InternshipControllerTest {
         when(service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE))
                 .thenReturn(Optional.of(expectedInternshipOfferList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_OFFERS +
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_OFFERS_WORK_FIELD +
                 Department.COMPUTER_SCIENCE.name()).contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -163,6 +164,26 @@ public class InternshipControllerTest {
         assertThat(actualInternshipOffers).isNotNull();
     }
 
+    @Test
+    //@Disabled
+    public void getAllInternshipOfferOfMonitor() throws Exception {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedMonitor = getMonitorWithId();
+
+        when(service.getAllInternshipOfferOfMonitor(expectedMonitor.getId()))
+                .thenReturn(Optional.of(expectedInternshipOfferList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL__INTERNSHIP_OFFERS_MONITOR + expectedMonitor.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipOffers = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipOffers).isNotNull();
+    }
     @Test
     //@Disabled
     public void testGetAllUnvalidatedInternshipOffer() throws Exception {
@@ -193,7 +214,28 @@ public class InternshipControllerTest {
         when(service.getAllInternshipApplicationOfStudent(expectedStudent.getUsername()))
                 .thenReturn(Optional.of(expectedInternshipApplicationList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS + expectedStudent.getUsername())
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS_STUDENT + expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipApplications = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+    @Test
+    //@Disabled
+    public void testGetAllInternshipApplicationOfInternshipOffer() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedInternshipOffer = getInternshipOfferWithId();
+
+        when(service.getAllInternshipApplicationOfInternshipOffer(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.of(expectedInternshipApplicationList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS_BY_INTERNSHIP_OFFER
+                + expectedInternshipOffer.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
