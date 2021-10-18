@@ -4,7 +4,6 @@ import { Container, Button } from "react-bootstrap";
 import PDFViewer from "../Viewer/PDFViewer";
 
 const InternshipOfferButtonDownload = ({ internshipOfferID, document }) => {
-  
   const [show, setShow] = useState(false);
   function handleShow() {
     setShow(!show);

@@ -41,7 +41,7 @@ const AssignSupervisorModal = ({
           );
         }
         setTimeout(() => {
-          setErrorMessageModal("")
+          setErrorMessageModal("");
           handleClose();
         }, 1000);
         setErrorMessageModal("Confirmation de l'assignation");

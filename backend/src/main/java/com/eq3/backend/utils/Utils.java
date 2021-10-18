@@ -12,19 +12,18 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Utils {
-    public final static String EVALUATION_EXTENSION = "Evaluation.pdf";
 
     public final static String ENTERPRISE_ENGAGEMENT_KEY = "Enterprise";
     public final static String ENTERPRISE_ENGAGEMENT_VALUES
-            = "L'entreprise s'engage à ne pas exploiter l'étudiant comme le régime communiste Cambodgien de Pol Pot. ";
+            = "L'entreprise s'engage à ... ";
 
     public final static String STUDENT_ENGAGEMENT_KEY = "Student";
     public final static String STUDENT_ENGAGEMENT_VALUES
-            = "L'étudiant s'engage à être plus efficace qu'une truite lors de la durée de son stage.";
+            = "L'étudiant s'engage à ...";
 
     public final static String COLLEGE_ENGAGEMENT_KEY = "College";
     public final static String COLLEGE_ENGAGEMENT_VALUES
-            = "Le collège s'engage à suivre l'étudiant dans son cheminenement spirituel.";
+            = "Le collège s'engage à ...";
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {
         PDFDocument PDFDocument = new PDFDocument();
