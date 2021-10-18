@@ -91,15 +91,15 @@ public class InternshipControllerTest {
         expectedInternship = getInternship();
         expectedInternshipApplication = getInternshipApplication();
 
-        //expectedInternship.setInternshipApplication(expectedInternshipApplication);
+        expectedInternship.setInternshipApplication(expectedInternshipApplication);
 
-        when(service.saveInternship(expectedInternshipApplication))
+        when(service.saveInternship( expectedInternshipApplication))
                 .thenReturn(Optional.of(expectedInternship));
 
         // Act
         MvcResult result = mockMvc.perform(post(SAVE_INTERNSHIP)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(expectedInternship))).andReturn();
+                .content(new ObjectMapper().writeValueAsString(expectedInternshipApplication))).andReturn();
 
         // Assert
         MockHttpServletResponse response = result.getResponse();

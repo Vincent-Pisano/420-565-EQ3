@@ -115,7 +115,7 @@ public class UtilsTest {
         allWeekDay.add("Friday");
         return InternshipOffer.builder()
                 .id("91448hkk58e00c02w02bjd4")
-                .jobName("stagiaire développement web")
+                .jobName("stagiaire developpement web")
                 .description("connaissance en REACT")
                 .startDate(new Date())
                 .endDate(new Date())
@@ -124,8 +124,8 @@ public class UtilsTest {
                 .workDays(allWeekDay)
                 .workShift(InternshipOffer.WorkShift.DAY)
                 .workField(Department.COMPUTER_SCIENCE)
-                .address("189, rue Mont-Goméry")
-                .city("Montréal")
+                .address("189, rue Mont-Gomery")
+                .city("Montreal")
                 .postalCode("JGH5E8")
                 .build();
     }
@@ -201,7 +201,7 @@ public class UtilsTest {
 
     public static Internship getInternship() throws IOException {
         return Internship.builder()
-                .id("6141112s17d3gre02ce5gt68dq5")
+                .id("6141112s17d3eye02ce5gt68dq5")
                 .internshipApplication(getInternshipApplication())
                 .build();
     }
