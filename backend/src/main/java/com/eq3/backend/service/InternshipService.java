@@ -15,7 +15,6 @@ import static com.eq3.backend.utils.Utils.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.eq3.backend.generator.GenerateContract.generatePdfContract;

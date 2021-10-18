@@ -49,13 +49,11 @@ const InternshipModal = ({
       currentInternshipApplication.student.cvlist = [];
       currentInternshipApplication.internshipOffer.pdfdocument = undefined;
       let internship = {
-        internshipApplication : currentInternshipApplication,
-        engagements: engagements
-      }
+        internshipApplication: currentInternshipApplication,
+        engagements: engagements,
+      };
       axios
-        .post(
-          `http://localhost:9090/save/internship`, internship
-        )
+        .post(`http://localhost:9090/save/internship`, internship)
         .then((response) => {
           setInternshipApplications(
             internshipApplications.filter((internshipApplication) => {
@@ -84,8 +82,7 @@ const InternshipModal = ({
         .catch((err) => {
           setErrorMessageModal("Erreur lors de la mise à jour");
         });
-    }
-    else{
+    } else {
       setTimeout(() => {
         setErrorMessageModal("");
         handleClose();

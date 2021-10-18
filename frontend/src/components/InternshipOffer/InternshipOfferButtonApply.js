@@ -3,9 +3,13 @@ import axios from "axios";
 import auth from "../../services/Auth";
 import { useHistory } from "react-router";
 
-const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErrorMessage}) => {
-
-  let history = useHistory()
+const InternshipOfferButtonApply = ({
+  fields,
+  setHasApplied,
+  errorMessage,
+  setErrorMessage,
+}) => {
+  let history = useHistory();
   let user = auth.user;
 
   function applyInternshipOffer() {
@@ -30,8 +34,8 @@ const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErr
       });
   }
 
-    return (
-      <Container className="cont_btn">
+  return (
+    <Container className="cont_btn">
       <p
         style={{
           color: errorMessage.startsWith("Erreur") ? "red" : "green",
@@ -39,14 +43,10 @@ const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErr
       >
         {errorMessage}
       </p>
-      <button
-        className="btn_submit"
-        onClick={() => applyInternshipOffer()}
-      >
+      <button className="btn_submit" onClick={() => applyInternshipOffer()}>
         Appliquer
       </button>
     </Container>
-      );
-  };
-  export default InternshipOfferButtonApply;
-  
+  );
+};
+export default InternshipOfferButtonApply;

@@ -149,7 +149,10 @@ const InternshipOfferForm = () => {
   function checkIfDocumentExist() {
     if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
       return (
-        <InternshipOfferButtonDownload internshipOfferID={internshipOffer.id} document={internshipOffer.pdfdocument} />
+        <InternshipOfferButtonDownload
+          internshipOfferID={internshipOffer.id}
+          document={internshipOffer.pdfdocument}
+        />
       );
     }
   }
