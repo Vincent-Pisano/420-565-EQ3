@@ -1,5 +1,5 @@
 import axios from "axios";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import "../../styles/Form.css";
 
@@ -15,21 +15,53 @@ const InternshipApplicationMonitorModal = ({
   let student = currentInternshipApplication.student;
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
+  const [internship, setInternship] = useState(undefined);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:9090/get/internship/${currentInternshipApplication.id}`
+      )
+      .then((response) => {
+        setInternship(response.data);
+      })
+      .catch((err) => {
+        setInternship(undefined);
+      });
+  }, [currentInternshipApplication.id]);
 
   function onConfirmModal(e) {
     e.preventDefault();
     signInternship();
   }
 
-  function signInternship() {}
+  function signInternship() {
+    if (internship !== undefined && !internship.isSignedByMonitor) {
+      axios
+        .post(
+          `http://localhost:9090/sign/internshipContract/monitor/${internship.id}`
+        )
+        .then((response) => {
+          setInternship(response.data);
+          setTimeout(() => {
+            setErrorMessageModal("");
+            handleClose();
+          }, 1000);
+          setErrorMessageModal("Confirmation de la signature");
+        })
+        .catch((err) => {
+          setInternship(undefined);
+        });
+    }
+  }
 
   function checkIfValidated() {
-    if (currentInternshipApplication.status === "VALIDATED") {
+    if (internship !== undefined) {
       return (
         <Col md={4}>
           <a
             className="btn btn-lg btn-warning mt-3"
-            href={`http://localhost:9090/get/internship/document/${currentInternshipApplication.id}`}
+            href={`http://localhost:9090/get/internship/document/${internship.id}`}
             target="_blank"
             rel="noreferrer"
           >
@@ -46,7 +78,6 @@ const InternshipApplicationMonitorModal = ({
           }
         });
         if (idCVActiveValid !== undefined) {
-          console.log("test1");
           return (
             <Col md={4}>
               <a
@@ -72,6 +103,24 @@ const InternshipApplicationMonitorModal = ({
     }
   }
 
+  function checkIfNeedSignature() {
+    if (internship !== undefined) {
+      return (
+        <Col md={4}>
+          <Button
+            variant="success"
+            size="lg"
+            className="btn_sub"
+            onClick={(e) => onConfirmModal(e)}
+            disabled={internship.signedByMonitor}
+          >
+            {internship.signedByMonitor ? "Déjà signé" : "Signer"}
+          </Button>
+        </Col>
+      );
+    }
+  }
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header>
@@ -79,16 +128,7 @@ const InternshipApplicationMonitorModal = ({
       </Modal.Header>
       <Modal.Body style={{ margin: "0%" }}>
         <Row style={{ textAlign: "center" }}>
-          <Col md={4}>
-            <Button
-              variant="success"
-              size="lg"
-              className="btn_sub"
-              onClick={(e) => onConfirmModal(e)}
-            >
-              Confirmer
-            </Button>
-          </Col>
+          {checkIfNeedSignature()}
           {checkIfValidated()}
           <Col md={4}>
             <Button

@@ -219,8 +219,16 @@ public class UtilsTest {
                 .build();
     }
 
+    public static Internship getInternshipWithInternshipContract() throws IOException {
+        return Internship.builder()
+                .id("6141112s17d3gre02ce5gt68dq5")
+                .internshipApplication(getInternshipApplication())
+                .internshipContract(getDocument())
+                .build();
+    }
+
     public static Binary getImage() throws IOException {
-        Path imagePDF = Paths.get(PDF_FILEPATH);
+        Path imagePDF = Paths.get(IMAGE_FILEPATH);
         return new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(imagePDF));
     }
 }

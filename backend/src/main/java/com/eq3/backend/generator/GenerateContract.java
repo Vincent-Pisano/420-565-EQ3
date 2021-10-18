@@ -2,11 +2,11 @@ package com.eq3.backend.generator;
 
 import com.eq3.backend.model.*;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -24,7 +24,6 @@ public class GenerateContract {
         InternshipOffer.WorkShift workShift = internshipOffer.getWorkShift();
 
         float[] pointColumnWidths = {WIDTH};
-        float[] pointColumnWidthsSignatures = {WIDTH, WIDTH};
 
         Paragraph paragEmptySmall = new Paragraph(EMPTY);
         Paragraph paragAnd = new Paragraph(AND, MEDIUM_BOLD);
@@ -53,7 +52,7 @@ public class GenerateContract {
 
         document.add(paragAnd);
 
-        Paragraph paragCadreMonitor = new Paragraph(EMPLOYER + monitor.getFirstName() + EMPTY +
+        Paragraph paragCadreMonitor = new Paragraph(MONITOR + monitor.getFirstName() + EMPTY +
                 monitor.getLastName() + COMA, STANDARD);
         setUpParag(document, paragCadreMonitor, paragCadreMonitor, Element.ALIGN_CENTER, MEDIUM_SPACE);
 
@@ -169,6 +168,8 @@ public class GenerateContract {
         Paragraph paragEngagementStudent = new Paragraph(internship.getEngagements().get(STUDENT_ENGAGEMENT_KEY), STANDARD);
         setUpParag(document, paragEngagementStudent, paragEngagementStudent, Element.ALIGN_LEFT, BELOW_MEDIUM_SPACE);
 
+        document.newPage();
+
         Paragraph paragSignature = new Paragraph(SIGNATURES, MEDIUM_BOLD);
         setUpParag(document, paragSignature, paragSignature, Element.ALIGN_CENTER, SMALL_SPACE);
 
@@ -178,77 +179,66 @@ public class GenerateContract {
         Paragraph paragEngagementContractAll = new Paragraph(ONCE_SIGNED, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractAll, paragEngagementContractAll, Element.ALIGN_LEFT, SMALL_SPACE);
 
-        Paragraph paragEngagementContractStudent = new Paragraph(STUDENT, MEDIUM_BOLD);
-        setUpParag(document, paragEngagementContractStudent, paragEngagementContractStudent, Element.ALIGN_CENTER, SMALL_SPACE);
-        //END RESPONSIBILITIES
-
-        //TABLE SIGNATURE STUDENT
-        PdfPTable tableSignatureStudent = new PdfPTable(pointColumnWidthsSignatures);
-        tableTasksResponsibilities.setSpacingAfter(BELOW_MEDIUM_SPACE);
-
-        PdfPCell cellStudentSignature = new PdfPCell(new Paragraph("Signature Étudiant (à changer)"));
-        setUpTopSignatureCell(tableSignatureStudent, cellStudentSignature);
-
-        PdfPCell cellStudentDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
-        setUpTopSignatureCell(tableSignatureStudent, cellStudentDateSignature);
-
-        PdfPCell cellStudentNameSignature = new PdfPCell(new Paragraph(student.getFirstName() + EMPTY + student.getLastName()));
-        setUpBottomSignatureCell(tableSignatureStudent, cellStudentNameSignature);
-
-        PdfPCell cellStudentDateTitleSignature = new PdfPCell(new Paragraph(DATE));
-        setUpBottomSignatureCell(tableSignatureStudent, cellStudentDateTitleSignature);
-
-        document.add(tableSignatureStudent);
-        //END TABLE SIGNATURE STUDENT
-
-        Paragraph paragEngagementContractEnterprise = new Paragraph(EMPLOYER, MEDIUM_BOLD);
-        setUpParag(document, paragEngagementContractEnterprise, paragEngagementContractEnterprise, Element.ALIGN_CENTER, SMALL_SPACE);
-
-        //TABLE SIGNATURE ENTERPRISE
-        PdfPTable tableSignatureEnterprise = new PdfPTable(pointColumnWidthsSignatures);
-        tableTasksResponsibilities.setSpacingAfter(BELOW_MEDIUM_SPACE);
-
-        PdfPCell cellEnterpriseSignature = new PdfPCell(new Paragraph("Signature Entreprise (à changer)"));
-        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseSignature);
-
-        PdfPCell cellEnterpriseDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
-        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseDateSignature);
-
-        PdfPCell cellEnterpriseNameSignature = new PdfPCell(new Paragraph(monitor.getFirstName() + EMPTY + monitor.getLastName()));
-        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseNameSignature);
-
-        PdfPCell cellEnterpriseDateTitleSignature = new PdfPCell(new Paragraph(DATE));
-        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseDateTitleSignature);
-
-        document.add(tableSignatureEnterprise);
-        //END TABLE SIGNATURE ENTERPRISE
-
-        Paragraph paragEngagementContractInternshipManager = new Paragraph(INTERNSHIP_MANAGER, MEDIUM_BOLD);
-        setUpParag(document, paragEngagementContractInternshipManager, paragEngagementContractInternshipManager, Element.ALIGN_CENTER, SMALL_SPACE);
-
-        //TABLE SIGNATURE INTERNSHIPMANAGER
-        PdfPTable tableSignatureInternshipManager = new PdfPTable(pointColumnWidthsSignatures);
-        tableSignatureInternshipManager.setSpacingAfter(BELOW_MEDIUM_SPACE);
-
-        PdfPCell cellInternshipManagerSignature = new PdfPCell(new Paragraph("Signature GS (à changer)"));
-        setUpTopSignatureCell(tableSignatureInternshipManager, cellInternshipManagerSignature);
-
-        PdfPCell cellInternshipManagerDateSignature = new PdfPCell(new Paragraph("Date Signature (à changer)"));
-        setUpTopSignatureCell(tableSignatureInternshipManager, cellInternshipManagerDateSignature);
-
-        PdfPCell cellInternshipManagerNameSignature = new PdfPCell(new Paragraph(internshipManager.getFirstName() + EMPTY + internshipManager.getLastName()));
-        setUpBottomSignatureCell(tableSignatureInternshipManager, cellInternshipManagerNameSignature);
-
-        PdfPCell cellInternshipManagerDateTitleSignature = new PdfPCell(new Paragraph(DATE));
-        setUpBottomSignatureCell(tableSignatureInternshipManager, cellInternshipManagerDateTitleSignature);
-
-        document.add(tableSignatureInternshipManager);
-        //END TABLE SIGNATURE INTERNSHIPMANAGER
-
         document.close();
         writer.close();
 
         return baos;
+    }
+
+    public static ByteArrayOutputStream signPdfContract(Monitor monitor, byte[] contrat) throws DocumentException, IOException {
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(contrat);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfReader reader = new PdfReader(bais);
+        PdfStamper stamper = new PdfStamper(reader, baos);
+
+        PdfContentByte content = stamper.getUnderContent(reader.getNumberOfPages());
+        generateSignatureMonitor(monitor, content);
+
+        stamper.close();
+        reader.close();
+
+        return baos;
+    }
+
+    private static void generateSignatureMonitor(Monitor monitor, PdfContentByte content) throws DocumentException, IOException {
+        ColumnText ct = new ColumnText(content);
+        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE_MONITOR, Y_SIGNATURE_TITLE_MONITOR));
+        ct.addElement(new Paragraph(MONITOR, MEDIUM_BOLD));
+        ct.go();
+
+        PdfPTable pdfPTable = generateTableSignature(monitor);
+        pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
+        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE_MONITOR, Y_SIGNATURE_TABLE_MONITOR, content);
+    }
+
+    private static PdfPTable generateTableSignature(User user) throws IOException, BadElementException {
+        float[] pointColumnWidthsSignatures = {WIDTH, WIDTH};
+
+        //TABLE SIGNATURE ENTERPRISE
+        PdfPTable tableSignatureEnterprise = new PdfPTable(pointColumnWidthsSignatures);
+        tableSignatureEnterprise.setSpacingAfter(BELOW_MEDIUM_SPACE);
+
+        Image img = Image.getInstance(user.getSignature().getData());
+        img.scaleAbsoluteWidth(WIDTH_SIGNATURE_IMAGE);
+        img.scaleAbsoluteHeight(HEIGHT_SIGNATURE_IMAGE);
+
+        PdfPCell cellEnterpriseSignature = new PdfPCell(img);
+        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseSignature);
+
+        Paragraph paragDate = new Paragraph(LocalDate.now().format(DATE_FORMATTER));
+        paragDate.setAlignment(Element.ALIGN_BOTTOM);
+
+        PdfPCell cellEnterpriseDateSignature = new PdfPCell(paragDate);
+        cellEnterpriseDateSignature.setVerticalAlignment(Element.ALIGN_BOTTOM);
+        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseDateSignature);
+
+        PdfPCell cellEnterpriseNameSignature = new PdfPCell(new Paragraph(user.getFirstName() + EMPTY + user.getLastName()));
+        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseNameSignature);
+
+        PdfPCell cellEnterpriseDateTitleSignature = new PdfPCell(new Paragraph(DATE));
+        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseDateTitleSignature);
+        return tableSignatureEnterprise;
     }
 
     private static void generateTitlePage(Document document) throws DocumentException {

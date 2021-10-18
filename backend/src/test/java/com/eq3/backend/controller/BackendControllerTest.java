@@ -46,6 +46,7 @@ class BackendControllerTest {
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
     private InternshipOffer expectedInternshipOffer;
+    private Internship expectedInternship;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
     private String expectedDocumentName;
@@ -348,13 +349,13 @@ class BackendControllerTest {
     public void testDownloadInternshipContractDocument() throws Exception {
         //Arrange
         expectedPDFDocument = getDocument();
-        InternshipApplication internshipApplication = getInternshipApplication();
+        expectedInternship = getInternship();
 
-        when(service.downloadInternshipContractDocument(internshipApplication.getId()))
+        when(service.downloadInternshipContractDocument(expectedInternship.getId()))
                 .thenReturn(Optional.ofNullable(expectedPDFDocument));
 
         //Act
-        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_CONTRACT + internshipApplication.getId())
+        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_CONTRACT + expectedInternship.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

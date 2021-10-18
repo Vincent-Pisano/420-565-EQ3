@@ -3,6 +3,8 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfDocument;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.eq3.backend.generator.GenerateContract.signPdfContract;
 import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
@@ -95,6 +98,10 @@ public class InternshipService {
         return pdfDocument;
     }
 
+    public Optional<Internship> getInternshipFromInternshipApplication(String idApplication) {
+        return internshipRepository.findByInternshipApplication_Id(idApplication);
+    }
+
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers =
                 internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(workField);
@@ -160,8 +167,32 @@ public class InternshipService {
         Optional<InternshipApplication> optionalInternshipApplication =
                 internshipApplicationRepository.findById(internshipApplication.getId());
 
-        return optionalInternshipApplication.map((_internshipApplication) ->
-                internshipApplicationRepository.save(internshipApplication));
+        return optionalInternshipApplication.map(internshipApplicationRepository::save);
     }
 
+    public Optional<Internship> signInternshipContractByMonitor(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+
+        optionalInternship.ifPresent(_internship -> {
+            _internship.setSignedByMonitor(true);
+            try {
+                addMonitorSignatureToInternshipContract(_internship);
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
+
+    private void addMonitorSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        PDFDocument contract = _internship.getInternshipContract();
+        Binary pdfDocumentContent = contract.getContent();
+        InternshipApplication internshipApplication = _internship.getInternshipApplication();
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+
+        ByteArrayOutputStream baos = signPdfContract(internshipOffer.getMonitor(), pdfDocumentContent.getData());
+        contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+        _internship.setInternshipContract(contract);
+    }
 }

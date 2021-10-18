@@ -11,6 +11,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,12 +22,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
+import static com.eq3.backend.utils.UtilsURL.URL_SIGN_INTERNSHIP_CONTRACT_MONITOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.lenient;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(MockitoExtension.class)
 public class InternshipServiceTest {
@@ -164,6 +170,27 @@ public class InternshipServiceTest {
         //Act
         final Optional<Internship> optionalInternship =
                 service.saveInternship(givenInternship);
+
+        //Assert
+        Internship actualInternship = optionalInternship.orElse(null);
+
+        assertThat(optionalInternship.isPresent()).isTrue();
+        assertThat(actualInternship).isEqualTo(expectedInternship);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetInternshipFromInternshipApplication() throws IOException {
+        //Arrange
+        expectedInternship = getInternship();
+        InternshipApplication givenInternshipApplication = expectedInternship.getInternshipApplication();
+
+        when(internshipRepository.findByInternshipApplication_Id(givenInternshipApplication.getId()))
+                .thenReturn(Optional.of(expectedInternship));
+
+        //Act
+        final Optional<Internship> optionalInternship =
+                service.getInternshipFromInternshipApplication(givenInternshipApplication.getId());
 
         //Assert
         Internship actualInternship = optionalInternship.orElse(null);
@@ -354,7 +381,7 @@ public class InternshipServiceTest {
 
         when(internshipApplicationRepository.findById(expectedInternshipApplication.getId()))
                 .thenReturn(Optional.of(givenInternshipApplication));
-        when(internshipApplicationRepository.save(expectedInternshipApplication))
+        when(internshipApplicationRepository.save(any()))
                 .thenReturn(expectedInternshipApplication);
 
         //Act
@@ -368,5 +395,33 @@ public class InternshipServiceTest {
         assertThat(optionalInternshipApplication.isPresent()).isTrue();
         assertThat(actualInternshipApplication).isEqualTo(expectedInternshipApplication);
         assertThat(actualStatus).isEqualTo(expectedInternshipApplication.getStatus());
+    }
+
+    @Test
+    //@Disabled
+    public void testSignInternshipContractByMonitor() throws Exception {
+        //Arrange
+        expectedInternship = getInternshipWithInternshipContract();
+        expectedInternship.setSignedByMonitor(true);
+
+        Internship givenInternship = getInternshipWithInternshipContract();
+        InternshipApplication internshipApplication = givenInternship.getInternshipApplication();
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+        Monitor monitor = internshipOffer.getMonitor();
+        monitor.setSignature(getImage());
+
+        when(internshipRepository.findById(givenInternship.getId()))
+                .thenReturn(Optional.of(givenInternship));
+        lenient().when(internshipRepository.save(any(Internship.class)))
+                .thenReturn(expectedInternship);
+
+        //Act
+        Optional<Internship> optionalInternship = service.signInternshipContractByMonitor(givenInternship.getId());
+
+        //Assert
+        Internship actualInternship = optionalInternship.orElse(null);
+
+        assertThat(actualInternship).isNotNull();
+        assertThat(actualInternship.isSignedByMonitor()).isTrue();
     }
 }

@@ -1,6 +1,7 @@
 package com.eq3.backend.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -13,7 +14,6 @@ import static com.eq3.backend.utils.Utils.getDefaultEngagements;
 @Data
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor
 public class Internship extends Entity {
 
     public final static Map<String, String> DEFAULT_ENGAGEMENTS = getDefaultEngagements();
@@ -25,5 +25,13 @@ public class Internship extends Entity {
     private InternshipApplication internshipApplication;
 
     private PDFDocument internshipContract;
+
+    @Builder.Default
+    private boolean isSignedByMonitor = false;
+
+    public Internship () {
+        super();
+        isSignedByMonitor = false;
+    }
 
 }

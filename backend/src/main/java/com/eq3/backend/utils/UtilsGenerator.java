@@ -19,6 +19,17 @@ public class UtilsGenerator {
     public final static DateFormat FORMATTER_START_END = new SimpleDateFormat("dd-MM-yyyy");
 
     public final static float WIDTH = 150F;
+    public final static float WIDTH_SIGNATURE_TITLE = 600F;
+    public final static float HEIGHT_SIGNATURE_TITLE = 50F;
+    public final static float WIDTH_SIGNATURE_TABLE = 500F;
+    public final static float WIDTH_SIGNATURE_IMAGE = 200F;
+    public final static float HEIGHT_SIGNATURE_IMAGE = 75F;
+
+    public final static float X_SIGNATURE_TITLE_MONITOR = 250F;
+    public final static float Y_SIGNATURE_TITLE_MONITOR = 675F;
+    public final static float X_SIGNATURE_TABLE_MONITOR = 35F;
+    public final static float Y_SIGNATURE_TABLE_MONITOR = 625F;
+
     public final static float NO_SPACE = 0f;
     public final static float TINY_SPACE = 10f;
     public final static float SMALLER_SPACE = 15f;
@@ -36,7 +47,7 @@ public class UtilsGenerator {
     public final static String AGREEMENT_BETWEEN = "ENTENTE DE STAGE INTERVENUE ENTRE LES PARTIES SUIVANTES";
     public final static String STUDENT = "L’étudiant(e): ";
     public final static String INTERNSHIP_MANAGER = "Le gestionnaire de stage: ";
-    public final static String EMPLOYER = "L’employeur: ";
+    public final static String MONITOR = "L’employeur: ";
     public final static String DATE = "Date";
     public final static String AND = "et";
     public final static String SALARY = "SALAIRE";

@@ -48,6 +48,14 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping(value = "/get/internship/{idApplication}",
+            produces = "application/json;charset=utf8")
+    public ResponseEntity<Internship> getInternshipFromInternshipApplication(@PathVariable String idApplication) {
+        return service.getInternshipFromInternshipApplication(idApplication)
+                .map(_mapDefaultEngagements -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_mapDefaultEngagements))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/internshipOffer/{workField}")
     public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferByWorkField(@PathVariable Department workField) {
         return service.getAllInternshipOfferByWorkField(workField)
@@ -109,6 +117,13 @@ public class InternshipController {
     public ResponseEntity<InternshipApplication> updateInternshipApplication(@RequestBody InternshipApplication internshipApplication) {
         return service.updateInternshipApplication(internshipApplication)
                 .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/sign/internshipContract/monitor/{idInternship}")
+    public ResponseEntity<Internship> signInternshipContractByMonitor(@PathVariable String idInternship) {
+        return service.signInternshipContractByMonitor(idInternship)
+                .map(_internship -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internship))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 }

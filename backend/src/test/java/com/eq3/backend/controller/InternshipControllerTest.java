@@ -151,6 +151,48 @@ public class InternshipControllerTest {
 
     @Test
     //@Disabled
+    public void testGetEngagements() throws Exception {
+        //Arrange
+        expectedEngagements = Internship.DEFAULT_ENGAGEMENTS;
+
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ENGAGEMENTS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualEngagements = new ObjectMapper().readValue(response.getContentAsString(), Map.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualEngagements).isNotNull();
+        assertThat(expectedEngagements.size()).isEqualTo(actualEngagements.size());
+
+    }
+
+    @Test
+    //@Disabled
+    public void testGetInternshipFromInternshipApplication() throws Exception {
+        //Arrange
+        expectedInternship = getInternship();
+        InternshipApplication givenInternshipApplication = expectedInternship.getInternshipApplication();
+
+        when(service.getInternshipFromInternshipApplication(givenInternshipApplication.getId()))
+                .thenReturn(Optional.of(expectedInternship));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_INTERNSHIP_FROM_INTERNSHIP_APPLICATION +
+                givenInternshipApplication.getId()).contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternship = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternship).isNotNull();
+        assertThat(actualInternship).isEqualTo(expectedInternship);
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllInternshipOfferByWorkField() throws Exception {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
@@ -353,21 +395,27 @@ public class InternshipControllerTest {
 
     @Test
     //@Disabled
-    public void testGetEngagements() throws Exception {
+    public void testSignInternshipContractByMonitor() throws Exception {
         //Arrange
-        expectedEngagements = Internship.DEFAULT_ENGAGEMENTS;
+        expectedInternship = getInternship();
+        expectedInternship.setSignedByMonitor(true);
+
+        Internship givenInternship = getInternship();
+
+        when(service.signInternshipContractByMonitor(givenInternship.getId())).thenReturn(Optional.ofNullable(expectedInternship));
 
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ENGAGEMENTS)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult result = mockMvc.perform(post(URL_SIGN_INTERNSHIP_CONTRACT_MONITOR + givenInternship.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
-        var actualEngagements = new ObjectMapper().readValue(response.getContentAsString(), Map.class);
+        var actualInternship
+                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(actualEngagements).isNotNull();
-        assertThat(expectedEngagements.size()).isEqualTo(actualEngagements.size());
-
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternship).isNotNull();
+        assertThat(actualInternship.isSignedByMonitor()).isTrue();
     }
 }
