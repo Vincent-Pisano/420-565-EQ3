@@ -47,6 +47,7 @@ public class UtilsURL {
     public final static String URL_VALIDATE_INTERNSHIP_OFFER = "/validate/internshipOffer/";
     public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_MONITOR = "/sign/internshipContract/monitor/";
+    public final static String URL_SIGN_INTERNSHIP_CONTRACT_STUDENT = "/sign/internshipContract/student/";
 
 
 }
