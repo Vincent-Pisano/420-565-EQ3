@@ -167,7 +167,8 @@ public class InternshipService {
         Optional<InternshipApplication> optionalInternshipApplication =
                 internshipApplicationRepository.findById(internshipApplication.getId());
 
-        return optionalInternshipApplication.map(internshipApplicationRepository::save);
+        return optionalInternshipApplication.map(_internshipApplication ->
+                internshipApplicationRepository.save(internshipApplication));
     }
 
     public Optional<Internship> signInternshipContractByMonitor(String idInternship) {
