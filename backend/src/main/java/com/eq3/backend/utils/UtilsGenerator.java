@@ -19,19 +19,22 @@ public class UtilsGenerator {
     public final static DateFormat FORMATTER_START_END = new SimpleDateFormat("dd-MM-yyyy");
 
     public final static float WIDTH = 150F;
+    public final static float[] COLUMN_WIDTH = {WIDTH};
     public final static float WIDTH_SIGNATURE_TITLE = 600F;
     public final static float HEIGHT_SIGNATURE_TITLE = 50F;
     public final static float WIDTH_SIGNATURE_TABLE = 500F;
     public final static float WIDTH_SIGNATURE_IMAGE = 200F;
     public final static float HEIGHT_SIGNATURE_IMAGE = 75F;
-    public final static float X_SIGNATURE_TITLE = 250F;
     public final static float X_SIGNATURE_TABLE = 35F;
 
     public final static float Y_SIGNATURE_TITLE_MONITOR = 675F;
     public final static float Y_SIGNATURE_TABLE_MONITOR = 625F;
 
-    public final static float Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER = 575F;
-    public final static float Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER = 525F;
+    public final static float Y_SIGNATURE_TITLE_STUDENT = 500F;
+    public final static float Y_SIGNATURE_TABLE_STUDENT = 450F;
+
+    public final static float Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER = 325F;
+    public final static float Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER = 275F;
 
     public final static float NO_SPACE = 0f;
     public final static float TINY_SPACE = 10f;
@@ -81,8 +84,8 @@ public class UtilsGenerator {
     public final static String RESPONSIBILITIES = "RESPONSABILITES";
     public final static String SIGNATURES = "SIGNATURES";
     public final static String ONCE_SIGNED = "En foi de quoi les parties ont signé, ";
-    public final static String COLLEGE_COMMITSMENTS = "Le Collège s’engage à :";
-    public final static String ENTERPRISE_COMMITSMENTS = "L’entreprise s’engage à :";
-    public final static String STUDENT_COMMITSMENTS = "L’étudiant s’engage à :";
+    public final static String COLLEGE_COMMITMENTS = "Le Collège s’engage à :";
+    public final static String ENTERPRISE_COMMITMENTS = "L’entreprise s’engage à :";
+    public final static String STUDENT_COMMITMENTS = "L’étudiant s’engage à :";
     public final static String CONTRACT_CONDITIONS = "Les parties s’engagent à respecter cette entente de stage";
 }

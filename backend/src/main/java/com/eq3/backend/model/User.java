@@ -27,4 +27,12 @@ public class User extends Entity {
     protected String lastName;
 
     protected Binary signature;
+
+    public boolean isStudent() {
+        return this instanceof Student;
+    }
+
+    public boolean isMonitor() {
+        return this instanceof Monitor;
+    }
 }
