@@ -24,11 +24,14 @@ public class UtilsGenerator {
     public final static float WIDTH_SIGNATURE_TABLE = 500F;
     public final static float WIDTH_SIGNATURE_IMAGE = 200F;
     public final static float HEIGHT_SIGNATURE_IMAGE = 75F;
+    public final static float X_SIGNATURE_TITLE = 250F;
+    public final static float X_SIGNATURE_TABLE = 35F;
 
-    public final static float X_SIGNATURE_TITLE_MONITOR = 250F;
     public final static float Y_SIGNATURE_TITLE_MONITOR = 675F;
-    public final static float X_SIGNATURE_TABLE_MONITOR = 35F;
     public final static float Y_SIGNATURE_TABLE_MONITOR = 625F;
+
+    public final static float Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER = 575F;
+    public final static float Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER = 525F;
 
     public final static float NO_SPACE = 0f;
     public final static float TINY_SPACE = 10f;

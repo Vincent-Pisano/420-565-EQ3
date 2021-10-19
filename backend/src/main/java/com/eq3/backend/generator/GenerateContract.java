@@ -203,13 +203,40 @@ public class GenerateContract {
 
     private static void generateSignatureMonitor(Monitor monitor, PdfContentByte content) throws DocumentException, IOException {
         ColumnText ct = new ColumnText(content);
-        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE_MONITOR, Y_SIGNATURE_TITLE_MONITOR));
+        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE, Y_SIGNATURE_TITLE_MONITOR));
         ct.addElement(new Paragraph(MONITOR, MEDIUM_BOLD));
         ct.go();
 
         PdfPTable pdfPTable = generateTableSignature(monitor);
         pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
-        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE_MONITOR, Y_SIGNATURE_TABLE_MONITOR, content);
+        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, Y_SIGNATURE_TABLE_MONITOR, content);
+    }
+
+    public static ByteArrayOutputStream signPdfContract(InternshipManager internshipManager, byte[] contrat) throws DocumentException, IOException {
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(contrat);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfReader reader = new PdfReader(bais);
+        PdfStamper stamper = new PdfStamper(reader, baos);
+
+        PdfContentByte content = stamper.getUnderContent(reader.getNumberOfPages());
+        generateSignatureInternshipManager(internshipManager, content);
+
+        stamper.close();
+        reader.close();
+
+        return baos;
+    }
+
+    private static void generateSignatureInternshipManager(InternshipManager internshipManager, PdfContentByte content) throws DocumentException, IOException {
+        ColumnText ct = new ColumnText(content);
+        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE, Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER));
+        ct.addElement(new Paragraph(INTERNSHIP_MANAGER, MEDIUM_BOLD));
+        ct.go();
+
+        PdfPTable pdfPTable = generateTableSignature(internshipManager);
+        pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
+        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER, content);
     }
 
     private static PdfPTable generateTableSignature(User user) throws IOException, BadElementException {

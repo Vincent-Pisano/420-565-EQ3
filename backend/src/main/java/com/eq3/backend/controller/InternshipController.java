@@ -126,4 +126,11 @@ public class InternshipController {
                 .map(_internship -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internship))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @PostMapping("/sign/internshipContract/internshipManager/{idInternship}")
+    public ResponseEntity<Internship> signInternshipContractByInternshipManager(@PathVariable String idInternship) {
+        return service.signInternshipContractByInternshipManager(idInternship)
+                .map(_internship -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internship))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 }

@@ -196,4 +196,31 @@ public class InternshipService {
 
         _internship.setInternshipContract(contract);
     }
+
+    public Optional<Internship> signInternshipContractByInternshipManager(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+
+        optionalInternship.ifPresent(_internship -> {
+            _internship.setSignedByInternshipManager(true);
+            try {
+                addInternshipManagerSignatureToInternshipContract(_internship);
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
+
+    private void addInternshipManagerSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByIsDisabledFalse();
+        if (optionalInternshipManager.isPresent()){
+            PDFDocument contract = _internship.getInternshipContract();
+            Binary pdfDocumentContent = contract.getContent();
+
+            ByteArrayOutputStream baos = signPdfContract(optionalInternshipManager.get(), pdfDocumentContent.getData());
+            contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+            _internship.setInternshipContract(contract);
+        }
+    }
 }
