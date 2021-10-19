@@ -18,10 +18,10 @@ function InternshipApplicationList() {
   let title = auth.isStudent()
     ? "Liste de vos applications de stage"
     : auth.isInternshipManager()
-    ? "Liste des applications de stages acceptées"
-    : auth.isMonitor()
-    ? "Listes des applications pour l'offre : " + internshipOffer.jobName
-    : "Vous ne devriez pas voir cette page";
+      ? "Liste des applications de stages acceptées"
+      : auth.isMonitor()
+        ? "Listes des applications pour l'offre : " + internshipOffer.jobName
+        : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -45,14 +45,29 @@ function InternshipApplicationList() {
           setErrorMessage("Aucune Application enregistrée pour le moment");
         });
     } else if (auth.isInternshipManager()) {
-      axios
-        .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
-        .then((response) => {
-          setInternshipApplications(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage("Aucune Application acceptée pour le moment");
-        });
+      console.log(typeof JSON.parse(window.sessionStorage.getItem("signature")))
+      let isSignature = JSON.parse(window.sessionStorage.getItem("signature"));
+      if (isSignature) {
+        axios
+          .get(`http://localhost:9090/getAll/validated/internshipApplication`)
+          .then((response) => {
+            setInternshipApplications(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Application validée pour le moment");
+          });
+      } else {
+        axios
+          .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
+          .then((response) => {
+            setInternshipApplications(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Application acceptée pour le moment");
+          });
+      }
+
+
     } else if (auth.isMonitor()) {
       axios
         .get(

@@ -145,6 +145,12 @@ public class InternshipService {
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
+    public Optional<List<InternshipApplication>> getAllValidatedInternshipApplications() {
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.VALIDATED);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
     public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));

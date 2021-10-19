@@ -97,6 +97,13 @@ public class InternshipController {
                 .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+    @GetMapping("/getAll/validated/internshipApplication")
+    public ResponseEntity<List<InternshipApplication>> getAllValidatedInternshipApplications() {
+        return service.getAllValidatedInternshipApplications()
+                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
 
     @PostMapping("/apply/internshipOffer/{username}")
     public ResponseEntity<InternshipApplication> applyInternshipOffer(@PathVariable String username,
