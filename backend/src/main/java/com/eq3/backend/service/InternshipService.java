@@ -207,12 +207,17 @@ public class InternshipService {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
 
         optionalInternship.ifPresent(_internship -> {
+            InternshipApplication internshipApplication = _internship.getInternshipApplication();
+            internshipApplication.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
             _internship.setSignedByInternshipManager(true);
+
             try {
                 addInternshipManagerSignatureToInternshipContract(_internship);
             } catch (DocumentException | IOException e) {
                 e.printStackTrace();
             }
+
+            internshipApplicationRepository.save(internshipApplication);
         });
         return optionalInternship.map(internshipRepository::save);
     }

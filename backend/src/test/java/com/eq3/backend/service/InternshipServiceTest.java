@@ -432,6 +432,8 @@ public class InternshipServiceTest {
         //Arrange
         expectedInternship = getInternshipWithInternshipContract();
         expectedInternship.setSignedByInternshipManager(true);
+        InternshipApplication expectedInternshipApplication = expectedInternship.getInternshipApplication();
+        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
 
         Internship givenInternship = getInternshipWithInternshipContract();
 
@@ -442,6 +444,8 @@ public class InternshipServiceTest {
                 .thenReturn(Optional.of(expectedInternshipManager));
         when(internshipRepository.findById(givenInternship.getId()))
                 .thenReturn(Optional.of(givenInternship));
+        when(internshipApplicationRepository.save(any(InternshipApplication.class)))
+                .thenReturn(expectedInternshipApplication);
         lenient().when(internshipRepository.save(any(Internship.class)))
                 .thenReturn(expectedInternship);
 
@@ -450,8 +454,10 @@ public class InternshipServiceTest {
 
         //Assert
         Internship actualInternship = optionalInternship.orElse(null);
+        InternshipApplication actualInternshipApplication = actualInternship != null ? actualInternship.getInternshipApplication() : null;
 
         assertThat(actualInternship).isNotNull();
         assertThat(actualInternship.isSignedByInternshipManager()).isTrue();
+        assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.COMPLETED);
     }
 }

@@ -35,6 +35,8 @@ function InternshipApplicationList() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
+    setErrorMessage("");
+    setInternshipApplications([])
     if (auth.isStudent()) {
       axios
         .get(
@@ -112,6 +114,9 @@ function InternshipApplicationList() {
               show={show}
               handleClose={handleClose}
               currentInternshipApplication={currentInternshipApplication}
+              internshipApplications={internshipApplications}
+              setInternshipApplications={setInternshipApplications}
+              setErrorMessage={setErrorMessage}
             />
           </>
         );
@@ -157,6 +162,7 @@ function InternshipApplicationList() {
                 key={internshipApplication.id}
                 internshipApplication={internshipApplication}
                 onDoubleClick={showModal}
+                isInternshipManagerSignature={isInternshipManagerSignature}
               />
             ))}
           </ul>
