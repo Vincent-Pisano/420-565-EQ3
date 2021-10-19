@@ -25,6 +25,7 @@ const InternshipApplicationSignatureModal = ({
       )
       .then((response) => {
         setInternship(response.data);
+        console.log(response.data)
       })
       .catch((err) => {
         setInternship(undefined);
@@ -37,8 +38,8 @@ const InternshipApplicationSignatureModal = ({
   }
 
   function signInternship() {
-    if (auth.isMonitor) {
-      if (internship !== undefined && !internship.isSignedByMonitor) {
+    if (auth.isMonitor()) {
+      if (internship !== undefined && !internship.signedByMonitor) {
         axios
           .post(
             `http://localhost:9090/sign/internshipContract/monitor/${internship.id}`
@@ -56,9 +57,9 @@ const InternshipApplicationSignatureModal = ({
           });
       }
     }
-    else if (auth.isInternshipManager) {
-      if (internship !== undefined && internship.isSignedByMonitor && internship.isSignedByStudent) {
-        if (!internship.isSignedByInternshipManager) {
+    else if (auth.isInternshipManager()) {
+      if (internship !== undefined && internship.signedByMonitor && internship.signedByStudent) {
+        if (!internship.signedByInternshipManager) {
           axios
             .post(
               `http://localhost:9090/sign/internshipContract/internshipManager/${internship.id}`
@@ -141,7 +142,8 @@ const InternshipApplicationSignatureModal = ({
             onClick={(e) => onConfirmModal(e)}
             disabled={internship.signedByMonitor}
           >
-            {internship.signedByMonitor ? "Déjà signé" : "Signer"}
+            {auth.isMonitor() ? internship.signedByMonitor ? "Déjà signé" : "Signer" :
+              auth.isInternshipManager ? internship.signedByMonitor ? "Déjà signé" : "Signer" : "Confirmer"}
           </Button>
         </Col>
       );
