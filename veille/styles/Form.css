@@ -1,0 +1,266 @@
+.cont_principal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.cont_central {
+  padding: 2%;
+  background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
+  border-radius: 8px;
+  transition: all 0.5s;
+  min-width: 40%;
+  margin: 5% auto;
+}
+
+.cont_form {
+  min-width: 100%;
+}
+
+.cont_tabs_login {
+  position: relative;
+  float: left;
+  width: 100%;
+  font-size: 30px;
+}
+
+.cont_text_inputs {
+  position: relative;
+  float: left;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.cont_text_inputs label {
+  color: #999;
+  font-size: small;
+  position: relative;
+  float: left;
+  margin-left: 40px;
+  margin-bottom: 0px;
+}
+
+.cont_text_inputs > input:nth-child(1) {
+  transition-delay: 0.2s;
+}
+
+.cont_text_inputs > input:nth-child(2) {
+  transition-delay: 0.4s;
+}
+.cont_text_inputs > input:nth-child(3) {
+  transition-delay: 0.6s;
+}
+.cont_text_inputs > input:nth-child(4) {
+  transition-delay: 0.8s;
+}
+
+.cont_buttons_sign_up {
+  margin-bottom: 5%;
+  margin-top: 10%;
+}
+
+.cont_buttons_sign_up div {
+  display: inline-block;
+}
+
+.btn_link {
+  background: linear-gradient(-87deg, #aeb4b4 40%, #9bacb3 100%);
+  box-shadow: 0px 2px 20px 2px rgba(192, 220, 223, 0.5);
+  border-radius: 8px;
+  padding: 15px 20px;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  float: none;
+  cursor: pointer;
+  list-style: none;
+  text-decoration: none;
+}
+
+.btn_link_selected {
+  background: rgba(255, 64, 88, 0.74) !important;
+  box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5) !important;
+}
+
+.cont_title_form {
+  width: 100%;
+  box-shadow: none !important;
+  color: rgba(255, 64, 88, 0.74);
+}
+
+.cont_title_form h2 {
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.discret {
+  color: #9bacb3;
+}
+
+.cont_inputs {
+  width: 100%;
+  margin-top: 2%;
+}
+
+.input_form {
+  width: 90%;
+  border: none;
+  border-bottom: 1px solid #b0bec5;
+  background-color: transparent;
+  font-size: 20px;
+  outline: none;
+  transition: all 0.5s;
+  border-radius: 0%;
+
+  margin: 5% 5%;
+  padding: 4% 2%;
+  opacity: 1;
+  height: 5px;
+  display: block;
+}
+
+.input_form:focus {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.select_form {
+  width: 90%;
+  border: none;
+  border: 1px solid #b0bec5;
+  background-color: transparent;
+  font-size: 20px;
+  outline: none;
+  transition: all 0.5s;
+
+  margin: 5% 5%;
+  padding: 0% 2%;
+  opacity: 1;
+  height: 50px;
+  font-size: 20px;
+  display: block;
+}
+
+.cont_file_form {
+  width: 90%;
+  margin: -5% 0% 5% 5%;
+  padding: 10% 0px;
+  opacity: 1;
+  height: 5px;
+  display: block;
+  transition: all 0.5s;
+}
+
+.cont_btn_file {
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
+.btn_file {
+  background: rgba(255, 64, 88, 0.74);
+  box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5);
+  border-radius: 8px;
+  padding: 3% 5%;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  width: 50%;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.btn_file:hover {
+  color: #fff;
+}
+
+.input_file_form {
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  outline: none;
+  transition: all 0.5s;
+  border-radius: 0%;
+  padding: 2% 2%;
+}
+
+.input_file_form:focus {
+  border: none;
+  background-color: transparent;
+  box-shadow: 0px 2px 20px 2px rgba(192, 220, 223, 0.5);
+}
+
+.cont_btn {
+  position: relative;
+  display: inline-block;
+}
+
+.cont_btn p {
+  color: red;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.btn_submit {
+  background: rgba(255, 64, 88, 0.74);
+  box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5);
+  border-radius: 8px;
+  padding: 15px 30px;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.checkboxes{
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.checkboxes .row {
+  justify-content: center;
+
+}
+
+.checkboxes .row > *{
+  margin: 0px 0px;
+  
+}
+
+.checkboxes label {
+  display: block;
+  padding-right: 10px;
+  padding-left: 22px;
+  text-indent: -22px;
+  margin-bottom: 5px;
+  color: #999;
+}
+.checkboxes input {
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+}
+.checkboxes label span {
+  vertical-align: middle;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+.labelFields_checkbox {
+  display: inline-block;
+  font-size: 1rem;
+  color: #999;
+}
+
+.labelFields {
+  font-size: 1rem;
+  color: #999;
+  margin-bottom: -2%;
+}
+
+.modal_separator {
+  color: #999;
+  width: 12%;
+}
