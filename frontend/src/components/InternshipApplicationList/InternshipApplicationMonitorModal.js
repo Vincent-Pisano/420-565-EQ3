@@ -65,7 +65,7 @@ const InternshipApplicationMonitorModal = ({
             target="_blank"
             rel="noreferrer"
           >
-            contrat
+            Contrat
           </a>
         </Col>
       );
