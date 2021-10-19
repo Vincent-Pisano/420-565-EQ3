@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import auth from "../services/Auth";
 import axios from "axios";
 import "../App.css";
-import { Container, Button, Row, Col, Card, Form } from "react-bootstrap";
+import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import "./../styles/Home.css";
@@ -32,7 +32,6 @@ function Home() {
   }
 
   function saveSignature(signature) {
-    console.log(signature);
     if (signature.type === "image/png") {
       let formData = new FormData();
       formData.append("signature", signature);
