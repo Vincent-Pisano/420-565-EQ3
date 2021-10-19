@@ -57,7 +57,28 @@ const InternshipApplicationSignatureModal = ({
       }
     }
     else if (auth.isInternshipManager) {
-      console.log("Je suis dépressif avec de la taux - Mathis")
+      if (internship !== undefined && internship.isSignedByMonitor && internship.isSignedByStudent) {
+        if (!internship.isSignedByInternshipManager) {
+          axios
+            .post(
+              `http://localhost:9090/sign/internshipContract/internshipManager/${internship.id}`
+            )
+            .then((response) => {
+              setInternship(response.data);
+              setTimeout(() => {
+                setErrorMessageModal("");
+                handleClose();
+              }, 1000);
+              setErrorMessageModal("Confirmation de la signature");
+            })
+            .catch((err) => {
+              setInternship(undefined);
+            });
+        }
+      }
+      else {
+        setErrorMessageModal("En attente de la signature du Moniteur et de l'Étudiant");
+      }
     }
   }
 
