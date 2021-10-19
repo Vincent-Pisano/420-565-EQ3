@@ -36,7 +36,7 @@ public class GenerateContract {
         generateCommitments(internship, document);
         document.newPage();
 
-        generateSignatures(document);
+        generateSignaturesTitle(document);
 
         document.close();
         writer.close();
@@ -168,7 +168,7 @@ public class GenerateContract {
         //END TABLE TASKS RESPONSIBILITIES
     }
 
-    private static void generateSignatures(Document document) throws DocumentException {
+    private static void generateSignaturesTitle(Document document) throws DocumentException {
         Paragraph paragSignature = new Paragraph(SIGNATURES, MEDIUM_BOLD);
         setUpParag(document, paragSignature, paragSignature, Element.ALIGN_CENTER, SMALL_SPACE);
 
@@ -223,10 +223,13 @@ public class GenerateContract {
     }
 
     private static void addSignatureTitle(User user, PdfContentByte content) throws DocumentException {
+        boolean isMonitor = user instanceof Monitor;
+        boolean isStudent = user instanceof Monitor;
+
         float ySignatureTitle =
-                user.isMonitor() ? Y_SIGNATURE_TITLE_MONITOR : user.isStudent() ? Y_SIGNATURE_TITLE_STUDENT : Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER;
+                isMonitor ? Y_SIGNATURE_TITLE_MONITOR : isStudent ? Y_SIGNATURE_TITLE_STUDENT : Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER;
         String strParagTitle =
-                user.isMonitor() ? MONITOR : user.isStudent() ? STUDENT : INTERNSHIP_MANAGER;
+                isMonitor ? MONITOR : isStudent ? STUDENT : INTERNSHIP_MANAGER;
 
         ColumnText ct = new ColumnText(content);
         ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, NO_SPACE, ySignatureTitle));
@@ -237,8 +240,11 @@ public class GenerateContract {
     }
 
     private static void addSignatureTable(User user, PdfContentByte content) throws DocumentException, IOException {
+        boolean isMonitor = user instanceof Monitor;
+        boolean isStudent = user instanceof Monitor;
+
         float ySignatureTable =
-                user.isMonitor() ? Y_SIGNATURE_TABLE_MONITOR : user.isStudent() ? Y_SIGNATURE_TABLE_STUDENT : Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER;
+                isMonitor ? Y_SIGNATURE_TABLE_MONITOR : isStudent ? Y_SIGNATURE_TABLE_STUDENT : Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER;
 
         PdfPTable pdfPTable = generateSignatureTable(user);
         pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
