@@ -2,12 +2,6 @@ import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 const NavUserGs = () => {
-  const signButton = () => {
-    window.sessionStorage.setItem("signature", true);
-  }
-  const assignButton = () => {
-    window.sessionStorage.setItem("signature", false);
-  }
   return (
     <NavDropdown
       className="nav-drop-cust"
@@ -31,7 +25,6 @@ const NavUserGs = () => {
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        onClick={assignButton}
         to="/listInternshipApplication"
       >
         Liste Applications
@@ -49,8 +42,7 @@ const NavUserGs = () => {
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        onClick={signButton}
-        to="/listInternshipApplication"
+        to="/listInternshipApplication/signature"
       >
         Signature d'applications
       </NavDropdown.Item>

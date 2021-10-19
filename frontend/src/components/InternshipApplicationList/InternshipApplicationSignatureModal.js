@@ -1,12 +1,13 @@
 import axios from "axios";
+import auth from "../../services/Auth";
 import { React, useState, useEffect } from "react";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import "../../styles/Form.css";
 
-const InternshipApplicationMonitorModal = ({
+const InternshipApplicationSignatureModal = ({
   show,
   handleClose,
-  currentInternshipApplication,
+  currentInternshipApplication
 }) => {
   let title =
     currentInternshipApplication.status === "VALIDATED"
@@ -36,22 +37,27 @@ const InternshipApplicationMonitorModal = ({
   }
 
   function signInternship() {
-    if (internship !== undefined && !internship.isSignedByMonitor) {
-      axios
-        .post(
-          `http://localhost:9090/sign/internshipContract/monitor/${internship.id}`
-        )
-        .then((response) => {
-          setInternship(response.data);
-          setTimeout(() => {
-            setErrorMessageModal("");
-            handleClose();
-          }, 1000);
-          setErrorMessageModal("Confirmation de la signature");
-        })
-        .catch((err) => {
-          setInternship(undefined);
-        });
+    if (auth.isMonitor) {
+      if (internship !== undefined && !internship.isSignedByMonitor) {
+        axios
+          .post(
+            `http://localhost:9090/sign/internshipContract/monitor/${internship.id}`
+          )
+          .then((response) => {
+            setInternship(response.data);
+            setTimeout(() => {
+              setErrorMessageModal("");
+              handleClose();
+            }, 1000);
+            setErrorMessageModal("Confirmation de la signature");
+          })
+          .catch((err) => {
+            setInternship(undefined);
+          });
+      }
+    }
+    else if (auth.isInternshipManager) {
+      console.log("Je suis dépressif avec de la taux - Mathis")
     }
   }
 
@@ -160,4 +166,4 @@ const InternshipApplicationMonitorModal = ({
   );
 };
 
-export default InternshipApplicationMonitorModal;
+export default InternshipApplicationSignatureModal;

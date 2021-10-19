@@ -7,21 +7,23 @@ import { Container } from "react-bootstrap";
 import InternshipApplication from "./InternshipApplication";
 import InternshipApplicationStudentModal from "./InternshipApplicationStudentModal";
 import InternshipApplicationInternshipManagerModal from "./InternshipApplicationInternshipManagerModal";
-import InternshipApplicationMonitorModal from "./InternshipApplicationMonitorModal";
+import InternshipApplicationSignatureModal from "./InternshipApplicationSignatureModal";
 
 function InternshipApplicationList() {
   let user = auth.user;
   let history = useHistory();
 
   let internshipOffer = history.location.state;
+  let isInternshipManagerSignature =  history.location.pathname === "/listInternshipApplication/signature";
 
   let title = auth.isStudent()
-    ? "Liste de vos applications de stage"
+    ? "Liste de vos applications de stage" 
+    : auth.isMonitor()
+    ? "Listes des applications pour l'offre : " + internshipOffer.jobName
     : auth.isInternshipManager()
-      ? "Liste des applications de stages acceptées"
-      : auth.isMonitor()
-        ? "Listes des applications pour l'offre : " + internshipOffer.jobName
-        : "Vous ne devriez pas voir cette page";
+    ? isInternshipManagerSignature ? "Liste des applications de stages à signer" 
+    : "Liste des applications de stages acceptées" 
+    : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -45,9 +47,7 @@ function InternshipApplicationList() {
           setErrorMessage("Aucune Application enregistrée pour le moment");
         });
     } else if (auth.isInternshipManager()) {
-      console.log(typeof JSON.parse(window.sessionStorage.getItem("signature")))
-      let isSignature = JSON.parse(window.sessionStorage.getItem("signature"));
-      if (isSignature) {
+      if (isInternshipManagerSignature) {
         axios
           .get(`http://localhost:9090/getAll/validated/internshipApplication`)
           .then((response) => {
@@ -80,7 +80,7 @@ function InternshipApplicationList() {
           setErrorMessage("Aucune Application enregistrée pour le moment");
         });
     }
-  }, [user.username, internshipOffer]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -105,23 +105,37 @@ function InternshipApplicationList() {
         />
       );
     } else if (auth.isInternshipManager()) {
-      return (
-        <>
-          <InternshipApplicationInternshipManagerModal
-            show={show}
-            handleClose={handleClose}
-            currentInternshipApplication={currentInternshipApplication}
-            showIntershipOffer={showIntershipOffer}
-            internshipApplications={internshipApplications}
-            setInternshipApplications={setInternshipApplications}
-            setErrorMessage={setErrorMessage}
-          />
-        </>
-      );
+      if (isInternshipManagerSignature) {
+        return (
+          <>
+            <InternshipApplicationSignatureModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+            />
+          </>
+        );
+      }
+      else {
+        return (
+          <>
+            <InternshipApplicationInternshipManagerModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+              showIntershipOffer={showIntershipOffer}
+              internshipApplications={internshipApplications}
+              setInternshipApplications={setInternshipApplications}
+              setErrorMessage={setErrorMessage}
+            />
+          </>
+        );
+      }
+      
     } else if (auth.isMonitor()) {
       return (
         <>
-          <InternshipApplicationMonitorModal
+          <InternshipApplicationSignatureModal
             show={show}
             handleClose={handleClose}
             currentInternshipApplication={currentInternshipApplication}
