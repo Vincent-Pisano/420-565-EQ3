@@ -30,6 +30,9 @@ public class UtilsGenerator {
     public final static float Y_SIGNATURE_TITLE_MONITOR = 675F;
     public final static float Y_SIGNATURE_TABLE_MONITOR = 625F;
 
+    public final static float Y_SIGNATURE_TITLE_STUDENT = 600F;
+    public final static float Y_SIGNATURE_TABLE_STUDENT = 550F;
+
     public final static float NO_SPACE = 0f;
     public final static float TINY_SPACE = 10f;
     public final static float SMALLER_SPACE = 15f;

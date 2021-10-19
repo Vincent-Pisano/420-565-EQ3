@@ -429,7 +429,7 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
-    public void testInternshipStudentSigned() throws IOException {
+    public void testSignInternshipContractByStudent() throws IOException {
         //Arrange
         expectedInternship = getInternshipWithInternshipContract();
         expectedInternship.setSignedByStudent(true);
@@ -439,14 +439,14 @@ public class InternshipServiceTest {
         Student student = internshipApplication.getStudent();
         student.setSignature(getImage());
 
-        when(internshipRepository.findById(expectedInternship.getId()))
-                .thenReturn(Optional.ofNullable(expectedInternship));
+        when(internshipRepository.findById(givenInternship.getId()))
+                .thenReturn(Optional.ofNullable(givenInternship));
         lenient().when(internshipRepository.save(any(Internship.class)))
                 .thenReturn(expectedInternship);
 
         //Act
         Optional<Internship> optionalInternship =
-                service.signInternshipContractByStudent(expectedInternship.getId());
+                service.signInternshipContractByStudent(givenInternship.getId());
 
         //Assert
         Internship actualInternship = optionalInternship.orElse(null);

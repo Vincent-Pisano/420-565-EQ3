@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.eq3.backend.generator.GenerateContract.signPdfContract;
+import static com.eq3.backend.generator.GenerateContract.*;
 import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.Optional;
-
-import static com.eq3.backend.generator.GenerateContract.generatePdfContract;
 
 @Service
 public class InternshipService {
@@ -236,7 +234,7 @@ public class InternshipService {
         optionalInternship.ifPresent(_internship -> {
             _internship.setSignedByStudent(true);
             try {
-                addMonitorSignatureToInternshipContract(_internship);
+                addStudentSignatureToInternshipContract(_internship);
             } catch (DocumentException | IOException e) {
                 e.printStackTrace();
             }
@@ -251,6 +249,18 @@ public class InternshipService {
         InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
 
         ByteArrayOutputStream baos = signPdfContract(internshipOffer.getMonitor(), pdfDocumentContent.getData());
+        contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+        _internship.setInternshipContract(contract);
+
+    }
+
+    private void addStudentSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        PDFDocument contract = _internship.getInternshipContract();
+        Binary pdfDocumentContent = contract.getContent();
+        InternshipApplication internshipApplication = _internship.getInternshipApplication();
+
+        ByteArrayOutputStream baos = studentSignPdfContract(internshipApplication.getStudent(), pdfDocumentContent.getData());
         contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
 
         _internship.setInternshipContract(contract);

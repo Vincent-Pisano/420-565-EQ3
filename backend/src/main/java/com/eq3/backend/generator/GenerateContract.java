@@ -201,6 +201,22 @@ public class GenerateContract {
         return baos;
     }
 
+    public static ByteArrayOutputStream studentSignPdfContract(Student student, byte[] contrat) throws DocumentException, IOException {
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(contrat);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfReader reader = new PdfReader(bais);
+        PdfStamper stamper = new PdfStamper(reader, baos);
+
+        PdfContentByte content = stamper.getUnderContent(reader.getNumberOfPages());
+        generateSignatureStudent(student, content);
+
+        stamper.close();
+        reader.close();
+
+        return baos;
+    }
+
     private static void generateSignatureMonitor(Monitor monitor, PdfContentByte content) throws DocumentException, IOException {
         ColumnText ct = new ColumnText(content);
         ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE, Y_SIGNATURE_TITLE_MONITOR));
@@ -212,33 +228,45 @@ public class GenerateContract {
         pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, Y_SIGNATURE_TABLE_MONITOR, content);
     }
 
+    private static void generateSignatureStudent(Student student, PdfContentByte content) throws DocumentException, IOException {
+        ColumnText ct = new ColumnText(content);
+        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE, Y_SIGNATURE_TITLE_STUDENT));
+        ct.addElement(new Paragraph(STUDENT, MEDIUM_BOLD));
+        ct.go();
+
+        PdfPTable pdfPTable = generateTableSignature(student);
+        pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
+        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, Y_SIGNATURE_TABLE_STUDENT, content);
+    }
+
     private static PdfPTable generateTableSignature(User user) throws IOException, BadElementException {
         float[] pointColumnWidthsSignatures = {WIDTH, WIDTH};
 
-        //TABLE SIGNATURE ENTERPRISE
-        PdfPTable tableSignatureEnterprise = new PdfPTable(pointColumnWidthsSignatures);
-        tableSignatureEnterprise.setSpacingAfter(BELOW_MEDIUM_SPACE);
+        //TABLE SIGNATURE
+
+        PdfPTable tableSignature = new PdfPTable(pointColumnWidthsSignatures);
+        tableSignature.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
         Image img = Image.getInstance(user.getSignature().getData());
         img.scaleAbsoluteWidth(WIDTH_SIGNATURE_IMAGE);
         img.scaleAbsoluteHeight(HEIGHT_SIGNATURE_IMAGE);
 
-        PdfPCell cellEnterpriseSignature = new PdfPCell(img);
-        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseSignature);
+        PdfPCell cellUserSignature = new PdfPCell(img);
+        setUpTopSignatureCell(tableSignature, cellUserSignature);
 
         Paragraph paragDate = new Paragraph(LocalDate.now().format(DATE_FORMATTER));
         paragDate.setAlignment(Element.ALIGN_BOTTOM);
 
-        PdfPCell cellEnterpriseDateSignature = new PdfPCell(paragDate);
-        cellEnterpriseDateSignature.setVerticalAlignment(Element.ALIGN_BOTTOM);
-        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseDateSignature);
+        PdfPCell cellDateSignature = new PdfPCell(paragDate);
+        cellDateSignature.setVerticalAlignment(Element.ALIGN_BOTTOM);
+        setUpTopSignatureCell(tableSignature, cellDateSignature);
 
-        PdfPCell cellEnterpriseNameSignature = new PdfPCell(new Paragraph(user.getFirstName() + EMPTY + user.getLastName()));
-        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseNameSignature);
+        PdfPCell cellNameSignature = new PdfPCell(new Paragraph(user.getFirstName() + EMPTY + user.getLastName()));
+        setUpBottomSignatureCell(tableSignature, cellNameSignature);
 
-        PdfPCell cellEnterpriseDateTitleSignature = new PdfPCell(new Paragraph(DATE));
-        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseDateTitleSignature);
-        return tableSignatureEnterprise;
+        PdfPCell cellDateTitleSignature = new PdfPCell(new Paragraph(DATE));
+        setUpBottomSignatureCell(tableSignature, cellDateTitleSignature);
+        return tableSignature;
     }
 
     private static void generateTitlePage(Document document) throws DocumentException {
