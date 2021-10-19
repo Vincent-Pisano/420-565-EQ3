@@ -1,0 +1,3 @@
+Git: https://github.com/Vincent-Pisano/420-565-EQ3/tree/Veille_Maksym
+Trello: https://trello.com/b/zwLeEk8Q/projet-veille-pravdin-maksym-vue-cassandra
+Google docs: https://docs.google.com/document/d/1LcdDmuKzAY8M3LeWyJrGSfkM5XSH4WGXPc4b1QUTRvI/edit#heading=h.advk73qwd9cw
