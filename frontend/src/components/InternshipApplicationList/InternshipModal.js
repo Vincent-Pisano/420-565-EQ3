@@ -56,10 +56,10 @@ const InternshipModal = ({
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal("Confirmation des changements");
+        setErrorMessageModal("Confirmation du démarrage du processus");
       })
       .catch((err) => {
-        setErrorMessageModal("Erreur lors de la mise à jour");
+        setErrorMessageModal("Erreur lors de la création");
       });
   }
 
@@ -95,7 +95,7 @@ const InternshipModal = ({
                     <option disabled value="WAITING">
                       En attente
                     </option>
-                    <option value ="VALIDATED" active>
+                    <option value ="VALIDATED">
                       Validée
                     </option>
                   </Form.Select>
