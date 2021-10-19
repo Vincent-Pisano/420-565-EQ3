@@ -110,7 +110,7 @@ const Login = () => {
               </Container>
               <Container className="cont_btn">
                 <p>{errorMessage}</p>
-                <button className="btn_submit">Confirmer</button>
+                <button className="btn_submit">Connexion</button>
               </Container>
             </Form>
           </Row>

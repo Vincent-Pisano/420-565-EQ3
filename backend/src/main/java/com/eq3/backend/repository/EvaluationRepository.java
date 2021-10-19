@@ -10,6 +10,5 @@ import java.util.Optional;
 @Repository
 public interface EvaluationRepository extends MongoRepository<Evaluation, String> {
 
-    @Query(value = "{ 'isDisabled':false ,'document.name': ?0 }")
-    Optional<Evaluation> findByName(String name);
+    Optional<Evaluation> getByDocument_NameAndIsDisabledFalse(String name);
 }

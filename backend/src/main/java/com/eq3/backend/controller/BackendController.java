@@ -1,14 +1,18 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
+import com.eq3.backend.repository.InternshipManagerRepository;
 import com.eq3.backend.service.BackendService;
 
+import org.bson.types.Binary;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -19,8 +23,19 @@ public class BackendController {
 
     private final BackendService service;
 
-    public BackendController(BackendService service) {
+    public BackendController(
+            BackendService service) {
         this.service = service;
+    }
+
+    @PostMapping(value = "/save/signature/{username}",
+            produces = "application/json;charset=utf8",
+            consumes = { "multipart/form-data" })
+    public ResponseEntity<Binary> saveSignature(@PathVariable String username,
+                                                @RequestPart(name = "signature") MultipartFile multipartFile) {
+        return service.saveSignature(username, multipartFile)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @GetMapping("/getAll/students/{department}")
@@ -81,12 +96,19 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping(value="/get/internship/document/{id}", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> downloadInternshipContractDocument(@PathVariable String id){
+        return service.downloadInternshipContractDocument(id)
+                .map(this::getDownloadingDocument)
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     private ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
-        headers.add("Content-Disposition", "attachment; filename=" + PDFDocument.getName());
+        headers.add("Content-Disposition", "inline; filename=" + PDFDocument.getName());
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)

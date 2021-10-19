@@ -23,8 +23,21 @@ const CV = ({ cv }) => {
       <td>
         <FontAwesomeIcon
           className="fa-2x"
-          icon={cv.status === "VALID" ? faCheck : cv.status === "INVALID" ? faTimes : faSyncAlt}
-          style={{ color: cv.status === "VALID" ? "green" : cv.status === "INVALID" ? "red" : "#ffc107" }}
+          icon={
+            cv.status === "VALID"
+              ? faCheck
+              : cv.status === "INVALID"
+              ? faTimes
+              : faSyncAlt
+          }
+          style={{
+            color:
+              cv.status === "VALID"
+                ? "green"
+                : cv.status === "INVALID"
+                ? "red"
+                : "#ffc107",
+          }}
         />
       </td>
     </tr>

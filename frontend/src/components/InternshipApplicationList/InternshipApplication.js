@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faSyncAlt, faSignature } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 import auth from "../../services/Auth";
 
@@ -21,7 +21,9 @@ const InternshipApplication = ({ internshipApplication, onDoubleClick }) => {
               : internshipApplication.status === "ACCEPTED"
               ? faCheck
               : internshipApplication.status === "NOT_ACCEPTED"
-              ? faTimes
+              ? faTimes 
+              : internshipApplication.status === "VALIDATED"
+              ? faSignature
               : faSyncAlt
           }
         />
@@ -29,9 +31,10 @@ const InternshipApplication = ({ internshipApplication, onDoubleClick }) => {
       <Col xs={9} className="list_node_text">
         <li>
           {" "}
-          {internshipOffer.jobName}, {internshipOffer.city}
-          {", "}
-          {student.firstName} {student.lastName}
+          {!auth.isMonitor() ? internshipOffer.jobName + ", " + internshipOffer.city +  ", " : ""}
+          {auth.isInternshipManager() || auth.isMonitor()
+            ? student.firstName + " " + student.lastName
+            : ""}
         </li>
       </Col>
     </Row>

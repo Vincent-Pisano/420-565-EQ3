@@ -5,17 +5,23 @@ import auth from "../../services/Auth";
 import "../../styles/List.css";
 import { Container } from "react-bootstrap";
 import InternshipApplication from "./InternshipApplication";
-import InternshipApplicationModal from "./InternshipApplicationModal";
+import InternshipApplicationStudentModal from "./InternshipApplicationStudentModal";
+import InternshipApplicationInternshipManagerModal from "./InternshipApplicationInternshipManagerModal";
+import InternshipApplicationMonitorModal from "./InternshipApplicationMonitorModal";
 
 function InternshipApplicationList() {
   let user = auth.user;
   let history = useHistory();
 
+  let internshipOffer = history.location.state;
+
   let title = auth.isStudent()
     ? "Liste de vos applications de stage"
-    : auth.isInternshipManager
+    : auth.isInternshipManager()
     ? "Liste des applications de stages acceptées"
-    : "Vous ne devriez pas voir cette page !";
+    : auth.isMonitor()
+    ? "Listes des applications pour l'offre : " + internshipOffer.jobName
+    : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -30,7 +36,7 @@ function InternshipApplicationList() {
     if (auth.isStudent()) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/${user.username}`
+          `http://localhost:9090/getAll/internshipApplication/student/${user.username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);
@@ -47,8 +53,19 @@ function InternshipApplicationList() {
         .catch((err) => {
           setErrorMessage("Aucune Application acceptée pour le moment");
         });
+    } else if (auth.isMonitor()) {
+      axios
+        .get(
+          `http://localhost:9090/getAll/internshipApplication/internshipOffer/${internshipOffer.id}`
+        )
+        .then((response) => {
+          setInternshipApplications(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Aucune Application enregistrée pour le moment");
+        });
     }
-  }, [user.username]);
+  }, [user.username, internshipOffer]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -65,7 +82,7 @@ function InternshipApplicationList() {
   function checkForModal() {
     if (auth.isStudent()) {
       return (
-        <InternshipApplicationModal
+        <InternshipApplicationStudentModal
           show={show}
           handleClose={handleClose}
           currentInternshipApplication={currentInternshipApplication}
@@ -73,7 +90,29 @@ function InternshipApplicationList() {
         />
       );
     } else if (auth.isInternshipManager()) {
-      return <></>;
+      return (
+        <>
+          <InternshipApplicationInternshipManagerModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+            showIntershipOffer={showIntershipOffer}
+            internshipApplications={internshipApplications}
+            setInternshipApplications={setInternshipApplications}
+            setErrorMessage={setErrorMessage}
+          />
+        </>
+      );
+    } else if (auth.isMonitor()) {
+      return (
+        <>
+          <InternshipApplicationMonitorModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+          />
+        </>
+      );
     }
   }
 

@@ -2,6 +2,7 @@ package com.eq3.backend.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -24,4 +25,6 @@ public class User extends Entity {
     protected String firstName;
     @Field
     protected String lastName;
+
+    protected Binary signature;
 }

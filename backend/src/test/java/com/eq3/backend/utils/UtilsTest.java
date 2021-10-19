@@ -15,11 +15,15 @@ import java.util.List;
 public class UtilsTest {
 
     public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
-    public final static String DOCUMENT_NAME = "documentTest";
-    public final static String SIGNATURE_STRING = "nom quelconque";
+    public final static String DOCUMENT_NAME = "student";
 
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
+    public final static String IMAGE_FILEPATH =
+            System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\image.png";
+
+    public final static String PDF_EVALUATION_FILEPATH =
+            System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\studentEvaluation.pdf";
 
     public static Student getStudentWithId(){
         Student student = getStudentWithoutId();
@@ -133,6 +137,7 @@ public class UtilsTest {
                 .address("189, rue Mont-Goméry")
                 .city("Montréal")
                 .postalCode("JGH5E8")
+                .monitor(getMonitorWithId())
                 .build();
     }
 
@@ -151,6 +156,7 @@ public class UtilsTest {
                 .id("91448hkk58e00c02w02bjd4")
                 .status(InternshipApplication.ApplicationStatus.WAITING)
                 .internshipOffer(getInternshipOfferWithId())
+                .student(getStudentWithId())
                 .build();
     }
 
@@ -168,6 +174,14 @@ public class UtilsTest {
         Path pdfPath = Paths.get(PDF_FILEPATH);
         return PDFDocument.builder()
                 .name("documentTest.pdf")
+                .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
+                .build();
+    }
+
+    public static PDFDocument getEvaluationDocument(String documentName) throws IOException {
+        Path pdfPath = Paths.get(PDF_EVALUATION_FILEPATH);
+        return PDFDocument.builder()
+                .name(documentName + DOCUMENT_EXTENSION)
                 .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
                 .build();
     }
@@ -192,17 +206,29 @@ public class UtilsTest {
         return cvList;
     }
 
-    public static Evaluation getEvaluation() throws IOException {
+    public static Evaluation getEvaluation(String documentName) throws IOException {
         return Evaluation.builder()
-                .document(getDocument())
+                .document(getEvaluationDocument(documentName))
                 .build();
     }
 
     public static Internship getInternship() throws IOException {
         return Internship.builder()
-                .id("994662s17dfv9re02c85gt68dd5")
+                .id("6141112s17d3gre02ce5gt68dq5")
                 .internshipApplication(getInternshipApplication())
-                .studentSigned(false)
                 .build();
+    }
+
+    public static Internship getInternshipWithInternshipContract() throws IOException {
+        return Internship.builder()
+                .id("6141112s17d3gre02ce5gt68dq5")
+                .internshipApplication(getInternshipApplication())
+                .internshipContract(getDocument())
+                .build();
+    }
+
+    public static Binary getImage() throws IOException {
+        Path imagePDF = Paths.get(IMAGE_FILEPATH);
+        return new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(imagePDF));
     }
 }

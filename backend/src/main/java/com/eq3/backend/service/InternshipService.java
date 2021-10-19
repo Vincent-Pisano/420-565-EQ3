@@ -3,27 +3,25 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfDocument;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.eq3.backend.generator.GenerateContract.signPdfContract;
 import static com.eq3.backend.utils.Utils.*;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.*;
 import java.util.List;
 import java.util.Optional;
+
+import static com.eq3.backend.generator.GenerateContract.generatePdfContract;
 
 @Service
 public class InternshipService {
@@ -34,17 +32,20 @@ public class InternshipService {
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
+    private final InternshipManagerRepository internshipManagerRepository;
 
     InternshipService(StudentRepository studentRepository,
-                      InternshipOfferRepository internshipOfferRepository,
-                      InternshipApplicationRepository internshipApplicationRepository,
-                      InternshipRepository internshipRepository
+                   InternshipOfferRepository internshipOfferRepository,
+                   InternshipApplicationRepository internshipApplicationRepository,
+                   InternshipRepository internshipRepository,
+                   InternshipManagerRepository internshipManagerRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
+        this.internshipManagerRepository = internshipManagerRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -76,12 +77,44 @@ public class InternshipService {
         return new ObjectMapper().readValue(internshipOfferJson, InternshipOffer.class);
     }
 
+    public Optional<Internship> saveInternship(Internship internship) {
+        internshipApplicationRepository.save(internship.getInternshipApplication());
+        internship.setInternshipContract(getContract(internship));
+        return Optional.of(internshipRepository.save(internship));
+    }
+
+    private PDFDocument getContract(Internship internship) {
+        PDFDocument pdfDocument = new PDFDocument();
+        Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByIsDisabledFalse();
+
+        try{
+            ByteArrayOutputStream baos = generatePdfContract(internship, optionalInternshipManager);
+            pdfDocument.setName("Contract.pdf");
+            pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pdfDocument;
+    }
+
+    public Optional<Internship> getInternshipFromInternshipApplication(String idApplication) {
+        return internshipRepository.findByInternshipApplication_Id(idApplication);
+    }
+
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers =
                 internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(workField);
         internshipOffers.forEach(internshipOffer -> internshipOffer.setPDFDocument(
                 internshipOffer.getPDFDocument() != null ? new PDFDocument() : null)
         );
+        return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+    }
+
+    public Optional<List<InternshipOffer>> getAllInternshipOfferOfMonitor(String idMonitor) {
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByMonitor_IdAndIsDisabledFalse(idMonitor);
+
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
@@ -92,11 +125,23 @@ public class InternshipService {
 
     public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String studentUsername) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
-        return optionalStudent.map(internshipApplicationRepository::findAllByStudentAndIsDisabledFalse);
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+
+        if (optionalStudent.isPresent())
+            internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(optionalStudent.get());
+
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationOfInternshipOffer(String id) {
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByInternshipOffer_IdAndStatusIsNotAcceptedAndIsDisabledFalse(id);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
     public Optional<List<InternshipApplication>> getAllAcceptedInternshipApplications() {
-        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED);
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.ACCEPTED);
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
@@ -122,21 +167,14 @@ public class InternshipService {
         Optional<InternshipApplication> optionalInternshipApplication =
                 internshipApplicationRepository.findById(internshipApplication.getId());
 
-        return optionalInternshipApplication.map((_internshipApplication) ->
+        return optionalInternshipApplication.map(_internshipApplication ->
                 internshipApplicationRepository.save(internshipApplication));
     }
 
-    public Optional<Internship> internshipStudentSigned(Internship internship, String signature) throws IOException {
-        internship.setStudentSigned(true);
-        Optional<Internship> optionalInternship =
-                internshipRepository.findById(internship.getId());
 
-        studentSignDocument(signature);
-        return optionalInternship.map((_internshipApplication) ->
-                internshipRepository.save(internship));
-    }
 
     private void studentSignDocument(String signature) throws IOException {
+        /*
         String location = "C:/Users/jules/Desktop/evaluation_stagiaire.pdf";
         String finalPDF = "C:/Users/jules/Desktop/evaluation_stagiaire_mod.pdf";//Juste pour tester
         PdfReader pdfReader = new PdfReader(location);
@@ -148,7 +186,7 @@ public class InternshipService {
 
         document.add(new Paragraph("Étudiant(e)"));
 
-        float [] pointColumnWidths = {200F, 200F};
+        float[] pointColumnWidths = {200F, 200F};
         Table table = new Table(pointColumnWidths);
         table.setFixedPosition(document.getLeftMargin(), document.getBottomMargin(),
                 pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin());
@@ -175,7 +213,47 @@ public class InternshipService {
         table.addCell(cell);
 
         document.add(table);
+        */
+    }
 
-        document.close();
+    public Optional<Internship> signInternshipContractByMonitor(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+
+        optionalInternship.ifPresent(_internship -> {
+            _internship.setSignedByMonitor(true);
+            try {
+                addMonitorSignatureToInternshipContract(_internship);
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
+
+    public Optional<Internship> signInternshipContractByStudent(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+
+        optionalInternship.ifPresent(_internship -> {
+            _internship.setSignedByStudent(true);
+            try {
+                addMonitorSignatureToInternshipContract(_internship);
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
+
+    private void addMonitorSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        PDFDocument contract = _internship.getInternshipContract();
+        Binary pdfDocumentContent = contract.getContent();
+        InternshipApplication internshipApplication = _internship.getInternshipApplication();
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+
+        ByteArrayOutputStream baos = signPdfContract(internshipOffer.getMonitor(), pdfDocumentContent.getData());
+        contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+        _internship.setInternshipContract(contract);
+
     }
 }
