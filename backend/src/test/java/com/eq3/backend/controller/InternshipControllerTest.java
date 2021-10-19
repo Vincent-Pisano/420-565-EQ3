@@ -420,7 +420,7 @@ public class InternshipControllerTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSignInternshipContractByInternshipManager() throws Exception {
         //Arrange
         expectedInternship = getInternship();
