@@ -42,6 +42,7 @@ public class UtilsURL {
     public final static String URL_GET_ALL__INTERNSHIP_OFFERS_MONITOR = "/getAll/internshipOffer/monitor/";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_STUDENT = "/getAll/internshipApplication/student/";
     public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
+    public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_APPLICATIONS = "/getAll/validated/internshipApplication";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_BY_INTERNSHIP_OFFER = "/getAll/internshipApplication/internshipOffer/";
     public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/";
     public final static String URL_VALIDATE_INTERNSHIP_OFFER = "/validate/internshipOffer/";
@@ -49,6 +50,5 @@ public class UtilsURL {
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_MONITOR = "/sign/internshipContract/monitor/";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_STUDENT = "/sign/internshipContract/student/";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_INTERNSHIP_MANAGER = "/sign/internshipContract/internshipManager/";
-
 
 }

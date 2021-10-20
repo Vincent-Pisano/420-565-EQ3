@@ -189,6 +189,19 @@ public class InternshipService {
         return optionalInternship.map(internshipRepository::save);
     }
 
+    private void addMonitorSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        PDFDocument contract = _internship.getInternshipContract();
+        Binary pdfDocumentContent = contract.getContent();
+        InternshipApplication internshipApplication = _internship.getInternshipApplication();
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+
+        ByteArrayOutputStream baos = signPdfContract(internshipOffer.getMonitor(), pdfDocumentContent.getData());
+        contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+        _internship.setInternshipContract(contract);
+
+    }
+
     public Optional<Internship> signInternshipContractByStudent(String idInternship) {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
 
@@ -201,6 +214,18 @@ public class InternshipService {
             }
         });
         return optionalInternship.map(internshipRepository::save);
+    }
+
+    private void addStudentSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        PDFDocument contract = _internship.getInternshipContract();
+        Binary pdfDocumentContent = contract.getContent();
+        InternshipApplication internshipApplication = _internship.getInternshipApplication();
+
+        ByteArrayOutputStream baos = signPdfContract(internshipApplication.getStudent(), pdfDocumentContent.getData());
+        contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+        _internship.setInternshipContract(contract);
+
     }
 
     public Optional<Internship> signInternshipContractByInternshipManager(String idInternship) {
@@ -221,33 +246,6 @@ public class InternshipService {
         });
         return optionalInternship.map(internshipRepository::save);
     }
-
-    private void addMonitorSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
-        PDFDocument contract = _internship.getInternshipContract();
-        Binary pdfDocumentContent = contract.getContent();
-        InternshipApplication internshipApplication = _internship.getInternshipApplication();
-        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-
-        ByteArrayOutputStream baos = signPdfContract(internshipOffer.getMonitor(), pdfDocumentContent.getData());
-        contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
-
-        _internship.setInternshipContract(contract);
-
-    }
-
-    private void addStudentSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
-        PDFDocument contract = _internship.getInternshipContract();
-        Binary pdfDocumentContent = contract.getContent();
-        InternshipApplication internshipApplication = _internship.getInternshipApplication();
-
-        ByteArrayOutputStream baos = signPdfContract(internshipApplication.getStudent(), pdfDocumentContent.getData());
-        contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
-
-        _internship.setInternshipContract(contract);
-
-    }
-
-
 
     private void addInternshipManagerSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
         Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByIsDisabledFalse();

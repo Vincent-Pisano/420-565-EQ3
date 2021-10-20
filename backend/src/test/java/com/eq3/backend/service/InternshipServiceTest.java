@@ -325,6 +325,26 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllValidatedInternshipApplications() {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+
+        when(internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.VALIDATED))
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllValidatedInternshipApplications();
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+
+    }
+
+    @Test
+    //@Disabled
     public void testApplyInternshipOffer() {
         //Arrange
         expectedStudent = getStudentWithId();
