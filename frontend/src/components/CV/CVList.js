@@ -7,7 +7,7 @@ import CVTable from "./CVTable";
 
 const CVList = () => {
   let user = auth.user;
-  
+
   return (
     <Container className="cont_list_cv">
       <Container className="cont_list_centrar">

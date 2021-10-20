@@ -13,7 +13,9 @@ function Home() {
 
   let dateFormat = formatDate(user.creationDate);
   const [errorMessage, setErrorMessage] = useState("");
-  const [hasASignature, setHasASignature] = useState(user.signature !== undefined && user.signature !== null );
+  const [hasASignature, setHasASignature] = useState(
+    user.signature !== undefined && user.signature !== null
+  );
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -40,7 +42,7 @@ function Home() {
         .then((response) => {
           user.signature = response.data;
           auth.user = user;
-          setHasASignature(true)
+          setHasASignature(true);
         })
         .catch((error) => {
           setErrorMessage("Erreur lors de la sauvegarde de la signature");
@@ -54,13 +56,10 @@ function Home() {
     if (hasASignature) {
       return (
         <Container className="cont_btn_file">
-        <p
-          className="btn_submit"
-           disabled
-        >
-          Signature déposée
-        </p>
-      </Container>
+          <p className="btn_submit" disabled>
+            Signature déposée
+          </p>
+        </Container>
       );
     } else {
       return (

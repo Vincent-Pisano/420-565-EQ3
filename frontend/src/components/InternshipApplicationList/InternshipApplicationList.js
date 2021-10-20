@@ -14,15 +14,17 @@ function InternshipApplicationList() {
   let history = useHistory();
 
   let internshipOffer = history.location.state;
-  let isInternshipManagerSignature =  history.location.pathname === "/listInternshipApplication/signature";
+  let isInternshipManagerSignature =
+    history.location.pathname === "/listInternshipApplication/signature";
 
   let title = auth.isStudent()
-    ? "Liste de vos applications de stage" 
+    ? "Liste de vos applications de stage"
     : auth.isMonitor()
     ? "Listes des applications pour l'offre : " + internshipOffer.jobName
     : auth.isInternshipManager()
-    ? isInternshipManagerSignature ? "Liste des applications de stages à signer" 
-    : "Liste des applications de stages acceptées" 
+    ? isInternshipManagerSignature
+      ? "Liste des applications de stages à signer"
+      : "Liste des applications de stages acceptées"
     : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
@@ -36,7 +38,7 @@ function InternshipApplicationList() {
 
   useEffect(() => {
     setErrorMessage("");
-    setInternshipApplications([])
+    setInternshipApplications([]);
     if (auth.isStudent()) {
       axios
         .get(
@@ -68,8 +70,6 @@ function InternshipApplicationList() {
             setErrorMessage("Aucune Application acceptée pour le moment");
           });
       }
-
-
     } else if (auth.isMonitor()) {
       axios
         .get(
@@ -120,8 +120,7 @@ function InternshipApplicationList() {
             />
           </>
         );
-      }
-      else {
+      } else {
         return (
           <>
             <InternshipApplicationInternshipManagerModal
@@ -136,7 +135,6 @@ function InternshipApplicationList() {
           </>
         );
       }
-      
     } else if (auth.isMonitor()) {
       return (
         <>

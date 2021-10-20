@@ -83,7 +83,8 @@ const ValidCVModal = ({
                       (cv) => cv.isActive === true
                     )[0].id
               }`}
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               Télécharger
             </a>

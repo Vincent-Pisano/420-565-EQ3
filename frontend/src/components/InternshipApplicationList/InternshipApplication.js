@@ -1,9 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes, faSyncAlt, faSignature, faAward } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faTimes,
+  faSyncAlt,
+  faSignature,
+  faAward,
+} from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 import auth from "../../services/Auth";
 
-const InternshipApplication = ({ internshipApplication, onDoubleClick, isInternshipManagerSignature }) => {
+const InternshipApplication = ({
+  internshipApplication,
+  onDoubleClick,
+  isInternshipManagerSignature,
+}) => {
   let internshipOffer = internshipApplication.internshipOffer;
   let student = internshipApplication.student;
 
@@ -17,11 +27,13 @@ const InternshipApplication = ({ internshipApplication, onDoubleClick, isInterns
           className="fa-3x"
           icon={
             auth.isInternshipManager()
-              ? isInternshipManagerSignature ? faSignature : faSyncAlt
+              ? isInternshipManagerSignature
+                ? faSignature
+                : faSyncAlt
               : internshipApplication.status === "ACCEPTED"
               ? faCheck
               : internshipApplication.status === "NOT_ACCEPTED"
-              ? faTimes 
+              ? faTimes
               : internshipApplication.status === "VALIDATED"
               ? faSignature
               : internshipApplication.status === "COMPLETED"
@@ -33,7 +45,9 @@ const InternshipApplication = ({ internshipApplication, onDoubleClick, isInterns
       <Col xs={9} className="list_node_text">
         <li>
           {" "}
-          {!auth.isMonitor() ? internshipOffer.jobName + ", " + internshipOffer.city +  ", " : ""}
+          {!auth.isMonitor()
+            ? internshipOffer.jobName + ", " + internshipOffer.city + ", "
+            : ""}
           {auth.isInternshipManager() || auth.isMonitor()
             ? student.firstName + " " + student.lastName
             : ""}

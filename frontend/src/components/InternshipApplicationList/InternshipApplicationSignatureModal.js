@@ -20,6 +20,8 @@ const InternshipApplicationSignatureModal = ({
   let student = currentInternshipApplication.student;
   let history = useHistory();
 
+  let user = auth.user;
+
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [internship, setInternship] = useState(undefined);
 
@@ -42,62 +44,72 @@ const InternshipApplicationSignatureModal = ({
   }
 
   function signInternship() {
-    if (auth.isMonitor()) {
-      if (internship !== undefined && !internship.signedByMonitor) {
-        axios
-          .post(
-            `http://localhost:9090/sign/internshipContract/monitor/${internship.id}`
-          )
-          .then((response) => {
-            setInternship(response.data);
+    if (user.signature !== null) {
+      if (auth.isMonitor()) {
+        if (internship !== undefined && !internship.signedByMonitor) {
+          axios
+            .post(
+              `http://localhost:9090/sign/internshipContract/monitor/${internship.id}`
+            )
+            .then((response) => {
+              setInternship(response.data);
+              setTimeout(() => {
+                setErrorMessageModal("");
+                handleClose();
+              }, 1000);
+              setErrorMessageModal("Confirmation de la signature");
+            })
+            .catch((err) => {
+              setInternship(undefined);
+            });
+        }
+      } else if (auth.isInternshipManager()) {
+        if (internship !== undefined && internship.signedByMonitor) {
+          if (internship.signedByStudent) {
+            if (!internship.signedByInternshipManager) {
+              axios
+                .post(
+                  `http://localhost:9090/sign/internshipContract/internshipManager/${internship.id}`
+                )
+                .then((response) => {
+                  setInternship(response.data);
+                  setTimeout(() => {
+                    setErrorMessageModal("");
+                    handleClose();
+                  }, 1000);
+                  setInternshipApplications(
+                    internshipApplications.filter((internshipApplication) => {
+                      return (
+                        internshipApplication.id !==
+                        currentInternshipApplication.id
+                      );
+                    })
+                  );
+                  if (internshipApplications.length === 1) {
+                    setTimeout(() => {
+                      handleClose();
+                      history.push({
+                        pathname: `/home/${auth.user.username}`,
+                      });
+                    }, 3000);
+                    setErrorMessage(
+                      "Plus aucun étudiant à assigner, vous allez être redirigé"
+                    );
+                  }
+                  setErrorMessageModal("Confirmation de la signature");
+                })
+                .catch((err) => {
+                  setInternship(undefined);
+                });
+            }
+          } else {
             setTimeout(() => {
               setErrorMessageModal("");
               handleClose();
             }, 1000);
-            setErrorMessageModal("Confirmation de la signature");
-          })
-          .catch((err) => {
-            setInternship(undefined);
-          });
-      }
-    } else if (auth.isInternshipManager()) {
-      if (internship !== undefined && internship.signedByMonitor) {
-        if (internship.signedByStudent) {
-          if (!internship.signedByInternshipManager) {
-            axios
-              .post(
-                `http://localhost:9090/sign/internshipContract/internshipManager/${internship.id}`
-              )
-              .then((response) => {
-                setInternship(response.data);
-                setTimeout(() => {
-                  setErrorMessageModal("");
-                  handleClose();
-                }, 1000);
-                setInternshipApplications(
-                  internshipApplications.filter((internshipApplication) => {
-                    return (
-                      internshipApplication.id !==
-                      currentInternshipApplication.id
-                    );
-                  })
-                );
-                if (internshipApplications.length === 1) {
-                  setTimeout(() => {
-                    handleClose();
-                    history.push({
-                      pathname: `/home/${auth.user.username}`,
-                    });
-                  }, 3000);
-                  setErrorMessage(
-                    "Plus aucun étudiant à assigner, vous allez être redirigé"
-                  );
-                }
-                setErrorMessageModal("Confirmation de la signature");
-              })
-              .catch((err) => {
-                setInternship(undefined);
-              });
+            setErrorMessageModal(
+              "Erreur ! En attente de la signature de l'Étudiant"
+            );
           }
         } else {
           setTimeout(() => {
@@ -105,16 +117,16 @@ const InternshipApplicationSignatureModal = ({
             handleClose();
           }, 1000);
           setErrorMessageModal(
-            "Erreur ! En attente de la signature de l'Étudiant"
+            "Erreur ! En attente de la signature du Moniteur"
           );
         }
-      } else {
-        setTimeout(() => {
-          setErrorMessageModal("");
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Erreur ! En attente de la signature du Moniteur");
       }
+    } else {
+      setTimeout(() => {
+        setErrorMessageModal("");
+        handleClose();
+      }, 1000);
+      setErrorMessageModal("Erreur ! La signature n'a pas été déposé!");
     }
   }
 
