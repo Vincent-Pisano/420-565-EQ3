@@ -98,14 +98,26 @@ function InternshipApplicationList() {
 
   function checkForModal() {
     if (auth.isStudent()) {
-      return (
-        <InternshipApplicationStudentModal
-          show={show}
-          handleClose={handleClose}
-          currentInternshipApplication={currentInternshipApplication}
-          showIntershipOffer={showIntershipOffer}
-        />
-      );
+      if (currentInternshipApplication.status === "VALIDATED") {
+        return (
+            <>
+              <InternshipApplicationSignatureModal
+                show={show}
+                handleClose={handleClose}
+                currentInternshipApplication={currentInternshipApplication}
+              />
+            </>
+        );
+      } else {
+        return (
+          <InternshipApplicationStudentModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+            showIntershipOffer={showIntershipOffer}
+          />
+        );
+      }
     } else if (auth.isInternshipManager()) {
       if (isInternshipManagerSignature) {
         return (

@@ -63,6 +63,34 @@ const InternshipApplicationSignatureModal = ({
               setInternship(undefined);
             });
         }
+      } else if (auth.isStudent()){
+        if (internship !== undefined && internship.signedByMonitor) {
+          if (!internship.signedByStudent) {
+            axios
+              .post(
+                `http://localhost:9090/sign/internshipContract/student/${internship.id}`
+              )
+              .then((response) => {
+                setInternship(response.data);
+                setTimeout(() => {
+                  setErrorMessageModal("");
+                  handleClose();
+                }, 1000);
+                setErrorMessageModal("Confirmation de la signature");
+              })
+              .catch((err) => {
+                setInternship(undefined);
+              });
+          }
+        } else {
+            setTimeout(() => {
+              setErrorMessageModal("");
+              handleClose();
+            }, 1000);
+            setErrorMessageModal(
+              "Erreur ! En attente de la signature du Moniteur"
+            );
+        }
       } else if (auth.isInternshipManager()) {
         if (internship !== undefined && internship.signedByMonitor) {
           if (internship.signedByStudent) {
@@ -190,6 +218,8 @@ const InternshipApplicationSignatureModal = ({
             disabled={
               auth.isMonitor()
                 ? internship.signedByMonitor
+                :auth.isStudent()
+                ? internship.signedByStudent
                 : auth.isInternshipManager()
                 ? internship.signedByInternshipManager
                 : false
@@ -197,6 +227,10 @@ const InternshipApplicationSignatureModal = ({
           >
             {auth.isMonitor()
               ? internship.signedByMonitor
+                ? "Déjà signé"
+                : "Signer"
+              :auth.isStudent()
+                ? internship.signedByStudent
                 ? "Déjà signé"
                 : "Signer"
               : auth.isInternshipManager()
