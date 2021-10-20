@@ -56,6 +56,7 @@ public class InternshipServiceTest {
     //global variables
     private Student expectedStudent;
     private Monitor expectedMonitor;
+    private InternshipManager expectedInternshipManager;
     private InternshipOffer expectedInternshipOffer;
     private Internship expectedInternship;
     private InternshipApplication expectedInternshipApplication;
@@ -443,7 +444,6 @@ public class InternshipServiceTest {
                 .thenReturn(Optional.ofNullable(givenInternship));
         lenient().when(internshipRepository.save(any(Internship.class)))
                 .thenReturn(expectedInternship);
-
         //Act
         Optional<Internship> optionalInternship =
                 service.signInternshipContractByStudent(givenInternship.getId());
@@ -453,5 +453,41 @@ public class InternshipServiceTest {
 
         assertThat(actualInternship).isNotNull();
         assertThat(actualInternship.isSignedByStudent()).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testSignInternshipContractByInternshipManager() throws Exception {
+        //Arrange
+        expectedInternship = getInternshipWithInternshipContract();
+        expectedInternship.setSignedByInternshipManager(true);
+        InternshipApplication expectedInternshipApplication = expectedInternship.getInternshipApplication();
+        expectedInternshipApplication.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
+
+        Internship givenInternship = getInternshipWithInternshipContract();
+
+        expectedInternshipManager = getInternshipManagerWithId();
+        expectedInternshipManager.setSignature(getImage());
+
+        when(internshipManagerRepository.findByIsDisabledFalse())
+                .thenReturn(Optional.of(expectedInternshipManager));
+        when(internshipRepository.findById(givenInternship.getId()))
+                .thenReturn(Optional.of(givenInternship));
+        when(internshipApplicationRepository.save(any(InternshipApplication.class)))
+                .thenReturn(expectedInternshipApplication);
+        lenient().when(internshipRepository.save(any(Internship.class)))
+                .thenReturn(expectedInternship);
+
+        //Act
+        Optional<Internship> optionalInternship =
+                service.signInternshipContractByInternshipManager(givenInternship.getId());
+
+        //Assert
+        Internship actualInternship = optionalInternship.orElse(null);
+        InternshipApplication actualInternshipApplication = actualInternship != null ? actualInternship.getInternshipApplication() : null;
+
+        assertThat(actualInternship).isNotNull();
+        assertThat(actualInternship.isSignedByInternshipManager()).isTrue();
+        assertThat(actualInternshipApplication.getStatus()).isEqualTo(InternshipApplication.ApplicationStatus.COMPLETED);
     }
 }

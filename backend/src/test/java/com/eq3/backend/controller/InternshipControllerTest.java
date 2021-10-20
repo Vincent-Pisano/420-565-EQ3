@@ -444,4 +444,30 @@ public class InternshipControllerTest {
         assertThat(actualInternship).isNotNull();
         assertThat(actualInternship.isSignedByStudent()).isTrue();
     }
+
+    @Test
+    //@Disabled
+    public void testSignInternshipContractByInternshipManager() throws Exception {
+        //Arrange
+        expectedInternship = getInternship();
+        expectedInternship.setSignedByInternshipManager(true);
+
+        Internship givenInternship = getInternship();
+
+        when(service.signInternshipContractByInternshipManager(givenInternship.getId())).thenReturn(Optional.ofNullable(expectedInternship));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_SIGN_INTERNSHIP_CONTRACT_INTERNSHIP_MANAGER + givenInternship.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternship
+                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternship).isNotNull();
+        assertThat(actualInternship.isSignedByInternshipManager()).isTrue();
+    }
 }

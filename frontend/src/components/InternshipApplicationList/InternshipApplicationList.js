@@ -7,20 +7,24 @@ import { Container } from "react-bootstrap";
 import InternshipApplication from "./InternshipApplication";
 import InternshipApplicationStudentModal from "./InternshipApplicationStudentModal";
 import InternshipApplicationInternshipManagerModal from "./InternshipApplicationInternshipManagerModal";
-import InternshipApplicationMonitorModal from "./InternshipApplicationMonitorModal";
+import InternshipApplicationSignatureModal from "./InternshipApplicationSignatureModal";
 
 function InternshipApplicationList() {
   let user = auth.user;
   let history = useHistory();
 
   let internshipOffer = history.location.state;
+  let isInternshipManagerSignature =
+    history.location.pathname === "/listInternshipApplication/signature";
 
   let title = auth.isStudent()
     ? "Liste de vos applications de stage"
-    : auth.isInternshipManager()
-    ? "Liste des applications de stages acceptées"
     : auth.isMonitor()
     ? "Listes des applications pour l'offre : " + internshipOffer.jobName
+    : auth.isInternshipManager()
+    ? isInternshipManagerSignature
+      ? "Liste des applications de stages à signer"
+      : "Liste des applications de stages acceptées"
     : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
@@ -33,6 +37,8 @@ function InternshipApplicationList() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
+    setErrorMessage("");
+    setInternshipApplications([]);
     if (auth.isStudent()) {
       axios
         .get(
@@ -45,14 +51,25 @@ function InternshipApplicationList() {
           setErrorMessage("Aucune Application enregistrée pour le moment");
         });
     } else if (auth.isInternshipManager()) {
-      axios
-        .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
-        .then((response) => {
-          setInternshipApplications(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage("Aucune Application acceptée pour le moment");
-        });
+      if (isInternshipManagerSignature) {
+        axios
+          .get(`http://localhost:9090/getAll/validated/internshipApplication`)
+          .then((response) => {
+            setInternshipApplications(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Application validée pour le moment");
+          });
+      } else {
+        axios
+          .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
+          .then((response) => {
+            setInternshipApplications(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Application acceptée pour le moment");
+          });
+      }
     } else if (auth.isMonitor()) {
       axios
         .get(
@@ -65,7 +82,7 @@ function InternshipApplicationList() {
           setErrorMessage("Aucune Application enregistrée pour le moment");
         });
     }
-  }, [user.username, internshipOffer]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -81,32 +98,59 @@ function InternshipApplicationList() {
 
   function checkForModal() {
     if (auth.isStudent()) {
-      return (
-        <InternshipApplicationStudentModal
-          show={show}
-          handleClose={handleClose}
-          currentInternshipApplication={currentInternshipApplication}
-          showIntershipOffer={showIntershipOffer}
-        />
-      );
-    } else if (auth.isInternshipManager()) {
-      return (
-        <>
-          <InternshipApplicationInternshipManagerModal
+      if (currentInternshipApplication.status === "VALIDATED") {
+        return (
+            <>
+              <InternshipApplicationSignatureModal
+                show={show}
+                handleClose={handleClose}
+                currentInternshipApplication={currentInternshipApplication}
+              />
+            </>
+        );
+      } else {
+        return (
+          <InternshipApplicationStudentModal
             show={show}
             handleClose={handleClose}
             currentInternshipApplication={currentInternshipApplication}
             showIntershipOffer={showIntershipOffer}
-            internshipApplications={internshipApplications}
-            setInternshipApplications={setInternshipApplications}
-            setErrorMessage={setErrorMessage}
           />
-        </>
-      );
+        );
+      }
+    } else if (auth.isInternshipManager()) {
+      if (isInternshipManagerSignature) {
+        return (
+          <>
+            <InternshipApplicationSignatureModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+              internshipApplications={internshipApplications}
+              setInternshipApplications={setInternshipApplications}
+              setErrorMessage={setErrorMessage}
+            />
+          </>
+        );
+      } else {
+        return (
+          <>
+            <InternshipApplicationInternshipManagerModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+              showIntershipOffer={showIntershipOffer}
+              internshipApplications={internshipApplications}
+              setInternshipApplications={setInternshipApplications}
+              setErrorMessage={setErrorMessage}
+            />
+          </>
+        );
+      }
     } else if (auth.isMonitor()) {
       return (
         <>
-          <InternshipApplicationMonitorModal
+          <InternshipApplicationSignatureModal
             show={show}
             handleClose={handleClose}
             currentInternshipApplication={currentInternshipApplication}
@@ -128,6 +172,7 @@ function InternshipApplicationList() {
                 key={internshipApplication.id}
                 internshipApplication={internshipApplication}
                 onDoubleClick={showModal}
+                isInternshipManagerSignature={isInternshipManagerSignature}
               />
             ))}
           </ul>

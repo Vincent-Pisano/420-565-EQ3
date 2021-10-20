@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import auth from "../services/Auth";
 import axios from "axios";
 import "../App.css";
-import { Container, Button, Row, Col, Card, Form } from "react-bootstrap";
+import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import "./../styles/Home.css";
@@ -13,7 +13,9 @@ function Home() {
 
   let dateFormat = formatDate(user.creationDate);
   const [errorMessage, setErrorMessage] = useState("");
-  const [hasASignature, setHasASignature] = useState(user.signature !== undefined && user.signature !== null );
+  const [hasASignature, setHasASignature] = useState(
+    user.signature !== undefined && user.signature !== null
+  );
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -32,7 +34,6 @@ function Home() {
   }
 
   function saveSignature(signature) {
-    console.log(signature);
     if (signature.type === "image/png") {
       let formData = new FormData();
       formData.append("signature", signature);
@@ -41,7 +42,7 @@ function Home() {
         .then((response) => {
           user.signature = response.data;
           auth.user = user;
-          setHasASignature(true)
+          setHasASignature(true);
         })
         .catch((error) => {
           setErrorMessage("Erreur lors de la sauvegarde de la signature");
@@ -55,13 +56,10 @@ function Home() {
     if (hasASignature) {
       return (
         <Container className="cont_btn_file">
-        <p
-          className="btn_submit"
-           disabled
-        >
-          Signature déposée
-        </p>
-      </Container>
+          <p className="btn_submit" disabled>
+            Signature déposée
+          </p>
+        </Container>
       );
     } else {
       return (

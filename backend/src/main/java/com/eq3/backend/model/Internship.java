@@ -33,9 +33,13 @@ public class Internship extends Entity {
     @Builder.Default
     private boolean isSignedByStudent = false;
 
+    @Builder.Default
+    private boolean isSignedByInternshipManager = false;
+
     public Internship () {
         super();
         isSignedByMonitor = false;
         isSignedByStudent = false;
+        isSignedByInternshipManager = false;
     }
 }

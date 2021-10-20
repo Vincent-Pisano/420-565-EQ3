@@ -143,6 +143,12 @@ public class InternshipService {
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
+    public Optional<List<InternshipApplication>> getAllValidatedInternshipApplications() {
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.VALIDATED);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
     public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
@@ -197,6 +203,25 @@ public class InternshipService {
         return optionalInternship.map(internshipRepository::save);
     }
 
+    public Optional<Internship> signInternshipContractByInternshipManager(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+
+        optionalInternship.ifPresent(_internship -> {
+            InternshipApplication internshipApplication = _internship.getInternshipApplication();
+            internshipApplication.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
+            _internship.setSignedByInternshipManager(true);
+
+            try {
+                addInternshipManagerSignatureToInternshipContract(_internship);
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+
+            internshipApplicationRepository.save(internshipApplication);
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
+
     private void addMonitorSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
         PDFDocument contract = _internship.getInternshipContract();
         Binary pdfDocumentContent = contract.getContent();
@@ -215,10 +240,25 @@ public class InternshipService {
         Binary pdfDocumentContent = contract.getContent();
         InternshipApplication internshipApplication = _internship.getInternshipApplication();
 
-        ByteArrayOutputStream baos = studentSignPdfContract(internshipApplication.getStudent(), pdfDocumentContent.getData());
+        ByteArrayOutputStream baos = signPdfContract(internshipApplication.getStudent(), pdfDocumentContent.getData());
         contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
 
         _internship.setInternshipContract(contract);
 
+    }
+
+
+
+    private void addInternshipManagerSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByIsDisabledFalse();
+        if (optionalInternshipManager.isPresent()){
+            PDFDocument contract = _internship.getInternshipContract();
+            Binary pdfDocumentContent = contract.getContent();
+
+            ByteArrayOutputStream baos = signPdfContract(optionalInternshipManager.get(), pdfDocumentContent.getData());
+            contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+            _internship.setInternshipContract(contract);
+        }
     }
 }

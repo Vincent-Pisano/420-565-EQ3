@@ -13,7 +13,7 @@ const InternshipOfferButtonApply = ({
   let user = auth.user;
 
   function applyInternshipOffer() {
-    fields.monitor.signature = undefined
+    fields.monitor.signature = undefined;
     axios
       .post(
         `http://localhost:9090/apply/internshipOffer/${user.username}`,

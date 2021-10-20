@@ -39,6 +39,13 @@ const NavUserGs = () => {
       >
         Assignation
       </NavDropdown.Item>
+      <NavDropdown.Item
+        as={Link}
+        className="nav-item-cust"
+        to="/listInternshipApplication/signature"
+      >
+        Signature d'applications
+      </NavDropdown.Item>
     </NavDropdown>
   );
 };
