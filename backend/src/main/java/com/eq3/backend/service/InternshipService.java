@@ -143,6 +143,12 @@ public class InternshipService {
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
+    public Optional<List<InternshipApplication>> getAllValidatedInternshipApplications() {
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.VALIDATED);
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
     public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
@@ -167,51 +173,6 @@ public class InternshipService {
 
         return optionalInternshipApplication.map(_internshipApplication ->
                 internshipApplicationRepository.save(internshipApplication));
-    }
-
-
-
-    private void studentSignDocument(String signature) throws IOException {
-        /*
-        String location = "C:/Users/jules/Desktop/evaluation_stagiaire.pdf";
-        String finalPDF = "C:/Users/jules/Desktop/evaluation_stagiaire_mod.pdf";//Juste pour tester
-        PdfReader pdfReader = new PdfReader(location);
-        PdfWriter pdfWriter = new PdfWriter(finalPDF);
-        PdfDocument pdfDocument = new PdfDocument(pdfReader, pdfWriter);
-        PageSize pageSize = pdfDocument.getDefaultPageSize();
-
-        Document document = new Document(pdfDocument);
-
-        document.add(new Paragraph("Étudiant(e)"));
-
-        float[] pointColumnWidths = {200F, 200F};
-        Table table = new Table(pointColumnWidths);
-        table.setFixedPosition(document.getLeftMargin(), document.getBottomMargin(),
-                pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin());
-
-        Cell cell;
-        Paragraph paraSign = new Paragraph(signature);
-        paraSign.setUnderline(0.3f, -2.5f);
-        cell = new Cell().add(paraSign);
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        Paragraph paraDate = new Paragraph(String.valueOf(LocalDate.now()));
-        paraDate.setUnderline(0.3f, -2.5f);
-        cell = new Cell().add(paraDate);
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        cell = new Cell().add(new Paragraph("Signature"));
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        cell = new Cell().add(new Paragraph("Date"));
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        document.add(table);
-        */
     }
 
     public Optional<Internship> signInternshipContractByMonitor(String idInternship) {
@@ -242,6 +203,25 @@ public class InternshipService {
         return optionalInternship.map(internshipRepository::save);
     }
 
+    public Optional<Internship> signInternshipContractByInternshipManager(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+
+        optionalInternship.ifPresent(_internship -> {
+            InternshipApplication internshipApplication = _internship.getInternshipApplication();
+            internshipApplication.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
+            _internship.setSignedByInternshipManager(true);
+
+            try {
+                addInternshipManagerSignatureToInternshipContract(_internship);
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+
+            internshipApplicationRepository.save(internshipApplication);
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
+
     private void addMonitorSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
         PDFDocument contract = _internship.getInternshipContract();
         Binary pdfDocumentContent = contract.getContent();
@@ -260,10 +240,25 @@ public class InternshipService {
         Binary pdfDocumentContent = contract.getContent();
         InternshipApplication internshipApplication = _internship.getInternshipApplication();
 
-        ByteArrayOutputStream baos = studentSignPdfContract(internshipApplication.getStudent(), pdfDocumentContent.getData());
+        ByteArrayOutputStream baos = signPdfContract(internshipApplication.getStudent(), pdfDocumentContent.getData());
         contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
 
         _internship.setInternshipContract(contract);
 
+    }
+
+
+
+    private void addInternshipManagerSignatureToInternshipContract(Internship _internship) throws DocumentException, IOException {
+        Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByIsDisabledFalse();
+        if (optionalInternshipManager.isPresent()){
+            PDFDocument contract = _internship.getInternshipContract();
+            Binary pdfDocumentContent = contract.getContent();
+
+            ByteArrayOutputStream baos = signPdfContract(optionalInternshipManager.get(), pdfDocumentContent.getData());
+            contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
+
+            _internship.setInternshipContract(contract);
+        }
     }
 }

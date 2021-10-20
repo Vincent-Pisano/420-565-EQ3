@@ -26,8 +26,8 @@ function StudentList() {
   let title = !auth.isInternshipManager()
     ? "Étudiants de votre département"
     : supervisor !== undefined
-      ? "Étudiants de ce département à assigner"
-      : "Étudiants avec un CV à valider";
+    ? "Étudiants de ce département à assigner"
+    : "Étudiants avec un CV à valider";
 
   useEffect(() => {
     if (auth.isSupervisor()) {

@@ -17,7 +17,8 @@ public class InternshipApplication extends Entity{
         NOT_ACCEPTED,
         ACCEPTED,
         WAITING,
-        VALIDATED
+        VALIDATED,
+        COMPLETED
     }
 
     @Builder.Default

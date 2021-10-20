@@ -97,6 +97,13 @@ public class InternshipController {
                 .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+    @GetMapping("/getAll/validated/internshipApplication")
+    public ResponseEntity<List<InternshipApplication>> getAllValidatedInternshipApplications() {
+        return service.getAllValidatedInternshipApplications()
+                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
 
     @PostMapping("/apply/internshipOffer/{username}")
     public ResponseEntity<InternshipApplication> applyInternshipOffer(@PathVariable String username,
@@ -130,6 +137,13 @@ public class InternshipController {
     @PostMapping("/sign/internshipContract/student/{idInternship}")
     public ResponseEntity<Internship> signInternshipContractByStudent(@PathVariable String idInternship) {
         return service.signInternshipContractByStudent(idInternship)
+                .map(_internship -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internship))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/sign/internshipContract/internshipManager/{idInternship}")
+    public ResponseEntity<Internship> signInternshipContractByInternshipManager(@PathVariable String idInternship) {
+        return service.signInternshipContractByInternshipManager(idInternship)
                 .map(_internship -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internship))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

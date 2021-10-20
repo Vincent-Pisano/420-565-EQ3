@@ -27,7 +27,6 @@ const InternshipApplicationStudentModal = ({
       fields.status !== undefined
         ? fields.status
         : currentInternshipApplication.status;
-        console.log(currentInternshipApplication.status);
     currentInternshipApplication.student.cvlist = [];
     currentInternshipApplication.student.signature = undefined;
     currentInternshipApplication.internshipOffer.pdfdocument = undefined;

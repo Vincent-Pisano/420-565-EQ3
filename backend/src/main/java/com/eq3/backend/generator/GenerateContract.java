@@ -19,16 +19,6 @@ public class GenerateContract {
         InternshipManager internshipManager = optionalInternshipManager.get();
         InternshipApplication internshipApplication = internship.getInternshipApplication();
         InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-        Student student = internshipApplication.getStudent();
-        Monitor monitor = internshipOffer.getMonitor();
-        InternshipOffer.WorkShift workShift = internshipOffer.getWorkShift();
-
-        float[] pointColumnWidths = {WIDTH};
-
-        Paragraph paragEmptySmall = new Paragraph(EMPTY);
-        Paragraph paragAnd = new Paragraph(AND, MEDIUM_BOLD);
-        paragAnd.setAlignment(Element.ALIGN_CENTER);
-        paragAnd.setSpacingAfter(MEDIUM_SPACE);
 
         Document document = new Document();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -37,6 +27,34 @@ public class GenerateContract {
 
         generateTitlePage(document);
         document.newPage();
+
+        generateAgreements(internshipApplication, internshipManager, document);
+        generateConditions(internshipOffer, document);
+        document.newPage();
+
+        generateStudentTasks(internshipOffer, document);
+        generateCommitments(internship, document);
+        document.newPage();
+
+        generateSignaturesTitle(document);
+
+        document.close();
+        writer.close();
+
+        return baos;
+    }
+
+    private static void generateAgreements(InternshipApplication internshipApplication,
+                                           InternshipManager internshipManager,
+                                           Document document) throws DocumentException {
+        Paragraph paragEmptySmall = new Paragraph(EMPTY);
+        Paragraph paragAnd = new Paragraph(AND, MEDIUM_BOLD);
+        paragAnd.setAlignment(Element.ALIGN_CENTER);
+        paragAnd.setSpacingAfter(MEDIUM_SPACE);
+
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+        Student student = internshipApplication.getStudent();
+        Monitor monitor = internshipOffer.getMonitor();
 
         Paragraph paragAgreement = new Paragraph(AGREEMENT_BETWEEN, MEDIUM_BOLD);
         setUpParag(document, paragAgreement, paragAgreement, Element.ALIGN_CENTER, LARGE_SPACE);
@@ -67,9 +85,12 @@ public class GenerateContract {
         setUpParag(document, paragCadreStudent, paragCadreConditions, Element.ALIGN_CENTER, TINY_SPACE);
 
         document.add(paragEmptySmall);
+    }
 
-        //TABLE DETAILS INTERNSHIP
-        PdfPTable tableDetailsInternship = new PdfPTable(pointColumnWidths);
+    private static void generateConditions(InternshipOffer internshipOffer, Document document) throws DocumentException {
+        InternshipOffer.WorkShift workShift = internshipOffer.getWorkShift();
+
+        PdfPTable tableDetailsInternship = new PdfPTable(COLUMN_WIDTH);
 
         Chunk chunkPlace = new Chunk(PLACE, MEDIUM_BOLD);
         PdfPCell cellPlaceHeader = new PdfPCell(new Paragraph(chunkPlace));
@@ -128,14 +149,14 @@ public class GenerateContract {
         tableDetailsInternship.addCell(cellSalaryHourly);
 
         document.add(tableDetailsInternship);
-        document.newPage();
-        //END TABLE DETAILS INTERNSHIP
+    }
 
+    private static void generateStudentTasks(InternshipOffer internshipOffer, Document document) throws DocumentException {
         Paragraph paragEngagements = new Paragraph(TASKS_RESPONSIBILITIES, MEDIUM_BOLD);
         setUpParag(document, paragEngagements, paragEngagements, Element.ALIGN_CENTER, TINY_SPACE);
 
         //TABLE TASKS RESPONSIBILITIES
-        PdfPTable tableTasksResponsibilities = new PdfPTable(pointColumnWidths);
+        PdfPTable tableTasksResponsibilities = new PdfPTable(COLUMN_WIDTH);
         tableTasksResponsibilities.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
         PdfPCell cellDesc = new PdfPCell(new Paragraph(internshipOffer.getDescription()));
@@ -145,31 +166,9 @@ public class GenerateContract {
         tableTasksResponsibilities.addCell(cellDesc);
         document.add(tableTasksResponsibilities);
         //END TABLE TASKS RESPONSIBILITIES
+    }
 
-        //RESPONSIBILITIES
-        Paragraph paragResponsibilities = new Paragraph(RESPONSIBILITIES, MEDIUM_BOLD);
-        setUpParag(document, paragResponsibilities, paragResponsibilities, Element.ALIGN_CENTER, TINY_SPACE);
-
-        Paragraph paragEngagementTitleCollege = new Paragraph(COLLEGE_COMMITSMENTS, MEDIUM_BOLD);
-        setUpParag(document, paragEngagementTitleCollege, paragEngagementTitleCollege, Element.ALIGN_LEFT, TINY_SPACE);
-
-        Paragraph paragEngagementCollege = new Paragraph(internship.getEngagements().get(COLLEGE_ENGAGEMENT_KEY), STANDARD);
-        setUpParag(document, paragEngagementCollege, paragEngagementCollege, Element.ALIGN_LEFT, SMALLER_SPACE);
-
-        Paragraph paragEngagementTitleEnterprise = new Paragraph(ENTERPRISE_COMMITSMENTS, MEDIUM_BOLD);
-        setUpParag(document, paragEngagementTitleEnterprise, paragEngagementTitleEnterprise, Element.ALIGN_LEFT, TINY_SPACE);
-
-        Paragraph paragEngagementEnterprise = new Paragraph(internship.getEngagements().get(ENTERPRISE_ENGAGEMENT_KEY), STANDARD);
-        setUpParag(document, paragEngagementEnterprise, paragEngagementEnterprise, Element.ALIGN_LEFT, SMALLER_SPACE);
-
-        Paragraph paragEngagementTitleStudent = new Paragraph(STUDENT_COMMITSMENTS, MEDIUM_BOLD);
-        setUpParag(document, paragEngagementTitleStudent, paragEngagementTitleStudent, Element.ALIGN_LEFT, TINY_SPACE);
-
-        Paragraph paragEngagementStudent = new Paragraph(internship.getEngagements().get(STUDENT_ENGAGEMENT_KEY), STANDARD);
-        setUpParag(document, paragEngagementStudent, paragEngagementStudent, Element.ALIGN_LEFT, BELOW_MEDIUM_SPACE);
-
-        document.newPage();
-
+    private static void generateSignaturesTitle(Document document) throws DocumentException {
         Paragraph paragSignature = new Paragraph(SIGNATURES, MEDIUM_BOLD);
         setUpParag(document, paragSignature, paragSignature, Element.ALIGN_CENTER, SMALL_SPACE);
 
@@ -178,22 +177,39 @@ public class GenerateContract {
 
         Paragraph paragEngagementContractAll = new Paragraph(ONCE_SIGNED, MEDIUM_BOLD);
         setUpParag(document, paragEngagementContractAll, paragEngagementContractAll, Element.ALIGN_LEFT, SMALL_SPACE);
-
-        document.close();
-        writer.close();
-
-        return baos;
     }
 
-    public static ByteArrayOutputStream signPdfContract(Monitor monitor, byte[] contrat) throws DocumentException, IOException {
+    private static void generateCommitments(Internship internship, Document document) throws DocumentException {
+        Paragraph paragResponsibilities = new Paragraph(RESPONSIBILITIES, MEDIUM_BOLD);
+        setUpParag(document, paragResponsibilities, paragResponsibilities, Element.ALIGN_CENTER, TINY_SPACE);
 
+        Paragraph paragEngagementTitleCollege = new Paragraph(COLLEGE_COMMITMENTS, MEDIUM_BOLD);
+        setUpParag(document, paragEngagementTitleCollege, paragEngagementTitleCollege, Element.ALIGN_LEFT, TINY_SPACE);
+
+        Paragraph paragEngagementCollege = new Paragraph(internship.getEngagements().get(COLLEGE_ENGAGEMENT_KEY), STANDARD);
+        setUpParag(document, paragEngagementCollege, paragEngagementCollege, Element.ALIGN_LEFT, SMALLER_SPACE);
+
+        Paragraph paragEngagementTitleEnterprise = new Paragraph(ENTERPRISE_COMMITMENTS, MEDIUM_BOLD);
+        setUpParag(document, paragEngagementTitleEnterprise, paragEngagementTitleEnterprise, Element.ALIGN_LEFT, TINY_SPACE);
+
+        Paragraph paragEngagementEnterprise = new Paragraph(internship.getEngagements().get(ENTERPRISE_ENGAGEMENT_KEY), STANDARD);
+        setUpParag(document, paragEngagementEnterprise, paragEngagementEnterprise, Element.ALIGN_LEFT, SMALLER_SPACE);
+
+        Paragraph paragEngagementTitleStudent = new Paragraph(STUDENT_COMMITMENTS, MEDIUM_BOLD);
+        setUpParag(document, paragEngagementTitleStudent, paragEngagementTitleStudent, Element.ALIGN_LEFT, TINY_SPACE);
+
+        Paragraph paragEngagementStudent = new Paragraph(internship.getEngagements().get(STUDENT_ENGAGEMENT_KEY), STANDARD);
+        setUpParag(document, paragEngagementStudent, paragEngagementStudent, Element.ALIGN_LEFT, BELOW_MEDIUM_SPACE);
+    }
+
+    public static ByteArrayOutputStream signPdfContract(User user, byte[] contrat) throws DocumentException, IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(contrat);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfReader reader = new PdfReader(bais);
         PdfStamper stamper = new PdfStamper(reader, baos);
 
         PdfContentByte content = stamper.getUnderContent(reader.getNumberOfPages());
-        generateSignatureMonitor(monitor, content);
+        generateSignature(user, content);
 
         stamper.close();
         reader.close();
@@ -201,72 +217,67 @@ public class GenerateContract {
         return baos;
     }
 
-    public static ByteArrayOutputStream studentSignPdfContract(Student student, byte[] contrat) throws DocumentException, IOException {
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(contrat);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfReader reader = new PdfReader(bais);
-        PdfStamper stamper = new PdfStamper(reader, baos);
-
-        PdfContentByte content = stamper.getUnderContent(reader.getNumberOfPages());
-        generateSignatureStudent(student, content);
-
-        stamper.close();
-        reader.close();
-
-        return baos;
+    private static void generateSignature(User user, PdfContentByte content) throws DocumentException, IOException {
+        addSignatureTitle(user, content);
+        addSignatureTable(user, content);
     }
 
-    private static void generateSignatureMonitor(Monitor monitor, PdfContentByte content) throws DocumentException, IOException {
+    private static void addSignatureTitle(User user, PdfContentByte content) throws DocumentException {
+        boolean isMonitor = user instanceof Monitor;
+        boolean isStudent = user instanceof Monitor;
+
+        float ySignatureTitle =
+                isMonitor ? Y_SIGNATURE_TITLE_MONITOR : isStudent ? Y_SIGNATURE_TITLE_STUDENT : Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER;
+        String strParagTitle =
+                isMonitor ? MONITOR : isStudent ? STUDENT : INTERNSHIP_MANAGER;
+
         ColumnText ct = new ColumnText(content);
-        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE, Y_SIGNATURE_TITLE_MONITOR));
-        ct.addElement(new Paragraph(MONITOR, MEDIUM_BOLD));
+        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, NO_SPACE, ySignatureTitle));
+        Paragraph paragTitle = new Paragraph(strParagTitle, MEDIUM_BOLD);
+        paragTitle.setAlignment(Element.ALIGN_CENTER);
+        ct.addElement(paragTitle);
         ct.go();
-
-        PdfPTable pdfPTable = generateTableSignature(monitor);
-        pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
-        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, Y_SIGNATURE_TABLE_MONITOR, content);
     }
 
-    private static void generateSignatureStudent(Student student, PdfContentByte content) throws DocumentException, IOException {
-        ColumnText ct = new ColumnText(content);
-        ct.setSimpleColumn(new Rectangle(WIDTH_SIGNATURE_TITLE, HEIGHT_SIGNATURE_TITLE, X_SIGNATURE_TITLE, Y_SIGNATURE_TITLE_STUDENT));
-        ct.addElement(new Paragraph(STUDENT, MEDIUM_BOLD));
-        ct.go();
+    private static void addSignatureTable(User user, PdfContentByte content) throws DocumentException, IOException {
+        boolean isMonitor = user instanceof Monitor;
+        boolean isStudent = user instanceof Student;
 
-        PdfPTable pdfPTable = generateTableSignature(student);
+        float ySignatureTable =
+                isMonitor ? Y_SIGNATURE_TABLE_MONITOR : isStudent ? Y_SIGNATURE_TABLE_STUDENT : Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER;
+
+        PdfPTable pdfPTable = generateSignatureTable(user);
         pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
-        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, Y_SIGNATURE_TABLE_STUDENT, content);
+        pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, ySignatureTable, content);
     }
 
-    private static PdfPTable generateTableSignature(User user) throws IOException, BadElementException {
+
+    private static PdfPTable generateSignatureTable(User user) throws IOException, BadElementException {
         float[] pointColumnWidthsSignatures = {WIDTH, WIDTH};
 
-        //TABLE SIGNATURE
-
-        PdfPTable tableSignature = new PdfPTable(pointColumnWidthsSignatures);
-        tableSignature.setSpacingAfter(BELOW_MEDIUM_SPACE);
+        PdfPTable tableSignatureEnterprise = new PdfPTable(pointColumnWidthsSignatures);
+        tableSignatureEnterprise.setSpacingAfter(BELOW_MEDIUM_SPACE);
 
         Image img = Image.getInstance(user.getSignature().getData());
         img.scaleAbsoluteWidth(WIDTH_SIGNATURE_IMAGE);
         img.scaleAbsoluteHeight(HEIGHT_SIGNATURE_IMAGE);
 
         PdfPCell cellUserSignature = new PdfPCell(img);
-        setUpTopSignatureCell(tableSignature, cellUserSignature);
+        setUpTopSignatureCell(tableSignatureEnterprise , cellUserSignature);
 
         Paragraph paragDate = new Paragraph(LocalDate.now().format(DATE_FORMATTER));
         paragDate.setAlignment(Element.ALIGN_BOTTOM);
 
         PdfPCell cellDateSignature = new PdfPCell(paragDate);
         cellDateSignature.setVerticalAlignment(Element.ALIGN_BOTTOM);
-        setUpTopSignatureCell(tableSignature, cellDateSignature);
+        setUpTopSignatureCell(tableSignatureEnterprise , cellDateSignature);
 
         PdfPCell cellNameSignature = new PdfPCell(new Paragraph(user.getFirstName() + EMPTY + user.getLastName()));
-        setUpBottomSignatureCell(tableSignature, cellNameSignature);
+        setUpBottomSignatureCell(tableSignatureEnterprise , cellNameSignature);
 
         PdfPCell cellDateTitleSignature = new PdfPCell(new Paragraph(DATE));
-        setUpBottomSignatureCell(tableSignature, cellDateTitleSignature);
-        return tableSignature;
+        setUpBottomSignatureCell(tableSignatureEnterprise , cellDateTitleSignature);
+        return tableSignatureEnterprise ;
     }
 
     private static void generateTitlePage(Document document) throws DocumentException {
