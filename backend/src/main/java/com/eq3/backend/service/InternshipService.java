@@ -169,51 +169,6 @@ public class InternshipService {
                 internshipApplicationRepository.save(internshipApplication));
     }
 
-
-
-    private void studentSignDocument(String signature) throws IOException {
-        /*
-        String location = "C:/Users/jules/Desktop/evaluation_stagiaire.pdf";
-        String finalPDF = "C:/Users/jules/Desktop/evaluation_stagiaire_mod.pdf";//Juste pour tester
-        PdfReader pdfReader = new PdfReader(location);
-        PdfWriter pdfWriter = new PdfWriter(finalPDF);
-        PdfDocument pdfDocument = new PdfDocument(pdfReader, pdfWriter);
-        PageSize pageSize = pdfDocument.getDefaultPageSize();
-
-        Document document = new Document(pdfDocument);
-
-        document.add(new Paragraph("Étudiant(e)"));
-
-        float[] pointColumnWidths = {200F, 200F};
-        Table table = new Table(pointColumnWidths);
-        table.setFixedPosition(document.getLeftMargin(), document.getBottomMargin(),
-                pageSize.getWidth() - document.getLeftMargin() - document.getRightMargin());
-
-        Cell cell;
-        Paragraph paraSign = new Paragraph(signature);
-        paraSign.setUnderline(0.3f, -2.5f);
-        cell = new Cell().add(paraSign);
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        Paragraph paraDate = new Paragraph(String.valueOf(LocalDate.now()));
-        paraDate.setUnderline(0.3f, -2.5f);
-        cell = new Cell().add(paraDate);
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        cell = new Cell().add(new Paragraph("Signature"));
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        cell = new Cell().add(new Paragraph("Date"));
-        cell.setBorder(Border.NO_BORDER);
-        table.addCell(cell);
-
-        document.add(table);
-        */
-    }
-
     public Optional<Internship> signInternshipContractByMonitor(String idInternship) {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
 
