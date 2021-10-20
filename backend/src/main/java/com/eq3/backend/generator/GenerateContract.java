@@ -224,7 +224,7 @@ public class GenerateContract {
 
     private static void addSignatureTitle(User user, PdfContentByte content) throws DocumentException {
         boolean isMonitor = user instanceof Monitor;
-        boolean isStudent = user instanceof Monitor;
+        boolean isStudent = user instanceof Student;
 
         float ySignatureTitle =
                 isMonitor ? Y_SIGNATURE_TITLE_MONITOR : isStudent ? Y_SIGNATURE_TITLE_STUDENT : Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER;
