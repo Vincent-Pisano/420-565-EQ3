@@ -315,6 +315,26 @@ public class InternshipControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllValidatedInternshipApplications() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+
+        when(service.getAllValidatedInternshipApplications())
+                .thenReturn(Optional.of(expectedInternshipApplicationList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_VALIDATED_INTERNSHIP_APPLICATIONS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipApplications = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testApplyInternshipOffer() throws Exception {
         //Arrange
         expectedStudent = getStudentWithId();
@@ -417,6 +437,32 @@ public class InternshipControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternship).isNotNull();
         assertThat(actualInternship.isSignedByMonitor()).isTrue();
+    }
+
+    @Test
+    //@Disabled
+    public void testSignInternshipContractByStudent() throws Exception {
+        //Arrange
+        expectedInternship = getInternship();
+        expectedInternship.setSignedByStudent(true);
+
+        Internship givenInternship = getInternship();
+
+        when(service.signInternshipContractByStudent(givenInternship.getId())).thenReturn(Optional.ofNullable(expectedInternship));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_SIGN_INTERNSHIP_CONTRACT_STUDENT + givenInternship.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternship
+                = new ObjectMapper().readValue(response.getContentAsString(), Internship.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternship).isNotNull();
+        assertThat(actualInternship.isSignedByStudent()).isTrue();
     }
 
     @Test

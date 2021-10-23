@@ -46,7 +46,7 @@ const InternshipApplication = ({
         <li>
           {" "}
           {!auth.isMonitor()
-            ? internshipOffer.jobName + ", " + internshipOffer.city + ", "
+            ? internshipOffer.jobName + ", " + internshipOffer.city + " "
             : ""}
           {auth.isInternshipManager() || auth.isMonitor()
             ? student.firstName + " " + student.lastName

@@ -224,7 +224,7 @@ public class GenerateContract {
 
     private static void addSignatureTitle(User user, PdfContentByte content) throws DocumentException {
         boolean isMonitor = user instanceof Monitor;
-        boolean isStudent = user instanceof Monitor;
+        boolean isStudent = user instanceof Student;
 
         float ySignatureTitle =
                 isMonitor ? Y_SIGNATURE_TITLE_MONITOR : isStudent ? Y_SIGNATURE_TITLE_STUDENT : Y_SIGNATURE_TITLE_INTERNSHIP_MANAGER;
@@ -241,7 +241,7 @@ public class GenerateContract {
 
     private static void addSignatureTable(User user, PdfContentByte content) throws DocumentException, IOException {
         boolean isMonitor = user instanceof Monitor;
-        boolean isStudent = user instanceof Monitor;
+        boolean isStudent = user instanceof Student;
 
         float ySignatureTable =
                 isMonitor ? Y_SIGNATURE_TABLE_MONITOR : isStudent ? Y_SIGNATURE_TABLE_STUDENT : Y_SIGNATURE_TABLE_INTERNSHIP_MANAGER;
@@ -250,6 +250,7 @@ public class GenerateContract {
         pdfPTable.setTotalWidth(WIDTH_SIGNATURE_TABLE);
         pdfPTable.writeSelectedRows(0, -1, X_SIGNATURE_TABLE, ySignatureTable, content);
     }
+
 
     private static PdfPTable generateSignatureTable(User user) throws IOException, BadElementException {
         float[] pointColumnWidthsSignatures = {WIDTH, WIDTH};
@@ -261,22 +262,22 @@ public class GenerateContract {
         img.scaleAbsoluteWidth(WIDTH_SIGNATURE_IMAGE);
         img.scaleAbsoluteHeight(HEIGHT_SIGNATURE_IMAGE);
 
-        PdfPCell cellEnterpriseSignature = new PdfPCell(img);
-        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseSignature);
+        PdfPCell cellUserSignature = new PdfPCell(img);
+        setUpTopSignatureCell(tableSignatureEnterprise , cellUserSignature);
 
         Paragraph paragDate = new Paragraph(LocalDate.now().format(DATE_FORMATTER));
         paragDate.setAlignment(Element.ALIGN_BOTTOM);
 
-        PdfPCell cellEnterpriseDateSignature = new PdfPCell(paragDate);
-        cellEnterpriseDateSignature.setVerticalAlignment(Element.ALIGN_BOTTOM);
-        setUpTopSignatureCell(tableSignatureEnterprise, cellEnterpriseDateSignature);
+        PdfPCell cellDateSignature = new PdfPCell(paragDate);
+        cellDateSignature.setVerticalAlignment(Element.ALIGN_BOTTOM);
+        setUpTopSignatureCell(tableSignatureEnterprise , cellDateSignature);
 
-        PdfPCell cellEnterpriseNameSignature = new PdfPCell(new Paragraph(user.getFirstName() + EMPTY + user.getLastName()));
-        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseNameSignature);
+        PdfPCell cellNameSignature = new PdfPCell(new Paragraph(user.getFirstName() + EMPTY + user.getLastName()));
+        setUpBottomSignatureCell(tableSignatureEnterprise , cellNameSignature);
 
-        PdfPCell cellEnterpriseDateTitleSignature = new PdfPCell(new Paragraph(DATE));
-        setUpBottomSignatureCell(tableSignatureEnterprise, cellEnterpriseDateTitleSignature);
-        return tableSignatureEnterprise;
+        PdfPCell cellDateTitleSignature = new PdfPCell(new Paragraph(DATE));
+        setUpBottomSignatureCell(tableSignatureEnterprise , cellDateTitleSignature);
+        return tableSignatureEnterprise ;
     }
 
     private static void generateTitlePage(Document document) throws DocumentException {

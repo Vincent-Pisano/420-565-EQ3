@@ -134,6 +134,13 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @PostMapping("/sign/internshipContract/student/{idInternship}")
+    public ResponseEntity<Internship> signInternshipContractByStudent(@PathVariable String idInternship) {
+        return service.signInternshipContractByStudent(idInternship)
+                .map(_internship -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internship))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @PostMapping("/sign/internshipContract/internshipManager/{idInternship}")
     public ResponseEntity<Internship> signInternshipContractByInternshipManager(@PathVariable String idInternship) {
         return service.signInternshipContractByInternshipManager(idInternship)
