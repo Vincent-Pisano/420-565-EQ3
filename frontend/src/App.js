@@ -10,6 +10,7 @@ import InternshipOfferForm from './components/InternshipOffer/InternshipOfferFor
 import InternshipOfferList from './components/IntershipOfferList/InternshipOfferList';
 import InternshipApplicationList from './components/InternshipApplicationList/InternshipApplicationList';
 import NavigationBar from "../src/components/Navbar/NavigationBar";
+import ReportsHome from './components/Reports/ReportsHome';
 
 function App () {
 
@@ -22,6 +23,7 @@ function App () {
           <Route path="/signUp" exact component={SignUp}/>
           <ProtectedRoute path="/home/:username" exact component={Home}/>
           <ProtectedRoute path="/formInternshipOffer" exact component={InternshipOfferForm}/>
+          <ProtectedRoute path="/reports" exact component={ReportsHome}/>
           <ProtectedRoute path="/listStudents" exact component={StudentList}/>
           <ProtectedRoute path="/listInternshipOffer" exact component={InternshipOfferList}/>
           <ProtectedRoute path="/listInternshipApplication" exact component={InternshipApplicationList}/>
