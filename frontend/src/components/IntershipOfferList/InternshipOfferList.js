@@ -8,21 +8,24 @@ import { Container } from "react-bootstrap";
 
 function InternshipOfferList() {
   let history = useHistory();
-  let state = history.location.state;
+  let state = history.location.state  || {};
 
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   let title = auth.isInternshipManager()
-    ? state === undefined 
-      ? "Liste des offres de stages non validées" 
-      : state
+    ? state === undefined
+      ? "Liste des offres de stages non validées"
+      : state.title
     : auth.isStudent()
     ? "Liste des offres de stages de votre département"
     : "Liste de vos offres de stage";
 
   useEffect(() => {
     if (auth.isInternshipManager()) {
-      if (title === "Liste des offres de stages non validées") {
+      if (
+        title === "Liste des offres de stages non validées" ||
+        title === "Rapport des offres non-validées"
+      ) {
         axios
           .get(`http://localhost:9090/getAll/internshipOffer/unvalidated`)
           .then((response) => {

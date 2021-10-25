@@ -1,15 +1,14 @@
 import { Container } from "react-bootstrap";
 import axios from "axios";
 import auth from "../../services/Auth";
-import { useHistory } from "react-router";
 
 const InternshipOfferButtonApply = ({
   fields,
   setHasApplied,
   errorMessage,
   setErrorMessage,
+  redirect
 }) => {
-  let history = useHistory();
   let user = auth.user;
 
   function applyInternshipOffer() {
@@ -22,9 +21,7 @@ const InternshipOfferButtonApply = ({
       .then((response) => {
         setHasApplied(true);
         setTimeout(() => {
-          history.push({
-            pathname: `/listInternshipOffer`,
-          });
+          redirect();
         }, 3000);
         setErrorMessage(
           "Votre demande a été acceptée, vous allez être redirigé"

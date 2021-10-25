@@ -59,6 +59,10 @@ const InternshipOfferForm = () => {
     }
   }, [internshipOffer, user.username]);
 
+  function redirect() {
+    history.goBack()
+  }
+
   function onCreatePost(e) {
     e.preventDefault();
     if (!isLoading) {
@@ -140,6 +144,7 @@ const InternshipOfferForm = () => {
           internshipOfferID={internshipOffer.id}
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
+          redirect={redirect}
         />
       );
     }
@@ -172,6 +177,7 @@ const InternshipOfferForm = () => {
               setHasApplied={setHasApplied}
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
+              redirect={redirect}
             />
           );
         } else {

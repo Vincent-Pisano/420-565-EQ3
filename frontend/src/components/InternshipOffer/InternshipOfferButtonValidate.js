@@ -1,14 +1,12 @@
 import axios from "axios";
-import { useHistory } from "react-router";
 import { Container } from "react-bootstrap";
 
 const InternshipOfferButtonValidate = ({
   internshipOfferID,
   errorMessage,
   setErrorMessage,
+  redirect
 }) => {
-  let history = useHistory();
-
   function validateInternshipOffer() {
     axios
       .post(
@@ -19,9 +17,7 @@ const InternshipOfferButtonValidate = ({
           "L'offre de stage a été validée, vous allez être redirigé"
         );
         setTimeout(() => {
-          history.push({
-            pathname: `/listInternshipOffer`,
-          });
+          redirect();
         }, 2000);
       })
       .catch((error) => {
