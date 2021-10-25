@@ -8,7 +8,7 @@ const Report = ({ report }) => {
   function onCreatePost(e) {
     e.preventDefault();
     history.push({
-      pathname: `/reports/${report.link}`,
+      pathname: `${report.link}`,
     });
   }
 

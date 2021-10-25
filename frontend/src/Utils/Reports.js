@@ -1,16 +1,18 @@
 import { faUserCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
 
+const reportLink = 'reports/'
+
 let reports = [
   {
     id: "1",
     title: "Rapport des offres non-validées",
-    link: "unvalidated",
+    link: "listInternshipOffer",
     icon: faUserCircle,
   },
   {
     id: "2",
     title: "Rapport non validé",
-    link: "test",
+    link: reportLink + "test",
     icon: faUserCircle,
   },
   {
