@@ -8,25 +8,38 @@ import { Container } from "react-bootstrap";
 
 function InternshipOfferList() {
   let history = useHistory();
+  let state = history.location.state;
 
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   let title = auth.isInternshipManager()
-    ? "Liste des offres de stages non validées"
+    ? state === undefined 
+      ? "Liste des offres de stages non validées" 
+      : state
     : auth.isStudent()
     ? "Liste des offres de stages de votre département"
     : "Liste de vos offres de stage";
 
   useEffect(() => {
     if (auth.isInternshipManager()) {
-      axios
-        .get(`http://localhost:9090/getAll/internshipOffer/unvalidated`)
-        .then((response) => {
-          setInternshipOffers(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage("Aucune Offre de stage à valider");
-        });
+      if (title === "Liste des offres de stages non validées") {
+        axios
+          .get(`http://localhost:9090/getAll/internshipOffer/unvalidated`)
+          .then((response) => {
+            setInternshipOffers(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Offre de stage à valider");
+          });
+      } else if (title === "Rapport des offres validées")
+        axios
+          .get(`http://localhost:9090/getAll/internshipOffer/validated`)
+          .then((response) => {
+            setInternshipOffers(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Offre de stage validée");
+          });
     } else if (auth.isStudent()) {
       axios
         .get(
@@ -54,7 +67,7 @@ function InternshipOfferList() {
           );
         });
     }
-  }, []);
+  }, [title]);
 
   function showInternshipOffer(internshipOffer) {
     if (auth.isInternshipManager() || auth.isStudent()) {

@@ -134,7 +134,7 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfValidated() {
-    if (auth.isInternshipManager() && internshipOffer !== undefined) {
+    if (auth.isInternshipManager() && internshipOffer !== undefined && !internshipOffer.isValid) {
       return (
         <InternshipOfferButtonValidate
           internshipOfferID={internshipOffer.id}

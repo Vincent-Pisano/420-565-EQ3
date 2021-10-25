@@ -9,8 +9,8 @@ let reports = [
   },
   {
     id: "2",
-    title: "Rapport non validé",
-    link: "test",
+    title: "Rapport des offres validées",
+    link: "listInternshipOffer",
     icon: faUserCircle,
   },
   {
