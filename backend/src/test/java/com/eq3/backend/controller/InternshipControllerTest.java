@@ -231,6 +231,7 @@ public class InternshipControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipOffers).isNotNull();
     }
+
     @Test
     //@Disabled
     public void testGetAllUnvalidatedInternshipOffer() throws Exception {
@@ -241,6 +242,26 @@ public class InternshipControllerTest {
                 .thenReturn(Optional.of(expectedInternshipOfferList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipOffers = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipOffers).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllValidatedInternshipOffer() throws Exception {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(service.getAllValidatedInternshipOffer())
+                .thenReturn(Optional.of(expectedInternshipOfferList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

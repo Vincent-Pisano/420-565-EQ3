@@ -243,6 +243,26 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllValidatedInternshipOffer() {
+        // Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        // Act
+        final Optional<List<InternshipOffer>> optionalInternshipOffers =
+                service.getAllValidatedInternshipOffer();
+
+        // Assert
+        List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
+
+        assertThat(optionalInternshipOffers.isPresent()).isTrue();
+        assertThat(actualInternshipOffers.size()).isEqualTo(expectedInternshipOfferList.size());
+    }
+
+    @Test
+    //@Disabled
     public void getAllInternshipOfferOfMonitor() {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
