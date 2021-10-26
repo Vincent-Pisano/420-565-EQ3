@@ -36,4 +36,4 @@ const StudentInfoModal =( {
       </>
     );
 }
-export default StudentInfoModal;
+export default StudentInfoModal

@@ -101,6 +101,7 @@ function StudentList() {
           />
         );
       } else if(title==="Rapport des étudiants enregistrés"){
+        console.log()
         return(
           <StudentInfoModal
           show={show}
