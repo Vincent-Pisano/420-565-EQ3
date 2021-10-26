@@ -171,6 +171,25 @@ class BackendServiceTest {
     public void testGetAllStudents() {
         //Arrange
         expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudents();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsByDepartment() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
         when(studentRepository.findAllByIsDisabledFalseAndDepartment(Department.COMPUTER_SCIENCE))
                 .thenReturn(expectedStudentList);
 
