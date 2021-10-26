@@ -17,7 +17,7 @@ let reports = [
   },
   {
     id: "3",
-    title: "Rapport des listes d'étudiants",
+    title: "Rapport des étudiants enregistrés",
     link: "listStudents",
     icon: faUserCircle,
   },
