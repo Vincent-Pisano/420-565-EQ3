@@ -38,6 +38,12 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
+    public Optional<List<Student>> getAllStudentsWithoutCV() {
+        List<Student> students = studentRepository.findAllByCVListIsNull();
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
