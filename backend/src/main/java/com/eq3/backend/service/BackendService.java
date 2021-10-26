@@ -99,8 +99,14 @@ public class BackendService {
     }
 
 
-    public Optional<List<Student>> getAllStudents(Department department) {
+    public Optional<List<Student>> getAllStudentsByDepartment(Department department) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartment(department);
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
+    public Optional<List<Student>> getAllStudents() {
+        List<Student> students = studentRepository.findAllByIsDisabledFalse();
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }

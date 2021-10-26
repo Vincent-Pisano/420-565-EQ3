@@ -181,7 +181,7 @@ class BackendControllerTest {
     public void testGetAllStudents() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudents(Department.COMPUTER_SCIENCE))
+        when(service.getAllStudentsByDepartment(Department.COMPUTER_SCIENCE))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS +

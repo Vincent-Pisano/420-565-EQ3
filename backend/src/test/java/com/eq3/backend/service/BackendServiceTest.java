@@ -3,8 +3,6 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -178,7 +176,7 @@ class BackendServiceTest {
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudents(Department.COMPUTER_SCIENCE);
+                service.getAllStudentsByDepartment(Department.COMPUTER_SCIENCE);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
