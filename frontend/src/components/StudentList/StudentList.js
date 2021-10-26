@@ -7,6 +7,7 @@ import axios from "axios";
 
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
+import StudentInfoModal from "../Reports/StudentInfoModal"
 import Student from "./Student";
 
 import "../../styles/List.css";
@@ -14,6 +15,7 @@ import "../../styles/List.css";
 function StudentList() {
   let history = useHistory();
   let supervisor = history.location.supervisor;
+  let state = history.location.state  || {};
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -24,12 +26,16 @@ function StudentList() {
   const [errorMessage, setErrorMessage] = useState("");
 
   let title = !auth.isInternshipManager()
+
     ? "Étudiants de votre département"
     : supervisor !== undefined
-    ? "Étudiants de ce département à assigner"
-    : "Étudiants avec un CV à valider";
+    ? state === undefined
+      ? "Étudiants de ce département à assigner"
+      : "Étudiants avec un CV à valider"
+      : state.title;
 
   useEffect(() => {
+    console.log("Test")
     if (auth.isSupervisor()) {
       axios
         .get(`http://localhost:9090/getAll/students/${auth.user.department}`)
@@ -42,7 +48,16 @@ function StudentList() {
           );
         });
     } else if (auth.isInternshipManager()) {
-      if (supervisor !== undefined) {
+      if (title === "Rapport des étudiants avec aucun CV") {
+        axios
+          .get(`http://localhost:9090/getAll/students/without/CV`)
+          .then((response) => {
+            setStudents(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucun étudiants est enregistrés");
+          });
+      } else if (supervisor !== undefined) {
         axios
           .get(
             `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}`
@@ -64,7 +79,7 @@ function StudentList() {
           });
       }
     }
-  }, [history, supervisor]);
+  }, [history, supervisor, title]);
 
   function showModal(student) {
     setCurrentStudent(student);
@@ -85,7 +100,15 @@ function StudentList() {
             currentStudent={currentStudent}
           />
         );
-      } else {
+      } else if(title === "Rapport des étudiants enregistrés"){
+        return(
+          <StudentInfoModal
+          show={show}
+          handleClose={handleClose}
+          currentStudent={currentStudent}
+          />
+        );
+      }else {
         return (
           <ValidCVModal
             show={show}
@@ -118,7 +141,7 @@ function StudentList() {
               <Student
                 key={student.id}
                 student={student}
-                onDoubleClick={auth.isInternshipManager() ? showModal : null}
+                onDoubleClick={auth.isInternshipManager()  ? showModal : null}
               />
             ))}
           </ul>
