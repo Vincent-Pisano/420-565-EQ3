@@ -26,8 +26,8 @@ function StudentList() {
   let title = !auth.isInternshipManager()
     ? "Étudiants de votre département"
     : supervisor !== undefined
-    ? "Étudiants de ce département à assigner"
-    : "Étudiants avec un CV à valider";
+      ? "Étudiants de ce département à assigner"
+      : "Étudiants avec un CV à valider";
 
   useEffect(() => {
     if (auth.isSupervisor()) {
@@ -52,6 +52,15 @@ function StudentList() {
           })
           .catch((err) => {
             setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
+          });
+      } else if (title === "Rapport des étudiants enregistré") {
+        axios
+          .get(`http://localhost:9090/getAll/students`)
+          .then((response) => {
+            setStudents(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucun étudiants est enregistré");
           });
       } else {
         axios
