@@ -1,11 +1,9 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
-import com.eq3.backend.repository.InternshipManagerRepository;
 import com.eq3.backend.service.BackendService;
 
 import org.bson.types.Binary;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,9 +36,16 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/students/")
+    public ResponseEntity<List<Student>> getAllStudents() {
+        return service.getAllStudents()
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/students/{department}")
-    public ResponseEntity<List<Student>> getAllStudents(@PathVariable Department department) {
-        return service.getAllStudents(department)
+    public ResponseEntity<List<Student>> getAllStudentsByDepartment(@PathVariable Department department) {
+        return service.getAllStudentsByDepartment(department)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

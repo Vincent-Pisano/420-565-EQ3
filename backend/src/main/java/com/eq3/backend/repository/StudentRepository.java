@@ -19,6 +19,8 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     List<Student> findAllByIsDisabledFalseAndDepartment(Department department);
 
+    List<Student> findAllByIsDisabledFalse();
+
     @Query(value = "{ 'isDisabled':false ,'CVList' : {$elemMatch: { 'status': 'WAITING', 'isActive' : true} } }")
     List<Student> findAllByIsDisabledFalseAndActiveCVWaitingValidation();
 
