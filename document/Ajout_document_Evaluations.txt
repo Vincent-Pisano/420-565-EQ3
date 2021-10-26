@@ -30,7 +30,7 @@ public class BackendApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Evaluation enterpriseEvaluation = new Evaluation();
-        Path pdfPath = Paths.get(System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf");
+        Path pdfPath = Paths.get(System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\enterpriseEvaluation.pdf");
         PDFDocument document = PDFDocument.builder()
                 .name("enterpriseEvaluation.pdf")
                 .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
@@ -39,9 +39,9 @@ public class BackendApplication implements CommandLineRunner {
         this.evaluationRepository.save(enterpriseEvaluation);
 
         Evaluation studentEvaluation = new Evaluation();
-        Path pdfPath2 = Paths.get(System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf");
+        Path pdfPath2 = Paths.get(System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\studentEvaluation.pdf");
         PDFDocument document2 = PDFDocument.builder()
-                .name("enterpriseEvaluation.pdf")
+                .name("studentEvaluation.pdf")
                 .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath2)))
                 .build();
         studentEvaluation.setDocument(document2);

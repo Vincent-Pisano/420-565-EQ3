@@ -1,12 +1,13 @@
 package com.eq3.backend.model;
 
 import lombok.*;
+import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PDFDocument {
 
     private String name;

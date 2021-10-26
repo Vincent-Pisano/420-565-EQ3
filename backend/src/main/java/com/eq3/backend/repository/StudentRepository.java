@@ -1,6 +1,7 @@
 package com.eq3.backend.repository;
 
 import com.eq3.backend.model.Department;
+import com.eq3.backend.model.InternshipManager;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.model.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -24,5 +25,7 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(Department department);
 
     List<Student> findAllByCVListIsNull();
+
+    Optional<Student> findByUsernameAndIsDisabledFalse(String username);
 }
 

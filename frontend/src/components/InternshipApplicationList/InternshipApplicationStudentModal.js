@@ -4,7 +4,7 @@ import { useFormFields } from "../../lib/hooksLib";
 import axios from "axios";
 import "../../styles/Form.css";
 
-const InternshipModal = ({
+const InternshipApplicationStudentModal = ({
   show,
   handleClose,
   currentInternshipApplication,
@@ -20,7 +20,6 @@ const InternshipModal = ({
   function onConfirmModal(e) {
     e.preventDefault();
     ChangeStatus();
-    CreateInternship();
   }
 
   function ChangeStatus() {
@@ -28,9 +27,13 @@ const InternshipModal = ({
       fields.status !== undefined
         ? fields.status
         : currentInternshipApplication.status;
+    currentInternshipApplication.student.cvlist = [];
+    currentInternshipApplication.student.signature = undefined;
+    currentInternshipApplication.internshipOffer.pdfdocument = undefined;
+    currentInternshipApplication.internshipOffer.monitor.signature = undefined;
     axios
       .post(
-        `http://localhost:9090//update/internshipApplication`,
+        `http://localhost:9090/update/internshipApplication`,
         currentInternshipApplication
       )
       .then((response) => {
@@ -45,22 +48,8 @@ const InternshipModal = ({
       });
   }
 
-  function CreateInternship() {
-    axios
-      .post(
-        `http://localhost:9090//save/internship`,
-        currentInternshipApplication
-      )
-      .then((response) => {
-        setTimeout(() => {
-          setErrorMessageModal("");
-          handleClose();
-        }, 1000);
-        setErrorMessageModal("Confirmation du démarrage du processus");
-      })
-      .catch((err) => {
-        setErrorMessageModal("Erreur lors de la création");
-      });
+  function isValidated() {
+    return currentInternshipApplication.status === "VALIDATED";
   }
 
   return (
@@ -86,16 +75,16 @@ const InternshipModal = ({
                     className="select_form d_block"
                     required
                   >
-                    <option disabled value="ACCEPTED">
+                    <option disabled={isValidated()} value="ACCEPTED">
                       Acceptée
                     </option>
-                    <option disabled value="NOT_ACCEPTED">
+                    <option disabled={isValidated()} value="NOT_ACCEPTED">
                       Refusée
                     </option>
-                    <option disabled value="WAITING">
+                    <option disabled={isValidated()} value="WAITING">
                       En attente
                     </option>
-                    <option value ="VALIDATED">
+                    <option disabled value="VALIDATED">
                       Validée
                     </option>
                   </Form.Select>
@@ -156,4 +145,4 @@ const InternshipModal = ({
   );
 };
 
-export default InternshipModal;
+export default InternshipApplicationStudentModal;

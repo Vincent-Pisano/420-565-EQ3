@@ -41,7 +41,7 @@ const ValidCVModal = ({
           setErrorMessage("Plus aucun CV à Valider, vous allez être redirigé");
         }
         setTimeout(() => {
-            setErrorMessageModal("")
+          setErrorMessageModal("");
           handleClose();
         }, 1000);
         setErrorMessageModal("Confirmation de la validation");
@@ -83,6 +83,8 @@ const ValidCVModal = ({
                       (cv) => cv.isActive === true
                     )[0].id
               }`}
+              target="_blank"
+              rel="noreferrer"
             >
               Télécharger
             </a>

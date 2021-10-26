@@ -21,9 +21,7 @@ function NavUserSwitch() {
 
   function checkIfSupervisor() {
     if (auth.isSupervisor()) {
-      return (
-        <NavUserSupervisor />
-      );
+      return <NavUserSupervisor />;
     }
   }
 

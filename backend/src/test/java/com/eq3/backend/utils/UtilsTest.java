@@ -15,10 +15,15 @@ import java.util.List;
 public class UtilsTest {
 
     public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
-    public final static String DOCUMENT_NAME = "documentTest";
+    public final static String DOCUMENT_NAME = "student";
 
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
+    public final static String IMAGE_FILEPATH =
+            System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\image.png";
+
+    public final static String PDF_EVALUATION_FILEPATH =
+            System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\studentEvaluation.pdf";
 
     public static Student getStudentWithId(){
         Student student = getStudentWithoutId();
@@ -106,7 +111,13 @@ public class UtilsTest {
                 .build();
     }
 
-    public static InternshipOffer getInternshipOffer() {
+    public static InternshipOffer getInternshipOfferWithId() {
+        InternshipOffer internshipOffer = getInternshipOfferWithoutId();
+        internshipOffer.setId("91448hkk58e00c02w02bjd4");
+        return internshipOffer;
+    }
+
+    public static InternshipOffer getInternshipOfferWithoutId() {
         List<String> allWeekDay = new ArrayList<>();
         allWeekDay.add("Monday");
         allWeekDay.add("Tuesday");
@@ -127,19 +138,13 @@ public class UtilsTest {
                 .address("189, rue Mont-Gomery")
                 .city("Montreal")
                 .postalCode("JGH5E8")
+                .monitor(getMonitorWithId())
                 .build();
     }
 
     public static List<InternshipOffer> getListOfInternshipOffer() {
-        List<String> allWeekDay = new ArrayList<>();
-        allWeekDay.add("Monday");
-        allWeekDay.add("Tuesday");
-        allWeekDay.add("Wednesday");
-        allWeekDay.add("Thursday");
-        allWeekDay.add("Friday");
-
-        InternshipOffer internshipOffer1 = getInternshipOffer();
-        InternshipOffer internshipOffer2 = getInternshipOffer();
+        InternshipOffer internshipOffer1 = getInternshipOfferWithId();
+        InternshipOffer internshipOffer2 = getInternshipOfferWithId();
 
         List<InternshipOffer> internshipOffers = new ArrayList<>();
         internshipOffers.add(internshipOffer1);
@@ -151,7 +156,8 @@ public class UtilsTest {
         return InternshipApplication.builder()
                 .id("91448hkk58e00c02w02bjd4")
                 .status(InternshipApplication.ApplicationStatus.WAITING)
-                .internshipOffer(getInternshipOffer())
+                .internshipOffer(getInternshipOfferWithId())
+                .student(getStudentWithId())
                 .build();
     }
 
@@ -169,6 +175,14 @@ public class UtilsTest {
         Path pdfPath = Paths.get(PDF_FILEPATH);
         return PDFDocument.builder()
                 .name("documentTest.pdf")
+                .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
+                .build();
+    }
+
+    public static PDFDocument getEvaluationDocument(String documentName) throws IOException {
+        Path pdfPath = Paths.get(PDF_EVALUATION_FILEPATH);
+        return PDFDocument.builder()
+                .name(documentName + DOCUMENT_EXTENSION)
                 .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
                 .build();
     }
@@ -193,9 +207,9 @@ public class UtilsTest {
         return cvList;
     }
 
-    public static Evaluation getEvaluation() throws IOException {
+    public static Evaluation getEvaluation(String documentName) throws IOException {
         return Evaluation.builder()
-                .document(getDocument())
+                .document(getEvaluationDocument(documentName))
                 .build();
     }
 
@@ -204,5 +218,18 @@ public class UtilsTest {
                 .id("6141112s17d3eye02ce5gt68dq5")
                 .internshipApplication(getInternshipApplication())
                 .build();
+    }
+
+    public static Internship getInternshipWithInternshipContract() throws IOException {
+        return Internship.builder()
+                .id("6141112s17d3gre02ce5gt68dq5")
+                .internshipApplication(getInternshipApplication())
+                .internshipContract(getDocument())
+                .build();
+    }
+
+    public static Binary getImage() throws IOException {
+        Path imagePDF = Paths.get(IMAGE_FILEPATH);
+        return new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(imagePDF));
     }
 }

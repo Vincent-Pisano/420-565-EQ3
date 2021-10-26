@@ -1,14 +1,18 @@
 import { Container } from "react-bootstrap";
 import axios from "axios";
 import auth from "../../services/Auth";
-import { useHistory } from "react-router";
 
-const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErrorMessage}) => {
-
-  let history = useHistory()
+const InternshipOfferButtonApply = ({
+  fields,
+  setHasApplied,
+  errorMessage,
+  setErrorMessage,
+  redirect
+}) => {
   let user = auth.user;
 
   function applyInternshipOffer() {
+    fields.monitor.signature = undefined;
     axios
       .post(
         `http://localhost:9090/apply/internshipOffer/${user.username}`,
@@ -17,9 +21,7 @@ const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErr
       .then((response) => {
         setHasApplied(true);
         setTimeout(() => {
-          history.push({
-            pathname: `/listInternshipOffer`,
-          });
+          redirect();
         }, 3000);
         setErrorMessage(
           "Votre demande a été acceptée, vous allez être redirigé"
@@ -30,8 +32,8 @@ const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErr
       });
   }
 
-    return (
-      <Container className="cont_btn">
+  return (
+    <Container className="cont_btn">
       <p
         style={{
           color: errorMessage.startsWith("Erreur") ? "red" : "green",
@@ -39,14 +41,10 @@ const InternshipOfferButtonApply = ({fields, setHasApplied, errorMessage, setErr
       >
         {errorMessage}
       </p>
-      <button
-        className="btn_submit"
-        onClick={() => applyInternshipOffer()}
-      >
+      <button className="btn_submit" onClick={() => applyInternshipOffer()}>
         Appliquer
       </button>
     </Container>
-      );
-  };
-  export default InternshipOfferButtonApply;
-  
+  );
+};
+export default InternshipOfferButtonApply;

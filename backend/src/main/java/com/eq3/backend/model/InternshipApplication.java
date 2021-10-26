@@ -17,13 +17,14 @@ public class InternshipApplication extends Entity{
         NOT_ACCEPTED,
         ACCEPTED,
         WAITING,
-        VALIDATED
+        VALIDATED,
+        COMPLETED
     }
 
     @Builder.Default
     private ApplicationStatus status = ApplicationStatus.WAITING;
 
-    @Field
+    @DBRef
     private InternshipOffer internshipOffer;
 
     @DBRef
