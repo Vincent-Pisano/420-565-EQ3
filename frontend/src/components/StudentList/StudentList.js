@@ -99,9 +99,7 @@ function StudentList() {
           />
         );
       } else if (title === "Rapport des étudiants avec aucun CV") {
-        return (
-          "Nothing"
-        );
+        // Ajouter studentDetails ici
       }
       else {
         return (

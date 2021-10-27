@@ -107,26 +107,18 @@ public class BackendService {
     }
 
     public Optional<List<Student>> getAllStudentsWithoutCV() {
-        List<Student> students = studentRepository.findAllByCVListIsNull();
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
-        return students.isEmpty() ? Optional.empty() : Optional.of(students);
-    }
-
-    public Optional<List<Student>> getAllStudentsWithInvalidCV() {
-        List<Student> allStudents = studentRepository.findAllByIsDisabledFalse();
-        List<Student> allStudentsWithInvalidCV = new ArrayList<>();
-        for (Student student : allStudents) {
-            for (CV cv : student.getCVList()) {
-                if (cv.getStatus() == CV.CVStatus.INVALID) {
-                    allStudentsWithInvalidCV.add(student);
-                    System.out.println(student.getUsername());
-                }
-                System.out.println("out 1");
+        List<Student> students = studentRepository.findAllByIsDisabledFalse();
+        List<Student> studentsWithNoCV = new ArrayList<>();
+        for (Student student : students) {
+            if (student.getCVList() == null) {
+                studentsWithNoCV.add(student);
             }
-            System.out.println("out2");
+            else if (student.getCVList().size() == 0) {
+                studentsWithNoCV.add(student);
+            }
         }
-        allStudentsWithInvalidCV.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
-        return allStudentsWithInvalidCV.isEmpty() ? Optional.empty() : Optional.of(allStudentsWithInvalidCV);
+        studentsWithNoCV.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(studentsWithNoCV);
     }
 
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
