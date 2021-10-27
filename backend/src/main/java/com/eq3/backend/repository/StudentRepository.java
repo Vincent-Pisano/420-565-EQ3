@@ -22,9 +22,11 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     @Query(value = "{ 'isDisabled':false ,'CVList' : {$elemMatch: { 'status': 'WAITING', 'isActive' : true} } }")
     List<Student> findAllByIsDisabledFalseAndActiveCVWaitingValidation();
 
+
     List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(Department department);
 
-    List<Student> findAllByIsDisabledFalse();
+    List<Student> findAllByIsDisabledFalseAndCVListIsNull();
+
 
     Optional<Student> findByUsernameAndIsDisabledFalse(String username);
 }
