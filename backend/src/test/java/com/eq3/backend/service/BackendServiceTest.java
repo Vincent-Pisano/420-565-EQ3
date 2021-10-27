@@ -208,6 +208,25 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllStudentsWithInvalidCV() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAll())
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithoutCV();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithoutSupervisor() {
         //Arrange
         expectedStudentList = getListOfStudents();

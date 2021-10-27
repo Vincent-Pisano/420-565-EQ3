@@ -61,9 +61,9 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/wit/invalid/CV")
+    @GetMapping("/getAll/students/with/invalid/CV")
     public ResponseEntity<List<Student>> getAllStudentsWithInvalidCV() {
-        return service.getAllStudentsWitInvalidCV()
+        return service.getAllStudentsWithInvalidCV()
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
