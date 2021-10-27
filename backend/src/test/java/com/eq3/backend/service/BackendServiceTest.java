@@ -192,7 +192,7 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutCV() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByCVListIsNull())
+        when(studentRepository.findAllByIsDisabledFalse())
                 .thenReturn(expectedStudentList);
 
         //Act

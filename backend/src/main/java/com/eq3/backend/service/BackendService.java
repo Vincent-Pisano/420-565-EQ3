@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,9 +107,18 @@ public class BackendService {
     }
 
     public Optional<List<Student>> getAllStudentsWithoutCV() {
-        List<Student> students = studentRepository.findAllByCVListIsNull();
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
-        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+        List<Student> students = studentRepository.findAllByIsDisabledFalse();
+        List<Student> studentsWithNoCV = new ArrayList<>();
+        for (Student student : students) {
+            if (student.getCVList() == null) {
+                studentsWithNoCV.add(student);
+            }
+            else if (student.getCVList().size() == 0) {
+                studentsWithNoCV.add(student);
+            }
+        }
+        studentsWithNoCV.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(studentsWithNoCV);
     }
 
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
