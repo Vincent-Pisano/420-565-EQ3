@@ -54,6 +54,15 @@ function StudentList() {
           .catch((err) => {
             setErrorMessage("Aucun étudiants est enregistrés");
           });
+      } else if (title === "Rapport non validé") {
+        axios
+          .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
+          .then((response) => {
+            setStudents(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucun étudiants est enregistrés");
+          });
       } else if (supervisor !== undefined) {
         axios
           .get(
