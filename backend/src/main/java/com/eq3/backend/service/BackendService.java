@@ -99,7 +99,6 @@ public class BackendService {
         return optionalBinary;
     }
 
-
     public Optional<List<Student>> getAllStudents(Department department) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartment(department);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
