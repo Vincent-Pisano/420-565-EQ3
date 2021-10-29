@@ -96,7 +96,7 @@ function StudentReportList() {
     }
   }
 
-  function checkIfGS() {
+  function checkIfReport() {
     if (currentStudent !== undefined) {
       return (
         <Modal show={show} onHide={handleClose}>
@@ -121,7 +121,7 @@ function StudentReportList() {
             </Row>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="danger" size="lg" onClick={handleClose}>
               Fermer
             </Button>
           </Modal.Footer>
@@ -156,7 +156,7 @@ function StudentReportList() {
           </ul>
         </Container>
       </Container>
-      {checkIfGS()}
+      {checkIfReport()}
     </Container>
   );
 }
