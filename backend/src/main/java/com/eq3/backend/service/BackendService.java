@@ -123,8 +123,6 @@ public class BackendService {
             studentsWithoutInterviewDate.add(internshipApplication.getStudent());
         }
 
-        System.out.println(studentsWithoutInterviewDate);
-
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
 
@@ -137,7 +135,8 @@ public class BackendService {
             studentsWaitingInterview.add(internshipApplication.getStudent());
         }
 
-        return studentsWaitingInterview.isEmpty() ? Optional.empty() : Optional.of(studentsWaitingInterview);
+        return studentsWaitingInterview.isEmpty() ? Optional.empty() : 
+                Optional.of(studentsWaitingInterview.stream().distinct().collect(Collectors.toList()));
     }
 
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {

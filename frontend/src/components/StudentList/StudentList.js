@@ -1,20 +1,16 @@
 import { React, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
-
 import { useHistory } from "react-router";
 import auth from "../../services/Auth";
 import axios from "axios";
-
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
 import Student from "./Student";
-
 import "../../styles/List.css";
 
 function StudentList() {
   let history = useHistory();
   let supervisor = history.location.supervisor;
-  let state = history.location.state || {};
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -28,9 +24,7 @@ function StudentList() {
     ? "Étudiants de votre département"
     : supervisor !== undefined
     ? "Étudiants de ce département à assigner"
-    : Object.keys(state).length === 0
-    ? "Étudiants avec un CV à valider"
-    : state.title;
+    : "Étudiants avec un CV à valider";
 
   useEffect(() => {
     if (auth.isSupervisor()) {
@@ -45,45 +39,7 @@ function StudentList() {
           );
         });
     } else if (auth.isInternshipManager()) {
-      if (title === "Rapport des étudiants avec aucun CV") {
-        axios
-          .get(`http://localhost:9090/getAll/students/without/CV`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiants n'a pas de CV");
-          });
-      } else if (title === "Rapport non validé") {
-        axios
-          .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiants est enregistrés");
-          });
-      } else if (
-        title === "Rapport des étudiants n'ayant aucune convocation à une entrevue"
-      ) {
-        axios
-          .get(`http://localhost:9090/getAll/students/without/InterviewDate`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiants n'a pas de convocation à une entrevue");
-          });
-      } else if (title === "Rapport des étudiants en attente d’entrevue") {
-        axios
-          .get(`http://localhost:9090/getAll/students/waiting/interview`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiants en attente d'entrevue");
-          });
-      } else if (supervisor !== undefined) {
+      if (supervisor !== undefined) {
         axios
           .get(
             `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}`
@@ -126,7 +82,7 @@ function StudentList() {
             currentStudent={currentStudent}
           />
         );
-      } else if (Object.keys(state).length === 0) {
+      } else {
         return (
           <ValidCVModal
             show={show}
@@ -137,7 +93,7 @@ function StudentList() {
             currentStudent={currentStudent}
           />
         );
-      } 
+      }
     }
   }
 
