@@ -63,10 +63,11 @@ function StudentList() {
           .catch((err) => {
             setErrorMessage("Aucun étudiants est enregistrés");
           });
-        } else if (title === "Rapport non validé") {
+        } else if (title === "Rapport des étudiants n'ayant aucune convocation à entrevue") {
             axios
-              .get(`http://localhost:9090/getAll/student/without/InterviewDate`)
+              .get(`http://localhost:9090/getAll/students/without/InterviewDate`)
               .then((response) => {
+                console.log(response.data)
                 setStudents(response.data);
               })
               .catch((err) => {
@@ -117,7 +118,10 @@ function StudentList() {
           />
         );
       } else if (title === "Rapport des étudiants avec aucun CV") {
-        // Ajouter studentDetails ici
+        // Ajouter studentDetails pour ceux qui non pas de CV ici
+      }
+      else if (title === "Rapport des étudiants n'ayant aucune convocation à entrevue") {
+        // Ajouter studentDetails pour ceux qui non pas d'entrevue ici
       }
       else {
         return (
