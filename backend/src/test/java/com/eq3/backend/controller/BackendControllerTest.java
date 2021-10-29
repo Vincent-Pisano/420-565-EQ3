@@ -179,13 +179,52 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudents() throws Exception {
+    public void testGetAllStudentsFromDepartment() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
         when(service.getAllStudents(Department.COMPUTER_SCIENCE))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS +
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_FROM_DEPARTMENT +
+                Department.COMPUTER_SCIENCE)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudents() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudents())
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutSupervisor() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE))
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR +
                 Department.COMPUTER_SCIENCE)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
@@ -218,14 +257,32 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudentsWithoutSupervisor() throws Exception {
+    public void testGetAllStudentsWithoutInterviewDate() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE))
+        when(service.getAllStudentsWithoutInterviewDate())
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR +
-                Department.COMPUTER_SCIENCE)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWaitingInterview() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWaitingInterview())
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WAITING_INTERVIEW)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

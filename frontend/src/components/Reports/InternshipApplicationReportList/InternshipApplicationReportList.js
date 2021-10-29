@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import axios from "axios";
 import "../../../styles/List.css";
 import { Container } from "react-bootstrap";
 import InternshipApplication from "../../InternshipApplicationList/InternshipApplication";
+import InternshipApplicationDetailsModal from "./InternshipApplicationDetailsModal";
 
 function InternshipApplicationReportList() {
   
   
-  //const username = history.match.params;
   let history = useHistory();
-  console.log(history.location)
+  let params = useParams();
+  let username = params.username
 
   let state = history.location.state;
 
@@ -21,7 +22,7 @@ function InternshipApplicationReportList() {
   const handleShow = () => setShow(true);
 
   const [currentInternshipApplication, setCurrentInternshipApplication] =
-    useState({});
+    useState(undefined);
   const [internshipApplications, setInternshipApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,23 +32,37 @@ function InternshipApplicationReportList() {
     if (title === "Rapport des étudiants en attente d’entrevue")
       axios
         .get(
-            `http://localhost:9090/getAll/internshipApplication/student/`
+            `http://localhost:9090/getAll/internshipApplication/student/${username}`
         )
         .then((response) => {
             setInternshipApplications(response.data);
         })
         .catch((err) => {
-            setErrorMessage("Erreur");
+            setErrorMessage("Erreur lors de la récupération des applications de stages");
         });
-  }, [title]);
+  }, [title, username]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
     handleShow();
   }
 
+  function showIntershipOffer(internshipOffer) {
+    history.push({
+      pathname: "/formInternshipOffer",
+      state: internshipOffer,
+    });
+  }
+
   function checkForModal() {
-    console.log("temp")
+    return (
+        <InternshipApplicationDetailsModal
+          show={show}
+          handleClose={handleClose}
+          currentInternshipApplication={currentInternshipApplication}
+          showIntershipOffer={showIntershipOffer}
+        />
+      );
   }
 
   return (
