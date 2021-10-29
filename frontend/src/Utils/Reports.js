@@ -27,6 +27,12 @@ let reports = [
     link: "listStudents",
     icon: faUserCircle,
   },
+  {
+    id: "5",
+    title: "Rapport des étudiants n'ayant aucune convocation à entrevue",
+    link: "listStudents",
+    icon: faUserCircle,
+  },
 ];
 
 export function ReportsList() {
