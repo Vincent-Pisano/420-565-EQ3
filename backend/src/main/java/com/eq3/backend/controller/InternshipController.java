@@ -161,7 +161,7 @@ public class InternshipController {
     public ResponseEntity<Internship> depositStudentEvaluation(@PathVariable("idInternship") String idInternship,
                                                                     @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
         return service.depositStudentEvaluation(idInternship, multipartFile)
-                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 }

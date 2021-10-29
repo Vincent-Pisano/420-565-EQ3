@@ -43,6 +43,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/students")
+    public ResponseEntity<List<Student>> getAllStudents() {
+        return service.getAllStudents()
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/students/noSupervisor/{department}")
     public ResponseEntity<List<Student>> getAllStudentsWithoutSupervisor(@PathVariable Department department) {
         return service.getAllStudentsWithoutSupervisor(department)
@@ -59,9 +66,16 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/without/InterviewDate")
+    @GetMapping("/getAll/students/without/interviewDate")
     public ResponseEntity<List<Student>> getAllStudentsWithoutInterviewDate() {
         return service.getAllStudentsWithoutInterviewDate()
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/students/waiting/interview")
+    public ResponseEntity<List<Student>> getAllStudentsWaitingInterview() {
+        return service.getAllStudentsWaitingInterview()
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
