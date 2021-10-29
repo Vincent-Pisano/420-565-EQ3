@@ -69,8 +69,8 @@ function StudentReportList() {
   function onDoubleClick(student) {
     if (title === "Rapport des étudiants en attente d’entrevue") {
       history.push({
-        pathname: `/listInternshipApplication/${student.id}`,
-        state: student,
+        pathname: `/reports/listInternshipApplication/${student.username}`,
+        state: state
       });
     }
     else {

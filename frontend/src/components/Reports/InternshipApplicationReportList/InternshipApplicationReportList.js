@@ -7,7 +7,10 @@ import InternshipApplication from "../../InternshipApplicationList/InternshipApp
 
 function InternshipApplicationReportList() {
   
+  
+  //const username = history.match.params;
   let history = useHistory();
+  console.log(history.location)
 
   let state = history.location.state;
 
@@ -25,9 +28,10 @@ function InternshipApplicationReportList() {
   useEffect(() => {
     setErrorMessage("");
     setInternshipApplications([]);
+    if (title === "Rapport des étudiants en attente d’entrevue")
       axios
         .get(
-            `http://localhost:9090/`
+            `http://localhost:9090/getAll/internshipApplication/student/`
         )
         .then((response) => {
             setInternshipApplications(response.data);
@@ -35,7 +39,7 @@ function InternshipApplicationReportList() {
         .catch((err) => {
             setErrorMessage("Erreur");
         });
-  }, []);
+  }, [title]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
