@@ -198,6 +198,25 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllStudentsWithoutCV() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithoutCV())
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_CV)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithoutSupervisor() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();

@@ -15,6 +15,7 @@ const InternshipApplicationStudentModal = ({
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [fields, handleFieldChange] = useFormFields({
     status: currentInternshipApplication.status,
+    interviewDate: currentInternshipApplication.interviewDate,
   });
 
   function onConfirmModal(e) {
@@ -22,15 +23,31 @@ const InternshipApplicationStudentModal = ({
     ChangeStatus();
   }
 
-  function ChangeStatus() {
+  function setInternshipApplication() {
     currentInternshipApplication.status =
       fields.status !== undefined
         ? fields.status
         : currentInternshipApplication.status;
+    currentInternshipApplication.interviewDate =
+      fields.interviewDate !== undefined
+        ? fields.interviewDate
+        : currentInternshipApplication.interviewDate;
     currentInternshipApplication.student.cvlist = [];
     currentInternshipApplication.student.signature = undefined;
+    if (currentInternshipApplication.student.supervisor !== null)
+      currentInternshipApplication.student.supervisor.signature = undefined;
     currentInternshipApplication.internshipOffer.pdfdocument = undefined;
     currentInternshipApplication.internshipOffer.monitor.signature = undefined;
+  }
+
+  function formatDate(dateString) {
+    let date = new Date(dateString);
+    let dateFormatted = date.toISOString().split("T")[0];
+    return dateFormatted;
+  }
+
+  function ChangeStatus() {
+    setInternshipApplication()
     axios
       .post(
         `http://localhost:9090/update/internshipApplication`,
@@ -88,6 +105,19 @@ const InternshipApplicationStudentModal = ({
                       Validée
                     </option>
                   </Form.Select>
+                </Form.Group>
+                <Form.Group controlId="interviewDate">
+                  <Form.Label className="labelFields">
+                    Date d'entrevue
+                  </Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="interviewDate"
+                    placeholder="Date d'entrevue"
+                    className="select_form d_block"
+                    defaultValue={formatDate(currentInternshipApplication.interviewDate)}
+                    onChange={handleFieldChange}
+                  />
                 </Form.Group>
               </Container>
             </Form>

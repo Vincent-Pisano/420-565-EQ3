@@ -18,14 +18,20 @@ let reports = [
   {
     id: "3",
     title: "Rapport non validé",
-    link: "test",
+    link: "listStudents",
     icon: faUserCircle,
   },
   {
     id: "4",
-    title: "Rapport non validé",
-    link: "test",
-    icon: faCheck,
+    title: "Rapport des étudiants avec aucun CV",
+    link: "listStudents",
+    icon: faUserCircle,
+  },
+  {
+    id: "5",
+    title: "Rapport des étudiants n'ayant aucune convocation à entrevue",
+    link: "listStudents",
+    icon: faUserCircle,
   },
 ];
 

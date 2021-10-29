@@ -37,7 +37,7 @@ const CVButtonDeposit = () => {
         .post(`http://localhost:9090/save/CV/${user.id}/`, formData)
         .then((response) => {
           user = response.data;
-          auth.user = user;
+          auth.updateUser(user);
           setErrorMessage("Le fichier a été déposé");
           setTimeout(() => {
             handleClose();

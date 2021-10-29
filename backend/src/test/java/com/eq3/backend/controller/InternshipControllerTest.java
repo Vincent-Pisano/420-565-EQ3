@@ -51,6 +51,36 @@ public class InternshipControllerTest {
     private Map<String, String> expectedEngagements;
 
     @Test
+    //@Disabled
+    public void testSaveInternship() throws Exception {
+        //Arrange
+        expectedInternship = getInternship();
+        expectedInternshipApplication = getInternshipApplication();
+
+        expectedInternship.setInternshipContract(getDocument());
+        expectedInternship.setInternshipApplication(expectedInternshipApplication);
+        expectedInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        Internship givenInternship = getInternship();
+        givenInternship.setInternshipApplication(expectedInternshipApplication);
+        givenInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
+
+        when(service.saveInternship(givenInternship))
+                .thenReturn(Optional.of(expectedInternship));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_SAVE_INTERNSHIP)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(givenInternship).getBytes()))
+                .andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @Test
     //Disabled
     public void testSaveInternshipOfferWithDocument() throws Exception {
         //Arrange
@@ -81,8 +111,7 @@ public class InternshipControllerTest {
                                 new ObjectMapper().writeValueAsString(givenInternshipOffer).getBytes())
                         .file("document", multipartFile.getBytes())
                         .contentType(mediaType)).andReturn();
-
-        //Assert
+        // Assert
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
@@ -117,36 +146,6 @@ public class InternshipControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(expectedInternshipOffer).isEqualTo(actualInternshipOffer);
-    }
-
-    @Test
-    //@Disabled
-    public void testSaveInternship() throws Exception {
-        //Arrange
-        expectedInternship = getInternship();
-        expectedInternshipApplication = getInternshipApplication();
-
-        expectedInternship.setInternshipContract(getDocument());
-        expectedInternship.setInternshipApplication(expectedInternshipApplication);
-        expectedInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
-
-        Internship givenInternship = getInternship();
-        givenInternship.setInternshipApplication(expectedInternshipApplication);
-        givenInternship.setEngagements(Internship.DEFAULT_ENGAGEMENTS);
-
-        when(service.saveInternship(givenInternship))
-                .thenReturn(Optional.of(expectedInternship));
-
-        //Act
-        MvcResult result = mockMvc.perform(post(URL_SAVE_INTERNSHIP)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(givenInternship).getBytes()))
-                .andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
     }
 
     @Test

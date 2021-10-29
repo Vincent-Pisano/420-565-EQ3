@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
+
+import java.util.Date;
 
 
 @Data
@@ -30,8 +33,11 @@ public class InternshipApplication extends Entity{
     @DBRef
     private Student student;
 
+    private Date interviewDate;
+
     public InternshipApplication() {
         super();
         this.status = ApplicationStatus.WAITING;
+        this.interviewDate = null;
     }
 }
