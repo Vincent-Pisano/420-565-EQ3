@@ -33,6 +33,12 @@ let reports = [
     link: "listStudents",
     icon: faUserCircle,
   },
+  {
+    id: "6",
+    title: "Rapport des étudiants ayant trouvé un stage",
+    link: "listStudents",
+    icon: faUserCircle,
+  },
 ];
 
 export function ReportsList() {

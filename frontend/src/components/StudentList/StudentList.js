@@ -73,6 +73,16 @@ function StudentList() {
               .catch((err) => {
                 setErrorMessage("Aucun étudiants est enregistrés");
             });
+        } else if (title === "Rapport des étudiants ayant trouvé un stage") {
+            axios
+              .get(`http://localhost:9090/getAll/students/with/Internship`)
+              .then((response) => {
+                console.log(response.data)
+                setStudents(response.data);
+              })
+              .catch((err) => {
+                setErrorMessage("Aucun étudiant a trouvé un stage");
+            });
       } else if (supervisor !== undefined) {
         axios
           .get(
@@ -118,10 +128,13 @@ function StudentList() {
           />
         );
       } else if (title === "Rapport des étudiants avec aucun CV") {
-        // Ajouter studentDetails pour ceux qui non pas de CV ici
+        // Ajouter studentDetails pour ceux qui n'ont pas de CV ici
       }
       else if (title === "Rapport des étudiants n'ayant aucune convocation à entrevue") {
-        // Ajouter studentDetails pour ceux qui non pas d'entrevue ici
+        // Ajouter studentDetails pour ceux qui n'ont pas d'entrevue ici
+      }
+      else if (title === "Rapport des étudiants ayant trouvé un stage") {
+        // Ajouter studentDetails pour ceux qui ont trouvé un stage
       }
       else {
         return (
