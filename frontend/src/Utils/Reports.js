@@ -39,6 +39,12 @@ let reports = [
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },
+  {
+    id: "7",
+    title: "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur",
+    link: reportLink + "listStudents",
+    icon: faUserCircle,
+  },
 ];
 
 export function ReportsList() {

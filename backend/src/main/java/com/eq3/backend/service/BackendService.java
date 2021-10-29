@@ -219,9 +219,28 @@ public class BackendService {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
         return optionalInternship.map(Internship::getInternshipContract);
     }
+
     public Optional<PDFDocument> downloadInternshipStudentEvaluationDocument(String idInternship) {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
         return optionalInternship.map(Internship::getStudentEvaluation);
+    }
+
+    public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(){
+        List<Internship> internshipListWithoutStudentEvaluation = internshipRepository.findByStudentEvaluationNull();
+        Optional<List<Student>> optionalStudentList = Optional.of(getListOfStudentsWithoutStudentEvaluation(internshipListWithoutStudentEvaluation));
+        return optionalStudentList;
+    }
+
+    private List<Student> getListOfStudentsWithoutStudentEvaluation(List<Internship> internshipListWithoutStudent){
+        List<Student> studentList = new ArrayList<>();
+        for (Internship internship : internshipListWithoutStudent){
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            Student student = internshipApplication.getStudent();
+            if(!studentList.contains(student)){
+                studentList.add(student);
+            }
+        }
+        return studentList;
     }
 }
 

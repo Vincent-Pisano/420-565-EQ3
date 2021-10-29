@@ -51,6 +51,13 @@ public class UtilsTest {
         return studentsList;
     }
 
+    public static List<Student> getListOfStudentsWithoutStudentEvaluation(){
+        Student student1 = getStudentWithId();
+        List<Student> studentsList = new ArrayList();
+        studentsList.add(student1);
+        return studentsList;
+    }
+
     public static Monitor getMonitorWithId(){
         Monitor monitor = getMonitorWithoutId();
         monitor.setId("61478hgk580000jbhd5");
@@ -218,6 +225,16 @@ public class UtilsTest {
                 .id("6141112s17d3eye02ce5gt68dq5")
                 .internshipApplication(getInternshipApplication())
                 .build();
+    }
+
+    public static List<Internship> getInternshipList() throws IOException {
+        Internship internship1 = getInternship();
+        Internship internship2 = getInternship();
+
+        List<Internship> internships = new ArrayList<>();
+        internships.add(internship1);
+        internships.add(internship2);
+        return internships;
     }
 
     public static Internship getInternshipWithInternshipContract() throws IOException {
