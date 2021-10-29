@@ -23,6 +23,11 @@ class Auth {
     cb();
   }
 
+  updateUser(user) {
+    this.user = user;
+    sessionStorage.setItem("user", JSON.stringify(this.user));
+  }
+
   isAuthenticated() {
     return this.authenticated;
   }

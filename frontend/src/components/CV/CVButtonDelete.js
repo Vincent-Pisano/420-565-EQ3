@@ -28,7 +28,7 @@ const CVButtonDelete = ({ documentId }) => {
       .delete(`http://localhost:9090/delete/CV/${user.id}/${documentId}`)
       .then((response) => {
         user = response.data;
-        auth.user = user;
+        auth.updateUser(user);
         setErrorMessage("Le fichier a été supprimé");
         setTimeout(() => {
           handleClose();
