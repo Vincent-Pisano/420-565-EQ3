@@ -114,7 +114,8 @@ const InternshipApplicationMonitorModal = ({
   }
 
   function isStudentEvaluationDeposited() {
-    return internship !== undefined && internship.studentEvaluation !== null;
+    return internship !== undefined && 
+    internship.studentEvaluation !== (null || undefined)
   }
 
   return (
