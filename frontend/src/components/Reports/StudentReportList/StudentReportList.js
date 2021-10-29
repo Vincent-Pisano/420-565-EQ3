@@ -96,27 +96,39 @@ function StudentReportList() {
     }
   }
 
+  function formatDate(dateString) {
+    let date = new Date(dateString);
+    let dateFormatted = date.toISOString().split("T")[0];
+    return dateFormatted;
+  }
+
   function checkIfReport() {
     if (currentStudent !== undefined) {
       return (
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title>
-              Informations de {currentStudent.firstName}{" "}
-              {currentStudent.lastName}
+              <h3>Informations de {currentStudent.firstName}{" "}
+              {currentStudent.lastName}</h3>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
-              <Col>Identifiant de l'étudiant: {currentStudent.username}</Col>
-            </Row>
-            <Row>
-              <Col>Courriel de l'étudiant: {currentStudent.email}</Col>
+              <Col>
+                <h4>Identifiant de l'étudiant: {currentStudent.username}</h4>
+              </Col>
             </Row>
             <Row>
               <Col>
-                Date d'inscription:{" "}
-                {currentStudent.creationDate.substring(0, 10)}
+                <h5>Courriel de l'étudiant: {currentStudent.email}</h5>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h5>
+                  Date d'inscription:{" "}
+                  {formatDate(currentStudent.creationDate)}
+                </h5>
               </Col>
             </Row>
           </Modal.Body>
