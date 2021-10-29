@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import axios from "axios";
 import "../../../styles/List.css";
 import { Container } from "react-bootstrap";
-import InternshipApplication from "./InternshipApplication";
+import InternshipApplication from "../../InternshipApplicationList/InternshipApplication";
 
 function InternshipApplicationReportList() {
   

@@ -21,5 +21,5 @@ public interface InternshipApplicationRepository extends MongoRepository<Interns
     @Query(value = "{ 'isDisabled':false, 'status' : 'WAITING', 'interviewDate':{'$gte':new Date()}}")
     List<InternshipApplication> findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse();
 
-    List<InternshipApplication> findAllByInterviewDateIsNull();
+    List<InternshipApplication> findAllByInterviewDateIsNotNull();
 }

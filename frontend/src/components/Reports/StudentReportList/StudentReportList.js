@@ -45,13 +45,13 @@ function StudentReportList() {
         "Rapport des étudiants n'ayant aucune convocation à une entrevue"
       ) {
         axios
-          .get(`http://localhost:9090/getAll/students/without/InterviewDate`)
+          .get(`http://localhost:9090/getAll/students/without/interviewDate`)
           .then((response) => {
             setStudents(response.data);
           })
           .catch((err) => {
             setErrorMessage(
-              "Erreur! Aucun étudiants n'a pas de convocation à une entrevue"
+              "Erreur! Aucun étudiant n'a pas de convocation à une entrevue"
             );
           });
       } else if (title === "Rapport des étudiants en attente d’entrevue") {
@@ -61,7 +61,7 @@ function StudentReportList() {
             setStudents(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiants en attente d'entrevue");
+            setErrorMessage("Erreur! Aucun étudiant en attente d'entrevue");
           });
       }
   }, [title]);
@@ -77,7 +77,6 @@ function StudentReportList() {
       setCurrentStudent(student);
       handleShow();
     }
-    
   }
 
   function checkIfGS() {
