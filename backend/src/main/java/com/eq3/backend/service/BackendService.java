@@ -114,6 +114,12 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
+    public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
+        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
     public Optional<List<Student>> getAllStudentsWithoutCV() {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty();
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
@@ -128,9 +134,6 @@ public class BackendService {
         for (InternshipApplication internshipApplication : internshipApplicationsWithInterviewDate) {
             studentsWithoutInterviewDate.remove(internshipApplication.getStudent());
         }
-
-        System.out.println("test" + internshipApplicationsWithInterviewDate);
-
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
 
@@ -142,15 +145,8 @@ public class BackendService {
         for (InternshipApplication internshipApplication : internshipApplicationsWithoutInterviewDate) {
             studentsWaitingInterview.add(internshipApplication.getStudent());
         }
-
-        return studentsWaitingInterview.isEmpty() ? Optional.empty() : 
+        return studentsWaitingInterview.isEmpty() ? Optional.empty() :
                 Optional.of(studentsWaitingInterview.stream().distinct().collect(Collectors.toList()));
-    }
-
-    public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
-        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
-        return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
     public Optional<List<Supervisor>> getAllSupervisors() {
