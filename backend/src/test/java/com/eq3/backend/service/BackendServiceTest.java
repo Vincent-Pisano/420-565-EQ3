@@ -354,4 +354,26 @@ class BackendServiceTest {
         assertThat(optionalContract.isPresent()).isTrue();
         assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
     }
+
+    @Test
+    //@Disabled
+    public void testDownloadInternshipStudentEvaluationDocument() throws IOException {
+        //Arrange
+        expectedPDFDocument = getDocument();
+        expectedInternship = getInternship();
+        expectedInternship.setStudentEvaluation(expectedPDFDocument);
+
+        when(internshipRepository.findById(expectedInternship.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternship));
+
+        //Act
+        Optional<PDFDocument> optionalContract = service.downloadInternshipStudentEvaluationDocument(
+                expectedInternship.getId());
+
+        //Assert
+        PDFDocument actualPDFDocument = optionalContract.orElse(null);
+
+        assertThat(optionalContract.isPresent()).isTrue();
+        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+    }
 }

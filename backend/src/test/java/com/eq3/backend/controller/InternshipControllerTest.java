@@ -511,4 +511,37 @@ public class InternshipControllerTest {
         assertThat(actualInternship).isNotNull();
         assertThat(actualInternship.isSignedByInternshipManager()).isTrue();
     }
+
+    @Test
+    //Disabled
+    public void testDepositStudentEvaluation() throws Exception {
+        //Arrange
+        PDFDocument pdfDocument = getDocument();
+        var multipartFile = mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(pdfDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(pdfDocument.getContent().getData());
+
+        expectedInternship = getInternship();
+        expectedInternship.setStudentEvaluation(pdfDocument);
+
+        Internship givenInternship = getInternship();
+
+        when(service.depositStudentEvaluation(eq(givenInternship.getId()), any(MultipartFile.class)))
+                .thenReturn(Optional.of(expectedInternship));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart(URL_DEPOSIT_INTERNSHIP_STUDENT_EVALUATION + givenInternship.getId())
+                        .file("document", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+    }
 }

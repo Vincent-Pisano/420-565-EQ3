@@ -27,6 +27,8 @@ public class Internship extends Entity {
 
     private PDFDocument internshipContract;
 
+    private PDFDocument studentEvaluation;
+
     @Builder.Default
     private boolean isSignedByMonitor = false;
 

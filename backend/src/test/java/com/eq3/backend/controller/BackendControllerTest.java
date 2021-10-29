@@ -364,4 +364,25 @@ class BackendControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(response.getContentLength()).isGreaterThan(0);
     }
+
+    @Test
+    //@Disabled
+    public void testDownloadInternshipStudentEvaluationDocument() throws Exception {
+        //Arrange
+        expectedPDFDocument = getDocument();
+        expectedInternship = getInternship();
+
+        when(service.downloadInternshipStudentEvaluationDocument(expectedInternship.getId()))
+                .thenReturn(Optional.ofNullable(expectedPDFDocument));
+
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION + expectedInternship.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(response.getContentLength()).isGreaterThan(0);
+    }
 }

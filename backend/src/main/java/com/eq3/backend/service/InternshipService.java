@@ -264,4 +264,17 @@ public class InternshipService {
             _internship.setInternshipContract(contract);
         }
     }
+
+    public Optional<Internship> depositStudentEvaluation(String idInternship, MultipartFile multipartFile) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+        optionalInternship.ifPresent(internship -> {
+            try {
+                internship.setStudentEvaluation(extractDocument(multipartFile));
+            } catch (IOException e) {
+                logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
+                        + " at extractDocument in InternshipService : " + e.getMessage());
+            }
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
 }

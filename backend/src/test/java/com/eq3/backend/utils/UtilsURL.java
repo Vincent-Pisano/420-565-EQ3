@@ -24,6 +24,7 @@ public class UtilsURL {
     public final static String URL_DOWNLOAD_CV_DOCUMENT = "/get/CV/document/";
     public final static String URL_DOWNLOAD_EVALUATION_DOCUMENT = "/get/"+ DOCUMENT_NAME +"/evaluation/document";
     public final static String URL_DOWNLOAD_INTERNSHIP_CONTRACT = "/get/internship/document/";
+    public final static String URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION = "/get/internship/student/evaluation/document/";
 
     // CVController
     public final static String URL_SAVE_CV = "/save/CV/";
@@ -51,5 +52,6 @@ public class UtilsURL {
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_MONITOR = "/sign/internshipContract/monitor/";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_STUDENT = "/sign/internshipContract/student/";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_INTERNSHIP_MANAGER = "/sign/internshipContract/internshipManager/";
+    public final static String URL_DEPOSIT_INTERNSHIP_STUDENT_EVALUATION = "/deposit/evaluation/student/";
 
 }

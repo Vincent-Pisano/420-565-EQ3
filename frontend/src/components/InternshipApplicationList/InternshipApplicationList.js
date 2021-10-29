@@ -8,6 +8,7 @@ import InternshipApplication from "./InternshipApplication";
 import InternshipApplicationStudentModal from "./InternshipApplicationStudentModal";
 import InternshipApplicationInternshipManagerModal from "./InternshipApplicationInternshipManagerModal";
 import InternshipApplicationSignatureModal from "./InternshipApplicationSignatureModal";
+import InternshipApplicationMonitorModal from "./InternshipApplicationMonitorModal";
 
 function InternshipApplicationList() {
   let user = auth.user;
@@ -96,6 +97,10 @@ function InternshipApplicationList() {
     });
   }
 
+  function isCurrentApplicationCompleted() {
+    return currentInternshipApplication.status === "COMPLETED";
+  }
+
   function checkForModal() {
     if (auth.isStudent()) {
       if (currentInternshipApplication.status === "VALIDATED") {
@@ -148,15 +153,29 @@ function InternshipApplicationList() {
         );
       }
     } else if (auth.isMonitor()) {
-      return (
-        <>
-          <InternshipApplicationSignatureModal
-            show={show}
-            handleClose={handleClose}
-            currentInternshipApplication={currentInternshipApplication}
-          />
-        </>
-      );
+      if (isCurrentApplicationCompleted()) {
+        return (
+          <>
+            <InternshipApplicationMonitorModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+            />
+          </>
+        );
+      }
+      else {
+        return (
+          <>
+            <InternshipApplicationSignatureModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+            />
+          </>
+        );
+      }
+      
     }
   }
 
