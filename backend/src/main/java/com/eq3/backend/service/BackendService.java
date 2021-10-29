@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.eq3.backend.utils.Utils.*;
 
@@ -27,6 +28,7 @@ public class BackendService {
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipRepository internshipRepository;
     private final EvaluationRepository evaluationRepository;
+    private final InternshipApplicationRepository internshipApplicationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
@@ -34,8 +36,8 @@ public class BackendService {
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipRepository internshipRepository,
-                   EvaluationRepository evaluationRepository
-    ) {
+                   EvaluationRepository evaluationRepository,
+                   InternshipApplicationRepository internshipApplicationRepository) {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
@@ -43,6 +45,7 @@ public class BackendService {
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipRepository = internshipRepository;
         this.evaluationRepository = evaluationRepository;
+        this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
     public Optional<Binary> saveSignature(String username, MultipartFile signature) {
