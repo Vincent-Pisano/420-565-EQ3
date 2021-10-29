@@ -114,6 +114,15 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
+    public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
+        List<Student> studentsWithoutInterviewDate;
+        List<InternshipApplication> internshipApplicationsWithoutInterviewDate = internshipApplicationRepository.findAllByInterviewDateNull();
+        studentsWithoutInterviewDate = internshipApplicationsWithoutInterviewDate.stream().map(InternshipApplication::getStudent).collect(Collectors.toList());
+        studentsWithoutInterviewDate.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
+    }
+
+
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
