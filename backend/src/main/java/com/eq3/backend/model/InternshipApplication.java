@@ -5,7 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
 
 import java.util.Date;
 

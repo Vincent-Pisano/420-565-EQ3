@@ -91,6 +91,12 @@ const InternshipApplicationStudentModal = ({
                     </option>
                   </Form.Select>
                 </Form.Group>
+                <Form.Group controlId="interviewDate">
+                  <Form.Label className="labelFields">
+                    Date d'entrevue
+                  </Form.Label>
+                  <Form.Control type="date" name="interviewDate" placeholder="Date d'entrevue" className="select_form d_block" />
+                </Form.Group>
               </Container>
             </Form>
           </Col>
