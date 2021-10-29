@@ -63,6 +63,7 @@ class BackendServiceTest {
     private PDFDocument expectedPDFDocument;
     private Binary expectedImage;
     private Internship expectedInternship;
+    private List<Internship> expectedInternshipList;
 
     @Test
     //@Disabled
@@ -188,7 +189,7 @@ class BackendServiceTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     public void testGetAllStudentsWithInvalidCV() {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -394,5 +395,25 @@ class BackendServiceTest {
 
         assertThat(optionalContract.isPresent()).isTrue();
         assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutStudentEvaluation() throws IOException {
+        //Arrange
+        expectedInternshipList = getInternshipList();
+        expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
+        when(internshipRepository.findByStudentEvaluationNull())
+                .thenReturn(expectedInternshipList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithoutStudentEvaluation();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
     }
 }

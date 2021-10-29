@@ -205,15 +205,8 @@ public class BackendService {
     }
 
     public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(){
-        List<Internship> internshipList = internshipRepository.findAll();
-        List<Internship> internshipListWithoutStudent = new ArrayList<>();
-        for (Internship internship : internshipList){
-            if(internship.getStudentEvaluation() == null){
-                internshipListWithoutStudent.add(internship);
-            }
-        }
-
-        Optional<List<Student>> optionalStudentList = Optional.of(getListOfStudentsWithoutStudentEvaluation(internshipListWithoutStudent));
+        List<Internship> internshipListWithoutStudentEvaluation = internshipRepository.findByStudentEvaluationNull();
+        Optional<List<Student>> optionalStudentList = Optional.of(getListOfStudentsWithoutStudentEvaluation(internshipListWithoutStudentEvaluation));
         return optionalStudentList;
     }
 
