@@ -8,6 +8,7 @@ import axios from "axios";
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
 import Student from "./Student";
+import ReportStudent from "../Reports/ReportStudent";
 
 import "../../styles/List.css";
 
@@ -28,8 +29,8 @@ function StudentList() {
     ? "Étudiants de votre département"
     : supervisor !== undefined
       ? state === undefined
-        ? "Étudiants de ce département à assigner"
-        : "Étudiants avec un CV à valider"
+        ? "Étudiants avec un CV à valider"
+        : "Étudiants de ce département à assigner"
       : state.title;
 
   useEffect(() => {
@@ -149,6 +150,34 @@ function StudentList() {
     }
   }
 
+  function checkFromReport() {
+    if (title === "Rapport des étudiants enregistrés" || title === "Rapport des étudiants ayant trouvé un stage") {
+      return (
+        <ul>
+          {students.map((student) => (
+            <ReportStudent
+              key={student.id}
+              student={student}
+              
+            />
+          ))}
+        </ul>
+      )
+    } else {
+      return (
+        <ul>
+          {students.map((student) => (
+            <Student
+              key={student.id}
+              student={student}
+              onDoubleClick={auth.isInternshipManager() ? showModal : null}
+            />
+          ))}
+        </ul>
+      )
+    }
+  }
+
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
@@ -162,15 +191,7 @@ function StudentList() {
           >
             {errorMessage}
           </p>
-          <ul>
-            {students.map((student) => (
-              <Student
-                key={student.id}
-                student={student}
-                onDoubleClick={auth.isInternshipManager() ? showModal : null}
-              />
-            ))}
-          </ul>
+          {checkFromReport()}
         </Container>
       </Container>
       {checkIfGS()}
