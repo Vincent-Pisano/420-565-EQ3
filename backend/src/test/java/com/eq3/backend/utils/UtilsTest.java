@@ -178,6 +178,14 @@ public class UtilsTest {
         return internshipApplications;
     }
 
+    public static List<InternshipApplication> getListOfInternshipApplicationWithDifferentStudent() {
+        List<InternshipApplication> internshipApplications = getListOfInternshipApplication();
+        InternshipApplication internshipApplication = internshipApplications.get(0);
+        Student student = internshipApplication.getStudent();
+        student.setId("srg2sr1g681q35g1q6g1q");
+        return internshipApplications;
+    }
+
     public static PDFDocument getDocument() throws IOException {
         Path pdfPath = Paths.get(PDF_FILEPATH);
         return PDFDocument.builder()

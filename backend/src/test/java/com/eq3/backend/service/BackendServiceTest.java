@@ -3,8 +3,6 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +56,7 @@ class BackendServiceTest {
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
     private InternshipOffer expectedInternshipOffer;
-    private List<InternshipApplication> expectedInternshipApplication;
+    private List<InternshipApplication> expectedInternshipApplicationList;
     private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
@@ -253,9 +251,9 @@ class BackendServiceTest {
         expectedStudentList = getListOfStudents();
         when(studentRepository.findAllByIsDisabledFalse())
                 .thenReturn(expectedStudentList);
-        expectedInternshipApplication = getListOfInternshipApplication();
+        expectedInternshipApplicationList = getListOfInternshipApplication();
         when(internshipApplicationRepository.findAllByInterviewDateIsNotNull())
-                .thenReturn(expectedInternshipApplication);
+                .thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
@@ -273,9 +271,9 @@ class BackendServiceTest {
     public void testGetAllStudentsWaitingInterview() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        expectedInternshipApplication = getListOfInternshipApplication();
+        expectedInternshipApplicationList = getListOfInternshipApplicationWithDifferentStudent();
         when(internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse())
-                .thenReturn(expectedInternshipApplication);
+                .thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
