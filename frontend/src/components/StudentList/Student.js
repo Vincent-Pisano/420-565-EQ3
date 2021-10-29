@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLandmark, faLaptopCode, faStethoscope, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
-const Student = ({ student, onDoubleClick }) => {
+const Student = ({ student, onDoubleClick, isReport }) => {
   let icon = faUserCircle
   function checkWhichDepartment(){
     if(student.department === "COMPUTER_SCIENCE"){

@@ -8,6 +8,7 @@ import axios from "axios";
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
 import Student from "./Student";
+import ReportStudent from "../Reports/ReportStudent";
 
 import "../../styles/List.css";
 
@@ -52,9 +53,9 @@ function StudentList() {
             setStudents(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Aucun étudiants est enregistrés");
+            setErrorMessage("Aucun étudiant n'a pas de CV");
           });
-      }else if (title === "Rapport des étudiants enregistrés") {
+      } else if (title === "Rapport des étudiants enregistrés") {
         axios
           .get(`http://localhost:9090/getAll/students`)
           .then((response) => {
@@ -62,8 +63,8 @@ function StudentList() {
           })
           .catch((err) => {
             setErrorMessage("Aucun étudiants est enregistrés");
-          }); 
-        }else if (supervisor !== undefined) {
+          });
+      } else if (supervisor !== undefined) {
         axios
           .get(
             `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}`
@@ -108,7 +109,7 @@ function StudentList() {
           />
         );
       } else if (title === "Rapport des étudiants avec aucun CV" || title === "Rapport des étudiants enregistrés") {
-        
+
       }
       else {
         return (
@@ -125,6 +126,34 @@ function StudentList() {
     }
   }
 
+  function checkFromReport() {
+    if (title === "Rapport des étudiants enregistrés") {
+      return (
+        <ul>
+          {students.map((student) => (
+            <ReportStudent
+              key={student.id}
+              student={student}
+              
+            />
+          ))}
+        </ul>
+      )
+    } else {
+      return (
+        <ul>
+          {students.map((student) => (
+            <Student
+              key={student.id}
+              student={student}
+              onDoubleClick={auth.isInternshipManager() ? showModal : null}
+            />
+          ))}
+        </ul>
+      )
+    }
+  }
+
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
@@ -138,15 +167,7 @@ function StudentList() {
           >
             {errorMessage}
           </p>
-          <ul>
-            {students.map((student) => (
-              <Student
-                key={student.id}
-                student={student}
-                onDoubleClick={auth.isInternshipManager() ? showModal : null}
-              />
-            ))}
-          </ul>
+          {checkFromReport()}
         </Container>
       </Container>
       {checkIfGS()}
