@@ -127,7 +127,9 @@ public class BackendService {
         List<InternshipApplication> completedInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
         for (InternshipApplication internshipApplication : completedInternshipApplications) {
             if (internshipApplication.getStatus().equals(InternshipApplication.ApplicationStatus.COMPLETED)){
-                studentsWithInternship.add(internshipApplication.getStudent());
+                if (!studentsWithInternship.contains(internshipApplication.getStudent())){
+                    studentsWithInternship.add(internshipApplication.getStudent());
+                }
             }
         }
         return studentsWithInternship.isEmpty() ? Optional.empty() : Optional.of(studentsWithInternship);

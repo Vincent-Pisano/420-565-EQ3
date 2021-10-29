@@ -176,6 +176,9 @@ public class UtilsTest {
         InternshipApplication internshipApplication2 = getInternshipApplication();
         internshipApplication1.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
         internshipApplication2.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
+        Student student = getStudentWithId();
+        student.setId("61478hgk58e00c02c02bwj1");
+        internshipApplication2.setStudent(student);
 
         List<InternshipApplication> internshipApplications = new ArrayList<>();
         internshipApplications.add(internshipApplication1);

@@ -67,7 +67,6 @@ function StudentList() {
             axios
               .get(`http://localhost:9090/getAll/students/without/InterviewDate`)
               .then((response) => {
-                console.log(response.data)
                 setStudents(response.data);
               })
               .catch((err) => {
@@ -77,7 +76,6 @@ function StudentList() {
             axios
               .get(`http://localhost:9090/getAll/students/with/Internship`)
               .then((response) => {
-                console.log(response.data)
                 setStudents(response.data);
               })
               .catch((err) => {
