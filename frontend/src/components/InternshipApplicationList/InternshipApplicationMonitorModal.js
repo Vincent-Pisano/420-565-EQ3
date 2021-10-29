@@ -66,19 +66,19 @@ const InternshipApplicationMonitorModal = ({
   function checkStudentEvaluation() {
     if (!isStudentEvaluationDeposited()) {
       return (
-          <Form.Group controlId="document" className="mb-3">
-            <Form.Label className="labelFields">
-              Dépôt d'évaluation d'étudiant
-            </Form.Label>
-            <Form.Control
-              type="file"
-              onChange={(e) => {
-                setDocument(e.target.files[0]);
-              }}
-              className="input_file_form mt-2"
-              accept=".pdf"
-            />
-          </Form.Group>
+        <Form.Group controlId="document" className="mb-3">
+          <Form.Label className="labelFields">
+            Dépôt d'évaluation d'étudiant
+          </Form.Label>
+          <Form.Control
+            type="file"
+            onChange={(e) => {
+              setDocument(e.target.files[0]);
+            }}
+            className="input_file_form mt-2"
+            accept=".pdf"
+          />
+        </Form.Group>
       );
     } else {
       return (
@@ -114,8 +114,10 @@ const InternshipApplicationMonitorModal = ({
   }
 
   function isStudentEvaluationDeposited() {
-    return internship !== undefined && 
-    internship.studentEvaluation !== (null || undefined)
+    return (
+      internship !== undefined &&
+      internship.studentEvaluation !== (null || undefined)
+    );
   }
 
   return (

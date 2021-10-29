@@ -41,7 +41,7 @@ const InternshipApplicationStudentModal = ({
   }
 
   function formatDate(dateString) {
-    console.log(dateString)
+    console.log(dateString);
     let date = new Date(dateString);
     let dateFormatted = date.toISOString().split("T")[0];
     return dateFormatted;
@@ -117,8 +117,10 @@ const InternshipApplicationStudentModal = ({
                     placeholder="Date d'entrevue"
                     className="select_form d_block"
                     defaultValue={
-                      currentInternshipApplication.interviewDate !== (null && undefined)
-                        ? formatDate(currentInternshipApplication.interviewDate) : ""
+                      currentInternshipApplication.interviewDate !==
+                      (null && undefined)
+                        ? formatDate(currentInternshipApplication.interviewDate)
+                        : ""
                     }
                     onChange={handleFieldChange}
                   />

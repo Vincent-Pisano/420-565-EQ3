@@ -7,9 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
-
 const Student = ({ student, onDoubleClick }) => {
-
   let icon =
     student.department === "COMPUTER_SCIENCE"
       ? faLaptopCode

@@ -8,7 +8,7 @@ import { Container } from "react-bootstrap";
 
 function InternshipOfferList() {
   let history = useHistory();
-  let state = history.location.state  || {};
+  let state = history.location.state || {};
 
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");

@@ -46,11 +46,8 @@ const NavUserGs = () => {
       >
         Signature d'applications
       </NavDropdown.Item>
-      <NavDropdown.Item
-        as={Link}
-        className="nav-item-cust"
-        to="/reports"
-      >Voir les Rapports
+      <NavDropdown.Item as={Link} className="nav-item-cust" to="/reports">
+        Voir les Rapports
       </NavDropdown.Item>
     </NavDropdown>
   );

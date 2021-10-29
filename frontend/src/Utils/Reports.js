@@ -1,6 +1,6 @@
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
-const reportLink = 'reports/'
+const reportLink = "reports/";
 
 let reports = [
   {
@@ -41,7 +41,8 @@ let reports = [
   },
   {
     id: "7",
-    title: "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur",
+    title:
+      "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },

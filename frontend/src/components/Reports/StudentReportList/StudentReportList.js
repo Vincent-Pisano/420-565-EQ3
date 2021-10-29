@@ -108,8 +108,10 @@ function StudentReportList() {
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title>
-              <h3>Informations de {currentStudent.firstName}{" "}
-              {currentStudent.lastName}</h3>
+              <h3>
+                Informations de {currentStudent.firstName}{" "}
+                {currentStudent.lastName}
+              </h3>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -126,8 +128,7 @@ function StudentReportList() {
             <Row>
               <Col>
                 <h5>
-                  Date d'inscription:{" "}
-                  {formatDate(currentStudent.creationDate)}
+                  Date d'inscription: {formatDate(currentStudent.creationDate)}
                 </h5>
               </Col>
             </Row>

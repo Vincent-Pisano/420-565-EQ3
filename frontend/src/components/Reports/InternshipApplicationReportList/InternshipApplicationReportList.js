@@ -7,15 +7,13 @@ import InternshipApplication from "../../InternshipApplicationList/InternshipApp
 import InternshipApplicationDetailsModal from "./InternshipApplicationDetailsModal";
 
 function InternshipApplicationReportList() {
-  
-  
   let history = useHistory();
   let params = useParams();
-  let username = params.username
+  let username = params.username;
 
   let state = history.location.state;
 
-  let title = state.title
+  let title = state.title;
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -32,13 +30,15 @@ function InternshipApplicationReportList() {
     if (title === "Rapport des étudiants en attente d’entrevue")
       axios
         .get(
-            `http://localhost:9090/getAll/internshipApplication/student/${username}`
+          `http://localhost:9090/getAll/internshipApplication/student/${username}`
         )
         .then((response) => {
-            setInternshipApplications(response.data);
+          setInternshipApplications(response.data);
         })
         .catch((err) => {
-            setErrorMessage("Erreur lors de la récupération des applications de stages");
+          setErrorMessage(
+            "Erreur lors de la récupération des applications de stages"
+          );
         });
   }, [title, username]);
 
@@ -56,13 +56,13 @@ function InternshipApplicationReportList() {
 
   function checkForModal() {
     return (
-        <InternshipApplicationDetailsModal
-          show={show}
-          handleClose={handleClose}
-          currentInternshipApplication={currentInternshipApplication}
-          showIntershipOffer={showIntershipOffer}
-        />
-      );
+      <InternshipApplicationDetailsModal
+        show={show}
+        handleClose={handleClose}
+        currentInternshipApplication={currentInternshipApplication}
+        showIntershipOffer={showIntershipOffer}
+      />
+    );
   }
 
   return (
