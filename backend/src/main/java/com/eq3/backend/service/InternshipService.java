@@ -176,6 +176,8 @@ public class InternshipService {
         Optional<InternshipApplication> optionalInternshipApplication =
                 internshipApplicationRepository.findById(internshipApplication.getId());
 
+        System.out.println(internshipApplication);
+
         return optionalInternshipApplication.map(_internshipApplication ->
                 internshipApplicationRepository.save(internshipApplication));
     }
