@@ -27,5 +27,7 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     List<Student> findAllByIsDisabledFalseAndCVListIsNull();
 
     Optional<Student> findByUsernameAndIsDisabledFalse(String username);
+
+    List<Student> findAllByIsDisabledFalse();
 }
 

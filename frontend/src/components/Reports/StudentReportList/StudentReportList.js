@@ -33,7 +33,7 @@ function StudentReportList() {
           });
       } else if (title === "Rapport des étudiants enregistrés") {
         axios
-          .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
+          .get(`http://localhost:9090/getAll/students`)
           .then((response) => {
             setStudents(response.data);
           })
