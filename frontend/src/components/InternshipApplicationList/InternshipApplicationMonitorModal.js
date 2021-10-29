@@ -89,7 +89,7 @@ const InternshipApplicationMonitorModal = ({
             target="_blank"
             rel="noreferrer"
           >
-            Visualiser l'évaluation
+            Visualiser l'évaluation d'étudiant
           </a>
         </>
       );
