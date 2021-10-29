@@ -27,6 +27,7 @@ public class BackendService {
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipRepository internshipRepository;
     private final EvaluationRepository evaluationRepository;
+    private final InternshipApplicationRepository internshipApplicationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
@@ -34,8 +35,8 @@ public class BackendService {
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipRepository internshipRepository,
-                   EvaluationRepository evaluationRepository
-    ) {
+                   EvaluationRepository evaluationRepository,
+                   InternshipApplicationRepository internshipApplicationRepository) {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
         this.supervisorRepository = supervisorRepository;
@@ -43,6 +44,7 @@ public class BackendService {
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipRepository = internshipRepository;
         this.evaluationRepository = evaluationRepository;
+        this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
     public Optional<Binary> saveSignature(String username, MultipartFile signature) {
@@ -109,6 +111,16 @@ public class BackendService {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsNull();
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
+    public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByInterviewDateIsNull();
+        List<Student> studentsWithoutInterviewDate = new ArrayList<>();
+        for (InternshipApplication internshipApplication: internshipApplications) {
+            studentsWithoutInterviewDate.add(internshipApplication.getStudent());
+        }
+        studentsWithoutInterviewDate.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
 
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
