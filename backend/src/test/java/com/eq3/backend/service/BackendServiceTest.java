@@ -3,8 +3,6 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +43,9 @@ class BackendServiceTest {
     private InternshipOfferRepository internshipOfferRepository;
 
     @Mock
+    private InternshipApplicationRepository internshipApplicationRepository;
+
+    @Mock
     private EvaluationRepository evaluationRepository;
 
     @Mock
@@ -63,6 +64,7 @@ class BackendServiceTest {
     private PDFDocument expectedPDFDocument;
     private Binary expectedImage;
     private Internship expectedInternship;
+    private List<InternshipApplication> expectedInternshipApplicationList;
 
     @Test
     //@Disabled
@@ -224,6 +226,28 @@ class BackendServiceTest {
         assertThat(optionalStudents.isPresent()).isTrue();
         assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
     }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithInternship() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        expectedInternshipApplicationList = getListOfCompletedInternshipApplication();
+        when(internshipApplicationRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithInternship();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+
 
     @Test
     //@Disabled

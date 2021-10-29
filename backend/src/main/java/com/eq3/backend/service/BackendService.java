@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.eq3.backend.utils.Utils.*;
 
@@ -122,6 +121,18 @@ public class BackendService {
         }
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
+
+    public Optional<List<Student>> getAllStudentsWithInternship() {
+        List<Student> studentsWithInternship = new ArrayList<>();
+        List<InternshipApplication> completedInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
+        for (InternshipApplication internshipApplication : completedInternshipApplications) {
+            if (internshipApplication.getStatus().equals(InternshipApplication.ApplicationStatus.COMPLETED)){
+                studentsWithInternship.add(internshipApplication.getStudent());
+            }
+        }
+        return studentsWithInternship.isEmpty() ? Optional.empty() : Optional.of(studentsWithInternship);
+    }
+
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());

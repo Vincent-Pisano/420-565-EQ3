@@ -48,6 +48,7 @@ class BackendControllerTest {
     private InternshipOffer expectedInternshipOffer;
     private Internship expectedInternship;
     private CV expectedCV;
+    private List<InternshipApplication> expectedInternshipApplcationList;
     private PDFDocument expectedPDFDocument;
     private String expectedDocumentName;
     private Binary expectedImage;
@@ -225,6 +226,25 @@ class BackendControllerTest {
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR +
                 Department.COMPUTER_SCIENCE)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithInternship() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithInternship())
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_INTERNSHIP)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

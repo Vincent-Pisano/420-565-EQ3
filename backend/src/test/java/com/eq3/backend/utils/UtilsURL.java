@@ -18,6 +18,7 @@ public class UtilsURL {
     public final static String URL_GET_ALL_STUDENTS = "/getAll/students/";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = "/getAll/students/noSupervisor/";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_CV = "/getAll/students/without/CV";
+    public final static String URL_GET_ALL_STUDENTS_WITH_INTERNSHIP = "/getAll/students/with/Internship";
     public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors";
     public final static String URL_GET_MONITOR = "/get/monitor/";
     public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/";
