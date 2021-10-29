@@ -116,12 +116,30 @@ public class BackendService {
 
     public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
         List<Student> studentsWithoutInterviewDate = new ArrayList<>();
-        List<InternshipApplication> internshipApplicationsWithoutInterviewDate = internshipApplicationRepository.findAllByInterviewDateIsNull();
+        List<InternshipApplication> internshipApplicationsWithoutInterviewDate =
+                internshipApplicationRepository.findAllByInterviewDateIsNull();
+
         for (InternshipApplication internshipApplication : internshipApplicationsWithoutInterviewDate) {
             studentsWithoutInterviewDate.add(internshipApplication.getStudent());
         }
+
+        System.out.println(studentsWithoutInterviewDate);
+
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
+
+    public Optional<List<Student>> getAllStudentsWaitingInterview() {
+        List<Student> studentsWaitingInterview = new ArrayList<>();
+        List<InternshipApplication> internshipApplicationsWithoutInterviewDate =
+                internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse();
+
+        for (InternshipApplication internshipApplication : internshipApplicationsWithoutInterviewDate) {
+            studentsWaitingInterview.add(internshipApplication.getStudent());
+        }
+
+        return studentsWaitingInterview.isEmpty() ? Optional.empty() : Optional.of(studentsWaitingInterview);
+    }
+
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());

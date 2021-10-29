@@ -17,7 +17,7 @@ let reports = [
   },
   {
     id: "3",
-    title: "Rapport non validé",
+    title: "Rapport des étudiants enregistrés",
     link: "listStudents",
     icon: faUserCircle,
   },
@@ -29,7 +29,13 @@ let reports = [
   },
   {
     id: "5",
-    title: "Rapport des étudiants n'ayant aucune convocation à entrevue",
+    title: "Rapport des étudiants n'ayant aucune convocation à une entrevue",
+    link: "listStudents",
+    icon: faUserCircle,
+  },
+  {
+    id: "6",
+    title: "Rapport des étudiants en attente d’entrevue",
     link: "listStudents",
     icon: faUserCircle,
   },

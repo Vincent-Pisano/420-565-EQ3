@@ -8,7 +8,7 @@ const ReportsHome = () => {
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
-        <h2 className="cont_title_form">Les rapports disponibles</h2>
+        <h2 className="cont_title_form">Liste des rapports disponibles</h2>
         <Container className="cont_list">
           <ul>
             {reportsList.map((report) => (

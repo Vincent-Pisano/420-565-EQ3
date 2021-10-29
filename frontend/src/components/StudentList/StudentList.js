@@ -27,10 +27,10 @@ function StudentList() {
   let title = !auth.isInternshipManager()
     ? "Étudiants de votre département"
     : supervisor !== undefined
-      ? state === undefined
-        ? "Étudiants de ce département à assigner"
-        : "Étudiants avec un CV à valider"
-      : state.title;
+    ? "Étudiants de ce département à assigner"
+    : Object.keys(state).length === 0
+    ? "Étudiants avec un CV à valider"
+    : state.title;
 
   useEffect(() => {
     if (auth.isSupervisor()) {
@@ -52,7 +52,7 @@ function StudentList() {
             setStudents(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Aucun étudiants est enregistrés");
+            setErrorMessage("Erreur! Aucun étudiants n'a pas de CV");
           });
       } else if (title === "Rapport non validé") {
         axios
@@ -61,18 +61,28 @@ function StudentList() {
             setStudents(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Aucun étudiants est enregistrés");
+            setErrorMessage("Erreur! Aucun étudiants est enregistrés");
           });
-        } else if (title === "Rapport des étudiants n'ayant aucune convocation à entrevue") {
-            axios
-              .get(`http://localhost:9090/getAll/students/without/InterviewDate`)
-              .then((response) => {
-                console.log(response.data)
-                setStudents(response.data);
-              })
-              .catch((err) => {
-                setErrorMessage("Aucun étudiants est enregistrés");
-            });
+      } else if (
+        title === "Rapport des étudiants n'ayant aucune convocation à une entrevue"
+      ) {
+        axios
+          .get(`http://localhost:9090/getAll/students/without/InterviewDate`)
+          .then((response) => {
+            setStudents(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Erreur! Aucun étudiants n'a pas de convocation à une entrevue");
+          });
+      } else if (title === "Rapport des étudiants en attente d’entrevue") {
+        axios
+          .get(`http://localhost:9090/getAll/students/waiting/interview`)
+          .then((response) => {
+            setStudents(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Erreur! Aucun étudiants en attente d'entrevue");
+          });
       } else if (supervisor !== undefined) {
         axios
           .get(
@@ -91,7 +101,7 @@ function StudentList() {
             setStudents(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
+            setErrorMessage("Erreur! Aucun CV à valider actuellement");
           });
       }
     }
@@ -101,7 +111,6 @@ function StudentList() {
     setCurrentStudent(student);
     handleShow();
   }
-
 
   function checkIfGS() {
     if (auth.isInternshipManager()) {
@@ -117,13 +126,7 @@ function StudentList() {
             currentStudent={currentStudent}
           />
         );
-      } else if (title === "Rapport des étudiants avec aucun CV") {
-        // Ajouter studentDetails pour ceux qui non pas de CV ici
-      }
-      else if (title === "Rapport des étudiants n'ayant aucune convocation à entrevue") {
-        // Ajouter studentDetails pour ceux qui non pas d'entrevue ici
-      }
-      else {
+      } else if (Object.keys(state).length === 0) {
         return (
           <ValidCVModal
             show={show}
@@ -134,7 +137,7 @@ function StudentList() {
             currentStudent={currentStudent}
           />
         );
-      }
+      } 
     }
   }
 

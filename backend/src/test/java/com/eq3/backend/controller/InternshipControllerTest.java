@@ -541,6 +541,6 @@ public class InternshipControllerTest {
         //Assert
         MockHttpServletResponse response = result.getResponse();
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
     }
 }

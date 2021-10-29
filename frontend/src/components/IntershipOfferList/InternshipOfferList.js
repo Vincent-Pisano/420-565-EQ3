@@ -13,7 +13,7 @@ function InternshipOfferList() {
   const [internshipOffers, setInternshipOffers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   let title = auth.isInternshipManager()
-    ? state === undefined
+    ? Object.keys(state).length === 0
       ? "Liste des offres de stages non validées"
       : state.title
     : auth.isStudent()
