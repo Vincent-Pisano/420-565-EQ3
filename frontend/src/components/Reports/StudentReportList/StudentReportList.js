@@ -5,6 +5,8 @@ import auth from "../../../services/Auth";
 import axios from "axios";
 import Student from "../../StudentList/Student";
 
+import { Row, Col, Modal, Button } from "react-bootstrap";
+
 import "../../../styles/List.css";
 
 function StudentReportList() {
@@ -22,65 +24,110 @@ function StudentReportList() {
   let title = state.title;
 
   useEffect(() => {
-      if (title === "Rapport des étudiants avec aucun CV") {
-        axios
-          .get(`http://localhost:9090/getAll/students/without/CV`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiants n'a pas de CV");
-          });
-      } else if (title === "Rapport des étudiants enregistrés") {
-        axios
-          .get(`http://localhost:9090/getAll/students`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiants est enregistrés");
-          });
-      } else if (
-        title ===
-        "Rapport des étudiants n'ayant aucune convocation à une entrevue"
-      ) {
-        axios
-          .get(`http://localhost:9090/getAll/students/without/interviewDate`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage(
-              "Erreur! Aucun étudiant n'a pas de convocation à une entrevue"
-            );
-          });
-      } else if (title === "Rapport des étudiants en attente d’entrevue") {
-        axios
-          .get(`http://localhost:9090/getAll/students/waiting/interview`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiant en attente d'entrevue");
-          });
-      }
+    if (title === "Rapport des étudiants avec aucun CV") {
+      axios
+        .get(`http://localhost:9090/getAll/students/without/CV`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Erreur! Aucun étudiants n'a pas de CV");
+        });
+    } else if (title === "Rapport des étudiants enregistrés") {
+      axios
+        .get(`http://localhost:9090/getAll/students`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Erreur! Aucun étudiants est enregistrés");
+        });
+    } else if (
+      title ===
+      "Rapport des étudiants n'ayant aucune convocation à une entrevue"
+    ) {
+      axios
+        .get(`http://localhost:9090/getAll/students/without/interviewDate`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Erreur! Aucun étudiant n'a pas de convocation à une entrevue"
+          );
+        });
+    } else if (title === "Rapport des étudiants en attente d’entrevue") {
+      axios
+        .get(`http://localhost:9090/getAll/students/waiting/interview`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Erreur! Aucun étudiant en attente d'entrevue");
+        });
+    } else if (
+      title ===
+      "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur"
+    ) {
+      axios
+        .get(
+          `http://localhost:9090/get/internship/student/evaluation/unvalidated/`
+        )
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Erreur! Tous les étudiants ont été évalués par leur moniteur"
+          );
+        });
+    }
   }, [title]);
 
   function onDoubleClick(student) {
     if (title === "Rapport des étudiants en attente d’entrevue") {
       history.push({
         pathname: `/reports/listInternshipApplication/${student.username}`,
-        state: state
+        state: state,
       });
-    }
-    else {
+    } else {
       setCurrentStudent(student);
       handleShow();
     }
   }
 
   function checkIfGS() {
-    console.log("temp")
+    if (currentStudent !== undefined) {
+      return (
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header>
+            <Modal.Title>
+              Informations de {currentStudent.firstName}{" "}
+              {currentStudent.lastName}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row>
+              <Col>Identifiant de l'étudiant: {currentStudent.username}</Col>
+            </Row>
+            <Row>
+              <Col>Courriel de l'étudiant: {currentStudent.email}</Col>
+            </Row>
+            <Row>
+              <Col>
+                Date d'inscription:{" "}
+                {currentStudent.creationDate.substring(0, 10)}
+              </Col>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Fermer
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
+    }
   }
 
   return (
