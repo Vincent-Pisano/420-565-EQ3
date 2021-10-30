@@ -245,6 +245,16 @@ public class UtilsTest {
         return internships;
     }
 
+    public static List<Internship> getInternshipListCompleted() throws IOException {
+        List<Internship> internships = new ArrayList<>();
+        internships.add(getInternship());
+        internships.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            internshipApplication.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
+        });
+        return internships;
+    }
+
     public static Internship getInternshipWithInternshipContract() throws IOException {
         return Internship.builder()
                 .id("6141112s17d3gre02ce5gt68dq5")

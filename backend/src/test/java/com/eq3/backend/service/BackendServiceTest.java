@@ -461,7 +461,7 @@ class BackendServiceTest {
     //@Disabled
     public void testGetAllStudentsWithoutStudentEvaluation() throws IOException {
         //Arrange
-        expectedInternshipList = getInternshipList();
+        expectedInternshipList = getInternshipListCompleted();
         expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
         when(internshipRepository.findByStudentEvaluationNull())
                 .thenReturn(expectedInternshipList);
