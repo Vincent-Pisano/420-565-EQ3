@@ -27,6 +27,7 @@ export default{
 </script>
 
 <style scoped src="@/styles/Form.css"></style>
+<style scoped src="@/styles/App.css"></style>
 
 <template>
     <div id="signUp" class="cont_principal">
