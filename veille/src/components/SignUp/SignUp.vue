@@ -21,6 +21,11 @@ export default{
                     return this.currentSignUp
                 }
             }
+        },
+        mounted : function(){
+            if(JSON.parse(sessionStorage.getItem("user"))!== undefined){
+                sessionStorage.removeItem("user");
+            }
         }
     }
 
@@ -33,7 +38,7 @@ export default{
     <div id="signUp" class="cont_principal">
       <div class="cont_central">
         <h2 class="cont_title_form">Inscription</h2>
-          <div class="cont_buttons_sign_up">
+          <div>
               <button :class = "getCurrentSignUp()==='SignUpStudent' ? 'btn_link_selected': 'btn_link'" v-on:click="handleClick('student')">Étudiant</button>
               <component v-bind:is="getCurrentSignUp()"></component>
             </div>
