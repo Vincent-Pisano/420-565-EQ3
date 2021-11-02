@@ -31,12 +31,14 @@ public class InternshipService {
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
     private final InternshipManagerRepository internshipManagerRepository;
+    private final SupervisorRepository supervisorRepository;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipApplicationRepository internshipApplicationRepository,
                    InternshipRepository internshipRepository,
-                   InternshipManagerRepository internshipManagerRepository
+                   InternshipManagerRepository internshipManagerRepository,
+                      SupervisorRepository supervisorRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
@@ -44,6 +46,7 @@ public class InternshipService {
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
         this.internshipManagerRepository = internshipManagerRepository;
+        this.supervisorRepository = supervisorRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -114,6 +117,25 @@ public class InternshipService {
                 internshipOfferRepository.findAllByMonitor_IdAndIsDisabledFalse(idMonitor);
 
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
+    }
+
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationsOfStudentFromSupervisor(String supervisorUsername) {
+        Optional<Supervisor> optionalSupervisor = supervisorRepository.findByUsernameAndIsDisabledFalse(supervisorUsername);
+        List<InternshipApplication> internshipApplicationsAll = new ArrayList<>();
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+
+        if (optionalSupervisor.isPresent())
+            internshipApplicationsAll = internshipApplicationRepository.findAllByIsDisabledFalse();
+
+            for(InternshipApplication internshipApplication : internshipApplicationsAll){
+                Student student = internshipApplication.getStudent();
+                Supervisor supervisor = student.getSupervisor();
+                if(supervisor.getUsername().equals(supervisorUsername)){
+                    
+                }
+            }
+
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {

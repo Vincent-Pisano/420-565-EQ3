@@ -56,7 +56,7 @@ function InternshipOfferList() {
             "Aucune Offre de stage n'a été validé pour le moment"
           );
         });
-    } else if (auth.isMonitor()) {
+    } else if (auth.isMonitor() || auth.isSupervisor()) {
       axios
         .get(
           `http://localhost:9090/getAll/internshipOffer/monitor/${auth.user.id}`
