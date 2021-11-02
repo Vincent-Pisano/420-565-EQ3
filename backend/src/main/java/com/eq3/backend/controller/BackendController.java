@@ -152,6 +152,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping(value="/get/internship/student/evaluation/document/{idInternship}", produces = "application/pdf")
+    public ResponseEntity<InputStreamResource> downloadInternshipEnterpriseEvaluationDocument(@PathVariable String idInternship){
+        return service.downloadInternshipStudentEvaluationDocument(idInternship)
+                .map(this::getDownloadingDocument)
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     private ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");

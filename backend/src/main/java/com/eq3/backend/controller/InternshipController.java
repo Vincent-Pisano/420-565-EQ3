@@ -165,12 +165,12 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping(value = "/deposit/evaluation/student/{idInternship}",
+    @PostMapping(value = "/deposit/evaluation/enterprise/{idInternship}",
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
     public ResponseEntity<Internship> depositEnterpriseEvaluation(@PathVariable("idInternship") String idInternship,
                                                                @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
-        return service.depositStudentEvaluation(idInternship, multipartFile)
+        return service.depositEnterpriseEvaluation(idInternship, multipartFile)
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

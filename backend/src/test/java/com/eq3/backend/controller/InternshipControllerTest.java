@@ -543,4 +543,37 @@ public class InternshipControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
     }
+
+    @Test
+    //Disabled
+    public void testDepositEnterpriseEvaluation() throws Exception {
+        //Arrange
+        PDFDocument pdfDocument = getDocument();
+        var multipartFile = mock(MultipartFile.class);
+        when(multipartFile.getOriginalFilename()).thenReturn(pdfDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(pdfDocument.getContent().getData());
+
+        expectedInternship = getInternship();
+        expectedInternship.setEnterpriseEvaluation(pdfDocument);
+
+        Internship givenInternship = getInternship();
+
+        when(service.depositEnterpriseEvaluation(eq(givenInternship.getId()), any(MultipartFile.class)))
+                .thenReturn(Optional.of(expectedInternship));
+
+        //Act
+        HashMap<String, String> contentTypeParams = new HashMap<>();
+        contentTypeParams.put("boundary", "----WebKitFormBoundary");
+        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
+        MvcResult result =  mockMvc
+                .perform(MockMvcRequestBuilders.multipart(URL_DEPOSIT_INTERNSHIP_ENTERPRISE_EVALUATION + givenInternship.getId())
+                        .file("document", multipartFile.getBytes())
+                        .contentType(mediaType)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+    }
 }

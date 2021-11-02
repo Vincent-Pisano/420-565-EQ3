@@ -559,4 +559,33 @@ public class InternshipServiceTest {
         assertThat(optionalInternship.isPresent()).isTrue();
         assertThat(actualInternshipOffer.getStudentEvaluation()).isNotNull();
     }
+
+    @Test
+    //@Disabled
+    public void testDepositEnterpriseEvaluation() throws IOException {
+        //Arrange
+        PDFDocument pdfDocument = getDocument();
+        var multipartFile = mock(MultipartFile.class);
+        expectedInternship = getInternship();
+        expectedInternship.setEnterpriseEvaluation(pdfDocument);
+
+        Internship givenInternship = getInternship();
+
+        when(multipartFile.getOriginalFilename()).thenReturn(pdfDocument.getName());
+        when(multipartFile.getBytes()).thenReturn(pdfDocument.getContent().getData());
+        when(internshipRepository.findById(givenInternship.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternship));
+        lenient().when(internshipRepository.save(any(Internship.class)))
+                .thenReturn(expectedInternship);
+
+        //Act
+        Optional<Internship> optionalInternship =
+                service.depositEnterpriseEvaluation(givenInternship.getId(), multipartFile);
+
+        //Assert
+        Internship actualInternshipOffer = optionalInternship.orElse(null);
+
+        assertThat(optionalInternship.isPresent()).isTrue();
+        assertThat(actualInternshipOffer.getEnterpriseEvaluation()).isNotNull();
+    }
 }
