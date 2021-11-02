@@ -143,6 +143,19 @@ public class BackendService {
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
 
+    public Optional<List<Student>> getAllStudentsWithInternship() {
+        List<Student> studentsWithInternship = new ArrayList<>();
+        List<InternshipApplication> completedInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
+        for (InternshipApplication internshipApplication : completedInternshipApplications) {
+            if (internshipApplication.getStatus().equals(InternshipApplication.ApplicationStatus.COMPLETED)){
+                if (!studentsWithInternship.contains(internshipApplication.getStudent())){
+                    studentsWithInternship.add(internshipApplication.getStudent());
+                }
+            }
+        }
+        return studentsWithInternship.isEmpty() ? Optional.empty() : Optional.of(studentsWithInternship);
+    }
+
     public Optional<List<Student>> getAllStudentsWaitingInterview() {
         List<Student> studentsWaitingInterview = new ArrayList<>();
         List<InternshipApplication> internshipApplicationsWithoutInterviewDate =

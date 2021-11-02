@@ -43,6 +43,9 @@ class BackendServiceTest {
     private InternshipManagerRepository internshipManagerRepository;
 
     @Mock
+    private EvaluationRepository evaluationRepository;
+
+    @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
     @Mock
@@ -305,6 +308,28 @@ class BackendServiceTest {
         assertThat(optionalStudents.isPresent()).isTrue();
         assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
     }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithInternship() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        expectedInternshipApplicationList = getListOfCompletedInternshipApplication();
+        when(internshipApplicationRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithInternship();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+
 
     @Test
     //@Disabled

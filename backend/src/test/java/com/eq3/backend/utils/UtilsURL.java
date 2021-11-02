@@ -20,6 +20,7 @@ public class UtilsURL {
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = "/getAll/students/noSupervisor/";
     public final static String URL_GET_ALL_STUDENTS_WITH_SUPERVISOR = "/getAll/students/supervisor/";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_CV = "/getAll/students/without/CV";
+    public final static String URL_GET_ALL_STUDENTS_WITH_INTERNSHIP = "/getAll/students/with/Internship";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE = "/getAll/students/without/interviewDate";
     public final static String URL_GET_ALL_STUDENTS_WAITING_INTERVIEW = "/getAll/students/waiting/interview";
     public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors";
