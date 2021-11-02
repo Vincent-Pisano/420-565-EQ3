@@ -336,6 +336,44 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllStudentsWithoutStudentEvaluation() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithoutStudentEvaluation())
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutEnterpriseEvaluation() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithoutEnterpriseEvaluation())
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_ENTERPRISE_EVALUATION)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllSupervisors() throws Exception {
         //Arrange
         expectedSupervisorList = getListOfSupervisors();
@@ -523,24 +561,5 @@ class BackendControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(response.getContentLength()).isGreaterThan(0);
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithoutStudentEvaluation() throws Exception {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutStudentEvaluation())
-                .thenReturn(Optional.of(expectedStudentList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudentList).isNotNull();
     }
 }

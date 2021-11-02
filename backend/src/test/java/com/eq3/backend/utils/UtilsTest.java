@@ -58,6 +58,10 @@ public class UtilsTest {
         return studentsList;
     }
 
+    public static List<Student> getListOfStudentsWithoutEnterpriseEvaluation(){
+        return getListOfStudentsWithoutStudentEvaluation();
+    }
+
     public static Monitor getMonitorWithId(){
         Monitor monitor = getMonitorWithoutId();
         monitor.setId("61478hgk580000jbhd5");
