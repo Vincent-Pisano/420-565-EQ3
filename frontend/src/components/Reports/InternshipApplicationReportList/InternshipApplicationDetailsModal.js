@@ -53,7 +53,17 @@ const InternshipApplicationDetailsModal = ({
                     </option>
                   </Form.Select>
                 </Form.Group>
-                <Form.Group controlId="interviewDate">
+                <Form.Group
+                  controlId="interviewDate"
+                  style={{
+                    display:
+                      currentInternshipApplication !== undefined &&
+                      currentInternshipApplication.interviewDate !==
+                        (null && undefined)
+                        ? ""
+                        : "none",
+                  }}
+                >
                   <Form.Label className="labelFields">
                     Date d'entrevue
                   </Form.Label>

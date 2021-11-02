@@ -36,7 +36,7 @@ function InternshipApplicationReportList() {
         })
         .catch((err) => {
           setErrorMessage(
-            "Erreur lors de la récupération des applications de stages"
+            "Erreur ! Aucune application de stages"
           );
         });
   }, [title, username]);
