@@ -82,15 +82,16 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-<<<<<<< HEAD
     @GetMapping("/getAll/students/with/Internship")
     public ResponseEntity<List<Student>> getAllStudentsWithInternship() {
         return service.getAllStudentsWithInternship()
-=======
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/students/waiting/interview")
     public ResponseEntity<List<Student>> getAllStudentsWaitingInterview() {
         return service.getAllStudentsWaitingInterview()
->>>>>>> master
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

@@ -42,10 +42,7 @@ function StudentReportList() {
         .catch((err) => {
           setErrorMessage("Erreur! Aucun étudiants est enregistrés");
         });
-    } else if (
-      title ===
-      "Rapport des étudiants n'ayant aucune convocation à une entrevue"
-    ) {
+    } else if (title === "Rapport des étudiants n'ayant aucune convocation à une entrevue") {
       axios
         .get(`http://localhost:9090/getAll/students/without/interviewDate`)
         .then((response) => {
@@ -65,10 +62,20 @@ function StudentReportList() {
         .catch((err) => {
           setErrorMessage("Erreur! Aucun étudiant en attente d'entrevue");
         });
-    } else if (
-      title ===
-      "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur"
-    ) {
+    } else if (title === "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur") {
+      axios
+        .get(
+          `http://localhost:9090/get/internship/student/evaluation/unvalidated/`
+        )
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Erreur! Tous les étudiants ont été évalués par leur moniteur"
+          );
+        });
+    } else if (title === "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur") {
       axios
         .get(
           `http://localhost:9090/get/internship/student/evaluation/unvalidated/`

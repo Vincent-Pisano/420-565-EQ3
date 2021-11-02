@@ -178,7 +178,6 @@ public class UtilsTest {
         return internshipApplications;
     }
 
-<<<<<<< HEAD
     public static List<InternshipApplication> getListOfCompletedInternshipApplication() {
         InternshipApplication internshipApplication1 = getInternshipApplication();
         InternshipApplication internshipApplication2 = getInternshipApplication();
@@ -191,13 +190,14 @@ public class UtilsTest {
         List<InternshipApplication> internshipApplications = new ArrayList<>();
         internshipApplications.add(internshipApplication1);
         internshipApplications.add(internshipApplication2);
-=======
+        return internshipApplications;
+    }
+
     public static List<InternshipApplication> getListOfInternshipApplicationWithDifferentStudent() {
         List<InternshipApplication> internshipApplications = getListOfInternshipApplication();
         InternshipApplication internshipApplication = internshipApplications.get(0);
         Student student = internshipApplication.getStudent();
         student.setId("srg2sr1g681q35g1q6g1q");
->>>>>>> master
         return internshipApplications;
     }
 

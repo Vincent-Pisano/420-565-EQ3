@@ -43,14 +43,7 @@ class BackendServiceTest {
     private InternshipManagerRepository internshipManagerRepository;
 
     @Mock
-<<<<<<< HEAD
-    private InternshipApplicationRepository internshipApplicationRepository;
-
-    @Mock
-    private EvaluationRepository evaluationRepository;
-=======
     private InternshipOfferRepository internshipOfferRepository;
->>>>>>> master
 
     @Mock
     private InternshipRepository internshipRepository;
@@ -69,11 +62,7 @@ class BackendServiceTest {
     private PDFDocument expectedPDFDocument;
     private Binary expectedImage;
     private Internship expectedInternship;
-<<<<<<< HEAD
-    private List<InternshipApplication> expectedInternshipApplicationList;
-=======
     private List<Internship> expectedInternshipList;
->>>>>>> master
 
     @Test
     //@Disabled

@@ -239,7 +239,6 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-<<<<<<< HEAD
     public void testGetAllStudentsWithInternship() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -247,7 +246,18 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_INTERNSHIP)
-=======
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithSupervisor() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -314,7 +324,6 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WAITING_INTERVIEW)
->>>>>>> master
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
