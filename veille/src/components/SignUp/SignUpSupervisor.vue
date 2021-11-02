@@ -4,9 +4,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/components/Home.vue'
 import router from '@/router'
 export default{
-        name: 'signUpStudent',
+        name: 'signUpSupervisor',
         data: function(){
-            return { student: {
+            return { supervisor: {
               department: "COMPUTER_SCIENCE",
               username: "",
               password: "",
@@ -19,12 +19,12 @@ export default{
         },
         methods: {
             onSubmit(){
-              if (!this.student.username.startsWith("E")) {
-                this.errorMessage= "Le nom d'utilisateur doit commencer par 'E'.";
+              if (!this.supervisor.username.startsWith("S")) {
+                this.errorMessage= "Le nom d'utilisateur doit commencer par 'S'.";
                 return;
               }
               axios
-                .post("http://localhost:9090/signUp/student", this.student)
+                .post("http://localhost:9090/signUp/supervisor", this.supervisor)
                 .then((response) => {
                   var user = response.data
                   sessionStorage.setItem("user", JSON.stringify(user));
@@ -53,18 +53,18 @@ export default{
 <style scoped src="@/styles/App.css"></style>
 
 <template>
-    <div id  = "signUpStudent" class="form-group">
+    <div id  = "signUpSupervisor" class="form-group">
         <div class="cont_tabs_login">
-            <h2 class="pt-3">Inscription Étudiant</h2>
+            <h2 class="pt-3">Inscription Superviseur</h2>
         </div>
         <div class="cont_text_inputs">
-          <label class="discret">Veuillez commencer votre nom d'utilisateur par "E"</label>
+          <label class="discret">Veuillez commencer votre nom d'utilisateur par "S"</label>
           <input
           id="username"
           type="text"
           placeholder="Entrer votre nom d'utilisateur"
           class="input_form_sign d_block active_inp_sign_up"
-          v-model.lazy="student.username"
+          v-model.lazy="supervisor.username"
           required/>
           
           <input
@@ -72,32 +72,32 @@ export default{
           type="password"
           placeholder="Entrer votre mot de passe"
           class="input_form_sign d_block active_inp_sign_up"
-          v-model.lazy="student.password"
+          v-model.lazy="supervisor.password"
           required/>
           <input
           id="email"
           type="email"
           placeholder="Entrer votre courriel"
           class="input_form_sign d_block active_inp_sign_up"
-          v-model.lazy="student.email"
+          v-model.lazy="supervisor.email"
           required/>
           <input
           id="firstName"
           type="text"
           placeholder="Entrer votre prénom"
           class="input_form_sign d_block active_inp_sign_up"
-          v-model.lazy="student.firstName"
+          v-model.lazy="supervisor.firstName"
           required/>
           <input
           id="lastName"
           type="text"
           placeholder="Entrer votre nom de famille"
           class="input_form_sign d_block active_inp_sign_up"
-          v-model.lazy="student.lastName"
+          v-model.lazy="supervisor.lastName"
           required/>
           <select id="department"
             class="select_form_sign d_block active_select "
-            v-model.lazy="student.department"
+            v-model.lazy="supervisor.department"
             required>
             <option value="COMPUTER_SCIENCE">Informatique</option>
             <option value="ARCHITECTURE">Architecture</option>
