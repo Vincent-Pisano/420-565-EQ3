@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Date;
 
-import java.util.Date;
-
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -39,5 +37,9 @@ public class InternshipApplication extends Entity{
         super();
         this.status = ApplicationStatus.WAITING;
         this.interviewDate = null;
+    }
+
+    public boolean statusIsCompleted() {
+        return this.getStatus().equals(InternshipApplication.ApplicationStatus.COMPLETED);
     }
 }

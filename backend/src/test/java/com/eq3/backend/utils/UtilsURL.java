@@ -25,7 +25,7 @@ public class UtilsURL {
     public final static String URL_GET_ALL_STUDENTS_WAITING_INTERVIEW = "/getAll/students/waiting/interview";
     public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors";
     public final static String URL_GET_MONITOR = "/get/monitor/";
-    public final static String URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION = "/get/internship/student/evaluation/unvalidated/";
+    public final static String URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION = "/getAll/student/studentEvaluation/unevaluated";
     public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/";
     public final static String URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT = "/get/internshipOffer/document/";
     public final static String URL_DOWNLOAD_CV_DOCUMENT = "/get/CV/document/";

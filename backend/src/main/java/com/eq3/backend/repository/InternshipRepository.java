@@ -1,7 +1,9 @@
 package com.eq3.backend.repository;
 
 import com.eq3.backend.model.Internship;
+import com.eq3.backend.model.InternshipApplication;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +14,8 @@ public interface InternshipRepository extends MongoRepository<Internship, String
 
     Optional<Internship> findByInternshipApplication_Id(String id);
 
-    List<Internship> findByStudentEvaluationNull();
+    List<Internship> findByStudentEvaluationNullAndIsDisabledFalse();
+
+    List<Internship> findByEnterpriseEvaluationNullAndIsDisabledFalse();
 
 }

@@ -96,6 +96,20 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/student/studentEvaluation/unevaluated")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutStudentEvaluation(){
+        return service.getAllStudentsWithoutStudentEvaluation()
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/student/enterpriseEvaluation/unevaluated")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(){
+        return service.getAllStudentsWithoutEnterpriseEvaluation()
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/supervisors")
     public ResponseEntity<List<Supervisor>> getAllSupervisors(){
         return service.getAllSupervisors()
@@ -168,12 +182,4 @@ public class BackendController {
                         new ByteArrayInputStream(PDFDocument.getContent().getData()))
                 );
     }
-
-    @GetMapping("/get/internship/student/evaluation/unvalidated/")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutStudentEvaluation(){
-        return service.getAllStudentsWithoutStudentEvaluation()
-                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
 }

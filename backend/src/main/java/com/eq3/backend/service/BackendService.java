@@ -147,7 +147,7 @@ public class BackendService {
         List<Student> studentsWithInternship = new ArrayList<>();
         List<InternshipApplication> completedInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
         for (InternshipApplication internshipApplication : completedInternshipApplications) {
-            if (internshipApplication.getStatus().equals(InternshipApplication.ApplicationStatus.COMPLETED)){
+            if (internshipApplication.statusIsCompleted()){
                 if (!studentsWithInternship.contains(internshipApplication.getStudent())){
                     studentsWithInternship.add(internshipApplication.getStudent());
                 }
@@ -166,6 +166,30 @@ public class BackendService {
         }
         return studentsWaitingInterview.isEmpty() ? Optional.empty() :
                 Optional.of(studentsWaitingInterview.stream().distinct().collect(Collectors.toList()));
+    }
+
+    public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(){
+        List<Internship> internshipListWithoutStudentEvaluation =
+                internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse();
+        List<Student> studentList = getAllStudentsFromInternships(internshipListWithoutStudentEvaluation);
+        return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
+    }
+
+    public Optional<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(){
+        List<Internship> internshipListWithoutEnterpriseEvaluation =
+                internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
+        List<Student> studentList = getAllStudentsFromInternships(internshipListWithoutEnterpriseEvaluation);
+        return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
+    }
+
+    private List<Student> getAllStudentsFromInternships(List<Internship> internshipListWithoutStudentEvaluation){
+        List<Student> studentList = new ArrayList<>();
+        internshipListWithoutStudentEvaluation .forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            if(internshipApplication.statusIsCompleted())
+                studentList.add(internshipApplication.getStudent());
+        });
+        return studentList.stream().distinct().collect(Collectors.toList());
     }
 
     public Optional<List<Supervisor>> getAllSupervisors() {
@@ -242,26 +266,6 @@ public class BackendService {
     public Optional<PDFDocument> downloadInternshipStudentEvaluationDocument(String idInternship) {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
         return optionalInternship.map(Internship::getStudentEvaluation);
-    }
-
-    public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(){
-        List<Internship> internshipListWithoutStudentEvaluation = internshipRepository.findByStudentEvaluationNull();
-        List<Student> studentList = getListOfStudentsWithoutStudentEvaluation(internshipListWithoutStudentEvaluation);
-        return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
-    }
-
-    private List<Student> getListOfStudentsWithoutStudentEvaluation(List<Internship> internshipListWithoutStudentEvaluation){
-        List<Student> studentList = new ArrayList<>();
-        for (Internship internship : internshipListWithoutStudentEvaluation){
-            InternshipApplication internshipApplication = internship.getInternshipApplication();
-            if (internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.COMPLETED) {
-                Student student = internshipApplication.getStudent();
-                if (!studentList.contains(student)) {
-                    studentList.add(student);
-                }
-            }
-        }
-        return studentList;
     }
 }
 

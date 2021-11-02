@@ -268,7 +268,7 @@ class BackendServiceTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     public void testGetAllStudentsWithoutInterviewDate() {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -508,8 +508,8 @@ class BackendServiceTest {
         //Arrange
         expectedInternshipList = getInternshipListCompleted();
         expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
-        when(internshipRepository.findByStudentEvaluationNull())
-                .thenReturn(expectedInternshipList);
+        when(internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse()
+        ).thenReturn(expectedInternshipList);
 
         //Act
         final Optional<List<Student>> optionalStudents =

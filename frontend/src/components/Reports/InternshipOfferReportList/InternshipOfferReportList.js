@@ -14,7 +14,7 @@ function InternshipOfferReportList() {
   let title = state.title;
 
   useEffect(() => {
-    if (title === "Rapport des offres non-validées") {
+    if (title === "Offres non-validées") {
       axios
         .get(`http://localhost:9090/getAll/internshipOffer/unvalidated`)
         .then((response) => {
@@ -23,7 +23,7 @@ function InternshipOfferReportList() {
         .catch((err) => {
           setErrorMessage("Aucune Offre de stage à valider");
         });
-    } else if (title === "Rapport des offres validées") {
+    } else if (title === "Offres validées") {
       axios
         .get(`http://localhost:9090/getAll/internshipOffer/validated`)
         .then((response) => {
