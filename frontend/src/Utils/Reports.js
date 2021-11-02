@@ -47,9 +47,9 @@ let reports = [
     icon: faUserCircle,
   },
   {
-    id: "6",
+    id: "8",
     title: "Rapport des étudiants ayant trouvé un stage",
-    link: "listStudents",
+    link: reportLink + "listStudents",
     icon: faUserCircle,
   },
 ];

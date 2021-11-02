@@ -6,11 +6,6 @@ import axios from "axios";
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
 import Student from "./Student";
-<<<<<<< HEAD
-import ReportStudent from "../Reports/ReportStudent";
-
-=======
->>>>>>> master
 import "../../styles/List.css";
 
 function StudentList() {
@@ -34,15 +29,8 @@ function StudentList() {
       ? "Étudiants qui vous sont assignés" 
       : "Étudiants de votre département"
     : supervisor !== undefined
-<<<<<<< HEAD
-      ? state === undefined
-        ? "Étudiants avec un CV à valider"
-        : "Étudiants de ce département à assigner"
-      : state.title;
-=======
     ? "Étudiants de ce département à assigner"
     : "Étudiants avec un CV à valider";
->>>>>>> master
 
   useEffect(() => {
     if (auth.isSupervisor()) {
@@ -70,47 +58,7 @@ function StudentList() {
         });
       }
     } else if (auth.isInternshipManager()) {
-<<<<<<< HEAD
-      if (title === "Rapport des étudiants avec aucun CV") {
-        axios
-          .get(`http://localhost:9090/getAll/students/without/CV`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Aucun étudiants est enregistrés");
-          });
-      } else if (title === "Rapport non validé") {
-        axios
-          .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Aucun étudiants est enregistrés");
-          });
-        } else if (title === "Rapport des étudiants n'ayant aucune convocation à entrevue") {
-            axios
-              .get(`http://localhost:9090/getAll/students/without/InterviewDate`)
-              .then((response) => {
-                setStudents(response.data);
-              })
-              .catch((err) => {
-                setErrorMessage("Aucun étudiants est enregistrés");
-            });
-        } else if (title === "Rapport des étudiants ayant trouvé un stage") {
-            axios
-              .get(`http://localhost:9090/getAll/students/with/Internship`)
-              .then((response) => {
-                setStudents(response.data);
-              })
-              .catch((err) => {
-                setErrorMessage("Aucun étudiant a trouvé un stage");
-            });
-      } else if (supervisor !== undefined) {
-=======
       if (supervisor !== undefined) {
->>>>>>> master
         axios
           .get(
             `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}`
@@ -153,20 +101,7 @@ function StudentList() {
             currentStudent={currentStudent}
           />
         );
-<<<<<<< HEAD
-      } else if (title === "Rapport des étudiants avec aucun CV") {
-        // Ajouter studentDetails pour ceux qui n'ont pas de CV ici
-      }
-      else if (title === "Rapport des étudiants n'ayant aucune convocation à entrevue") {
-        // Ajouter studentDetails pour ceux qui n'ont pas d'entrevue ici
-      }
-      else if (title === "Rapport des étudiants ayant trouvé un stage") {
-        // Ajouter studentDetails pour ceux qui ont trouvé un stage
-      }
-      else {
-=======
       } else {
->>>>>>> master
         return (
           <ValidCVModal
             show={show}
@@ -178,34 +113,6 @@ function StudentList() {
           />
         );
       }
-    }
-  }
-
-  function checkFromReport() {
-    if (title === "Rapport des étudiants enregistrés" || title === "Rapport des étudiants ayant trouvé un stage") {
-      return (
-        <ul>
-          {students.map((student) => (
-            <ReportStudent
-              key={student.id}
-              student={student}
-              
-            />
-          ))}
-        </ul>
-      )
-    } else {
-      return (
-        <ul>
-          {students.map((student) => (
-            <Student
-              key={student.id}
-              student={student}
-              onDoubleClick={auth.isInternshipManager() ? showModal : null}
-            />
-          ))}
-        </ul>
-      )
     }
   }
 
@@ -222,7 +129,15 @@ function StudentList() {
           >
             {errorMessage}
           </p>
-          {checkFromReport()}
+          <ul>
+            {students.map((student)=>(
+              <Student
+                key={student.id}
+                student={student}
+                onDoubleClick={auth.isInternshipManager() ? showModal : null}
+              />
+            ))}
+          </ul>
         </Container>
       </Container>
       {checkIfGS()}
