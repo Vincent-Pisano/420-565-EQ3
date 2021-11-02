@@ -16,10 +16,6 @@ const NavUserSupervisor = () => {
         Liste de vos étudiants 
       </NavDropdown.Item>
 
-      <NavDropdown.Item as={Link} to="/listInternshipOffer">
-        Liste d'offres de stage
-      </NavDropdown.Item>
-
       <NavDropdown.Item
         href={`http://localhost:9090/get/enterprise/evaluation/document`}
         target="_blank"

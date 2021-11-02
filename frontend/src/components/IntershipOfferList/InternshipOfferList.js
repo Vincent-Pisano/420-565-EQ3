@@ -69,19 +69,6 @@ function InternshipOfferList() {
             "Vous n'avez déposé aucune offre de stage pour le moment"
           );
         });
-    } else if (auth.isSupervisor()) {
-      axios
-        .get(
-          `http://localhost:9090/getAll/internshipOffer/monitor/${auth.user.id}`
-        )
-        .then((response) => {
-          setInternshipOffers(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage(
-            "Vous n'avez déposé aucune offre de stage pour le moment"
-          );
-        });
     }
   }, [title]);
 
