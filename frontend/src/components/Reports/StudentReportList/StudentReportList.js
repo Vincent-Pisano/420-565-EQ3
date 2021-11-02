@@ -75,17 +75,17 @@ function StudentReportList() {
             "Erreur! Tous les étudiants ont été évalués par leur moniteur"
           );
         });
-    } else if (title === "Rapport des étudiants n’ayant pas encore été évalués par leur moniteur") {
+    } else if (title === "Rapport des étudiants ayant trouvé un stage") {
       axios
         .get(
-          `http://localhost:9090/get/internship/student/evaluation/unvalidated/`
+          `http://localhost:9090/getAll/students/with/Internship`
         )
         .then((response) => {
           setStudents(response.data);
         })
         .catch((err) => {
           setErrorMessage(
-            "Erreur! Tous les étudiants ont été évalués par leur moniteur"
+            "Erreur! Aucuns étudiants n'a trouver de stage."
           );
         });
     }
