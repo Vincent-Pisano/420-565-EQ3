@@ -31,12 +31,14 @@ public class InternshipService {
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
     private final InternshipManagerRepository internshipManagerRepository;
+    private final SupervisorRepository supervisorRepository;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipApplicationRepository internshipApplicationRepository,
                    InternshipRepository internshipRepository,
-                   InternshipManagerRepository internshipManagerRepository
+                   InternshipManagerRepository internshipManagerRepository,
+                      SupervisorRepository supervisorRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
@@ -44,6 +46,7 @@ public class InternshipService {
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
         this.internshipManagerRepository = internshipManagerRepository;
+        this.supervisorRepository = supervisorRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -270,6 +273,19 @@ public class InternshipService {
         optionalInternship.ifPresent(internship -> {
             try {
                 internship.setStudentEvaluation(extractDocument(multipartFile));
+            } catch (IOException e) {
+                logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
+                        + " at extractDocument in InternshipService : " + e.getMessage());
+            }
+        });
+        return optionalInternship.map(internshipRepository::save);
+    }
+
+    public Optional<Internship> depositEnterpriseEvaluation(String idInternship, MultipartFile multipartFile) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+        optionalInternship.ifPresent(internship -> {
+            try {
+                internship.setEnterpriseEvaluation(extractDocument(multipartFile));
             } catch (IOException e) {
                 logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
                         + " at extractDocument in InternshipService : " + e.getMessage());

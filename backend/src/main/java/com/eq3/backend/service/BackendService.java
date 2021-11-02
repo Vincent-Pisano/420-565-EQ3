@@ -267,5 +267,10 @@ public class BackendService {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
         return optionalInternship.map(Internship::getStudentEvaluation);
     }
+
+    public Optional<PDFDocument> downloadInternshipEnterpriseEvaluationDocument(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+        return optionalInternship.map(Internship::getEnterpriseEvaluation);
+    }
 }
 

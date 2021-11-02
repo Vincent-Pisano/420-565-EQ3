@@ -10,6 +10,7 @@ import InternshipApplicationInternshipManagerModal from "./Modal/InternshipAppli
 import InternshipApplicationSignatureModal from "./Modal/InternshipApplicationSignatureModal";
 import InternshipApplicationMonitorModal from "./Modal/InternshipApplicationMonitorModal";
 import InternshipApplicationSupervisorModal from "./Modal/InternshipApplicationSupervisorModal";
+import InternshipApplicationSupervisorEnterpriseEvaluationModal from "./Modal/InternshipApplicationSupervisorEnterpriseEvaluationModal";
 
 function InternshipApplicationList() {
   let user = auth.user;
@@ -31,7 +32,7 @@ function InternshipApplicationList() {
     ? isInternshipManagerSignature
       ? "Liste des applications de stages à signer"
       : "Liste des applications de stages acceptées"
-    : auth.isSupervisor() 
+    : auth.isSupervisor()
     ? state.title
     : "Vous ne devriez pas voir cette page";
 
@@ -98,9 +99,7 @@ function InternshipApplicationList() {
           setInternshipApplications(response.data);
         })
         .catch((err) => {
-          setErrorMessage(
-            "Erreur ! Aucune application de stages"
-          );
+          setErrorMessage("Erreur ! Aucune application de stages");
         });
     }
   }, [user.username, internshipOffer, isInternshipManagerSignature, username]);
@@ -195,14 +194,26 @@ function InternshipApplicationList() {
         );
       }
     } else if (auth.isSupervisor()) {
-      return (
-        <InternshipApplicationSupervisorModal
-          show={show}
-          handleClose={handleClose}
-          currentInternshipApplication={currentInternshipApplication}
-          showIntershipOffer={showIntershipOffer}
-        />
-      );
+      if (isCurrentApplicationCompleted()) {
+        return (
+          <>
+            <InternshipApplicationSupervisorEnterpriseEvaluationModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+            />
+          </>
+        );
+      } else {
+        return (
+          <InternshipApplicationSupervisorModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+            showIntershipOffer={showIntershipOffer}
+          />
+        );
+      }
     }
   }
 
