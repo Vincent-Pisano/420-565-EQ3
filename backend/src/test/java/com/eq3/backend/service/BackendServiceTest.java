@@ -208,6 +208,26 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllStudentsWithSupervisor() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        expectedSupervisor = getSupervisorWithId();
+        when(studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(expectedSupervisor.getId()))
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithSupervisor(expectedSupervisor.getId());
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudents() {
         //Arrange
         expectedStudentList = getListOfStudents();
