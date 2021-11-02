@@ -7627,7 +7627,7 @@
 											"top": 513,
 											"width": 252.205078125,
 											"height": 13,
-											"text": "+enterpriseEvaluation: PDFDocument",
+											"text": "-enterpriseEvaluation: PDFDocument",
 											"horizontalAlignment": 0
 										}
 									],
@@ -10199,6 +10199,7 @@
 								"$ref": "AAAAAAF8ceTTUEA1tzU="
 							},
 							"name": "enterpriseEvaluation",
+							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAF8OLawwp/my1E="
 							}

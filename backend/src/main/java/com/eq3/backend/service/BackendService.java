@@ -244,6 +244,11 @@ public class BackendService {
         return optionalInternship.map(Internship::getStudentEvaluation);
     }
 
+    public Optional<PDFDocument> downloadInternshipEnterpriseEvaluationDocument(String idInternship) {
+        Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
+        return optionalInternship.map(Internship::getEnterpriseEvaluation);
+    }
+
     public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(){
         List<Internship> internshipListWithoutStudentEvaluation = internshipRepository.findByStudentEvaluationNull();
         List<Student> studentList = getListOfStudentsWithoutStudentEvaluation(internshipListWithoutStudentEvaluation);

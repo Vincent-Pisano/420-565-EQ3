@@ -32,6 +32,7 @@ public class UtilsURL {
     public final static String URL_DOWNLOAD_EVALUATION_DOCUMENT = "/get/"+ DOCUMENT_NAME +"/evaluation/document";
     public final static String URL_DOWNLOAD_INTERNSHIP_CONTRACT = "/get/internship/document/";
     public final static String URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION = "/get/internship/student/evaluation/document/";
+    public final static String URL_DOWNLOAD_INTERNSHIP_ENTERPRISE_EVALUATION = "/get/internship/enterprise/evaluation/document/";
 
     // CVController
     public final static String URL_SAVE_CV = "/save/CV/";

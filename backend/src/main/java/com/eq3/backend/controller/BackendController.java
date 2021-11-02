@@ -152,9 +152,9 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value="/get/internship/student/evaluation/document/{idInternship}", produces = "application/pdf")
+    @GetMapping(value="/get/internship/enterprise/evaluation/document/{idInternship}", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> downloadInternshipEnterpriseEvaluationDocument(@PathVariable String idInternship){
-        return service.downloadInternshipStudentEvaluationDocument(idInternship)
+        return service.downloadInternshipEnterpriseEvaluationDocument(idInternship)
                 .map(this::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
