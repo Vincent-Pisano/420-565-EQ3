@@ -1,8 +1,8 @@
 import { React, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
-import { useFormFields } from "../../lib/hooksLib";
+import { useFormFields } from "../../../lib/hooksLib";
 import axios from "axios";
-import "../../styles/Form.css";
+import "../../../styles/Form.css";
 
 const InternshipApplicationStudentModal = ({
   show,

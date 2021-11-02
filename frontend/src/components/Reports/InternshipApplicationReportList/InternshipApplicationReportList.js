@@ -12,7 +12,6 @@ function InternshipApplicationReportList() {
   let username = params.username;
 
   let state = history.location.state;
-
   let title = state.title;
 
   const [show, setShow] = useState(false);
@@ -27,7 +26,6 @@ function InternshipApplicationReportList() {
   useEffect(() => {
     setErrorMessage("");
     setInternshipApplications([]);
-    if (title === "Rapport des étudiants en attente d’entrevue")
       axios
         .get(
           `http://localhost:9090/getAll/internshipApplication/student/${username}`
@@ -37,7 +35,7 @@ function InternshipApplicationReportList() {
         })
         .catch((err) => {
           setErrorMessage(
-            "Erreur lors de la récupération des applications de stages"
+            "Erreur ! Aucune application de stages"
           );
         });
   }, [title, username]);

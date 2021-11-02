@@ -1,8 +1,8 @@
 import axios from "axios";
-import auth from "../../services/Auth";
+import auth from "../../../services/Auth";
 import { React, useState, useEffect } from "react";
 import { Button, Modal, Row, Col } from "react-bootstrap";
-import "../../styles/Form.css";
+import "../../../styles/Form.css";
 import { useHistory } from "react-router";
 
 const InternshipApplicationSignatureModal = ({

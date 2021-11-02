@@ -1,9 +1,9 @@
 import { React, useState, useEffect } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import { useHistory } from "react-router";
-import auth from "../../services/Auth";
+import auth from "../../../services/Auth";
 import axios from "axios";
-import "../../styles/Form.css";
+import "../../../styles/Form.css";
 
 const InternshipApplicationInternshipManagerModal = ({
   show,
@@ -14,7 +14,10 @@ const InternshipApplicationInternshipManagerModal = ({
   setInternshipApplications,
   setErrorMessage,
 }) => {
-  let currentInternshipOffer = currentInternshipApplication.internshipOffer;
+  let currentInternshipOffer =
+    currentInternshipApplication !== undefined
+      ? currentInternshipApplication.internshipOffer
+      : undefined;
   let history = useHistory();
 
   const [errorMessageModal, setErrorMessageModal] = useState("");
@@ -34,7 +37,7 @@ const InternshipApplicationInternshipManagerModal = ({
 
   function onConfirmModal(e) {
     e.preventDefault();
-    CreateInternship();
+    createInternship();
   }
 
   function changeEngagements(event) {
@@ -44,12 +47,12 @@ const InternshipApplicationInternshipManagerModal = ({
     });
   }
 
-  function CreateInternship() {
+  function createInternship() {
     if (currentInternshipApplication.status !== "ACCEPTED") {
       currentInternshipApplication.student.cvlist = [];
       currentInternshipApplication.student.signature = undefined;
       if (currentInternshipApplication.student.supervisor !== null)
-      currentInternshipApplication.student.supervisor.signature = undefined;
+        currentInternshipApplication.student.supervisor.signature = undefined;
       currentInternshipApplication.internshipOffer.pdfdocument = undefined;
       currentInternshipApplication.internshipOffer.monitor.signature =
         undefined;
@@ -163,7 +166,7 @@ const InternshipApplicationInternshipManagerModal = ({
                   </Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    defaultValue={currentInternshipApplication.status}
+                    defaultValue={currentInternshipApplication !== undefined ? currentInternshipApplication.status : ""}
                     onChange={(event) => {
                       currentInternshipApplication.status = event.target.value;
                     }}

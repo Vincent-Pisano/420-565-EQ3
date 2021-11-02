@@ -2,7 +2,7 @@ import { React } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import "../../../styles/Form.css";
 
-const InternshipApplicationDetailsModal = ({
+const InternshipApplicationSupervisorModal = ({
   show,
   handleClose,
   currentInternshipApplication,
@@ -12,6 +12,8 @@ const InternshipApplicationDetailsModal = ({
     currentInternshipApplication !== undefined
       ? currentInternshipApplication.internshipOffer
       : undefined;
+
+  console.log(currentInternshipApplication)
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -114,4 +116,4 @@ const InternshipApplicationDetailsModal = ({
   );
 };
 
-export default InternshipApplicationDetailsModal;
+export default InternshipApplicationSupervisorModal;
