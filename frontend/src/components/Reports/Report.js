@@ -9,7 +9,7 @@ const Report = ({ report }) => {
     e.preventDefault();
     history.push({
       pathname: `${report.link}`,
-      state: report
+      state: report,
     });
   }
 

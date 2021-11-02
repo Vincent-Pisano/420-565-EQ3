@@ -7,7 +7,7 @@ const InternshipOfferButtonApply = ({
   setHasApplied,
   errorMessage,
   setErrorMessage,
-  redirect
+  redirect,
 }) => {
   let user = auth.user;
 

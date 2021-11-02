@@ -15,12 +15,17 @@ public class UtilsURL {
 
     // BackendController
     public final static String URL_SAVE_SIGNATURE = "/save/signature/";
-    public final static String URL_GET_ALL_STUDENTS = "/getAll/students/";
+    public final static String URL_GET_ALL_STUDENTS_FROM_DEPARTMENT = "/getAll/students/";
+    public final static String URL_GET_ALL_STUDENTS = "/getAll/students";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = "/getAll/students/noSupervisor/";
+    public final static String URL_GET_ALL_STUDENTS_WITH_SUPERVISOR = "/getAll/students/supervisor/";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_CV = "/getAll/students/without/CV";
     public final static String URL_GET_ALL_STUDENTS_WITH_INTERNSHIP = "/getAll/students/with/Internship";
+    public final static String URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE = "/getAll/students/without/interviewDate";
+    public final static String URL_GET_ALL_STUDENTS_WAITING_INTERVIEW = "/getAll/students/waiting/interview";
     public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors";
     public final static String URL_GET_MONITOR = "/get/monitor/";
+    public final static String URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION = "/get/internship/student/evaluation/unvalidated/";
     public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/";
     public final static String URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT = "/get/internshipOffer/document/";
     public final static String URL_DOWNLOAD_CV_DOCUMENT = "/get/CV/document/";

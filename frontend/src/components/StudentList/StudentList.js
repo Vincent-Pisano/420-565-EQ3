@@ -1,21 +1,25 @@
 import { React, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
-
 import { useHistory } from "react-router";
 import auth from "../../services/Auth";
 import axios from "axios";
-
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
 import Student from "./Student";
+<<<<<<< HEAD
 import ReportStudent from "../Reports/ReportStudent";
 
+=======
+>>>>>>> master
 import "../../styles/List.css";
 
 function StudentList() {
   let history = useHistory();
   let supervisor = history.location.supervisor;
-  let state = history.location.state || {};
+
+  let isStudentListAssigned =
+  history.location.pathname === "/listStudents/assigned";
+  let user = auth.user;
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -26,17 +30,36 @@ function StudentList() {
   const [errorMessage, setErrorMessage] = useState("");
 
   let title = !auth.isInternshipManager()
-    ? "Étudiants de votre département"
+    ? isStudentListAssigned 
+      ? "Étudiants qui vous sont assignés" 
+      : "Étudiants de votre département"
     : supervisor !== undefined
+<<<<<<< HEAD
       ? state === undefined
         ? "Étudiants avec un CV à valider"
         : "Étudiants de ce département à assigner"
       : state.title;
+=======
+    ? "Étudiants de ce département à assigner"
+    : "Étudiants avec un CV à valider";
+>>>>>>> master
 
   useEffect(() => {
     if (auth.isSupervisor()) {
-      axios
-        .get(`http://localhost:9090/getAll/students/${auth.user.department}`)
+      if(isStudentListAssigned){
+        axios
+        .get(`http://localhost:9090/getAll/students/supervisor/${user.id}`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Erreur! Aucun étudiant n'a été assigné pour le moment"
+          );
+        });
+      }else{      
+        axios
+        .get(`http://localhost:9090/getAll/students/${user.department}`)
         .then((response) => {
           setStudents(response.data);
         })
@@ -45,7 +68,9 @@ function StudentList() {
             "Erreur! Aucun étudiant ne s'est inscrit pour le moment"
           );
         });
+      }
     } else if (auth.isInternshipManager()) {
+<<<<<<< HEAD
       if (title === "Rapport des étudiants avec aucun CV") {
         axios
           .get(`http://localhost:9090/getAll/students/without/CV`)
@@ -83,6 +108,9 @@ function StudentList() {
                 setErrorMessage("Aucun étudiant a trouvé un stage");
             });
       } else if (supervisor !== undefined) {
+=======
+      if (supervisor !== undefined) {
+>>>>>>> master
         axios
           .get(
             `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}`
@@ -100,7 +128,7 @@ function StudentList() {
             setStudents(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
+            setErrorMessage("Erreur! Aucun CV à valider actuellement");
           });
       }
     }
@@ -110,7 +138,6 @@ function StudentList() {
     setCurrentStudent(student);
     handleShow();
   }
-
 
   function checkIfGS() {
     if (auth.isInternshipManager()) {
@@ -126,6 +153,7 @@ function StudentList() {
             currentStudent={currentStudent}
           />
         );
+<<<<<<< HEAD
       } else if (title === "Rapport des étudiants avec aucun CV") {
         // Ajouter studentDetails pour ceux qui n'ont pas de CV ici
       }
@@ -136,6 +164,9 @@ function StudentList() {
         // Ajouter studentDetails pour ceux qui ont trouvé un stage
       }
       else {
+=======
+      } else {
+>>>>>>> master
         return (
           <ValidCVModal
             show={show}

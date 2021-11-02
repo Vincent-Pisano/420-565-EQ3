@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.eq3.backend.utils.Utils.*;
 
@@ -107,17 +108,37 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
+    public Optional<List<Student>> getAllStudents() {
+        List<Student> students = studentRepository.findAllByIsDisabledFalse();
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
+    public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
+        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
+    public Optional<List<Student>> getAllStudentsWithSupervisor(String idSupervisor) {
+        List<Student> students = studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(idSupervisor);
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
     public Optional<List<Student>> getAllStudentsWithoutCV() {
-        List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsNull();
+        List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty();
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
     public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
-        List<Student> studentsWithoutInterviewDate = new ArrayList<>();
-        List<InternshipApplication> internshipApplicationsWithoutInterviewDate = internshipApplicationRepository.findAllByInterviewDateIsNull();
-        for (InternshipApplication internshipApplication : internshipApplicationsWithoutInterviewDate) {
-            studentsWithoutInterviewDate.add(internshipApplication.getStudent());
+        List<Student> studentsWithoutInterviewDate = studentRepository.findAllByIsDisabledFalse();
+        List<InternshipApplication> internshipApplicationsWithInterviewDate =
+                internshipApplicationRepository.findAllByInterviewDateIsNotNull();
+
+        for (InternshipApplication internshipApplication : internshipApplicationsWithInterviewDate) {
+            studentsWithoutInterviewDate.remove(internshipApplication.getStudent());
         }
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
@@ -135,10 +156,16 @@ public class BackendService {
         return studentsWithInternship.isEmpty() ? Optional.empty() : Optional.of(studentsWithInternship);
     }
 
-    public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
-        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
-        return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    public Optional<List<Student>> getAllStudentsWaitingInterview() {
+        List<Student> studentsWaitingInterview = new ArrayList<>();
+        List<InternshipApplication> internshipApplicationsWithoutInterviewDate =
+                internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse();
+
+        for (InternshipApplication internshipApplication : internshipApplicationsWithoutInterviewDate) {
+            studentsWaitingInterview.add(internshipApplication.getStudent());
+        }
+        return studentsWaitingInterview.isEmpty() ? Optional.empty() :
+                Optional.of(studentsWaitingInterview.stream().distinct().collect(Collectors.toList()));
     }
 
     public Optional<List<Supervisor>> getAllSupervisors() {
@@ -211,9 +238,30 @@ public class BackendService {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
         return optionalInternship.map(Internship::getInternshipContract);
     }
+
     public Optional<PDFDocument> downloadInternshipStudentEvaluationDocument(String idInternship) {
         Optional<Internship> optionalInternship = internshipRepository.findById(idInternship);
         return optionalInternship.map(Internship::getStudentEvaluation);
+    }
+
+    public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(){
+        List<Internship> internshipListWithoutStudentEvaluation = internshipRepository.findByStudentEvaluationNull();
+        List<Student> studentList = getListOfStudentsWithoutStudentEvaluation(internshipListWithoutStudentEvaluation);
+        return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
+    }
+
+    private List<Student> getListOfStudentsWithoutStudentEvaluation(List<Internship> internshipListWithoutStudentEvaluation){
+        List<Student> studentList = new ArrayList<>();
+        for (Internship internship : internshipListWithoutStudentEvaluation){
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            if (internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.COMPLETED) {
+                Student student = internshipApplication.getStudent();
+                if (!studentList.contains(student)) {
+                    studentList.add(student);
+                }
+            }
+        }
+        return studentList;
     }
 }
 

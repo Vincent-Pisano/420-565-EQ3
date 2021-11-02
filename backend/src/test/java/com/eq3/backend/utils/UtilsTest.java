@@ -51,6 +51,13 @@ public class UtilsTest {
         return studentsList;
     }
 
+    public static List<Student> getListOfStudentsWithoutStudentEvaluation(){
+        Student student1 = getStudentWithId();
+        List<Student> studentsList = new ArrayList();
+        studentsList.add(student1);
+        return studentsList;
+    }
+
     public static Monitor getMonitorWithId(){
         Monitor monitor = getMonitorWithoutId();
         monitor.setId("61478hgk580000jbhd5");
@@ -180,9 +187,18 @@ public class UtilsTest {
         student.setId("61478hgk58e00c02c02bwj1");
         internshipApplication2.setStudent(student);
 
+
         List<InternshipApplication> internshipApplications = new ArrayList<>();
         internshipApplications.add(internshipApplication1);
         internshipApplications.add(internshipApplication2);
+
+        return internshipApplications;
+    }
+    public static List<InternshipApplication> getListOfInternshipApplicationWithDifferentStudent() {
+        List<InternshipApplication> internshipApplications = getListOfInternshipApplication();
+        InternshipApplication internshipApplication = internshipApplications.get(0);
+        Student student = internshipApplication.getStudent();
+        student.setId("srg2sr1g681q35g1q6g1q");
         return internshipApplications;
     }
 
@@ -233,6 +249,26 @@ public class UtilsTest {
                 .id("6141112s17d3eye02ce5gt68dq5")
                 .internshipApplication(getInternshipApplication())
                 .build();
+    }
+
+    public static List<Internship> getInternshipList() throws IOException {
+        Internship internship1 = getInternship();
+        Internship internship2 = getInternship();
+
+        List<Internship> internships = new ArrayList<>();
+        internships.add(internship1);
+        internships.add(internship2);
+        return internships;
+    }
+
+    public static List<Internship> getInternshipListCompleted() throws IOException {
+        List<Internship> internships = new ArrayList<>();
+        internships.add(getInternship());
+        internships.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            internshipApplication.setStatus(InternshipApplication.ApplicationStatus.COMPLETED);
+        });
+        return internships;
     }
 
     public static Internship getInternshipWithInternshipContract() throws IOException {

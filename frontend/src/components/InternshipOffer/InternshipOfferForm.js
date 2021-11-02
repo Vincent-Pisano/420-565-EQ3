@@ -60,7 +60,7 @@ const InternshipOfferForm = () => {
   }, [internshipOffer, user.username]);
 
   function redirect() {
-    history.goBack()
+    history.goBack();
   }
 
   function onCreatePost(e) {
@@ -138,7 +138,11 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfValidated() {
-    if (auth.isInternshipManager() && internshipOffer !== undefined && !internshipOffer.isValid) {
+    if (
+      auth.isInternshipManager() &&
+      internshipOffer !== undefined &&
+      !internshipOffer.isValid
+    ) {
       return (
         <InternshipOfferButtonValidate
           internshipOfferID={internshipOffer.id}
