@@ -47,7 +47,7 @@ const InternshipApplicationStudentModal = ({
   }
 
   function ChangeStatus() {
-    setInternshipApplication()
+    setInternshipApplication();
     axios
       .post(
         `http://localhost:9090/update/internshipApplication`,
@@ -65,8 +65,9 @@ const InternshipApplicationStudentModal = ({
       });
   }
 
-  function isValidated() {
-    return currentInternshipApplication.status === "VALIDATED";
+  function isValidatedOrCompleted() {
+    return currentInternshipApplication.status === "VALIDATED" || 
+    currentInternshipApplication.status === "COMPLETED";
   }
 
   return (
@@ -91,18 +92,22 @@ const InternshipApplicationStudentModal = ({
                     onChange={handleFieldChange}
                     className="select_form d_block"
                     required
+                    disabled={isValidatedOrCompleted()}
                   >
-                    <option disabled={isValidated()} value="ACCEPTED">
+                    <option value="ACCEPTED">
                       Acceptée
                     </option>
-                    <option disabled={isValidated()} value="NOT_ACCEPTED">
+                    <option value="NOT_ACCEPTED">
                       Refusée
                     </option>
-                    <option disabled={isValidated()} value="WAITING">
+                    <option value="WAITING">
                       En attente
                     </option>
                     <option disabled value="VALIDATED">
                       Validée
+                    </option>
+                    <option disabled value="COMPLETED">
+                      Complétée
                     </option>
                   </Form.Select>
                 </Form.Group>
@@ -115,8 +120,14 @@ const InternshipApplicationStudentModal = ({
                     name="interviewDate"
                     placeholder="Date d'entrevue"
                     className="select_form d_block"
-                    defaultValue={formatDate(currentInternshipApplication.interviewDate)}
+                    defaultValue={
+                      currentInternshipApplication.interviewDate !== null
+                      && currentInternshipApplication.interviewDate !== undefined
+                        ? formatDate(currentInternshipApplication.interviewDate)
+                        : ""
+                    }
                     onChange={handleFieldChange}
+                    disabled={isValidatedOrCompleted()}
                   />
                 </Form.Group>
               </Container>

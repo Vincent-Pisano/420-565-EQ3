@@ -1,11 +1,9 @@
 package com.eq3.backend.controller;
 
 import com.eq3.backend.model.*;
-import com.eq3.backend.repository.InternshipManagerRepository;
 import com.eq3.backend.service.BackendService;
 
 import org.bson.types.Binary;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,11 +43,27 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/students")
+    public ResponseEntity<List<Student>> getAllStudents() {
+        return service.getAllStudents()
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/students/noSupervisor/{department}")
     public ResponseEntity<List<Student>> getAllStudentsWithoutSupervisor(@PathVariable Department department) {
         return service.getAllStudentsWithoutSupervisor(department)
                 .map(_students ->
                    ResponseEntity.status(HttpStatus.ACCEPTED).body(_students)
+                )
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/students/supervisor/{idSupervisor}")
+    public ResponseEntity<List<Student>> getAllStudentsWithSupervisor(@PathVariable String idSupervisor) {
+        return service.getAllStudentsWithSupervisor(idSupervisor)
+                .map(_students ->
+                        ResponseEntity.status(HttpStatus.ACCEPTED).body(_students)
                 )
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
@@ -61,16 +75,22 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/without/InterviewDate")
+    @GetMapping("/getAll/students/without/interviewDate")
     public ResponseEntity<List<Student>> getAllStudentsWithoutInterviewDate() {
         return service.getAllStudentsWithoutInterviewDate()
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+<<<<<<< HEAD
     @GetMapping("/getAll/students/with/Internship")
     public ResponseEntity<List<Student>> getAllStudentsWithInternship() {
         return service.getAllStudentsWithInternship()
+=======
+    @GetMapping("/getAll/students/waiting/interview")
+    public ResponseEntity<List<Student>> getAllStudentsWaitingInterview() {
+        return service.getAllStudentsWaitingInterview()
+>>>>>>> master
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
@@ -146,6 +166,13 @@ public class BackendController {
                 .body(new InputStreamResource(
                         new ByteArrayInputStream(PDFDocument.getContent().getData()))
                 );
+    }
+
+    @GetMapping("/get/internship/student/evaluation/unvalidated/")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutStudentEvaluation(){
+        return service.getAllStudentsWithoutStudentEvaluation()
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
 }

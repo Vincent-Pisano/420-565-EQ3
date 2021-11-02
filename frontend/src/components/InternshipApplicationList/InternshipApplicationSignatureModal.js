@@ -63,7 +63,7 @@ const InternshipApplicationSignatureModal = ({
               setInternship(undefined);
             });
         }
-      } else if (auth.isStudent()){
+      } else if (auth.isStudent()) {
         if (internship !== undefined && internship.signedByMonitor) {
           if (!internship.signedByStudent) {
             axios
@@ -83,13 +83,13 @@ const InternshipApplicationSignatureModal = ({
               });
           }
         } else {
-            setTimeout(() => {
-              setErrorMessageModal("");
-              handleClose();
-            }, 1000);
-            setErrorMessageModal(
-              "Erreur ! En attente de la signature du Moniteur"
-            );
+          setTimeout(() => {
+            setErrorMessageModal("");
+            handleClose();
+          }, 1000);
+          setErrorMessageModal(
+            "Erreur ! En attente de la signature du Moniteur"
+          );
         }
       } else if (auth.isInternshipManager()) {
         if (internship !== undefined && internship.signedByMonitor) {
@@ -218,7 +218,7 @@ const InternshipApplicationSignatureModal = ({
             disabled={
               auth.isMonitor()
                 ? internship.signedByMonitor
-                :auth.isStudent()
+                : auth.isStudent()
                 ? internship.signedByStudent
                 : auth.isInternshipManager()
                 ? internship.signedByInternshipManager
@@ -229,8 +229,8 @@ const InternshipApplicationSignatureModal = ({
               ? internship.signedByMonitor
                 ? "Déjà signé"
                 : "Signer"
-              :auth.isStudent()
-                ? internship.signedByStudent
+              : auth.isStudent()
+              ? internship.signedByStudent
                 ? "Déjà signé"
                 : "Signer"
               : auth.isInternshipManager()

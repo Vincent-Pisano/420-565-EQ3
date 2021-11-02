@@ -37,16 +37,20 @@ class BackendServiceTest {
     private SupervisorRepository supervisorRepository;
 
     @Mock
+    private InternshipApplicationRepository internshipApplicationRepository;
+
+    @Mock
     private InternshipManagerRepository internshipManagerRepository;
 
     @Mock
-    private InternshipOfferRepository internshipOfferRepository;
-
-    @Mock
+<<<<<<< HEAD
     private InternshipApplicationRepository internshipApplicationRepository;
 
     @Mock
     private EvaluationRepository evaluationRepository;
+=======
+    private InternshipOfferRepository internshipOfferRepository;
+>>>>>>> master
 
     @Mock
     private InternshipRepository internshipRepository;
@@ -59,12 +63,17 @@ class BackendServiceTest {
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
     private InternshipOffer expectedInternshipOffer;
+    private List<InternshipApplication> expectedInternshipApplicationList;
     private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
     private Binary expectedImage;
     private Internship expectedInternship;
+<<<<<<< HEAD
     private List<InternshipApplication> expectedInternshipApplicationList;
+=======
+    private List<Internship> expectedInternshipList;
+>>>>>>> master
 
     @Test
     //@Disabled
@@ -172,7 +181,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudents() {
+    public void testGetAllStudentsFromDepartment() {
         //Arrange
         expectedStudentList = getListOfStudents();
         when(studentRepository.findAllByIsDisabledFalseAndDepartment(Department.COMPUTER_SCIENCE))
@@ -181,25 +190,6 @@ class BackendServiceTest {
         //Act
         final Optional<List<Student>> optionalStudents =
                 service.getAllStudents(Department.COMPUTER_SCIENCE);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithInvalidCV() {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(studentRepository.findAll())
-                .thenReturn(expectedStudentList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutCV();
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -219,6 +209,106 @@ class BackendServiceTest {
         //Act
         final Optional<List<Student>> optionalStudents =
                 service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE);
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithSupervisor() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        expectedSupervisor = getSupervisorWithId();
+        when(studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(expectedSupervisor.getId()))
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithSupervisor(expectedSupervisor.getId());
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudents() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudents();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutCV() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty())
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithoutCV();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutInterviewDate() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedStudentList);
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        when(internshipApplicationRepository.findAllByInterviewDateIsNotNull())
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithoutInterviewDate();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWaitingInterview() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        expectedInternshipApplicationList = getListOfInternshipApplicationWithDifferentStudent();
+        when(internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse())
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWaitingInterview();
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -418,5 +508,25 @@ class BackendServiceTest {
 
         assertThat(optionalContract.isPresent()).isTrue();
         assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithoutStudentEvaluation() throws IOException {
+        //Arrange
+        expectedInternshipList = getInternshipListCompleted();
+        expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
+        when(internshipRepository.findByStudentEvaluationNull())
+                .thenReturn(expectedInternshipList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithoutStudentEvaluation();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
     }
 }

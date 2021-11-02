@@ -5,7 +5,7 @@ const InternshipOfferButtonValidate = ({
   internshipOfferID,
   errorMessage,
   setErrorMessage,
-  redirect
+  redirect,
 }) => {
   function validateInternshipOffer() {
     axios

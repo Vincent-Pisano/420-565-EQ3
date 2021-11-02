@@ -105,13 +105,13 @@ function InternshipApplicationList() {
     if (auth.isStudent()) {
       if (currentInternshipApplication.status === "VALIDATED") {
         return (
-            <>
-              <InternshipApplicationSignatureModal
-                show={show}
-                handleClose={handleClose}
-                currentInternshipApplication={currentInternshipApplication}
-              />
-            </>
+          <>
+            <InternshipApplicationSignatureModal
+              show={show}
+              handleClose={handleClose}
+              currentInternshipApplication={currentInternshipApplication}
+            />
+          </>
         );
       } else {
         return (
@@ -163,8 +163,7 @@ function InternshipApplicationList() {
             />
           </>
         );
-      }
-      else {
+      } else {
         return (
           <>
             <InternshipApplicationSignatureModal
@@ -175,7 +174,6 @@ function InternshipApplicationList() {
           </>
         );
       }
-      
     }
   }
 
