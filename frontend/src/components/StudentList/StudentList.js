@@ -80,7 +80,7 @@ function StudentList() {
           });
       }
     }
-  }, [history, supervisor, title]);
+  }, [history, isStudentListAssigned, supervisor, title, user.department, user.id]);
 
   function showModal(student) {
     setCurrentStudent(student);
@@ -89,7 +89,7 @@ function StudentList() {
 
   function checkIfSupervisor(student){
     let state = {title : `Application aux offres de stage de : ${student.firstName} ${student.lastName}`}
-    history.push({pathname: `/reports/listInternshipApplication/${student.username}`, state : state})
+    history.push({pathname: `/listInternshipApplication/${student.username}`, state : state})
   }
 
   function checkIfGS() {

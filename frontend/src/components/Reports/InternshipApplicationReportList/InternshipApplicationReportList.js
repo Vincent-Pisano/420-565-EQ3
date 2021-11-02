@@ -12,7 +12,6 @@ function InternshipApplicationReportList() {
   let username = params.username;
 
   let state = history.location.state;
-
   let title = state.title;
 
   const [show, setShow] = useState(false);

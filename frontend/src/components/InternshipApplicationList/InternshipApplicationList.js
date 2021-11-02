@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import axios from "axios";
 import auth from "../../services/Auth";
 import "../../styles/List.css";
 import { Container } from "react-bootstrap";
 import InternshipApplication from "./InternshipApplication";
-import InternshipApplicationStudentModal from "./InternshipApplicationStudentModal";
-import InternshipApplicationInternshipManagerModal from "./InternshipApplicationInternshipManagerModal";
-import InternshipApplicationSignatureModal from "./InternshipApplicationSignatureModal";
-import InternshipApplicationMonitorModal from "./InternshipApplicationMonitorModal";
+import InternshipApplicationStudentModal from "./Modal/InternshipApplicationStudentModal";
+import InternshipApplicationInternshipManagerModal from "./Modal/InternshipApplicationInternshipManagerModal";
+import InternshipApplicationSignatureModal from "./Modal/InternshipApplicationSignatureModal";
+import InternshipApplicationMonitorModal from "./Modal/InternshipApplicationMonitorModal";
+import InternshipApplicationSupervisorModal from "./Modal/InternshipApplicationSupervisorModal";
 
 function InternshipApplicationList() {
   let user = auth.user;
   let history = useHistory();
+  let params = useParams();
+  let username = params.username;
+
+  let state = history.location.state;
 
   let internshipOffer = history.location.state;
   let isInternshipManagerSignature =
@@ -26,6 +31,8 @@ function InternshipApplicationList() {
     ? isInternshipManagerSignature
       ? "Liste des applications de stages à signer"
       : "Liste des applications de stages acceptées"
+    : auth.isSupervisor() 
+    ? state.title
     : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
@@ -82,8 +89,21 @@ function InternshipApplicationList() {
         .catch((err) => {
           setErrorMessage("Aucune Application enregistrée pour le moment");
         });
+    } else if (auth.isSupervisor()) {
+      axios
+        .get(
+          `http://localhost:9090/getAll/internshipApplication/student/${username}`
+        )
+        .then((response) => {
+          setInternshipApplications(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Erreur ! Aucune application de stages"
+          );
+        });
     }
-  }, [user.username, internshipOffer, isInternshipManagerSignature]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature, username]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -174,6 +194,15 @@ function InternshipApplicationList() {
           </>
         );
       }
+    } else if (auth.isSupervisor()) {
+      return (
+        <InternshipApplicationSupervisorModal
+          show={show}
+          handleClose={handleClose}
+          currentInternshipApplication={currentInternshipApplication}
+          showIntershipOffer={showIntershipOffer}
+        />
+      );
     }
   }
 

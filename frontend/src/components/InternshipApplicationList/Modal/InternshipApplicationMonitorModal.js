@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import axios from "axios";
-import "../../styles/Form.css";
+import "../../../styles/Form.css";
 
 const InternshipApplicationMonitorModal = ({
   show,
