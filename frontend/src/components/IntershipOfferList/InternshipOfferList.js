@@ -56,7 +56,20 @@ function InternshipOfferList() {
             "Aucune Offre de stage n'a été validé pour le moment"
           );
         });
-    } else if (auth.isMonitor() || auth.isSupervisor()) {
+    } else if (auth.isMonitor()) {
+      axios
+        .get(
+          `http://localhost:9090/getAll/internshipOffer/monitor/${auth.user.id}`
+        )
+        .then((response) => {
+          setInternshipOffers(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Vous n'avez déposé aucune offre de stage pour le moment"
+          );
+        });
+    } else if (auth.isSupervisor()) {
       axios
         .get(
           `http://localhost:9090/getAll/internshipOffer/monitor/${auth.user.id}`

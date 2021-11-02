@@ -119,25 +119,6 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipApplication>> getAllInternshipApplicationsOfStudentFromSupervisor(String supervisorUsername) {
-        Optional<Supervisor> optionalSupervisor = supervisorRepository.findByUsernameAndIsDisabledFalse(supervisorUsername);
-        List<InternshipApplication> internshipApplicationsAll = new ArrayList<>();
-        List<InternshipApplication> internshipApplications = new ArrayList<>();
-
-        if (optionalSupervisor.isPresent())
-            internshipApplicationsAll = internshipApplicationRepository.findAllByIsDisabledFalse();
-
-            for(InternshipApplication internshipApplication : internshipApplicationsAll){
-                Student student = internshipApplication.getStudent();
-                Supervisor supervisor = student.getSupervisor();
-                if(supervisor.getUsername().equals(supervisorUsername)){
-                    
-                }
-            }
-
-        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
-    }
-
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
