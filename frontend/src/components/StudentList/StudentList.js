@@ -6,7 +6,6 @@ import axios from "axios";
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
 import Student from "./Student";
-import ReportStudent from "../Reports/ReportStudent";
 import "../../styles/List.css";
 
 function StudentList() {
@@ -117,34 +116,6 @@ function StudentList() {
     }
   }
 
-  function checkFromReport() {
-    if (title === "Rapport des étudiants enregistrés" || title === "Rapport des étudiants ayant trouvé un stage") {
-      return (
-        <ul>
-          {students.map((student) => (
-            <ReportStudent
-              key={student.id}
-              student={student}
-
-            />
-          ))}
-        </ul>
-      )
-    } else {
-      return (
-        <ul>
-          {students.map((student) => (
-            <Student
-              key={student.id}
-              student={student}
-              onDoubleClick={auth.isInternshipManager() ? showModal : null}
-            />
-          ))}
-        </ul>
-      )
-    }
-  }
-
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
@@ -158,7 +129,15 @@ function StudentList() {
           >
             {errorMessage}
           </p>
-          {checkFromReport()}
+          <ul>
+            {students.map((student)=>(
+              <Student
+                key={student.id}
+                student={student}
+                onDoubleClick={auth.isInternshipManager() ? showModal : null}
+              />
+            ))}
+          </ul>
         </Container>
       </Container>
       {checkIfGS()}

@@ -187,12 +187,12 @@ public class UtilsTest {
         student.setId("61478hgk58e00c02c02bwj1");
         internshipApplication2.setStudent(student);
 
+
         List<InternshipApplication> internshipApplications = new ArrayList<>();
         internshipApplications.add(internshipApplication1);
         internshipApplications.add(internshipApplication2);
         return internshipApplications;
     }
-
     public static List<InternshipApplication> getListOfInternshipApplicationWithDifferentStudent() {
         List<InternshipApplication> internshipApplications = getListOfInternshipApplication();
         InternshipApplication internshipApplication = internshipApplications.get(0);

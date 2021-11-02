@@ -77,9 +77,7 @@ function StudentReportList() {
         });
     } else if (title === "Rapport des étudiants ayant trouvé un stage") {
       axios
-        .get(
-          `http://localhost:9090/getAll/students/with/Internship`
-        )
+        .get(`http://localhost:9090/getAll/students/with/Internship`)
         .then((response) => {
           setStudents(response.data);
         })

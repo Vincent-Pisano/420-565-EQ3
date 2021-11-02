@@ -43,6 +43,9 @@ class BackendServiceTest {
     private InternshipManagerRepository internshipManagerRepository;
 
     @Mock
+    private EvaluationRepository evaluationRepository;
+
+    @Mock
     private InternshipOfferRepository internshipOfferRepository;
 
     @Mock
