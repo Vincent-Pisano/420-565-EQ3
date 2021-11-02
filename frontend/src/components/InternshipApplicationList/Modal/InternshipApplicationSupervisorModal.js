@@ -13,8 +13,6 @@ const InternshipApplicationSupervisorModal = ({
       ? currentInternshipApplication.internshipOffer
       : undefined;
 
-  console.log(currentInternshipApplication)
-
   function formatDate(dateString) {
     let date = new Date(dateString);
     let dateFormatted = date.toISOString().split("T")[0];
@@ -76,8 +74,8 @@ const InternshipApplicationSupervisorModal = ({
                     className="select_form d_block"
                     defaultValue={
                       currentInternshipApplication !== undefined &&
-                      currentInternshipApplication.interviewDate !==
-                        (null && undefined)
+                      currentInternshipApplication.interviewDate !== null && 
+                      currentInternshipApplication.interviewDate !== undefined
                         ? formatDate(currentInternshipApplication.interviewDate)
                         : ""
                     }
