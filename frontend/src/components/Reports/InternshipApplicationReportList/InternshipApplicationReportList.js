@@ -27,7 +27,6 @@ function InternshipApplicationReportList() {
   useEffect(() => {
     setErrorMessage("");
     setInternshipApplications([]);
-    if (title === "Rapport des étudiants en attente d’entrevue")
       axios
         .get(
           `http://localhost:9090/getAll/internshipApplication/student/${username}`

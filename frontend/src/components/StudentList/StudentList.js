@@ -87,6 +87,11 @@ function StudentList() {
     handleShow();
   }
 
+  function checkIfSupervisor(student){
+    let state = {title : `Application aux offres de stage de : ${student.firstName} ${student.lastName}`}
+    history.push({pathname: `/reports/listInternshipApplication/${student.username}`, state : state})
+  }
+
   function checkIfGS() {
     if (auth.isInternshipManager()) {
       if (supervisor !== undefined) {
@@ -134,7 +139,7 @@ function StudentList() {
               <Student
                 key={student.id}
                 student={student}
-                onDoubleClick={auth.isInternshipManager() ? showModal : null}
+                onDoubleClick={auth.isInternshipManager() ? showModal : auth.isSupervisor() ? checkIfSupervisor: null}
               />
             ))}
           </ul>
