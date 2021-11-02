@@ -31,6 +31,7 @@ function App () {
           <ProtectedRoute path="/reports/listInternshipApplication/:username" exact component={InternshipApplicationReportList}/>
           <ProtectedRoute path="/reports/listInternshipOffer" exact component={InternshipOfferReportList}/>
           <ProtectedRoute path="/listStudents" exact component={StudentList}/>
+          <ProtectedRoute path="/listStudents/assigned" exact component={StudentList}/>
           <ProtectedRoute path="/listInternshipOffer" exact component={InternshipOfferList}/>
           <ProtectedRoute path="/listInternshipApplication" exact component={InternshipApplicationList}/>
           <ProtectedRoute path="/listInternshipApplication/signature" exact component={InternshipApplicationList}/>

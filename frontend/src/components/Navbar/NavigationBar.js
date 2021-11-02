@@ -32,7 +32,7 @@ function NavigationBar() {
                 });
               }}
             >
-              Home
+                Acceuil
             </li>
           </Nav.Link>
           <NavUserSwitch />

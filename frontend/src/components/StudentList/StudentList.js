@@ -12,6 +12,10 @@ function StudentList() {
   let history = useHistory();
   let supervisor = history.location.supervisor;
 
+  let isStudentListAssigned =
+  history.location.pathname === "/listStudents/assigned";
+  let user = auth.user;
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -21,15 +25,29 @@ function StudentList() {
   const [errorMessage, setErrorMessage] = useState("");
 
   let title = !auth.isInternshipManager()
-    ? "Étudiants de votre département"
+    ? isStudentListAssigned 
+      ? "Étudiants qui vous sont assignés" 
+      : "Étudiants de votre département"
     : supervisor !== undefined
     ? "Étudiants de ce département à assigner"
     : "Étudiants avec un CV à valider";
 
   useEffect(() => {
     if (auth.isSupervisor()) {
-      axios
-        .get(`http://localhost:9090/getAll/students/${auth.user.department}`)
+      if(isStudentListAssigned){
+        axios
+        .get(`http://localhost:9090/getAll/students/supervisor/${user.id}`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Erreur! Aucun étudiant n'a été assigné pour le moment"
+          );
+        });
+      }else{      
+        axios
+        .get(`http://localhost:9090/getAll/students/${user.department}`)
         .then((response) => {
           setStudents(response.data);
         })
@@ -38,6 +56,7 @@ function StudentList() {
             "Erreur! Aucun étudiant ne s'est inscrit pour le moment"
           );
         });
+      }
     } else if (auth.isInternshipManager()) {
       if (supervisor !== undefined) {
         axios
