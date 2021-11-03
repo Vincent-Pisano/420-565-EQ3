@@ -58,6 +58,12 @@ let reports = [
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },
+  {
+    id: "10",
+    title: "Étudiants en attente d'une réponse d'entrevue",
+    link: reportLink + "listStudents",
+    icon: faUserCircle,
+  },
 ];
 
 export function ReportsList() {

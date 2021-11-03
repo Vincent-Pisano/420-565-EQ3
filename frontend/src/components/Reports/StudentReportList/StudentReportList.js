@@ -105,6 +105,23 @@ function StudentReportList() {
           );
         });
     }
+    else if (
+      title ===
+      "Étudiants en attente d'une réponse d'entrevue"
+    ) {
+      axios
+        .get(
+          `http://localhost:9090/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today`
+        )
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(
+            "Erreur! Tous les étudiants ont leur entreprise évaluée par leurs superviseurs"
+          );
+        });
+    }
   }, [title]);
 
   function onDoubleClick(student) {
