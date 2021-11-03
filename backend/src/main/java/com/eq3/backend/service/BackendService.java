@@ -11,7 +11,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -132,6 +137,22 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
+    public Optional<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() {
+        Date currentDate = new Date();
+        List<Student> allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday = new ArrayList<>();
+        List<InternshipApplication> internshipApplicationsWithInterviewDate =
+                internshipApplicationRepository.findAllByInterviewDateIsNotNull();
+        for (InternshipApplication currentInternshipApplication: internshipApplicationsWithInterviewDate) {
+            Date internshipApplicationDate = currentInternshipApplication.getInterviewDate();
+            if (currentInternshipApplication.getStatus() == InternshipApplication.ApplicationStatus.WAITING) {
+                allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.add(currentInternshipApplication.getStudent());
+            }
+            else if (internshipApplicationDate.before(currentDate) && !allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.contains(currentInternshipApplication.getStudent())) {
+                allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.add(currentInternshipApplication.getStudent());
+            }
+        }
+        return allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.isEmpty() ? Optional.empty() : Optional.of(allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday);
+    }
     public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
         List<Student> studentsWithoutInterviewDate = studentRepository.findAllByIsDisabledFalse();
         List<InternshipApplication> internshipApplicationsWithInterviewDate =

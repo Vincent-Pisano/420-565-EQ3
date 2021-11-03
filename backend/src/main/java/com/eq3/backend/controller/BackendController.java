@@ -82,6 +82,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today")
+    public ResponseEntity<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() {
+        return service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday()
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/students/with/Internship")
     public ResponseEntity<List<Student>> getAllStudentsWithInternship() {
         return service.getAllStudentsWithInternship()
