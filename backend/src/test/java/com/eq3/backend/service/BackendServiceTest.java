@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -321,6 +322,26 @@ class BackendServiceTest {
         //Act
         final Optional<List<Student>> optionalStudents =
                 service.getAllStudentsWithInternship();
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() throws ParseException {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplicationWithInterviewDate();
+        expectedStudentList = getListOfStudents();
+        when( internshipApplicationRepository.findAllByInterviewDateIsNotNull()
+        ).thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday();
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);

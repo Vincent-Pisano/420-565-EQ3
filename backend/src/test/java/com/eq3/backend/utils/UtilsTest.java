@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -175,6 +177,20 @@ public class UtilsTest {
     public static List<InternshipApplication> getListOfInternshipApplication() {
         InternshipApplication internshipApplication1 = getInternshipApplication();
         InternshipApplication internshipApplication2 = getInternshipApplication();
+
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+        internshipApplications.add(internshipApplication1);
+        internshipApplications.add(internshipApplication2);
+        return internshipApplications;
+    }
+
+    public static List<InternshipApplication> getListOfInternshipApplicationWithInterviewDate() throws ParseException {
+        InternshipApplication internshipApplication1 = getInternshipApplication();
+        InternshipApplication internshipApplication2 = getInternshipApplication();
+
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/11/2021");
+        internshipApplication1.setInterviewDate(date);
+        internshipApplication2.setInterviewDate(date);
 
         List<InternshipApplication> internshipApplications = new ArrayList<>();
         internshipApplications.add(internshipApplication1);

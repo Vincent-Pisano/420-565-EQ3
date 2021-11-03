@@ -355,6 +355,25 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() throws Exception {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday())
+                .thenReturn(Optional.of(expectedStudentList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithoutEnterpriseEvaluation() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
