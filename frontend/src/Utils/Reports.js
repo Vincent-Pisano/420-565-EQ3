@@ -29,37 +29,43 @@ let reports = [
   },
   {
     id: "5",
-    title: "Étudiants n'ayant aucune convocation à une entrevue",
+    title: "Étudiants avec un CV non validé",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },
   {
     id: "6",
-    title: "Étudiants en attente d’entrevue",
+    title: "Étudiants n'ayant aucune convocation à une entrevue",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },
   {
     id: "7",
+    title: "Étudiants en attente d’entrevue",
+    link: reportLink + "listStudents",
+    icon: faUserCircle,
+  },
+  {
+    id: "8",
     title:
       "Étudiants n’ayant pas encore été évalués par leur moniteur",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },
   {
-    id: "8",
+    id: "9",
     title: "Étudiants ayant trouvé un stage",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },
   {
-    id: "9",
+    id: "10",
     title: "Étudiants dont le superviseur n’a pas encore évalué l’entreprise",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },
   {
-    id: "10",
+    id: "11",
     title: "Étudiants en attente d'une réponse d'entrevue",
     link: reportLink + "listStudents",
     icon: faUserCircle,

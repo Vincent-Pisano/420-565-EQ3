@@ -33,7 +33,16 @@ function StudentReportList() {
         .catch((err) => {
           setErrorMessage("Erreur! Aucun étudiants n'a pas de CV");
         });
-    } else if (title === "Étudiants enregistrés") {
+    } else if (title === "Étudiants avec un CV non validé") {
+      axios
+        .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
+        .then((response) => {
+          setStudents(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Erreur! Aucun étudiants a un CV à valider");
+        });
+    }else if (title === "Étudiants enregistrés") {
       axios
         .get(`http://localhost:9090/getAll/students`)
         .then((response) => {
