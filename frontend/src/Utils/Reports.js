@@ -29,7 +29,7 @@ let reports = [
   },
   {
     id: "5",
-    title: "Étudiants avec un CV non validé",
+    title: "Étudiants avec un CV à validé",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },

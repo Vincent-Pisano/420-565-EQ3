@@ -33,7 +33,7 @@ function StudentReportList() {
         .catch((err) => {
           setErrorMessage("Erreur! Aucun étudiants n'a pas de CV");
         });
-    } else if (title === "Étudiants avec un CV non validé") {
+    } else if (title === "Étudiants avec un CV à validé") {
       axios
         .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
         .then((response) => {
