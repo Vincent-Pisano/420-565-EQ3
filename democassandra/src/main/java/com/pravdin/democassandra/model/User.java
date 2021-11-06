@@ -13,7 +13,9 @@ import org.springframework.data.cassandra.core.mapping.Table;
 public class User {
 
     @PrimaryKey
-    private int id;
-    private String name;
-    private String address;
+    protected String username;
+    protected String password;
+    protected String email;
+    protected String firstName;
+    protected String lastName;
 }
