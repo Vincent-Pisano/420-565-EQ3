@@ -30,9 +30,9 @@ export default{
                   sessionStorage.setItem("user", JSON.stringify(user));
                   createRouter({
                     history: createWebHistory,
-                    routes: [{path: `/`, component: Home}]
+                    routes: [{path: `/home`, component: Home}]
                   })
-                  router.push({path:`/`})
+                  router.push({path:`/home`})
                 })
                 .catch((error) => {
                   this.errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
