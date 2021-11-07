@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <Navbar />
   <!--<div id="app" class="container">
     <h1>Page Home</h1>
@@ -7,16 +7,17 @@
     <div v-show="showAddTask">
       <AddTask @add-task="addTask" />
     </div>
-    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />-->
+    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
+    <Footer />-->
     <router-view></router-view>
-    <Footer />
+    
   </div>
 </template>
 
 <script>
 
 //import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+//import Footer from './components/Footer.vue'
 import Navbar from './views/Navbar.vue'
 //import Tasks from './components/Tasks.vue'
 //import AddTask from './components/AddTask.vue'
@@ -28,7 +29,7 @@ export default {
     Tasks,
     AddTask,*/
     Navbar,
-    Footer,
+    //Footer,
   },
   data() {
     return {
@@ -90,37 +91,13 @@ export default {
 body {
   font-family: 'Poppins', sans-serif;
 }
-.container {
-  max-width: 500px;
-  margin: 30px auto;
-  overflow: auto;
-  min-height: 300px;
-  border: 1px solid steelblue;
-  padding: 30px;
-  border-radius: 5px;
+#app{
+  min-height: 100vh;
+  background-image: url(./assets/bg.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
-.btn {
-  display: inline-block;
-  background: #000;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 15px;
-  font-family: inherit;
-}
-.btn:focus {
-  outline: none;
-}
-.btn:active {
-  transform: scale(0.98);
-}
-.btn-block {
-  display: block;
-  width: 100%;
-}
+
 
 </style>

@@ -20,7 +20,10 @@
           placeholder="Entrez votre mot de passe"
         />
       </div>
-      <input type="submit" value="Save Task" class="btn btn-block" />
+       <div class="form-control">
+          <p>{{errorMessage}}</p>
+       </div>
+      <input type="submit" value="Se connecter" class="btn btn-block" />
     </form>
   </div>
 </template>
@@ -47,13 +50,14 @@ export default {
     return {
       username: "",
       pw: "",
+      errorMessage: "",
     };
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
       if (!this.username || !this.pw) {
-        alert("SVP remplissez tous les champs");
+        this.errorMessage = "Erreur! Veillez remplir tous les champs!"
         return;
       } else {
         var userType = getUserType(this.username);
@@ -69,54 +73,17 @@ export default {
           .then(function (response) {
             console.log(response.data);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error)
+            this.errorMessage = "Erreur de connection, vérifiez le nom d'utilisateur et le mot de passe!"
+          });
       }
     },
   },
 };
 </script>
 
-<style scoped>
-.container {
-  max-width: 500px;
-  margin: 30px auto;
-  overflow: auto;
-  min-height: 300px;
-  border: 1px solid steelblue;
-  padding: 30px;
-  border-radius: 5px;
-}
-
-.title {
-  text-align: center;
-}
-
-.add-form {
-  margin-bottom: 40px;
-}
-.form-control {
-  margin: 20px 0;
-}
-.form-control label {
-  display: block;
-}
-.form-control input {
-  width: 100%;
-  height: 40px;
-  margin: 5px;
-  padding: 3px 7px;
-  font-size: 17px;
-}
-.form-control-check {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.form-control-check label {
-  flex: 1;
-}
-.form-control-check input {
-  flex: 2;
-  height: 20px;
-}
+<style>
+@import "./../styles/FormStyles.css";
+@import "./../styles/GeneralStyles.css";
 </style>

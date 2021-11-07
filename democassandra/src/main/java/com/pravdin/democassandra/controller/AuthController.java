@@ -4,7 +4,6 @@ import com.pravdin.democassandra.model.Monitor;
 import com.pravdin.democassandra.model.Student;
 import com.pravdin.democassandra.model.Supervisor;
 import com.pravdin.democassandra.service.AuthService;
-import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@CrossOrigin("http://localhost:8080")
 public class AuthController {
 
     private final AuthService service;
