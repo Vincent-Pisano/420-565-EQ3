@@ -1,11 +1,13 @@
 <template>
-  <div id="app" class="container">
+  <div>
+    <Navbar />
+  <!--<div id="app" class="container">
     <h1>Page Home</h1>
     <Header @toggle-add-task="toggleAddTask" :showAddTask="showAddTask" title="Task Tracker test"/>
     <div v-show="showAddTask">
       <AddTask @add-task="addTask" />
     </div>
-    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
+    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />-->
     <router-view></router-view>
     <Footer />
   </div>
@@ -13,17 +15,19 @@
 
 <script>
 
-import Header from './components/Header.vue'
+//import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
-import Tasks from './components/Tasks.vue'
-import AddTask from './components/AddTask.vue'
+import Navbar from './views/Navbar.vue'
+//import Tasks from './components/Tasks.vue'
+//import AddTask from './components/AddTask.vue'
 
 export default {
   name: 'App',
   components: {
-    Header,
+    /*Header,
     Tasks,
-    AddTask,
+    AddTask,*/
+    Navbar,
     Footer,
   },
   data() {
