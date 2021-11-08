@@ -1,10 +1,11 @@
 <script>
-    import axios from "axios"
+import axios from "axios"
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/components/Home.vue'
+import NavBar from '@/components/Navbar/NavBar.vue'
 import router from '@/router'
 export default{
-        name: 'signUpMonitor',
+        name: 'login',
         data: function(){
             return { user: {
               username: "",
@@ -13,6 +14,9 @@ export default{
               errorMessage: "",
               type:""
             }
+        },
+        components:{
+            NavBar
         },
         methods: {
             onSubmit(){
@@ -80,7 +84,8 @@ export default{
 <style scoped src="@/styles/App.css"></style>
 
 <template>
-    <div class="cont_principal">
+    <NavBar/>
+    <div id="login" class="cont_principal">
       <div class="cont_central">
         <div>
             <h2 class="cont_title_form">Connexion</h2>

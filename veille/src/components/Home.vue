@@ -1,4 +1,5 @@
 <script>
+import NavBar from '@/components/Navbar/NavBar.vue'
 export default{
         name: 'home',
         data: function(){
@@ -6,6 +7,9 @@ export default{
                 user: JSON.parse(sessionStorage.getItem("user")),
                 dateFormatted:""
             }
+        },
+        components:{
+            NavBar
         },
         methods: {
             formatDate(dateString) {
@@ -27,6 +31,7 @@ export default{
 <style scoped src="@/styles/App.css"></style>
 
 <template>
+    <NavBar/>
     <div id="home" class="cont_home">
         <div v-if="this.user !== null" class="cont_central">
             <h4>Nom d'utilisateur: {{this.user.username}}</h4>

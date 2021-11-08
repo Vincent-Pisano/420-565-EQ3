@@ -2,6 +2,8 @@
 import SignUpStudent from './SignUpStudent.vue'
 import SignUpMonitor from './SignUpMonitor.vue'
 import SignUpSupervisor from './SignUpSupervisor.vue'
+import NavBar from '@/components/Navbar/NavBar.vue'
+
 export default{
         name: 'signUp',
         data: function(){
@@ -10,7 +12,8 @@ export default{
         components: {
             SignUpStudent,
             SignUpMonitor,
-            SignUpSupervisor
+            SignUpSupervisor,
+            NavBar
         },
         methods: {
             getCurrentSignUp(){
@@ -47,6 +50,7 @@ export default{
 <style scoped src="@/styles/App.css"></style>
 
 <template>
+    <NavBar/>
     <div id="signUp" class="cont_principal">
       <div class="cont_central">
         <h2 class="cont_title_form">Inscription</h2>
