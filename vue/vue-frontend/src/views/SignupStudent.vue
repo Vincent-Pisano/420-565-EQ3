@@ -9,7 +9,7 @@
         >
         <input
           type="text"
-          v-model="username"
+          v-model="fields.username"
           name="username"
           placeholder="Entrez votre nom d'utilisateur"
           required
@@ -19,8 +19,8 @@
         <label>Mot de passe</label>
         <input
           type="password"
-          v-model="pw"
-          name="pw"
+          v-model="fields.password"
+          name="password"
           placeholder="Entrez votre mot de passe"
           required
         />
@@ -29,7 +29,7 @@
         <label>Email</label>
         <input
           type="email"
-          v-model="email"
+          v-model="fields.email"
           name="email"
           placeholder="Entrez votre courriel"
           required
@@ -39,7 +39,7 @@
         <label>Prénom</label>
         <input
           type="text"
-          v-model="firstName"
+          v-model="fields.firstName"
           name="firstName"
           placeholder="Entrez votre prénom"
           required
@@ -49,7 +49,7 @@
         <label>Nom</label>
         <input
           type="text"
-          v-model="lastName"
+          v-model="fields.lastName"
           name="lastName"
           placeholder="Entrez votre nom"
           required
@@ -57,7 +57,7 @@
       </div>
       <div class="form-control">
         <label>Department</label>
-        <select v-model="department" name="department" class="classic">
+        <select v-model="fields.department" name="department" class="classic">
           <option value="COMPUTER_SCIENCE">Informatique</option>
           <option value="ARCHITECTURE">Architecture</option>
           <option value="NURSING">Infirmier</option>
@@ -72,43 +72,41 @@
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "SignupStudent",
   inheritAttrs: false,
   data() {
     return {
-      username: "",
-      pw: "",
-      department: "COMPUTER_SCIENCE",
-      email: "",
-      firstName: "",
-      lastName: "",
+      fields: {
+        username: "",
+        password: "",
+        department: "COMPUTER_SCIENCE",
+        email: "",
+        firstName: "",
+        lastName: "",
+      },
       errorMessage: "",
     };
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      if (!this.username.startsWith("E")) {
+      if (!this.fields.username.startsWith("E")) {
         this.errorMessage =
           'Erreur! Le nom d\'utilisateur doit commencer par un "E"!';
         return;
       } else {
-        console.log(
-          this.username +
-            " " +
-            this.pw +
-            " " +
-            this.department +
-            " " +
-            this.email +
-            " " +
-            this.firstName +
-            " " +
-            this.lastName
-        );
+        axios
+          .post("http://localhost:9090/signUp/student", this.fields)
+          .then(function (response) {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errorMessage = "Erreur d'insription!";
+          });
       }
     },
   },

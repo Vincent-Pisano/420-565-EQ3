@@ -9,7 +9,7 @@
         >
         <input
           type="text"
-          v-model="username"
+          v-model="fields.username"
           name="username"
           placeholder="Entrez votre nom d'utilisateur"
           required
@@ -19,8 +19,8 @@
         <label>Mot de passe</label>
         <input
           type="password"
-          v-model="pw"
-          name="pw"
+          v-model="fields.password"
+          name="password"
           placeholder="Entrez votre mot de passe"
           required
         />
@@ -29,7 +29,7 @@
         <label>Email</label>
         <input
           type="email"
-          v-model="email"
+          v-model="fields.email"
           name="email"
           placeholder="Entrez votre courriel"
           required
@@ -39,7 +39,7 @@
         <label>Prénom</label>
         <input
           type="text"
-          v-model="firstName"
+          v-model="fields.firstName"
           name="firstName"
           placeholder="Entrez votre prénom"
           required
@@ -49,7 +49,7 @@
         <label>Nom</label>
         <input
           type="text"
-          v-model="lastName"
+          v-model="fields.lastName"
           name="lastName"
           placeholder="Entrez votre nom"
           required
@@ -59,7 +59,7 @@
         <label>Nom de poste</label>
         <input
           type="text"
-          v-model="jobTitle"
+          v-model="fields.jobTitle"
           name="jobTitle"
           placeholder="Entrez votre nom de poste"
           required
@@ -69,7 +69,7 @@
         <label>Nom d'entreprise</label>
         <input
           type="text"
-          v-model="enterpriseName"
+          v-model="fields.enterpriseName"
           name="enterpriseName"
           placeholder="Entrez votre nom d'entreprise"
           required
@@ -79,52 +79,48 @@
       <div class="form-control">
         <p>{{ errorMessage }}</p>
       </div>
-      <input type="submit" value="S'inscrire'" class="btn btn-block" />
+      <input type="submit" value="S'inscrire" class="btn btn-block" />
     </form>
   </div>
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "SignupMonitor",
   inheritAttrs: false,
   data() {
     return {
-      username: "",
-      pw: "",
-      enterpriseName: "",
-      jobTitle: "",
-      email: "",
-      firstName: "",
-      lastName: "",
+      fields: {
+        username: "",
+        password: "",
+        enterpriseName: "",
+        jobTitle: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+      },
       errorMessage: "",
     };
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      if (!this.username.startsWith("M")) {
+      if (!this.fields.username.startsWith("M")) {
         this.errorMessage =
           'Erreur! Le nom d\'utilisateur doit commencer par un "M"!';
         return;
       } else {
-        console.log(
-          this.username +
-            " " +
-            this.pw +
-            " " +
-            this.jobTitle +
-            " " +
-            this.enterpriseName +
-            " " +
-            this.email +
-            " " +
-            this.firstName +
-            " " +
-            this.lastName
-        );
+        axios
+          .post("http://localhost:9090/signUp/monitor", this.fields)
+          .then(function (response) {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errorMessage = "Erreur d'insription!";
+          });
       }
     },
   },
