@@ -199,7 +199,7 @@ public class InternshipControllerTest {
         when(service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE))
                 .thenReturn(Optional.of(expectedInternshipOfferList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_OFFERS_WORK_FIELD +
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_OFFERS +
                 Department.COMPUTER_SCIENCE.name()).contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -215,12 +215,14 @@ public class InternshipControllerTest {
     public void getAllInternshipOfferOfMonitor() throws Exception {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedInternshipOffer = expectedInternshipOfferList.get(0);
         expectedMonitor = getMonitorWithId();
 
-        when(service.getAllInternshipOfferOfMonitor(expectedMonitor.getId()))
+        when(service.getAllInternshipOfferOfMonitor(expectedInternshipOffer.getSession(), expectedMonitor.getId()))
                 .thenReturn(Optional.of(expectedInternshipOfferList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL__INTERNSHIP_OFFERS_MONITOR + expectedMonitor.getId())
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_OFFERS +
+                expectedInternshipOffer.getSession() + URL_MONITOR + expectedMonitor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
