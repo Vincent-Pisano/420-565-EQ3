@@ -17,4 +17,6 @@ public interface InternshipOfferRepository extends MongoRepository<InternshipOff
     List<InternshipOffer> findAllByIsValidTrueAndIsDisabledFalse();
 
     List<InternshipOffer> findAllBySessionAndMonitor_IdAndIsDisabledFalse(String session, String id);
+
+
 }

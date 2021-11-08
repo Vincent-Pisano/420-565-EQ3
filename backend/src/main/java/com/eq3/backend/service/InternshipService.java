@@ -78,7 +78,7 @@ public class InternshipService {
         cal.setTime(startDate);
         int month = cal.get(Calendar.MONTH);
         int year = cal.get(Calendar.YEAR);
-        return month <= 6 ? "HIV" + year : "AUT" + year;
+        return month <= 5 ? year + " Hiver" : year + " Été";
     }
 
     private InternshipOffer mapInternshipOffer(String internshipOfferJson) throws IOException {

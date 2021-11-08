@@ -4,6 +4,10 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,10 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.eq3.backend.utils.Utils.*;
@@ -32,7 +33,7 @@ public class BackendService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipRepository internshipRepository;
-    private final EvaluationRepository evaluationRepository;
+    private final MongoTemplate mongoTemplate;
     private final InternshipApplicationRepository internshipApplicationRepository;
 
     BackendService(StudentRepository studentRepository,
@@ -41,7 +42,7 @@ public class BackendService {
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipRepository internshipRepository,
-                   EvaluationRepository evaluationRepository,
+                   MongoTemplate mongoTemplate,
                    InternshipApplicationRepository internshipApplicationRepository) {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
@@ -49,7 +50,7 @@ public class BackendService {
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipRepository = internshipRepository;
-        this.evaluationRepository = evaluationRepository;
+        this.mongoTemplate = mongoTemplate;
         this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
@@ -216,6 +217,19 @@ public class BackendService {
     public Optional<List<Supervisor>> getAllSupervisors() {
         List<Supervisor> supervisors = supervisorRepository.findAllByIsDisabledFalse();
         return supervisors.isEmpty() ? Optional.empty() : Optional.of(supervisors);
+    }
+
+    public Optional<List<String>> getAllSessions(String idMonitor) {
+        Query query = new Query(Criteria.where("monitor.$id")
+                                        .is(new ObjectId(idMonitor)));
+
+        List<String> sessions = mongoTemplate
+                .getCollection("internshipOffer")
+                .distinct("session", query.getQueryObject() ,String.class)
+                .into(new ArrayList<>());
+
+        Collections.reverse(sessions);
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
 
     public Optional<Monitor> getMonitorByUsername(String username) {

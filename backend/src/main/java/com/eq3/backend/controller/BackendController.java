@@ -120,7 +120,14 @@ public class BackendController {
     @GetMapping("/getAll/supervisors")
     public ResponseEntity<List<Supervisor>> getAllSupervisors(){
         return service.getAllSupervisors()
-                .map(_supervisor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisor))
+                .map(_supervisors -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisors))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/sessions/monitor/{idMonitor}")
+    public ResponseEntity<List<String>> getAllSessions(@PathVariable String idMonitor){
+        return service.getAllSessions(idMonitor)
+                .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 

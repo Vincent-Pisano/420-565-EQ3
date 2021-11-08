@@ -12,6 +12,8 @@ function InternshipOfferList() {
   let state = history.location.state || {};
 
   const [internshipOffers, setInternshipOffers] = useState([]);
+  const [sessions, setSessions] = useState([]);
+  const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [errorMessage, setErrorMessage] = useState("");
   let title = auth.isInternshipManager()
     ? Object.keys(state).length === 0
@@ -58,20 +60,34 @@ function InternshipOfferList() {
           );
         });
     } else if (auth.isMonitor()) {
-      axios
-        .get(
-          `http://localhost:9090/getAll/internshipOffer/HIV2022/monitor/${auth.user.id}`
-        )
-        .then((response) => {
-          setInternshipOffers(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage(
-            "Vous n'avez déposé aucune offre de stage pour cette session"
-          );
-        });
+      if (sessions.length === 0 && currentSession === undefined) {
+        axios
+          .get(`http://localhost:9090/getAll/sessions/monitor/${auth.user.id}`)
+          .then((response) => {
+            setSessions(response.data);
+            setCurrentSession(response.data[0]);
+          })
+          .catch((err) => {
+            setErrorMessage(
+              "Vous n'avez déposé aucune offre de stage"
+            );
+          });
+      } else if (currentSession !== undefined && internshipOffers.length === 0){
+        axios
+          .get(
+            `http://localhost:9090/getAll/internshipOffer/${currentSession}/monitor/${auth.user.id}`
+          )
+          .then((response) => {
+            setInternshipOffers(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage(
+              "Vous n'avez déposé aucune offre de stage pour cette session"
+            );
+          });
+      }
     }
-  }, [title]);
+  }, [currentSession, internshipOffers.length, sessions, title]);
 
   function showInternshipOffer(internshipOffer) {
     if (auth.isInternshipManager() || auth.isStudent()) {
@@ -94,9 +110,11 @@ function InternshipOfferList() {
         <div className="menu-item">
           <button>Session</button>
           <ul>
-            <li><button>ETE2022</button></li>
-            <li><button>HIV2022</button></li>
-            <li><button>ETE2021</button></li>
+            {sessions.map((session, i) => (
+              <li key={i}>
+                <button>{session}</button>
+              </li>
+            ))}
           </ul>
         </div>
         <Container className="cont_list">
