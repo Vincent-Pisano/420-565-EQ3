@@ -31,14 +31,12 @@ public class InternshipService {
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
     private final InternshipManagerRepository internshipManagerRepository;
-    private final SupervisorRepository supervisorRepository;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipApplicationRepository internshipApplicationRepository,
                    InternshipRepository internshipRepository,
-                   InternshipManagerRepository internshipManagerRepository,
-                      SupervisorRepository supervisorRepository
+                   InternshipManagerRepository internshipManagerRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
@@ -46,7 +44,6 @@ public class InternshipService {
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
         this.internshipManagerRepository = internshipManagerRepository;
-        this.supervisorRepository = supervisorRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -63,6 +60,8 @@ public class InternshipService {
 
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
+        internshipOffer.setSession(getSession(internshipOffer.getStartDate()));
+
         if (multipartFile != null) {
             try {
                 internshipOffer.setPDFDocument(extractDocument(multipartFile));
@@ -72,6 +71,14 @@ public class InternshipService {
             }
         }
         return internshipOffer;
+    }
+
+    private String getSession(Date startDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month <= 6 ? "HIV" + year : "AUT" + year;
     }
 
     private InternshipOffer mapInternshipOffer(String internshipOfferJson) throws IOException {

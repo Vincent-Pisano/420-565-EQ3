@@ -9,7 +9,6 @@ import "../../styles/Form.css";
 
 const Login = () => {
   let history = useHistory();
-
   let type = "";
 
   const [errorMessage, setErrorMessage] = useState("");

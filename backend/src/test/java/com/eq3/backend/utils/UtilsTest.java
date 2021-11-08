@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -151,8 +152,17 @@ public class UtilsTest {
                 .address("189, rue Mont-Gomery")
                 .city("Montreal")
                 .postalCode("JGH5E8")
+                .session(getSession(new Date()))
                 .monitor(getMonitorWithId())
                 .build();
+    }
+
+    private static String getSession(Date startDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month <= 6 ? "HIV" + year : "AUT" + year;
     }
 
     public static List<InternshipOffer> getListOfInternshipOffer() {
