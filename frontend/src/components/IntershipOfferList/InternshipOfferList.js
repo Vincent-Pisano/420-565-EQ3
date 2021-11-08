@@ -4,6 +4,7 @@ import auth from "../../services/Auth";
 import { useHistory } from "react-router";
 import InternshipOffer from "./InternshipOffer";
 import "../../styles/List.css";
+import "../../styles/test.css";
 import { Container } from "react-bootstrap";
 
 function InternshipOfferList() {
@@ -59,14 +60,14 @@ function InternshipOfferList() {
     } else if (auth.isMonitor()) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipOffer/monitor/${auth.user.id}`
+          `http://localhost:9090/getAll/internshipOffer/HIV2022/monitor/${auth.user.id}`
         )
         .then((response) => {
           setInternshipOffers(response.data);
         })
         .catch((err) => {
           setErrorMessage(
-            "Vous n'avez déposé aucune offre de stage pour le moment"
+            "Vous n'avez déposé aucune offre de stage pour cette session"
           );
         });
     }
@@ -90,6 +91,14 @@ function InternshipOfferList() {
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
         <h2 className="cont_title_form">{title}</h2>
+        <div className="menu-item">
+          <button>Session</button>
+          <ul>
+            <li><button>ETE2022</button></li>
+            <li><button>HIV2022</button></li>
+            <li><button>ETE2021</button></li>
+          </ul>
+        </div>
         <Container className="cont_list">
           <p className="cont_title_form">{errorMessage}</p>
           <ul>
