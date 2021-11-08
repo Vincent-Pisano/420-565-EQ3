@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <h1 class="title">Page d'inscription étudiant</h1>
+    <h1 class="title">Page d'inscription superviseur</h1>
     <form @submit="onSubmit" class="add-form">
       <div class="form-control">
         <label
           >Nom d'utilisateur, Veillez commencer votre nom d'utilisateur par
-          "E"</label
+          "S"</label
         >
         <input
           type="text"
@@ -42,6 +42,7 @@
           v-model="firstName"
           name="firstName"
           placeholder="Entrez votre prénom"
+          required
         />
       </div>
       <div class="form-control">
@@ -51,6 +52,7 @@
           v-model="lastName"
           name="lastName"
           placeholder="Entrez votre nom"
+          required
         />
       </div>
       <div class="form-control">
@@ -64,7 +66,7 @@
       <div class="form-control">
         <p>{{ errorMessage }}</p>
       </div>
-      <input type="submit" value="Se connecter" class="btn btn-block" />
+      <input type="submit" value="S'inscrire" class="btn btn-block" />
     </form>
   </div>
 </template>
@@ -73,7 +75,7 @@
 //import axios from "axios";
 
 export default {
-  name: "SignupStudent",
+  name: "SignupSupervisor",
   inheritAttrs: false,
   data() {
     return {
@@ -89,13 +91,25 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      if (!this.username || !this.pw) {
-        this.errorMessage = "Erreur! Veillez remplir tous les champs!";
+      if (!this.username.startsWith("S")) {
+        this.errorMessage =
+          'Erreur! Le nom d\'utilisateur doit commencer par un "S"!';
         return;
+      } else {
+        console.log(
+          this.username +
+            " " +
+            this.pw +
+            " " +
+            this.department +
+            " " +
+            this.email +
+            " " +
+            this.firstName +
+            " " +
+            this.lastName
+        );
       }
-        else {
-            console.log(this.username + " " + this.pw + " " + this.department + " " + this.email + " " + this.firstName + " " + this.lastName);
-        }
     },
   },
 };

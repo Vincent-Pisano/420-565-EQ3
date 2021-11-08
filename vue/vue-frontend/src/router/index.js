@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login'
 //import About from '../views/About'
 //import SignUp from '../views/Signup'
-import SignupStudent from '../components/SignupStudent'
+import SignupStudent from '../views/SignupStudent'
+import SignupMonitor from '../views/SignupMonitor'
+import SignupSupervisor from '../views/SignupSupervisor'
 
 const routes = [
   {
@@ -23,12 +25,12 @@ const routes = [
   {
     path: '/signUpMonitor',
     name: 'SignUpMonitor',
-    component: SignupStudent,
+    component: SignupMonitor,
   },
   {
     path: '/signUpSupervisor',
     name: 'SignUpSupervisor',
-    component: SignupStudent,
+    component: SignupSupervisor,
   },
 ]
 
