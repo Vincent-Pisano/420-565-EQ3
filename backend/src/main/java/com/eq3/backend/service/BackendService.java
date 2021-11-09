@@ -217,7 +217,12 @@ public class BackendService {
     }
 
     public Optional<List<String>> getAllSessionsOfMonitor(String idMonitor) {
-        Query query = new Query(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
+        Criteria criteria = new Criteria();
+        List<Criteria> expression =  new ArrayList<>();
+        expression.add(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
+        expression.add(Criteria.where("isDisabled").is(false));
+        //Query query = new Query(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
+        Query query = new Query(criteria.andOperator(expression.toArray(expression.toArray(new Criteria[expression.size()]))));
 
         List<String> sessions = mongoTemplate
                 .getCollection(COLLECTION_NAME_INTERNSHIP_OFFER)

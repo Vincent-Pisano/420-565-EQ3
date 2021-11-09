@@ -104,10 +104,10 @@ function InternshipOfferList() {
   }
 
   function showSessionsList() {
-    if (auth.isMonitor()) {
+    if (auth.isMonitor() && sessions.length !== 0) {
       return (
         <div className="menu-item">
-          <p className="menu-item-title">Session : {currentSession}</p>
+          <p className="menu-item-title">{currentSession}</p>
           <ul>
             {sessions.map((session, i) => (
               <li key={i}>
