@@ -36,7 +36,6 @@ function Home() {
         </>
       );
     } else if (auth.isSupervisor()) {
-      console.log(user.sessions)
       let date = new Date();
       if (date.getUTCMonth() > 2 && date.getUTCMonth() < 8) {
         session = date.getFullYear() + " Été";

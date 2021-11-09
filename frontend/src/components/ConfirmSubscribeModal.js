@@ -22,10 +22,11 @@ const ConfirmSubscribeModal = ({ show, handleClose, session }) => {
         passwordFields.confirmPassword === user.password
       ) {
         axios
-          .get(
+          .post(
             `http://localhost:9090/readmission/supervisor/${user.id}`
           )
           .then((response) => {
+              auth.updateUser(response.data)
             setErrorMessageModal(`Confirmation de la réinscription pour la session ${session}`);
             setTimeout(() => {
               setErrorMessageModal("");
