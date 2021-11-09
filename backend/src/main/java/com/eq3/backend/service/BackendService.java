@@ -15,10 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -154,6 +150,7 @@ public class BackendService {
         }
         return allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.isEmpty() ? Optional.empty() : Optional.of(allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday);
     }
+
     public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
         List<Student> studentsWithoutInterviewDate = studentRepository.findAllByIsDisabledFalse();
         List<InternshipApplication> internshipApplicationsWithInterviewDate =
@@ -219,7 +216,7 @@ public class BackendService {
         return supervisors.isEmpty() ? Optional.empty() : Optional.of(supervisors);
     }
 
-    public Optional<List<String>> getAllSessions(String idMonitor) {
+    public Optional<List<String>> getAllSessionsOfMonitor(String idMonitor) {
         Query query = new Query(Criteria.where("monitor.$id")
                                         .is(new ObjectId(idMonitor)));
 

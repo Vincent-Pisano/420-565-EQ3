@@ -124,9 +124,9 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/sessions/monitor/{idMonitor}")
-    public ResponseEntity<List<String>> getAllSessions(@PathVariable String idMonitor){
-        return service.getAllSessions(idMonitor)
+    @GetMapping("/getAll/sessions/internshipOffer/monitor/{idMonitor}")
+    public ResponseEntity<List<String>> getAllSessionsOfMonitor(@PathVariable String idMonitor){
+        return service.getAllSessionsOfMonitor(idMonitor)
                 .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

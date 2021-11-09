@@ -62,7 +62,7 @@ function InternshipOfferList() {
     } else if (auth.isMonitor()) {
       if (sessions.length === 0 && currentSession === undefined) {
         axios
-          .get(`http://localhost:9090/getAll/sessions/monitor/${auth.user.id}`)
+          .get(`http://localhost:9090/getAll/sessions/internshipOffer/monitor/${auth.user.id}`)
           .then((response) => {
             setSessions(response.data);
             setCurrentSession(response.data[0]);

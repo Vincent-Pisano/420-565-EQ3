@@ -108,7 +108,8 @@ public class InternshipServiceTest {
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         InternshipOffer givenInternshipOffer = getInternshipOfferWithoutId();
 
-        when(internshipOfferRepository.save(givenInternshipOffer)).thenReturn(expectedInternshipOffer);
+        when(internshipOfferRepository.save(givenInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
 
         //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();

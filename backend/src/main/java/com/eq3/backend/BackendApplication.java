@@ -24,20 +24,20 @@ import java.util.Optional;
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
 
-    private final MongoTemplate mongoTemplate;
+    /*private final MongoTemplate mongoTemplate;
     private final InternshipOfferRepository internshipOfferRepository;
 
     public BackendApplication(InternshipOfferRepository internshipOfferRepository, MongoTemplate mongoTemplate) {
         this.internshipOfferRepository = internshipOfferRepository;
         this.mongoTemplate = mongoTemplate;
-    }
+    }*/
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
 
     public void run(String... args) {
-        Query query = new Query(
+        /*Query query = new Query(
                 Criteria.where("monitor.$id")
                         .is(new ObjectId("6164accb3418286e9469714a"))
         );
@@ -49,6 +49,6 @@ public class BackendApplication implements CommandLineRunner {
 
         Collections.reverse(coll);
 
-        coll.forEach(System.out::println);
+        coll.forEach(System.out::println);*/
     }
 }
