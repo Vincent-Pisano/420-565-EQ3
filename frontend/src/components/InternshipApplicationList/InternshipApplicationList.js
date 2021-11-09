@@ -52,9 +52,22 @@ function InternshipApplicationList() {
     setErrorMessage("");
     setInternshipApplications([]);
     if (auth.isStudent()) {
+      if (sessions.length === 0 && currentSession === undefined) {
+        axios
+          .get(`http://localhost:9090/getAll/sessions/student/${auth.user.id}`)
+          .then((response) => {
+            setSessions(response.data);
+            setCurrentSession(response.data[0]);
+          })
+          .catch((err) => {
+            setErrorMessage("Vous n'avez déposé aucune offre de stage");
+          });
+      } else if (
+        currentSession !== undefined
+      ){
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/student/2022 Été/${user.username}`
+          `http://localhost:9090/getAll/internshipApplication/student/${currentSession}/${user.username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);
@@ -62,6 +75,7 @@ function InternshipApplicationList() {
         .catch((err) => {
           setErrorMessage("Aucune Application enregistrée pour le moment");
         });
+      }
     } else if (auth.isInternshipManager()) {
       if (isInternshipManagerSignature) {
         axios
