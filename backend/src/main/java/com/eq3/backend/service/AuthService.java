@@ -7,9 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import static com.eq3.backend.utils.Utils.cleanUpStudentCVList;
-
+import java.util.List;
 import java.util.Optional;
+
+import static com.eq3.backend.utils.Utils.*;
 
 @Service
 public class AuthService {
@@ -56,6 +57,9 @@ public class AuthService {
     public Optional<Supervisor> signUp(Supervisor supervisor) {
         Optional<Supervisor> optionalSupervisor = Optional.empty();
         try {
+            String session = getSessionReregistration(supervisor.getCreationDate());
+            List<String> supervisorSessions = supervisor.getSessions();
+            supervisorSessions.add(session);
             optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
         } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Supervisor) : " + exception.getMessage());

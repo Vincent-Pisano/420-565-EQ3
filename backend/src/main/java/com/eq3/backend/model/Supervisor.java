@@ -5,6 +5,9 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder(toBuilder = true)
@@ -14,4 +17,7 @@ public class Supervisor extends User {
 
     @Field
     private Department department;
+
+    @Builder.Default
+    private List<String> sessions = new ArrayList<>();
 }
