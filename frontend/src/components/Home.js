@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import auth from "../services/Auth";
 import axios from "axios";
-import "../App.css";
+import { session } from "../Utils/Store";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import ConfirmSubscribeModal from "./ConfirmSubscribeModal";
 import "./../styles/Home.css";
 import "./../styles/Form.css";
+import "../App.css";
 
 function Home() {
   let user = auth.user;
 
   let dateFormat = formatDate(user.creationDate);
-  let session = "";
   const [errorMessage, setErrorMessage] = useState("");
   const [hasASignature, setHasASignature] = useState(
     user.signature !== undefined && user.signature !== null
@@ -36,12 +36,6 @@ function Home() {
         </>
       );
     } else if (auth.isSupervisor()) {
-      let date = new Date();
-      if (date.getUTCMonth() > 2 && date.getUTCMonth() < 8) {
-        session = date.getFullYear() + " Été";
-      } else {
-        session = date.getFullYear() + 1 + " Hiver";
-      }
       if (!user.sessions.includes(session)) {
         return (
           <>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../../styles/List.css";
+import { session } from "../../Utils/Store"
 import { Container } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Supervisor from "./Supervisor";
+import "../../styles/List.css";
 
 function SupervisorList() {
   let history = useHistory();
@@ -13,7 +14,7 @@ function SupervisorList() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9090/getAll/supervisors`)
+      .get(`http://localhost:9090/getAll/supervisors/${session}`)
       .then((response) => {
         setSupervisors(response.data);
       })
