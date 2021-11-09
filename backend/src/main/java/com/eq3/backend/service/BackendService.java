@@ -217,12 +217,11 @@ public class BackendService {
     }
 
     public Optional<List<String>> getAllSessionsOfMonitor(String idMonitor) {
-        Query query = new Query(Criteria.where("monitor.$id")
-                                        .is(new ObjectId(idMonitor)));
+        Query query = new Query(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
 
         List<String> sessions = mongoTemplate
-                .getCollection("internshipOffer")
-                .distinct("session", query.getQueryObject() ,String.class)
+                .getCollection(COLLECTION_NAME_INTERNSHIP_OFFER)
+                .distinct(FIELD_SESSION, query.getQueryObject() ,String.class)
                 .into(new ArrayList<>());
 
         Collections.reverse(sessions);
