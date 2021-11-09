@@ -7,9 +7,7 @@ import org.bson.types.Binary;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Utils {
 
@@ -29,6 +27,12 @@ public class Utils {
     public final static String COLLECTION_NAME_INTERNSHIP_OFFER = "internshipOffer";
     public final static String FIELD_SESSION = "session";
     public final static String FIELD_IS_DISABLED = "isDisabled";
+
+    public final static int SESSION_MONTH = 5;
+    public final static int SESSION_WINTER_MONTH = 2;
+    public final static int SESSION_SUMMER_MONTH = 8;
+    public final static String WINTER_SESSION = " Hiver";
+    public final static String SUMMER_SESSION = " Été";
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {
         PDFDocument PDFDocument = new PDFDocument();
@@ -57,5 +61,21 @@ public class Utils {
         defaultEngagements.put(COLLEGE_ENGAGEMENT_KEY, COLLEGE_ENGAGEMENT_VALUES);
 
         return defaultEngagements;
+    }
+
+    public static String getSessionInternshipOffer(Date startDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month <= SESSION_MONTH ? year + WINTER_SESSION : year + SUMMER_SESSION;
+    }
+
+    public static String getSessionReadmission(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month > 2 && month < 8 ? year + SUMMER_SESSION : year + WINTER_SESSION;
     }
 }
