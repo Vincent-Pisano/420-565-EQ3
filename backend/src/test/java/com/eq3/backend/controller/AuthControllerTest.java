@@ -13,6 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
@@ -93,6 +96,31 @@ public class AuthControllerTest {
         var actualSupervisor = new ObjectMapper().readValue(response.getContentAsString(), Supervisor.class);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
+    }
+
+    @Test
+    //@Disabled
+    public void testReadmissionSupervisor() throws Exception {
+        // Arrange
+        expectedSupervisor = getSupervisorWithId();
+        List<String> expectedSessions = expectedSupervisor.getSessions();
+        expectedSessions.add(SESSION);
+        Supervisor givenSupervisor = getSupervisorWithId();
+        String id = givenSupervisor.getId();
+
+        when(service.readmission(id)).thenReturn(Optional.of(expectedSupervisor));
+
+        // Act
+        MvcResult result = mockMvc.perform(post(URL_READMISSION_SUPERVISOR + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedSupervisor))).andReturn();
+
+        // Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSupervisor = new ObjectMapper().readValue(response.getContentAsString(), Supervisor.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
     }
 

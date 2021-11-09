@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
@@ -87,6 +89,28 @@ public class AuthServiceTest {
 
         //Act
         final Optional<Supervisor> optionalSupervisor = service.signUp(givenSupervisor);
+
+        //Assert
+        Supervisor actualSupervisor = optionalSupervisor.orElse(null);
+
+        assertThat(optionalSupervisor.isPresent()).isTrue();
+        assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
+    }
+
+    @Test
+    //@Disabled
+    public void testReadmissionSupervisor() {
+        //Arrange
+        expectedSupervisor = getSupervisorWithId();
+        List<String> expectedSessions = expectedSupervisor.getSessions();
+        expectedSessions.add(SESSION);
+        Supervisor givenSupervisor = getSupervisorWithId();
+        String id = givenSupervisor.getId();
+
+        when(supervisorRepository.findById(id)).thenReturn(Optional.ofNullable(expectedSupervisor));
+
+        //Act
+        final Optional<Supervisor> optionalSupervisor = service.readmission(id);
 
         //Assert
         Supervisor actualSupervisor = optionalSupervisor.orElse(null);

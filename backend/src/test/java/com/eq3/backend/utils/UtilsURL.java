@@ -12,6 +12,7 @@ public class UtilsURL {
     public final static String URL_LOGIN_MONITOR = "/login/monitor/";
     public final static String URL_LOGIN_SUPERVISOR = "/login/supervisor/";
     public final static String URL_LOGIN_INTERNSHIP_MANAGER = "/login/internshipManager/";
+    public final static String URL_READMISSION_SUPERVISOR = "/readmission/supervisor/";
 
     // BackendController
     public final static String URL_SAVE_SIGNATURE = "/save/signature/";

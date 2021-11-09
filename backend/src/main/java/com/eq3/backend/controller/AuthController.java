@@ -43,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/readmission/supervisor/{id}")
-    public ResponseEntity<Supervisor> loginSupervisor(@PathVariable String id) {
+    public ResponseEntity<Supervisor> readmissionSupervisor(@PathVariable String id) {
         return service.readmission(id)
                 .map(_supervisor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisor))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());

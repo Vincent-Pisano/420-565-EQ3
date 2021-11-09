@@ -17,6 +17,8 @@ public class UtilsTest {
     public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
     public final static String DOCUMENT_NAME = "student";
 
+    public final static String SESSION = "Hiver 2021";
+
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";
     public final static String IMAGE_FILEPATH =
