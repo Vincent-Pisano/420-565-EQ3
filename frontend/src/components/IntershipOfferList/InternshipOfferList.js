@@ -4,7 +4,7 @@ import auth from "../../services/Auth";
 import { useHistory } from "react-router";
 import InternshipOffer from "./InternshipOffer";
 import "../../styles/List.css";
-import "../../styles/test.css";
+import "../../styles/Session.css";
 import { Container } from "react-bootstrap";
 
 function InternshipOfferList() {
@@ -68,11 +68,11 @@ function InternshipOfferList() {
             setCurrentSession(response.data[0]);
           })
           .catch((err) => {
-            setErrorMessage(
-              "Vous n'avez déposé aucune offre de stage"
-            );
+            setErrorMessage("Vous n'avez déposé aucune offre de stage");
           });
-      } else if (currentSession !== undefined && internshipOffers.length === 0){
+      } else if (
+        currentSession !== undefined
+      ) {
         axios
           .get(
             `http://localhost:9090/getAll/internshipOffer/${currentSession}/monitor/${auth.user.id}`
@@ -103,20 +103,42 @@ function InternshipOfferList() {
     }
   }
 
-  return (
-    <Container className="cont_principal">
-      <Container className="cont_list_centrar">
-        <h2 className="cont_title_form">{title}</h2>
+  function showSessionsList() {
+    if (auth.isMonitor()) {
+      return (
         <div className="menu-item">
-          <button>Session</button>
+          <p className="menu-item-title">Session : {currentSession}</p>
           <ul>
             {sessions.map((session, i) => (
               <li key={i}>
-                <button>{session}</button>
+                <button
+                  className={
+                    "menu-item-button" +
+                    (currentSession === session
+                      ? " menu-item-button-selected"
+                      : "")
+                  }
+                  onClick={() => changeCurrentSession(session)}
+                >
+                  {session}
+                </button>
               </li>
             ))}
           </ul>
         </div>
+      );
+    }
+  }
+
+  function changeCurrentSession(session) {
+    setCurrentSession(session)
+  }
+
+  return (
+    <Container className="cont_principal">
+      <Container className="cont_list_centrar">
+        <h2 className="cont_title_form">{title}</h2>
+        {showSessionsList()}
         <Container className="cont_list">
           <p className="cont_title_form">{errorMessage}</p>
           <ul>
