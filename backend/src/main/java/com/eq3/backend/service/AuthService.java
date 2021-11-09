@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,10 +58,27 @@ public class AuthService {
     public Optional<Supervisor> signUp(Supervisor supervisor) {
         Optional<Supervisor> optionalSupervisor = Optional.empty();
         try {
-            String session = getSessionReregistration(supervisor.getCreationDate());
+            String session = getSessionReadmission(supervisor.getCreationDate());
             List<String> supervisorSessions = supervisor.getSessions();
             supervisorSessions.add(session);
             optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
+        } catch (DuplicateKeyException exception) {
+            logger.error("A duplicated key was found in signUp (Supervisor) : " + exception.getMessage());
+        }
+        return optionalSupervisor;
+    }
+
+    public Optional<Supervisor> readmission(String id) {
+        Optional<Supervisor> optionalSupervisor = Optional.empty();
+        try {
+            optionalSupervisor = supervisorRepository.findById(id);
+            if(optionalSupervisor.isPresent()) {
+                Supervisor supervisor = optionalSupervisor.get();
+                List<String> supervisorSessions = supervisor.getSessions();
+                Date date = new Date();
+                String session = getSessionReadmission(date);
+                supervisorSessions.add(session);
+            }
         } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Supervisor) : " + exception.getMessage());
         }

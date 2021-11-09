@@ -71,7 +71,7 @@ public class Utils {
         return month <= SESSION_MONTH ? year + WINTER_SESSION : year + SUMMER_SESSION;
     }
 
-    public static String getSessionReregistration(Date date) {
+    public static String getSessionReadmission(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int month = cal.get(Calendar.MONTH);
