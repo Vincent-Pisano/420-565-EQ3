@@ -30,7 +30,10 @@ export default{
     <nav id="navbar" class="nav-header">
     <h1>GDS</h1>
       <ul v-if="checkIfLogin() === true" class="nav-link-header">
-            <router-link to="/home" class="nav-links-header" v-on:click="logout()">{{this.user.username}}</router-link>
+            <router-link to="/home" class="nav-links-header">{{this.user.username}}</router-link>
+            <div v-if="this.user.username.charAt(0) === 'M'">
+                <router-link to="/internshipOffer" class="nav-links-header">Offre de stage</router-link>
+            </div>
             <router-link to="/" class="nav-links-header" v-on:click="logout()">Déconnexion</router-link>
         </ul>
         <ul v-else  class="nav-link-header">

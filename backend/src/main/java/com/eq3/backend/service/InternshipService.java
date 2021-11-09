@@ -45,6 +45,10 @@ public class InternshipService {
                 Optional.of(internshipOfferRepository.save(internshipOffer));
     }
 
+    public Optional<InternshipOffer> saveInternshipOfferVeille(InternshipOffer internshipOffer){
+        return Optional.of(internshipOfferRepository.save(internshipOffer));
+    }
+
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
         if (multipartFile != null) {

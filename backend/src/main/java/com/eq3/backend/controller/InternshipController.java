@@ -23,13 +23,10 @@ public class InternshipController {
     }
 
 
-    @PostMapping(value = "/save/internshipOffer",
-            produces = "application/json;charset=utf8",
-            consumes = { "multipart/form-data" })
-    public ResponseEntity<InternshipOffer> saveInternshipOffer(@RequestPart(name = "internshipOffer") String internshipOfferJson,
-                                                               @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
-        return service.saveInternshipOffer(internshipOfferJson, multipartFile)
-                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+    @PostMapping(value = "/save/internshipOffer", produces = "application/json;charset=utf8")
+    public ResponseEntity<InternshipOffer> saveInternshipOffer(@RequestBody InternshipOffer internshipOffer) {
+        return service.saveInternshipOfferVeille(internshipOffer)
+                .map(_monitor -> ResponseEntity.status(HttpStatus.CREATED).body(_monitor))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
