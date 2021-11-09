@@ -5,6 +5,7 @@ import "../App.css";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
+import ConfirmSubscribeModal from "./ConfirmSubscribeModal";
 import "./../styles/Home.css";
 import "./../styles/Form.css";
 
@@ -12,10 +13,14 @@ function Home() {
   let user = auth.user;
 
   let dateFormat = formatDate(user.creationDate);
+  let session = "";
   const [errorMessage, setErrorMessage] = useState("");
   const [hasASignature, setHasASignature] = useState(
     user.signature !== undefined && user.signature !== null
   );
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -23,11 +28,47 @@ function Home() {
     return dateFormatted;
   }
 
-  function checkIfStudent() {
+  function checkUser() {
     if (auth.isStudent()) {
       return (
         <>
           <CVList />
+        </>
+      );
+    } else if (auth.isSupervisor()) {
+      console.log(user.sessions)
+      let date = new Date();
+      if (date.getUTCMonth() > 2 && date.getUTCMonth() < 8) {
+        session = date.getFullYear() + " Été";
+      } else {
+        session = date.getFullYear() + 1 + " Hiver";
+      }
+      if (!user.sessions.includes(session)) {
+        return (
+          <>
+            <hr className="modal_separator mx-auto"/>
+            <h2 className="cont_title_form">Réinscription nécessaire</h2>
+            <p>Veuillez vous réinscrire pour la session : "{session}"</p>
+            <Container className="cont_btn">
+              <button className="btn_submit" onClick={showModal}>
+                Réinscrivez-vous
+              </button>
+            </Container>
+          </>
+        );
+      }
+    }
+  }
+
+  function showModal() {
+    handleShow();
+  }
+
+  function checkForModal() {
+    if (auth.isSupervisor()) {
+      return (
+        <>
+          <ConfirmSubscribeModal show={show} handleClose={handleClose} session={session}/>
         </>
       );
     }
@@ -63,26 +104,35 @@ function Home() {
       );
     } else {
       return (
-        <Form className="mb-5 mt-2">
-          <Form.Group controlId="document" className="cont_file_form">
-            <Form.Label className="labelFields">Signature</Form.Label>
-            <Form.Control
-              type="file"
-              onChange={(e) => {
-                saveSignature(e.target.files[0]);
-              }}
-              className="input_file_form"
-              accept="image/png"
-            />
-          </Form.Group>
-        </Form>
+        <>
+          <Form className="mb-5 mt-2">
+            <Form.Group controlId="document" className="cont_file_form">
+              <Form.Label className="labelFields">Signature</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => {
+                  saveSignature(e.target.files[0]);
+                }}
+                className="input_file_form"
+                accept="image/png"
+              />
+            </Form.Group>
+          </Form>
+          <p
+            style={{
+              color: "red",
+            }}
+          >
+            {errorMessage}
+          </p>
+        </>
       );
     }
   }
 
   return (
     <>
-      <Container className="cont_home">
+      <Container className="cont_home mb-5">
         <Row className="cont_central">
           <Col xs={12} md={4}>
             <Row>
@@ -101,20 +151,14 @@ function Home() {
                 <br />
               </Card>
               {checkSignature()}
-              <p
-                style={{
-                  color: "red",
-                }}
-              >
-                {errorMessage}
-              </p>
             </Row>
           </Col>
           <Col xs={12} md={8}>
-            {checkIfStudent()}
+            {checkUser()}
           </Col>
         </Row>
       </Container>
+      {checkForModal()}
     </>
   );
 }
