@@ -187,12 +187,12 @@ class BackendServiceTest {
     public void testGetAllStudentsFromDepartment() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalseAndDepartment(Department.COMPUTER_SCIENCE))
+        when(studentRepository.findAllByIsDisabledFalseAndDepartmentAndSessionsContains(Department.COMPUTER_SCIENCE, SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudents(Department.COMPUTER_SCIENCE);
+                service.getAllStudents(Department.COMPUTER_SCIENCE, SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -206,12 +206,13 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutSupervisor() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmpty(Department.COMPUTER_SCIENCE))
+        when(studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(
+                Department.COMPUTER_SCIENCE, SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE);
+                service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE, SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -401,15 +402,15 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllSupervisors() {
+    public void getAllSupervisorsOfSession() {
         //Arrange
         expectedSupervisorList = getListOfSupervisors();
-        when(supervisorRepository.findAllByIsDisabledFalse())
+        when(supervisorRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
                 .thenReturn(expectedSupervisorList);
 
         //Act
         final Optional<List<Supervisor>> optionalSupervisors =
-                service.getAllSupervisors();
+                service.getAllSupervisorsOfSession(SESSION);
 
         //Assert
         List<Supervisor> actualSupervisors = optionalSupervisors.orElse(null);

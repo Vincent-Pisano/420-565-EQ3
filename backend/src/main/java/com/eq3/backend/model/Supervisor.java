@@ -11,7 +11,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder(toBuilder = true)
-@NoArgsConstructor
 @Document(collection = "supervisor")
 public class Supervisor extends User {
 
@@ -20,4 +19,9 @@ public class Supervisor extends User {
 
     @Builder.Default
     private List<String> sessions = new ArrayList<>();
+
+    public Supervisor() {
+        super();
+        this.sessions = new ArrayList<>();
+    }
 }

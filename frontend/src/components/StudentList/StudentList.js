@@ -6,6 +6,7 @@ import axios from "axios";
 import AssignSupervisorModal from "./AssignSupervisorModal";
 import ValidCVModal from "./ValidCVModal";
 import Student from "./Student";
+import { session } from '../../Utils/Store'
 import "../../styles/List.css";
 
 function StudentList() {
@@ -47,7 +48,7 @@ function StudentList() {
           });
       } else {
         axios
-          .get(`http://localhost:9090/getAll/students/${user.department}`)
+          .get(`http://localhost:9090/getAll/students/${user.department}/${session}`)
           .then((response) => {
             setStudents(response.data);
           })
@@ -61,7 +62,7 @@ function StudentList() {
       if (supervisor !== undefined) {
         axios
           .get(
-            `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}`
+            `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}/${session}`
           )
           .then((response) => {
             setStudents(response.data);

@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface SupervisorRepository extends MongoRepository<Supervisor, String> {
     Optional<Supervisor> findByUsernameAndPasswordAndIsDisabledFalse(String username, String password);
 
-    List<Supervisor> findAllByIsDisabledFalse();
+    List<Supervisor> findAllByIsDisabledFalseAndSessionsContains(String session);
 
     Optional<Supervisor> findByUsernameAndIsDisabledFalse(String username);
 }

@@ -17,13 +17,13 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     Optional<Student> findStudentByUsernameAndIsDisabledFalse(String username);
 
-    List<Student> findAllByIsDisabledFalseAndDepartment(Department department);
+    List<Student> findAllByIsDisabledFalseAndDepartmentAndSessionsContains(Department department, String session);
 
     @Query(value = "{ 'isDisabled':false ,'CVList' : {$elemMatch: { 'status': 'WAITING', 'isActive' : true} } }")
     List<Student> findAllByIsDisabledFalseAndActiveCVWaitingValidation();
 
-    @Query(value = "{'isDisabled':false, 'department': ?0, supervisorMap:{$size: 0}}")
-    List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmpty(Department department);
+    @Query(value = "{'isDisabled':false, 'department': ?0, 'supervisorMap.?1':{'$exists' : false}, 'sessions': [?1]}")
+    List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(Department department, String session);
 
     @Query(value = "{'isDisabled':false, CVList:{$size: 0}}")
     List<Student> findAllByIsDisabledFalseAndCVListIsEmpty();
