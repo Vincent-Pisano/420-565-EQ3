@@ -78,6 +78,7 @@ public class AuthService {
                 Date date = new Date();
                 String session = getSessionReadmission(date);
                 supervisorSessions.add(session);
+                optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
             }
         } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Supervisor) : " + exception.getMessage());
