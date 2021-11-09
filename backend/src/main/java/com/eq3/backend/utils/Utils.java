@@ -28,6 +28,7 @@ public class Utils {
     public final static String QUERY_CRITERIA_MONITOR_ID = "monitor.$id";
     public final static String COLLECTION_NAME_INTERNSHIP_OFFER = "internshipOffer";
     public final static String FIELD_SESSION = "session";
+    public final static String FIELD_IS_DISABLED = "isDisabled";
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {
         PDFDocument PDFDocument = new PDFDocument();

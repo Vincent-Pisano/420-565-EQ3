@@ -217,12 +217,7 @@ public class BackendService {
     }
 
     public Optional<List<String>> getAllSessionsOfMonitor(String idMonitor) {
-        Criteria criteria = new Criteria();
-        List<Criteria> expression =  new ArrayList<>();
-        expression.add(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
-        expression.add(Criteria.where("isDisabled").is(false));
-        //Query query = new Query(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
-        Query query = new Query(criteria.andOperator(expression.toArray(expression.toArray(new Criteria[expression.size()]))));
+        Query query = new Query(getCriteriaQueryGetAllSessionsOfMonitor(idMonitor));
 
         List<String> sessions = mongoTemplate
                 .getCollection(COLLECTION_NAME_INTERNSHIP_OFFER)
@@ -231,6 +226,13 @@ public class BackendService {
 
         Collections.reverse(sessions);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    private Criteria getCriteriaQueryGetAllSessionsOfMonitor(String idMonitor) {
+        List<Criteria> expression =  new ArrayList<>();
+        expression.add(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
+        expression.add(Criteria.where(FIELD_IS_DISABLED).is(false));
+        return new Criteria().andOperator(expression.toArray(expression.toArray(new Criteria[expression.size()])));
     }
 
     public Optional<Monitor> getMonitorByUsername(String username) {
