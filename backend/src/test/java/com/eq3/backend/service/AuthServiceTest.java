@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -108,6 +109,7 @@ public class AuthServiceTest {
         String id = givenSupervisor.getId();
 
         when(supervisorRepository.findById(id)).thenReturn(Optional.ofNullable(expectedSupervisor));
+        when(supervisorRepository.save(any())).thenReturn(expectedSupervisor);
 
         //Act
         final Optional<Supervisor> optionalSupervisor = service.readmission(id);

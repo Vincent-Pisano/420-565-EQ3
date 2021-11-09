@@ -17,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -208,7 +206,7 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutSupervisor() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(Department.COMPUTER_SCIENCE))
+        when(studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmpty(Department.COMPUTER_SCIENCE))
                 .thenReturn(expectedStudentList);
 
         //Act
@@ -472,7 +470,9 @@ class BackendServiceTest {
         //Arrange
         expectedStudent = getStudentWithId();
         expectedSupervisor = getSupervisorWithId();
-        expectedStudent.setSupervisor(expectedSupervisor);
+        Map<String, Supervisor> supervisorMap = new HashMap<>();
+        supervisorMap.put(SESSION, expectedSupervisor);
+        expectedStudent.setSupervisorMap(supervisorMap);
         Student givenStudent = getStudentWithId();
 
 
@@ -488,7 +488,7 @@ class BackendServiceTest {
         Student actualStudent = optionalStudent.orElse(null);
 
         assertThat(actualStudent).isNotNull();
-        assertThat(actualStudent.getSupervisor()).isEqualTo(expectedSupervisor);
+        assertThat(actualStudent.getSupervisorMap()).isEqualTo(supervisorMap);
     }
 
     @Test

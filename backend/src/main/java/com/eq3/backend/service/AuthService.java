@@ -58,7 +58,7 @@ public class AuthService {
     public Optional<Supervisor> signUp(Supervisor supervisor) {
         Optional<Supervisor> optionalSupervisor = Optional.empty();
         try {
-            String session = getSessionReadmission(supervisor.getCreationDate());
+            String session = getSessionFromDate(supervisor.getCreationDate());
             List<String> supervisorSessions = supervisor.getSessions();
             supervisorSessions.add(session);
             optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
@@ -76,7 +76,7 @@ public class AuthService {
                 Supervisor supervisor = optionalSupervisor.get();
                 List<String> supervisorSessions = supervisor.getSessions();
                 Date date = new Date();
-                String session = getSessionReadmission(date);
+                String session = getSessionFromDate(date);
                 supervisorSessions.add(session);
                 optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
             }

@@ -7,7 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -22,7 +24,8 @@ public class Student extends User {
     private List<CV> CVList = new ArrayList<>();
 
     @DBRef
-    private Supervisor supervisor;
+    @Builder.Default
+    private Map<String, Supervisor> supervisorMap = new HashMap<>();
 
     public Student() {
         super();

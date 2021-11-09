@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
@@ -453,7 +454,9 @@ class BackendControllerTest {
         //Arrange
         expectedStudent = getStudentWithId();
         expectedSupervisor = getSupervisorWithId();
-        expectedStudent.setSupervisor(expectedSupervisor);
+        Map<String, Supervisor> supervisorMap = new HashMap<>();
+        supervisorMap.put(SESSION, expectedSupervisor);
+        expectedStudent.setSupervisorMap(supervisorMap);
 
         when(service.assignSupervisorToStudent(expectedStudent.getId(), expectedSupervisor.getId()))
                 .thenReturn(Optional.of(expectedStudent));
@@ -469,7 +472,7 @@ class BackendControllerTest {
         var actualStudent = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudent.getSupervisor()).isNotNull();
+        assertThat(actualStudent.getSupervisorMap()).isNotNull();
     }
 
     @Test

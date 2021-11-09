@@ -22,7 +22,8 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     @Query(value = "{ 'isDisabled':false ,'CVList' : {$elemMatch: { 'status': 'WAITING', 'isActive' : true} } }")
     List<Student> findAllByIsDisabledFalseAndActiveCVWaitingValidation();
 
-    List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(Department department);
+    @Query(value = "{'isDisabled':false, 'department': ?0, supervisorMap:{$size: 0}}")
+    List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmpty(Department department);
 
     @Query(value = "{'isDisabled':false, CVList:{$size: 0}}")
     List<Student> findAllByIsDisabledFalseAndCVListIsEmpty();
@@ -31,6 +32,7 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     List<Student> findAllByIsDisabledFalse();
 
+    @Query(value = "{'isDisabled':false, 'supervisorMap.id':?0}")
     List<Student> findAllBySupervisor_IdAndIsDisabledFalse(String idSupervisor);
 }
 
