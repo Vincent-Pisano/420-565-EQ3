@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +62,6 @@ public class InternshipServiceTest {
     private Internship expectedInternship;
     private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
-
     private List<InternshipApplication> expectedInternshipApplicationList;
 
     @Test
@@ -295,7 +295,7 @@ public class InternshipServiceTest {
                 .thenReturn(expectedInternshipApplicationList);
         //Act
         final Optional<List<InternshipApplication>> optionalInternshipApplications =
-                service.getAllInternshipApplicationOfStudent(expectedStudent.getUsername());
+                service.getAllInternshipApplicationOfStudent(getSession(new Date()), expectedStudent.getUsername());
 
         //Assert
         List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);

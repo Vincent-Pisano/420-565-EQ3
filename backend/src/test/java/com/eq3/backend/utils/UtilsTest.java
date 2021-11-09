@@ -157,7 +157,7 @@ public class UtilsTest {
                 .build();
     }
 
-    private static String getSession(Date startDate) {
+    public static String getSession(Date startDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
         int month = cal.get(Calendar.MONTH);

@@ -136,12 +136,19 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String studentUsername) {
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String session, String studentUsername) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
         List<InternshipApplication> internshipApplications = new ArrayList<>();
 
         if (optionalStudent.isPresent())
             internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(optionalStudent.get());
+        for (int i = 0; i< internshipApplications.size(); i++) {
+            InternshipOffer currentOffer = internshipApplications.get(i).getInternshipOffer();
+            if (!currentOffer.getSession().equals(session)){
+                internshipApplications.remove(internshipApplications.get(i));
+                i --;
+            }
+        }
 
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }

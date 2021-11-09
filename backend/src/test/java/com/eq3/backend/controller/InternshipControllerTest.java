@@ -16,10 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static com.eq3.backend.utils.UtilsURL.*;
@@ -278,10 +275,10 @@ public class InternshipControllerTest {
         expectedInternshipApplicationList = getListOfInternshipApplication();
         expectedStudent = getStudentWithId();
 
-        when(service.getAllInternshipApplicationOfStudent(expectedStudent.getUsername()))
+        when(service.getAllInternshipApplicationOfStudent(getSession(new Date()), expectedStudent.getUsername()))
                 .thenReturn(Optional.of(expectedInternshipApplicationList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS_STUDENT + expectedStudent.getUsername())
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS_STUDENT + getSession(new Date()) + "/" + expectedStudent.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
