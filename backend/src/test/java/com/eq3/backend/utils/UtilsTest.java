@@ -165,6 +165,12 @@ public class UtilsTest {
         return month <= 6 ? "HIV" + year : "AUT" + year;
     }
 
+    public static List<String> getListOfSessions(){
+        List<String> listSessions = new ArrayList<>();
+        listSessions.add(getSession(new Date()));
+        return listSessions;
+    }
+
     public static List<InternshipOffer> getListOfInternshipOffer() {
         InternshipOffer internshipOffer1 = getInternshipOfferWithId();
         InternshipOffer internshipOffer2 = getInternshipOfferWithId();

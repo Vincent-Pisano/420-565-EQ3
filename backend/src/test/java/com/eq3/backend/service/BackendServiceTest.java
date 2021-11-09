@@ -67,6 +67,7 @@ class BackendServiceTest {
     private Binary expectedImage;
     private Internship expectedInternship;
     private List<Internship> expectedInternshipList;
+    private List<String> expectedSessionsList;
 
     @Test
     //@Disabled
@@ -515,6 +516,29 @@ class BackendServiceTest {
 
         assertThat(optionalDocument.isPresent()).isTrue();
         assertThat(actualPDFDocument).isEqualTo(expectedEvaluation.getDocument());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfStudent() {
+        //Arrange
+        expectedSessionsList = getListOfSessions();
+        expectedStudent = getStudentWithId();
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        when(studentRepository.findStudentByIdAndIsDisabledFalse(expectedStudent.getId()))
+                .thenReturn(Optional.of(expectedStudent));
+        when(internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(expectedStudent))
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<String>> optionalSessions =
+                service.getAllSessionsOfStudent(expectedStudent.getId());
+
+        //Assert
+        List<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionsList.size());
     }
 
     @Test

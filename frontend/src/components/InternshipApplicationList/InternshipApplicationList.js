@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router";
 import axios from "axios";
 import auth from "../../services/Auth";
 import "../../styles/List.css";
+import "../../styles/Session.css";
 import { Container } from "react-bootstrap";
 import InternshipApplication from "./InternshipApplication";
 import InternshipApplicationStudentModal from "./Modal/InternshipApplicationStudentModal";
@@ -44,6 +45,8 @@ function InternshipApplicationList() {
     useState({});
   const [internshipApplications, setInternshipApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [sessions, setSessions] = useState([]);
+  const [currentSession, setCurrentSession] = useState(sessions[0]);
 
   useEffect(() => {
     setErrorMessage("");
@@ -51,7 +54,7 @@ function InternshipApplicationList() {
     if (auth.isStudent()) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/student/${user.username}`
+          `http://localhost:9090/getAll/internshipApplication/student/2022 Été/${user.username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);
@@ -102,7 +105,7 @@ function InternshipApplicationList() {
           setErrorMessage("Erreur ! Aucune application de stages");
         });
     }
-  }, [user.username, internshipOffer, isInternshipManagerSignature, username]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature, username, sessions, currentSession]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -217,10 +220,42 @@ function InternshipApplicationList() {
     }
   }
 
+  function showSessionsList() {
+    if (auth.isStudent()) {
+      return (
+        <div className="menu-item">
+          <p className="menu-item-title">Session : {currentSession}</p>
+          <ul>
+            {sessions.map((session, i) => (
+              <li key={i}>
+                <button
+                  className={
+                    "menu-item-button" +
+                    (currentSession === session
+                      ? " menu-item-button-selected"
+                      : "")
+                  }
+                  onClick={() => changeCurrentSession(session)}
+                >
+                  {session}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+  }
+
+  function changeCurrentSession(session) {
+    setCurrentSession(session)
+  }
+
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
         <h2 className="cont_title_form">{title}</h2>
+        {showSessionsList()}
         <Container className="cont_list">
           <p>{errorMessage}</p>
           <ul>

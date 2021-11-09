@@ -15,10 +15,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.eq3.backend.utils.Utils.*;
@@ -135,6 +132,24 @@ public class BackendService {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty();
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
+    }
+
+    public Optional<List<String>> getAllSessionsOfStudent(String idStudent) {
+
+        List<String> sessions = new ArrayList<>();
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+        Optional<Student> optionalStudent = studentRepository.findStudentByIdAndIsDisabledFalse(idStudent);
+
+        if (optionalStudent.isPresent())
+            internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(optionalStudent.get());
+        for (InternshipApplication internshipApplication : internshipApplications) {
+            InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
+            if (!sessions.contains(currentOffer.getSession())) {
+                sessions.add(currentOffer.getSession());
+            }
+        }
+        sessions.sort(Collections.reverseOrder());
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
 
     public Optional<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() {
