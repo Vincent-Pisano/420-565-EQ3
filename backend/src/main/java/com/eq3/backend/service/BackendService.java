@@ -120,12 +120,13 @@ public class BackendService {
         System.out.println(session);
         List<Student> students = studentRepository.
                 findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(department, session);
+        System.out.println(students);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    public Optional<List<Student>> getAllStudentsWithSupervisor(String idSupervisor) {
-        List<Student> students = studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(idSupervisor);
+    public Optional<List<Student>> getAllStudentsWithSupervisor(String idSupervisor, String session) {
+        List<Student> students = studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(idSupervisor, session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }

@@ -22,6 +22,9 @@ function StudentList() {
   const handleShow = () => setShow(true);
 
   const [students, setStudents] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [sessions, setSessions] = useState(auth.isSupervisor() ? user.sessions : []);
+  const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [currentStudent, setCurrentStudent] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -37,22 +40,26 @@ function StudentList() {
     if (auth.isSupervisor()) {
       if (isStudentListAssigned) {
         axios
-          .get(`http://localhost:9090/getAll/students/supervisor/${user.id}`)
+          .get(`http://localhost:9090/getAll/students/supervisor/${user.id}/${currentSession}`)
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
+            setStudents([]);
             setErrorMessage(
               "Erreur! Aucun étudiant n'a été assigné pour le moment"
             );
           });
       } else {
         axios
-          .get(`http://localhost:9090/getAll/students/${user.department}/${session}`)
+          .get(`http://localhost:9090/getAll/students/${user.department}/${currentSession}`)
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
+            setStudents([]);
             setErrorMessage(
               "Erreur! Aucun étudiant ne s'est inscrit pour le moment"
             );
@@ -81,7 +88,7 @@ function StudentList() {
           });
       }
     }
-  }, [history, isStudentListAssigned, supervisor, title, user.department, user.id]);
+  }, [history, isStudentListAssigned, supervisor, title, user.department, user.id, currentSession]);
 
   function showModal(student) {
     setCurrentStudent(student);
@@ -91,6 +98,37 @@ function StudentList() {
   function checkIfSupervisor(student){
     let state = {title : `Application aux offres de stage de : ${student.firstName} ${student.lastName}`}
     history.push({pathname: `/listInternshipApplication/${student.username}`, state : state})
+  }
+
+  function showSessionsList() {
+    if (auth.isSupervisor() && sessions.length !== 0) {
+      return (
+        <div className="menu-item">
+          <p className="menu-item-title">{currentSession}</p>
+          <ul>
+            {sessions.map((session, i) => (
+              <li key={i}>
+                <button
+                  className={
+                    "menu-item-button" +
+                    (currentSession === session
+                      ? " menu-item-button-selected"
+                      : "")
+                  }
+                  onClick={() => changeCurrentSession(session)}
+                >
+                  {session}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+  }
+
+  function changeCurrentSession(session) {
+    setCurrentSession(session)
   }
 
   function checkIfGS() {
@@ -126,6 +164,7 @@ function StudentList() {
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
         <h2 className="cont_title_form">{title}</h2>
+        {showSessionsList()}
         <Container className="cont_list">
           <p
             className="error_p"

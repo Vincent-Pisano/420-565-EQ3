@@ -1,8 +1,6 @@
 package com.eq3.backend.repository;
 
 import com.eq3.backend.model.Department;
-import com.eq3.backend.model.InternshipManager;
-import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.model.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -22,7 +20,7 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     @Query(value = "{ 'isDisabled':false ,'CVList' : {$elemMatch: { 'status': 'WAITING', 'isActive' : true} } }")
     List<Student> findAllByIsDisabledFalseAndActiveCVWaitingValidation();
 
-    @Query(value = "{'isDisabled':false, 'department': ?0, 'supervisorMap.?1':{'$exists' : false}, 'sessions': [?1]}")
+    @Query(value = "{'isDisabled':false, 'department': ?0, 'supervisorMap.?1':{'$exists' : false}, 'sessions': ?1}")
     List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(Department department, String session);
 
     @Query(value = "{'isDisabled':false, CVList:{$size: 0}}")
@@ -32,9 +30,9 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     List<Student> findAllByIsDisabledFalse();
 
-    @Query(value = "{'isDisabled':false, 'supervisorMap.id':?0}")
-    List<Student> findAllBySupervisor_IdAndIsDisabledFalse(String idSupervisor);
-
     Optional<Student> findStudentByIdAndIsDisabledFalse(String id);
+
+    @Query(value = "{'isDisabled':false, 'supervisorMap.?1': DBRef('supervisor', ObjectId(?0)), 'sessions': ?1}")
+    List<Student> findAllBySupervisor_IdAndIsDisabledFalse(String idSupervisor, String session);
 }
 

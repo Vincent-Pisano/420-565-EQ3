@@ -263,11 +263,11 @@ class BackendControllerTest {
         //Arrange
         expectedStudentList = getListOfStudents();
         expectedSupervisor = getSupervisorWithId();
-        when(service.getAllStudentsWithSupervisor(expectedSupervisor.getId()))
+        when(service.getAllStudentsWithSupervisor(expectedSupervisor.getId(), SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_SUPERVISOR +
-                expectedSupervisor.getId())
+                expectedSupervisor.getId() + "/" + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
