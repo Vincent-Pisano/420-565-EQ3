@@ -76,6 +76,6 @@ public class Utils {
         cal.setTime(date);
         int month = cal.get(Calendar.MONTH);
         int year = cal.get(Calendar.YEAR);
-        return month > 2 && month < 8 ? year + SUMMER_SESSION : (year + 1) + WINTER_SESSION;
+        return month > SESSION_WINTER_MONTH && month < SESSION_SUMMER_MONTH ? year + SUMMER_SESSION : (year + 1) + WINTER_SESSION;
     }
 }

@@ -227,12 +227,12 @@ class BackendServiceTest {
         //Arrange
         expectedStudentList = getListOfStudents();
         expectedSupervisor = getSupervisorWithId();
-        when(studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(expectedSupervisor.getId()))
+        when(studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(expectedSupervisor.getId(), SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithSupervisor(expectedSupervisor.getId());
+                service.getAllStudentsWithSupervisor(expectedSupervisor.getId(), SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
