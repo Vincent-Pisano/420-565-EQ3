@@ -38,7 +38,7 @@ public class AuthService {
     public Optional<Student> signUp(Student student) {
         Optional<Student> optionalStudent = Optional.empty();
         try {
-            String session = getSessionFromDate(student.getCreationDate());
+            String session = getNextSessionFromDate(student.getCreationDate());
             List<String> studentSessions = student.getSessions();
             studentSessions.add(session);
             optionalStudent = cleanUpStudentCVList(Optional.of(studentRepository.save(student)));
@@ -61,7 +61,7 @@ public class AuthService {
     public Optional<Supervisor> signUp(Supervisor supervisor) {
         Optional<Supervisor> optionalSupervisor = Optional.empty();
         try {
-            String session = getSessionFromDate(supervisor.getCreationDate());
+            String session = getNextSessionFromDate(supervisor.getCreationDate());
             List<String> supervisorSessions = supervisor.getSessions();
             supervisorSessions.add(session);
             optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
@@ -79,7 +79,7 @@ public class AuthService {
                 Supervisor supervisor = optionalSupervisor.get();
                 List<String> supervisorSessions = supervisor.getSessions();
                 Date date = new Date();
-                String session = getSessionFromDate(date);
+                String session = getNextSessionFromDate(date);
                 supervisorSessions.add(session);
                 optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
             }
@@ -97,7 +97,7 @@ public class AuthService {
                 Student student = optionalStudent.get();
                 List<String> studentSessions = student.getSessions();
                 Date date = new Date();
-                String session = getSessionFromDate(date);
+                String session = getNextSessionFromDate(date);
                 studentSessions.add(session);
                 optionalStudent = Optional.of(studentRepository.save(student));
             }

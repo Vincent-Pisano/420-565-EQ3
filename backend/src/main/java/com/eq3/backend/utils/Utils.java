@@ -63,7 +63,7 @@ public class Utils {
         return defaultEngagements;
     }
 
-    public static String getSessionInternshipOffer(Date startDate) {
+    public static String getSessionFromDate(Date startDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
         int month = cal.get(Calendar.MONTH);
@@ -71,7 +71,7 @@ public class Utils {
         return month <= SESSION_MONTH ? year + WINTER_SESSION : year + SUMMER_SESSION;
     }
 
-    public static String getSessionFromDate(Date date) {
+    public static String getNextSessionFromDate(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int month = cal.get(Calendar.MONTH);

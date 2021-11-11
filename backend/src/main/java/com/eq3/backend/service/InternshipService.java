@@ -59,7 +59,7 @@ public class InternshipService {
 
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
-        internshipOffer.setSession(getSessionInternshipOffer(internshipOffer.getStartDate()));
+        internshipOffer.setSession(getSessionFromDate(internshipOffer.getStartDate()));
 
         if (multipartFile != null) {
             try {

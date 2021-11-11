@@ -258,8 +258,13 @@ public class BackendService {
 
     public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffers() {
         TreeSet<String> sessions = new TreeSet<>();
+        String currentSession = getSessionFromDate(new Date());
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
         internshipOffers.forEach(internshipOffer -> {
+            System.out.println(currentSession.substring(4));
+            if ("Été".equals(currentSession.substring(4))){
+                
+            }
             System.out.println(internshipOffer.getSession());
         });
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
@@ -275,7 +280,7 @@ public class BackendService {
 
         optionalStudent.ifPresent(student -> {
             Map<String, Supervisor> supervisorMap = student.getSupervisorMap();
-            optionalSupervisor.ifPresent(supervisor -> supervisorMap.put(getSessionFromDate(new Date()), supervisor));
+            optionalSupervisor.ifPresent(supervisor -> supervisorMap.put(getNextSessionFromDate(new Date()), supervisor));
             studentRepository.save(student);
         });
 
