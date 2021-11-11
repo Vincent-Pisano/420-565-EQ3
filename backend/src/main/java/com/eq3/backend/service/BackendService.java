@@ -106,13 +106,13 @@ public class BackendService {
 
     public Optional<List<Student>> getAllStudents(Department department, String session) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSessionsContains(department, session);
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
     public Optional<List<Student>> getAllStudents() {
         List<Student> students = studentRepository.findAllByIsDisabledFalse();
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
@@ -121,19 +121,19 @@ public class BackendService {
         List<Student> students = studentRepository.
                 findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(department, session);
         System.out.println(students);
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
     public Optional<List<Student>> getAllStudentsWithSupervisor(String idSupervisor, String session) {
         List<Student> students = studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(idSupervisor, session);
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
     public Optional<List<Student>> getAllStudentsWithoutCV() {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty();
-        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
+        students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
@@ -254,27 +254,33 @@ public class BackendService {
         List<Criteria> expression =  new ArrayList<>();
         expression.add(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
         expression.add(Criteria.where(FIELD_IS_DISABLED).is(false));
-        return new Criteria().andOperator(expression.toArray(expression.toArray(new Criteria[expression.size()])));
+        return new Criteria().andOperator(expression.toArray(expression.toArray(new Criteria[0])));
     }
 
     public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffers() {
-        TreeSet<String> sessions = new TreeSet<>();
-        String currentSession = getSessionFromDate(new Date());
-        String session = currentSession.substring(5);
-        int year = Integer.parseInt(currentSession.substring(0, 4));
-
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
+        TreeSet<String> sessions = setNextSessionsOfInternshipOffers(internshipOffers);
+
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    private TreeSet<String> setNextSessionsOfInternshipOffers(List<InternshipOffer> internshipOffers) {
+        TreeSet<String> sessions = new TreeSet<>();
+
+        String currentSession = getSessionFromDate(new Date());
+        String[] sessionComponents = currentSession.split(" ");
+        String session = sessionComponents[POSITION_TAG_IN_SESSION];
+        int year = Integer.parseInt(sessionComponents[POSITION_YEAR_IN_SESSION]);
+
         internshipOffers.forEach(internshipOffer -> {
             String internshipOfferSession = internshipOffer.getSession();
-            int internshipOfferYear = Integer.parseInt(internshipOfferSession.substring(0, 4));
-            if (internshipOfferYear > year) {
-                sessions.add(internshipOffer.getSession());
-            }
-            else if ("Hiver".equals(session) && internshipOfferYear == year){
+            int internshipOfferYear = Integer.parseInt(internshipOfferSession.split(" ")[POSITION_YEAR_IN_SESSION]);
+
+            if (internshipOfferYear > year || (WINTER_SESSION.equals(session) && internshipOfferYear == year)) {
                 sessions.add(internshipOffer.getSession());
             }
         });
-        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+        return sessions;
     }
 
     public Optional<Monitor> getMonitorByUsername(String username) {
@@ -327,9 +333,9 @@ public class BackendService {
     public Optional<PDFDocument> downloadEvaluationDocument(String documentName) {
         Optional<PDFDocument> optionalDocument = Optional.empty();
         try {
-            Path pdfPath = Paths.get(System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\" + documentName + "Evaluation.pdf");
+            Path pdfPath = Paths.get(ASSETS_PATH + documentName + EVALUATION_FILE_NAME);
             optionalDocument = Optional.of(PDFDocument.builder()
-                    .name(documentName + "Evaluation.pdf")
+                    .name(documentName + EVALUATION_FILE_NAME)
                     .content(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(pdfPath)))
                     .build());
         }

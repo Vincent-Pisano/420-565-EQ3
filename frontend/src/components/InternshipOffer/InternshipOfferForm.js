@@ -50,7 +50,7 @@ const InternshipOfferForm = () => {
     if (auth.isStudent() && internshipOffer !== undefined) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/student/${user.username}`
+          `http://localhost:9090/getAll/internshipApplication/${internshipOffer.session}/student/${user.username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);

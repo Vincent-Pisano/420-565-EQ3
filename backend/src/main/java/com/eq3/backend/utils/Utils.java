@@ -11,6 +11,11 @@ import java.util.*;
 
 public class Utils {
 
+    public final static String ASSETS_PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\";
+
+    public final static String CONTRACT_FILE_NAME = "Contract.pdf";
+    public final static String EVALUATION_FILE_NAME = "Contract.pdf";
+
     public final static String ENTERPRISE_ENGAGEMENT_KEY = "Enterprise";
     public final static String ENTERPRISE_ENGAGEMENT_VALUES
             = "L'entreprise s'engage à ... ";
@@ -31,8 +36,11 @@ public class Utils {
     public final static int SESSION_MONTH = 5;
     public final static int SESSION_WINTER_MONTH = 2;
     public final static int SESSION_SUMMER_MONTH = 8;
-    public final static String WINTER_SESSION = " Hiver";
-    public final static String SUMMER_SESSION = " Été";
+    public final static String WINTER_SESSION = "Hiver";
+    public final static String SUMMER_SESSION = "Été";
+
+    public final static int POSITION_YEAR_IN_SESSION = 0;
+    public final static int POSITION_TAG_IN_SESSION = 1;
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {
         PDFDocument PDFDocument = new PDFDocument();
@@ -68,7 +76,7 @@ public class Utils {
         cal.setTime(startDate);
         int month = cal.get(Calendar.MONTH);
         int year = cal.get(Calendar.YEAR);
-        return month <= SESSION_MONTH ? year + WINTER_SESSION : year + SUMMER_SESSION;
+        return month <= SESSION_MONTH ? year + " " + WINTER_SESSION : year + " " + SUMMER_SESSION;
     }
 
     public static String getNextSessionFromDate(Date date) {
@@ -76,6 +84,8 @@ public class Utils {
         cal.setTime(date);
         int month = cal.get(Calendar.MONTH);
         int year = cal.get(Calendar.YEAR);
-        return month > SESSION_WINTER_MONTH && month < SESSION_SUMMER_MONTH ? year + SUMMER_SESSION : (year + 1) + WINTER_SESSION;
+        return month > SESSION_WINTER_MONTH && month < SESSION_SUMMER_MONTH
+                ? year + " " +SUMMER_SESSION
+                : (year + 1) + " " +WINTER_SESSION;
     }
 }

@@ -88,7 +88,7 @@ public class InternshipService {
 
         try{
             ByteArrayOutputStream baos = generatePdfContract(internship, optionalInternshipManager);
-            pdfDocument.setName("Contract.pdf");
+            pdfDocument.setName(CONTRACT_FILE_NAME);
             pdfDocument.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
         }
         catch (Exception e) {
