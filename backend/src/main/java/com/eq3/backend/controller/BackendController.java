@@ -187,6 +187,13 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping(value="/getAll/internshipApplications/in/current/and/next/sessions")
+    public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationsInCurrentAndNextSessions(){
+        return service.getAllInternshipApplicationsInCurrentAndNextSessions()
+                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     private ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");

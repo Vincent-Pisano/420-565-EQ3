@@ -250,7 +250,7 @@ public class BackendService {
         return  currentYear;
     }
 
-    public Optional<List<InternshipApplication>> getCurrentSessionAndNextSessions() {
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationsInCurrentAndNextSessions() {
         List<InternshipApplication> allInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
         List<InternshipApplication> allInternshipApplicationsInCurrentAndNextSessions = new ArrayList<>();
         int currentYear = getCurrentYear();
