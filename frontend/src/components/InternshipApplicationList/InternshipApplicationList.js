@@ -27,27 +27,23 @@ function InternshipApplicationList() {
   let title = auth.isStudent()
     ? "Liste de vos applications de stage"
     : auth.isMonitor()
-    ? "Listes des applications pour l'offre : " + internshipOffer.jobName
-    : auth.isInternshipManager()
-    ? isInternshipManagerSignature
-      ? "Liste des applications de stages à signer"
-      : "Liste des applications de stages acceptées"
-    : auth.isSupervisor()
-    ? state.title
-    : "Vous ne devriez pas voir cette page";
+      ? "Listes des applications pour l'offre : " + internshipOffer.jobName
+      : auth.isInternshipManager()
+        ? isInternshipManagerSignature
+          ? "Liste des applications de stages à signer"
+          : "Liste des applications de stages acceptées"
+        : auth.isSupervisor()
+          ? state.title
+          : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [currentInternshipApplication, setCurrentInternshipApplication] =
-    useState({});
+  const [currentInternshipApplication, setCurrentInternshipApplication] = useState({});
   const [internshipApplications, setInternshipApplications] = useState([]);
-  const [sessions, setSessions] = useState([]);
-  const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [errorMessage, setErrorMessage] = useState("");
-
-  let isFilterSessions = false;
+  const [isFiltered, setIsFilterred] = useState(false);
 
   useEffect(() => {
     setErrorMessage("");
@@ -74,8 +70,7 @@ function InternshipApplicationList() {
             setErrorMessage("Aucune Application validée pour le moment");
           });
       }
-      else if (isFilterSessions === false) {
-        console.log("Entered ")
+      else if (isFiltered === false) {
         axios
           .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
           .then((response) => {
@@ -85,12 +80,10 @@ function InternshipApplicationList() {
             setErrorMessage("Aucune Application acceptée pour le moment");
           });
       }
-      else if (isFilterSessions === true){
-        console.log("Entered 2")
+      else if (isFiltered) {
         axios
           .get(`http://localhost:9090/getAll/internshipApplications/in/current/and/next/sessions`)
           .then((response) => {
-            setSessions(response.data);
             setInternshipApplications(response.data);
           })
           .catch((err) => {
@@ -104,7 +97,7 @@ function InternshipApplicationList() {
         )
         .then((response) => {
           setInternshipApplications(response.data);
-          
+
         })
         .catch((err) => {
           setErrorMessage("Aucune Application enregistrée pour le moment");
@@ -121,7 +114,7 @@ function InternshipApplicationList() {
           setErrorMessage("Erreur ! Aucune application de stages");
         });
     }
-  }, [user.username, internshipOffer, isInternshipManagerSignature, username]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature, username, isFiltered]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -139,33 +132,52 @@ function InternshipApplicationList() {
     return currentInternshipApplication.status === "COMPLETED";
   }
 
-  function makeSessionFilterEnabled(isFilter) {
-    isFilterSessions = isFilter
+  function makeSessionFilterEnabled(bool) {
+    setIsFilterred(bool)
+    console.log(bool)
   }
 
   function showSessionsList() {
+    if (auth.isStudent()) {
       return (
         <div className="menu-item">
-          <p className="menu-item-title">{currentSession}</p>
+          <p className="menu-item-title">Session : {currentSession}</p>
           <ul>
-              <li>
+            {sessions.map((session, i) => (
+              <li key={i}>
                 <button
-                  className={ "menu-item-button" + " menu-item-button-selected" }
-                  onClick={() => makeSessionFilterEnabled(false)}
-                >Toutes les session
+                  className={
+                    "menu-item-button" +
+                    (currentSession === session
+                      ? " menu-item-button-selected"
+                      : "")
+                  }
+                  onClick={() => changeCurrentSession(session)}
+                >
+                  {session}
                 </button>
               </li>
-              <li>
-              <button
-                  className={ "menu-item-button" + " menu-item-button-selected" }
-                  onClick={() => makeSessionFilterEnabled(true)}
-                >Session courrante et celles à venir
-                </button>
-              </li>
+            ))}
           </ul>
         </div>
       );
-  
+    }
+    else if (history.pathname = "/listInternshipApplication") {
+      return (
+        <div className="">
+          <button
+            className={"menu-item-button" + " menu-item-button-selected"}
+            onClick={() => makeSessionFilterEnabled(false)}
+          >Toutes les session
+          </button>
+          <button
+            className={"menu-item-button" + " menu-item-button-selected"}
+            onClick={() => makeSessionFilterEnabled(true)}
+          >Session courrante + celles à venir
+          </button>
+        </div>
+      );
+    }
   }
 
   function checkForModal() {

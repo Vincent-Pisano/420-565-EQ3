@@ -254,6 +254,7 @@ public class BackendService {
         List<InternshipApplication> allInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
         List<InternshipApplication> allInternshipApplicationsInCurrentAndNextSessions = new ArrayList<>();
         int currentYear = getCurrentYear();
+        System.out.println("Current session- > " + getCurrentSession());
         allInternshipApplications.forEach(internshipApplication -> {
             InternshipOffer currentInternshipOffer = internshipApplication.getInternshipOffer();
             String currentInternshipOfferSession = currentInternshipOffer.getSession();
@@ -262,17 +263,26 @@ public class BackendService {
             String currentSession = getCurrentSession();
             if (currentSession.equals("HIV")) {
                 currentInternshipOfferSessionDate.setTime(currentInternshipOffer.getEndDate());
-                if (currentInternshipOfferSessionDate.get(Calendar.YEAR) >= currentYear) {
+                if (currentInternshipOfferSessionDate.get(Calendar.YEAR) >= currentYear && internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.ACCEPTED) {
                     allInternshipApplicationsInCurrentAndNextSessions.add(internshipApplication);
                 }
             }
             else {
-                if (currentInternshipOfferSessionDate.get(Calendar.YEAR) > currentYear ||
-                        (currentInternshipOfferSessionName.equals("ETE") && currentInternshipOfferSessionDate.get(Calendar.YEAR) == currentYear)) {
+                if ((currentInternshipOfferSessionDate.get(Calendar.YEAR) > currentYear  ||
+                        (currentInternshipOfferSessionName.equals("ETE") && currentInternshipOfferSessionDate.get(Calendar.YEAR) == currentYear)
+                    ) && internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.ACCEPTED) {
                     allInternshipApplicationsInCurrentAndNextSessions.add(internshipApplication);
                 }
             }
         });
+
+        int i = 0;
+        System.out.println(allInternshipApplicationsInCurrentAndNextSessions.size());
+        for (InternshipApplication internshipApplicationss: allInternshipApplicationsInCurrentAndNextSessions) {
+            System.out.println("Internship Application number : " + i +" / "+ internshipApplicationss.getInternshipOffer().getSession());
+            i++;
+        }
+
         Collections.reverse(allInternshipApplicationsInCurrentAndNextSessions);
         return allInternshipApplicationsInCurrentAndNextSessions.isEmpty() ? Optional.empty() : Optional.of(allInternshipApplicationsInCurrentAndNextSessions);
     }
