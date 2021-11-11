@@ -42,6 +42,20 @@ public class AuthController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @PostMapping("/readmission/supervisor/{id}")
+    public ResponseEntity<Supervisor> readmissionSupervisor(@PathVariable String id) {
+        return service.readmissionSupervisor(id)
+                .map(_supervisor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisor))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/readmission/student/{id}")
+    public ResponseEntity<Student> readmissionStudent(@PathVariable String id) {
+        return service.readmissionStudent(id)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/login/student/{username}/{password}")
     public ResponseEntity<Student> loginStudent(@PathVariable String username, @PathVariable String password) {
         return service.loginStudent(username, password)

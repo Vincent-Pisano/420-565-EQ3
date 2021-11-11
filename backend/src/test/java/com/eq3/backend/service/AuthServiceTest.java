@@ -8,10 +8,13 @@ import org.mockito.Mock;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -93,6 +96,52 @@ public class AuthServiceTest {
 
         assertThat(optionalSupervisor.isPresent()).isTrue();
         assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
+    }
+
+    @Test
+    //@Disabled
+    public void testReadmissionSupervisor() {
+        //Arrange
+        expectedSupervisor = getSupervisorWithId();
+        List<String> expectedSessions = expectedSupervisor.getSessions();
+        expectedSessions.add(SESSION);
+        Supervisor givenSupervisor = getSupervisorWithId();
+        String id = givenSupervisor.getId();
+
+        when(supervisorRepository.findById(id)).thenReturn(Optional.ofNullable(expectedSupervisor));
+        when(supervisorRepository.save(any())).thenReturn(expectedSupervisor);
+
+        //Act
+        final Optional<Supervisor> optionalSupervisor = service.readmissionSupervisor(id);
+
+        //Assert
+        Supervisor actualSupervisor = optionalSupervisor.orElse(null);
+
+        assertThat(optionalSupervisor.isPresent()).isTrue();
+        assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
+    }
+
+    @Test
+    //@Disabled
+    public void testReadmissionStudent() {
+        //Arrange
+        expectedStudent = getStudentWithId();
+        List<String> expectedSessions = expectedStudent.getSessions();
+        expectedSessions.add(SESSION);
+        Student givenStudent = getStudentWithId();
+        String id = givenStudent.getId();
+
+        when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(expectedStudent));
+        when(studentRepository.save(any())).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent = service.readmissionStudent(id);
+
+        //Assert
+        Student actualStudent= optionalStudent.orElse(null);
+
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualStudent).isEqualTo(expectedStudent);
     }
 
     @Test

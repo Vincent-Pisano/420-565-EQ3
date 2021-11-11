@@ -11,11 +11,14 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import static com.eq3.backend.utils.Utils.getSessionFromDate;
 
 public class UtilsTest {
 
     public final static String DOCUMENT_EXTENSION = "Evaluation.pdf";
     public final static String DOCUMENT_NAME = "student";
+
+    public final static String SESSION = getSessionFromDate(new Date());
 
     public final static String PDF_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\documentTest.pdf";

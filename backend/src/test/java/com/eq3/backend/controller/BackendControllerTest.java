@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.TreeSet;
 
@@ -183,11 +184,11 @@ class BackendControllerTest {
     public void testGetAllStudentsFromDepartment() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudents(Department.COMPUTER_SCIENCE))
+        when(service.getAllStudents(Department.COMPUTER_SCIENCE, SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_FROM_DEPARTMENT +
-                Department.COMPUTER_SCIENCE)
+                Department.COMPUTER_SCIENCE + "/" + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -222,11 +223,11 @@ class BackendControllerTest {
     public void testGetAllStudentsWithoutSupervisor() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE))
+        when(service.getAllStudentsWithoutSupervisor(Department.COMPUTER_SCIENCE, SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR +
-                Department.COMPUTER_SCIENCE)
+                Department.COMPUTER_SCIENCE + "/" + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -430,13 +431,13 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllSupervisors() throws Exception {
+    public void getAllSupervisorsOfSession() throws Exception {
         //Arrange
         expectedSupervisorList = getListOfSupervisors();
-        when(service.getAllSupervisors())
+        when(service.getAllSupervisorsOfSession(SESSION))
                 .thenReturn(Optional.of(expectedSupervisorList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SUPERVISORS)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SUPERVISORS + SESSION )
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         //Assert
         MockHttpServletResponse response = result.getResponse();
@@ -491,7 +492,9 @@ class BackendControllerTest {
         //Arrange
         expectedStudent = getStudentWithId();
         expectedSupervisor = getSupervisorWithId();
-        expectedStudent.setSupervisor(expectedSupervisor);
+        Map<String, Supervisor> supervisorMap = new HashMap<>();
+        supervisorMap.put(SESSION, expectedSupervisor);
+        expectedStudent.setSupervisorMap(supervisorMap);
 
         when(service.assignSupervisorToStudent(expectedStudent.getId(), expectedSupervisor.getId()))
                 .thenReturn(Optional.of(expectedStudent));
@@ -507,7 +510,7 @@ class BackendControllerTest {
         var actualStudent = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudent.getSupervisor()).isNotNull();
+        assertThat(actualStudent.getSupervisorMap()).isNotNull();
     }
 
     @Test

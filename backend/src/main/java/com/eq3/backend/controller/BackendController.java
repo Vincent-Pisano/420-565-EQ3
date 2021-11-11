@@ -37,9 +37,9 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/{department}")
-    public ResponseEntity<List<Student>> getAllStudents(@PathVariable Department department) {
-        return service.getAllStudents(department)
+    @GetMapping("/getAll/students/{department}/{session}")
+    public ResponseEntity<List<Student>> getAllStudents(@PathVariable Department department, @PathVariable String session) {
+        return service.getAllStudents(department, session)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
@@ -51,9 +51,9 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/noSupervisor/{department}")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutSupervisor(@PathVariable Department department) {
-        return service.getAllStudentsWithoutSupervisor(department)
+    @GetMapping("/getAll/students/noSupervisor/{department}/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutSupervisor(@PathVariable Department department, @PathVariable String session) {
+        return service.getAllStudentsWithoutSupervisor(department, session)
                 .map(_students ->
                    ResponseEntity.status(HttpStatus.ACCEPTED).body(_students)
                 )
@@ -118,9 +118,9 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/supervisors")
-    public ResponseEntity<List<Supervisor>> getAllSupervisors(){
-        return service.getAllSupervisors()
+    @GetMapping("/getAll/supervisors/{session}")
+    public ResponseEntity<List<Supervisor>> getAllSupervisorsOfSession(@PathVariable String session){
+        return service.getAllSupervisorsOfSession(session)
                 .map(_supervisors -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisors))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

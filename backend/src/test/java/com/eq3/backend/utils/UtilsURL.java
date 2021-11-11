@@ -12,6 +12,8 @@ public class UtilsURL {
     public final static String URL_LOGIN_MONITOR = "/login/monitor/";
     public final static String URL_LOGIN_SUPERVISOR = "/login/supervisor/";
     public final static String URL_LOGIN_INTERNSHIP_MANAGER = "/login/internshipManager/";
+    public final static String URL_READMISSION_SUPERVISOR = "/readmission/supervisor/";
+    public final static String URL_READMISSION_STUDENT = "/readmission/student/";
 
     // BackendController
     public final static String URL_SAVE_SIGNATURE = "/save/signature/";
@@ -26,7 +28,7 @@ public class UtilsURL {
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION = "/getAll/student/studentEvaluation/unevaluated";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_ENTERPRISE_EVALUATION = "/getAll/student/enterpriseEvaluation/unevaluated";
     public final static String URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY = "/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today";
-    public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors";
+    public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors/";
     public final static String URL_GET_ALL_SESSIONS_INTERNSHIP_OFFER_MONITOR = "/getAll/sessions/internshipOffer/monitor/";
     public final static String URL_GET_MONITOR = "/get/monitor/";
     public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/";

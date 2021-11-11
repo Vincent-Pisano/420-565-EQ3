@@ -104,8 +104,8 @@ public class BackendService {
         return optionalBinary;
     }
 
-    public Optional<List<Student>> getAllStudents(Department department) {
-        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartment(department);
+    public Optional<List<Student>> getAllStudents(Department department, String session) {
+        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSessionsContains(department, session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
@@ -116,8 +116,10 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department) {
-        List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSupervisorIsNull(department);
+    public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department, String session) {
+        System.out.println(session);
+        List<Student> students = studentRepository.
+                findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(department, session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
@@ -230,8 +232,8 @@ public class BackendService {
         return studentList.stream().distinct().collect(Collectors.toList());
     }
 
-    public Optional<List<Supervisor>> getAllSupervisors() {
-        List<Supervisor> supervisors = supervisorRepository.findAllByIsDisabledFalse();
+    public Optional<List<Supervisor>> getAllSupervisorsOfSession(String session) {
+        List<Supervisor> supervisors = supervisorRepository.findAllByIsDisabledFalseAndSessionsContains(session);
         return supervisors.isEmpty() ? Optional.empty() : Optional.of(supervisors);
     }
 
@@ -272,7 +274,8 @@ public class BackendService {
         Optional<Supervisor> optionalSupervisor = supervisorRepository.findById(idSupervisor);
 
         optionalStudent.ifPresent(student -> {
-            student.setSupervisor(optionalSupervisor.orElse(null));
+            Map<String, Supervisor> supervisorMap = student.getSupervisorMap();
+            optionalSupervisor.ifPresent(supervisor -> supervisorMap.put(getSessionFromDate(new Date()), supervisor));
             studentRepository.save(student);
         });
 

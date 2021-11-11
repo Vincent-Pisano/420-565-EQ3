@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import auth from "../services/Auth";
 import axios from "axios";
-import "../App.css";
+import { session } from "../Utils/Store";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
+import ConfirmSubscribeModal from "./ConfirmReadmissionModal";
+import Readmission from "./Readmission";
 import "./../styles/Home.css";
 import "./../styles/Form.css";
+import "../App.css";
 
 function Home() {
   let user = auth.user;
@@ -16,6 +19,9 @@ function Home() {
   const [hasASignature, setHasASignature] = useState(
     user.signature !== undefined && user.signature !== null
   );
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   function formatDate(dateString) {
     let date = new Date(dateString);
@@ -23,11 +29,42 @@ function Home() {
     return dateFormatted;
   }
 
-  function checkIfStudent() {
+  function checkUser() {
     if (auth.isStudent()) {
+      if (!user.sessions.includes(session)) {
+        return (
+          <>
+            <Readmission showModal={showModal} session={session} />
+            <CVList />
+          </>
+        );
+      } else {
+        return (
+          <>
+            <CVList />
+          </>
+        );
+      }
+    } else if (auth.isSupervisor()) {
+      if (!user.sessions.includes(session)) {
+        return <Readmission showModal={showModal} session={session} />;
+      }
+    }
+  }
+
+  function showModal() {
+    handleShow();
+  }
+
+  function checkForModal() {
+    if (auth.isSupervisor() || auth.isStudent()) {
       return (
         <>
-          <CVList />
+          <ConfirmSubscribeModal
+            show={show}
+            handleClose={handleClose}
+            session={session}
+          />
         </>
       );
     }
@@ -63,26 +100,35 @@ function Home() {
       );
     } else {
       return (
-        <Form className="mb-5 mt-2">
-          <Form.Group controlId="document" className="cont_file_form">
-            <Form.Label className="labelFields">Signature</Form.Label>
-            <Form.Control
-              type="file"
-              onChange={(e) => {
-                saveSignature(e.target.files[0]);
-              }}
-              className="input_file_form"
-              accept="image/png"
-            />
-          </Form.Group>
-        </Form>
+        <>
+          <Form className="mb-5 mt-2">
+            <Form.Group controlId="document" className="cont_file_form">
+              <Form.Label className="labelFields">Signature</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => {
+                  saveSignature(e.target.files[0]);
+                }}
+                className="input_file_form"
+                accept="image/png"
+              />
+            </Form.Group>
+          </Form>
+          <p
+            style={{
+              color: "red",
+            }}
+          >
+            {errorMessage}
+          </p>
+        </>
       );
     }
   }
 
   return (
     <>
-      <Container className="cont_home">
+      <Container className="cont_home mb-5">
         <Row className="cont_central">
           <Col xs={12} md={4}>
             <Row>
@@ -101,20 +147,14 @@ function Home() {
                 <br />
               </Card>
               {checkSignature()}
-              <p
-                style={{
-                  color: "red",
-                }}
-              >
-                {errorMessage}
-              </p>
             </Row>
           </Col>
           <Col xs={12} md={8}>
-            {checkIfStudent()}
+            {checkUser()}
           </Col>
         </Row>
       </Container>
+      {checkForModal()}
     </>
   );
 }

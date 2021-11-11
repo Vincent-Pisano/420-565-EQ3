@@ -59,7 +59,7 @@ public class InternshipService {
 
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
-        internshipOffer.setSession(getSession(internshipOffer.getStartDate()));
+        internshipOffer.setSession(getSessionInternshipOffer(internshipOffer.getStartDate()));
 
         if (multipartFile != null) {
             try {
@@ -70,14 +70,6 @@ public class InternshipService {
             }
         }
         return internshipOffer;
-    }
-
-    private String getSession(Date startDate) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        int month = cal.get(Calendar.MONTH);
-        int year = cal.get(Calendar.YEAR);
-        return month <= 5 ? year + " Hiver" : year + " Été";
     }
 
     private InternshipOffer mapInternshipOffer(String internshipOfferJson) throws IOException {

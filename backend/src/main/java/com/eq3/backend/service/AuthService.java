@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import static com.eq3.backend.utils.Utils.cleanUpStudentCVList;
-
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+
+import static com.eq3.backend.utils.Utils.*;
 
 @Service
 public class AuthService {
@@ -36,6 +38,9 @@ public class AuthService {
     public Optional<Student> signUp(Student student) {
         Optional<Student> optionalStudent = Optional.empty();
         try {
+            String session = getSessionFromDate(student.getCreationDate());
+            List<String> studentSessions = student.getSessions();
+            studentSessions.add(session);
             optionalStudent = cleanUpStudentCVList(Optional.of(studentRepository.save(student)));
         } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Student) : " + exception.getMessage());
@@ -56,11 +61,50 @@ public class AuthService {
     public Optional<Supervisor> signUp(Supervisor supervisor) {
         Optional<Supervisor> optionalSupervisor = Optional.empty();
         try {
+            String session = getSessionFromDate(supervisor.getCreationDate());
+            List<String> supervisorSessions = supervisor.getSessions();
+            supervisorSessions.add(session);
             optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
         } catch (DuplicateKeyException exception) {
             logger.error("A duplicated key was found in signUp (Supervisor) : " + exception.getMessage());
         }
         return optionalSupervisor;
+    }
+
+    public Optional<Supervisor> readmissionSupervisor(String id) {
+        Optional<Supervisor> optionalSupervisor = Optional.empty();
+        try {
+            optionalSupervisor = supervisorRepository.findById(id);
+            if(optionalSupervisor.isPresent()) {
+                Supervisor supervisor = optionalSupervisor.get();
+                List<String> supervisorSessions = supervisor.getSessions();
+                Date date = new Date();
+                String session = getSessionFromDate(date);
+                supervisorSessions.add(session);
+                optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
+            }
+        } catch (DuplicateKeyException exception) {
+            logger.error("A duplicated key was found in readmission (Supervisor) : " + exception.getMessage());
+        }
+        return optionalSupervisor;
+    }
+
+    public Optional<Student> readmissionStudent(String id) {
+        Optional<Student> optionalStudent = Optional.empty();
+        try {
+            optionalStudent = studentRepository.findById(id);
+            if(optionalStudent.isPresent()) {
+                Student student = optionalStudent.get();
+                List<String> studentSessions = student.getSessions();
+                Date date = new Date();
+                String session = getSessionFromDate(date);
+                studentSessions.add(session);
+                optionalStudent = Optional.of(studentRepository.save(student));
+            }
+        } catch (DuplicateKeyException exception) {
+            logger.error("A duplicated key was found in readmission (Student) : " + exception.getMessage());
+        }
+        return optionalStudent;
     }
 
     public Optional<Student> loginStudent(String username, String password) {
