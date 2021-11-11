@@ -137,44 +137,24 @@ function InternshipApplicationList() {
     console.log(bool)
   }
 
-  function showSessionsList() {
-    if (auth.isStudent()) {
+  function showFilterOptions() {
+    if (auth.isInternshipManager && title === "Liste des applications de stages acceptées") {
       return (
-        <div className="menu-item">
-          <p className="menu-item-title">Session : {currentSession}</p>
+        <div  className="">
           <ul>
-            {sessions.map((session, i) => (
-              <li key={i}>
-                <button
-                  className={
-                    "menu-item-button" +
-                    (currentSession === session
-                      ? " menu-item-button-selected"
-                      : "")
-                  }
-                  onClick={() => changeCurrentSession(session)}
-                >
-                  {session}
-                </button>
-              </li>
-            ))}
+            <li>
+              <button
+                className={"menu-item-button"}
+                onClick={() => makeSessionFilterEnabled(false)}
+              >Toutes les session
+              </button>
+              <button
+                className={"menu-item-button"}
+                onClick={() => makeSessionFilterEnabled(true)}
+              >Session courrante + celles à venir
+              </button>
+            </li>
           </ul>
-        </div>
-      );
-    }
-    else if (history.pathname = "/listInternshipApplication") {
-      return (
-        <div className="">
-          <button
-            className={"menu-item-button" + " menu-item-button-selected"}
-            onClick={() => makeSessionFilterEnabled(false)}
-          >Toutes les session
-          </button>
-          <button
-            className={"menu-item-button" + " menu-item-button-selected"}
-            onClick={() => makeSessionFilterEnabled(true)}
-          >Session courrante + celles à venir
-          </button>
         </div>
       );
     }
@@ -281,7 +261,7 @@ function InternshipApplicationList() {
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
         <h2 className="cont_title_form">{title}</h2>
-        {showSessionsList()}
+        {showFilterOptions()}
         <Container className="cont_list">
           <p>{errorMessage}</p>
           <ul>
