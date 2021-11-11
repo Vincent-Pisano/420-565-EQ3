@@ -43,7 +43,11 @@ function InternshipApplicationList() {
   const [currentInternshipApplication, setCurrentInternshipApplication] =
     useState({});
   const [internshipApplications, setInternshipApplications] = useState([]);
+  const [sessions, setSessions] = useState([]);
+  const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [errorMessage, setErrorMessage] = useState("");
+
+  let isFilterSessions = false;
 
   useEffect(() => {
     setErrorMessage("");
@@ -69,7 +73,9 @@ function InternshipApplicationList() {
           .catch((err) => {
             setErrorMessage("Aucune Application validée pour le moment");
           });
-      } else {
+      }
+      else if (isFilterSessions === false) {
+        console.log("Entered ")
         axios
           .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
           .then((response) => {
@@ -79,6 +85,18 @@ function InternshipApplicationList() {
             setErrorMessage("Aucune Application acceptée pour le moment");
           });
       }
+      else if (isFilterSessions === true){
+        console.log("Entered 2")
+        axios
+          .get(`http://localhost:9090/getAll/internshipApplications/in/current/and/next/sessions`)
+          .then((response) => {
+            setSessions(response.data);
+            setInternshipApplications(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Application d'offre de stage disponible pour le moment");
+          });
+      }
     } else if (auth.isMonitor()) {
       axios
         .get(
@@ -86,6 +104,7 @@ function InternshipApplicationList() {
         )
         .then((response) => {
           setInternshipApplications(response.data);
+          
         })
         .catch((err) => {
           setErrorMessage("Aucune Application enregistrée pour le moment");
@@ -118,6 +137,35 @@ function InternshipApplicationList() {
 
   function isCurrentApplicationCompleted() {
     return currentInternshipApplication.status === "COMPLETED";
+  }
+
+  function makeSessionFilterEnabled(isFilter) {
+    isFilterSessions = isFilter
+  }
+
+  function showSessionsList() {
+      return (
+        <div className="menu-item">
+          <p className="menu-item-title">{currentSession}</p>
+          <ul>
+              <li>
+                <button
+                  className={ "menu-item-button" + " menu-item-button-selected" }
+                  onClick={() => makeSessionFilterEnabled(false)}
+                >Toutes les session
+                </button>
+              </li>
+              <li>
+              <button
+                  className={ "menu-item-button" + " menu-item-button-selected" }
+                  onClick={() => makeSessionFilterEnabled(true)}
+                >Session courrante et celles à venir
+                </button>
+              </li>
+          </ul>
+        </div>
+      );
+  
   }
 
   function checkForModal() {
@@ -221,6 +269,7 @@ function InternshipApplicationList() {
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
         <h2 className="cont_title_form">{title}</h2>
+        {showSessionsList()}
         <Container className="cont_list">
           <p>{errorMessage}</p>
           <ul>
