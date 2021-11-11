@@ -52,7 +52,6 @@ class BackendControllerTest {
     private PDFDocument expectedPDFDocument;
     private String expectedDocumentName;
     private Binary expectedImage;
-    private List<String> expectedSessionList;
 
     @Test
     //@Disabled

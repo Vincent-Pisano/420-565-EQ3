@@ -162,6 +162,14 @@ public class UtilsTest {
         return month <= 5 ? year + " Hiver" : year + " Été";
     }
 
+    public static String getSession() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month <= 5 ? year + " Hiver" : year + " Été";
+    }
+
     public static List<String> getSessionList() {
         return Collections.singletonList(getSession(getInternshipOfferWithId().getStartDate()));
     }

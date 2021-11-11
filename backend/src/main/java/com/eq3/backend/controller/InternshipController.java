@@ -84,7 +84,7 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/internshipApplication/student/{session}/{username}")
+    @GetMapping("/getAll/internshipApplication/{session}/student/{username}")
     public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationOfStudent(@PathVariable String session, @PathVariable String username) {
         return service.getAllInternshipApplicationOfStudent(session, username)
                 .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))

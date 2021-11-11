@@ -60,14 +60,14 @@ function InternshipApplicationList() {
             setCurrentSession(response.data[0]);
           })
           .catch((err) => {
-            setErrorMessage("Vous n'avez déposé aucune offre de stage");
+            setErrorMessage("Vous n'avez appliqué à aucune offre de stage");
           });
       } else if (
         currentSession !== undefined
       ){
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/student/${currentSession}/${user.username}`
+          `http://localhost:9090/getAll/internshipApplication/${currentSession}/student/${user.username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);
@@ -236,28 +236,30 @@ function InternshipApplicationList() {
 
   function showSessionsList() {
     if (auth.isStudent()) {
-      return (
-        <div className="menu-item">
-          <p className="menu-item-title">Session : {currentSession}</p>
-          <ul>
-            {sessions.map((session, i) => (
-              <li key={i}>
-                <button
-                  className={
-                    "menu-item-button" +
-                    (currentSession === session
-                      ? " menu-item-button-selected"
-                      : "")
-                  }
-                  onClick={() => changeCurrentSession(session)}
-                >
-                  {session}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
+      if (sessions.length !== 0) {
+        return (
+          <div className="menu-item">
+            <p className="menu-item-title">{currentSession}</p>
+            <ul>
+              {sessions.map((session, i) => (
+                <li key={i}>
+                  <button
+                    className={
+                      "menu-item-button" +
+                      (currentSession === session
+                        ? " menu-item-button-selected"
+                        : "")
+                    }
+                    onClick={() => changeCurrentSession(session)}
+                  >
+                    {session}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
     }
   }
 

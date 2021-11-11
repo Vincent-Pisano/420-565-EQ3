@@ -277,10 +277,11 @@ public class InternshipControllerTest {
         expectedInternshipApplicationList = getListOfInternshipApplication();
         expectedStudent = getStudentWithId();
 
-        when(service.getAllInternshipApplicationOfStudent(getSession(new Date()), expectedStudent.getUsername()))
+        when(service.getAllInternshipApplicationOfStudent(getSession(), expectedStudent.getUsername()))
                 .thenReturn(Optional.of(expectedInternshipApplicationList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS_STUDENT + getSession(new Date()) + "/" + expectedStudent.getUsername())
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS + getSession()
+                + URL_STUDENT + expectedStudent.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
