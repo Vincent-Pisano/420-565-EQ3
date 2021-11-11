@@ -78,6 +78,7 @@ class BackendServiceTest {
     private Internship expectedInternship;
     private List<Internship> expectedInternshipList;
     private List<String> expectedSessionsList;
+    private List<InternshipOffer> expectedInternshipOfferList;
 
     @Test
     //@Disabled
@@ -441,6 +442,26 @@ class BackendServiceTest {
 
         //Assert
         List<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllNextSessionsOfInternshipOffers() {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedSessionList = getSessionList();
+        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllNextSessionsOfInternshipOffers();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
 
         assertThat(optionalSessions.isPresent()).isTrue();
         assertThat(actualSessions.size()).isEqualTo(expectedSessionList.size());

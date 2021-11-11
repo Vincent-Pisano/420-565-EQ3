@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeSet;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static com.eq3.backend.utils.UtilsURL.*;
@@ -381,6 +382,24 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedSessionList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSIONS_STUDENT + expectedStudent.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfInternshipOffers() throws Exception {
+        //Arrange
+        expectedSessionList = getListOfSessions();
+        when(service.getAllNextSessionsOfInternshipOffers())
+                .thenReturn(Optional.of(new TreeSet<>(expectedSessionList)));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         //Assert
         MockHttpServletResponse response = result.getResponse();

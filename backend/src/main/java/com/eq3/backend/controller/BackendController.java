@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
+import java.util.TreeSet;
 
 @RestController
 @CrossOrigin("http://localhost:3006")
@@ -127,6 +128,13 @@ public class BackendController {
     @GetMapping("/getAll/sessions/internshipOffer/monitor/{idMonitor}")
     public ResponseEntity<List<String>> getAllSessionsOfMonitor(@PathVariable String idMonitor){
         return service.getAllSessionsOfMonitor(idMonitor)
+                .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/next/sessions/internshipOffer")
+    public ResponseEntity<TreeSet<String>> getAllNextSessionsOfInternshipOffers(){
+        return service.getAllNextSessionsOfInternshipOffers()
                 .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
