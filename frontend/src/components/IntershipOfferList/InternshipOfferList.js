@@ -21,8 +21,8 @@ function InternshipOfferList() {
       ? "Liste des offres de stages non validées"
       : state.title
     : auth.isStudent()
-    ? "Liste des offres de stages de votre département"
-    : "Liste de vos offres de stage";
+      ? "Liste des offres de stages de votre département"
+      : "Liste de vos offres de stage";
 
   useEffect(() => {
     if (auth.isInternshipManager()) {
@@ -48,18 +48,32 @@ function InternshipOfferList() {
             setErrorMessage("Aucune Offre de stage validée");
           });
     } else if (auth.isStudent()) {
-      axios
-        .get(
-          `http://localhost:9090/getAll/internshipOffer/${auth.user.department}`
-        )
-        .then((response) => {
-          setInternshipOffers(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage(
-            "Aucune Offre de stage n'a été validé pour le moment"
-          );
-        });
+      if (sessions.length === 0 && currentSession === undefined) {
+        axios
+          .get(
+            `http://localhost:9090/getAll/next/sessions/internshipOffer`
+          )
+          .then((response) => {
+            setSessions(response.data);
+            setCurrentSession(response.data[0]);
+          })
+          .catch((err) => {
+            setErrorMessage("Vous n'avez déposé aucune offre de stage");
+          });
+      } else if (currentSession !== undefined) {
+        axios
+          .get(
+            `http://localhost:9090/getAll/internshipOffer/${currentSession}/${auth.user.department}`
+          )
+          .then((response) => {
+            setInternshipOffers(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage(
+              "Aucune Offre de stage n'a été validé pour le moment"
+            );
+          });
+      }
     } else if (auth.isMonitor()) {
       if (sessions.length === 0 && currentSession === undefined) {
         axios
@@ -105,7 +119,7 @@ function InternshipOfferList() {
   }
 
   function showSessionsList() {
-    if (auth.isMonitor() && sessions.length !== 0) {
+    if ((auth.isMonitor() || auth.isStudent()) && sessions.length !== 0) {
       return (
         <SessionDropdown
           sessions={sessions}

@@ -101,9 +101,9 @@ public class InternshipService {
         return internshipRepository.findByInternshipApplication_Id(idApplication);
     }
 
-    public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
+    public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField, String session) {
         List<InternshipOffer> internshipOffers =
-                internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(workField);
+                internshipOfferRepository.findAllByWorkFieldAndSessionAndIsValidTrueAndIsDisabledFalse(workField, session);
         internshipOffers.forEach(internshipOffer -> internshipOffer.setPDFDocument(
                 internshipOffer.getPDFDocument() != null ? new PDFDocument() : null)
         );

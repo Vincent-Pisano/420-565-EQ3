@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface InternshipOfferRepository extends MongoRepository<InternshipOffer, String> {
 
-    List<InternshipOffer> findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(Department workField);
+    List<InternshipOffer> findAllByWorkFieldAndSessionAndIsValidTrueAndIsDisabledFalse(Department workField, String session);
 
     List<InternshipOffer> findAllByIsValidFalseAndIsDisabledFalse();
 

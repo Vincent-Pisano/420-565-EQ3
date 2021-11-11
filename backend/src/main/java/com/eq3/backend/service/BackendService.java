@@ -267,14 +267,12 @@ public class BackendService {
         internshipOffers.forEach(internshipOffer -> {
             String internshipOfferSession = internshipOffer.getSession();
             int internshipOfferYear = Integer.parseInt(internshipOfferSession.substring(0, 4));
-
             if (internshipOfferYear > year) {
                 sessions.add(internshipOffer.getSession());
             }
             else if ("Hiver".equals(session) && internshipOfferYear == year){
                 sessions.add(internshipOffer.getSession());
             }
-
         });
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }

@@ -11,10 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.eq3.backend.utils.UtilsTest.*;
-import static com.eq3.backend.utils.UtilsURL.URL_SIGN_INTERNSHIP_CONTRACT_MONITOR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -208,12 +203,12 @@ public class InternshipServiceTest {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(Department.COMPUTER_SCIENCE))
+        when(internshipOfferRepository.findAllByWorkFieldAndSessionAndIsValidTrueAndIsDisabledFalse(Department.COMPUTER_SCIENCE, SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         //Act
         final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE);
+                service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE, SESSION);
 
         //Assert
         List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);

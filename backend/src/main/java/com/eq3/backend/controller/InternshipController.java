@@ -5,6 +5,7 @@ import com.eq3.backend.model.Internship;
 import com.eq3.backend.model.InternshipApplication;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.service.InternshipService;
+import org.apache.catalina.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,9 +57,9 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/internshipOffer/{workField}")
-    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferByWorkField(@PathVariable Department workField) {
-        return service.getAllInternshipOfferByWorkField(workField)
+    @GetMapping("/getAll/internshipOffer/{session}/{workField}")
+    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferByWorkField(@PathVariable Department workField, @PathVariable String session) {
+        return service.getAllInternshipOfferByWorkField(workField, session)
                 .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
