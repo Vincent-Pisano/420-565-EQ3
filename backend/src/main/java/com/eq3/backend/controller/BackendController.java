@@ -83,8 +83,8 @@ public class BackendController {
     }
 
     @GetMapping("/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today")
-    public ResponseEntity<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() {
-        return service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday()
+    public ResponseEntity<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() {
+        return service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed()
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

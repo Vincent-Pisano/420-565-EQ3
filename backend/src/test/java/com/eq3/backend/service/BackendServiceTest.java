@@ -344,7 +344,7 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() throws ParseException {
+    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws ParseException {
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplicationWithInterviewDate();
         expectedStudentList = getListOfStudents();
@@ -353,7 +353,7 @@ class BackendServiceTest {
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday();
+                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed();
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);

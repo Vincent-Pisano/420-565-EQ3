@@ -354,10 +354,10 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() throws Exception {
+    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday())
+        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed())
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY)
