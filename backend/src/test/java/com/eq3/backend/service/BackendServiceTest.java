@@ -7,6 +7,7 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.types.Binary;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -229,7 +230,7 @@ class BackendServiceTest {
         //Arrange
         expectedStudentList = getListOfStudents();
         expectedSupervisor = getSupervisorWithId();
-        when(studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(expectedSupervisor.getId(), SESSION))
+        when(studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(new ObjectId(expectedSupervisor.getId()), SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act

@@ -53,7 +53,7 @@ function StudentList() {
           .catch((err) => {
             setStudents([]);
             setErrorMessage(
-              "Erreur! Aucun étudiant n'a été assigné pour le moment"
+              "Erreur! Aucun étudiant n'a été assigné à cette session"
             );
           });
       } else {
@@ -113,6 +113,7 @@ function StudentList() {
   function checkIfSupervisor(student) {
     let state = {
       title: `Application aux offres de stage de : ${student.firstName} ${student.lastName}`,
+      session: currentSession
     };
     history.push({
       pathname: `/listInternshipApplication/${student.username}`,

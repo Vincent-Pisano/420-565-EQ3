@@ -21,8 +21,8 @@ function InternshipApplicationList() {
   let username = params.username;
 
   let state = history.location.state;
-
   let internshipOffer = history.location.state;
+  
   let isInternshipManagerSignature =
     history.location.pathname === "/listInternshipApplication/signature";
 
@@ -109,7 +109,7 @@ function InternshipApplicationList() {
     } else if (auth.isSupervisor()) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/student/${username}`
+          `http://localhost:9090/getAll/internshipApplication/${state.session}/student/${username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);
@@ -118,14 +118,7 @@ function InternshipApplicationList() {
           setErrorMessage("Erreur ! Aucune application de stages");
         });
     }
-  }, [
-    user.username,
-    internshipOffer,
-    isInternshipManagerSignature,
-    username,
-    sessions,
-    currentSession,
-  ]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature, username, sessions, currentSession, state.session]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
