@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +62,6 @@ public class InternshipServiceTest {
     private Internship expectedInternship;
     private InternshipApplication expectedInternshipApplication;
     private List<InternshipOffer> expectedInternshipOfferList;
-
     private List<InternshipApplication> expectedInternshipApplicationList;
 
     @Test
@@ -108,7 +108,8 @@ public class InternshipServiceTest {
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         InternshipOffer givenInternshipOffer = getInternshipOfferWithoutId();
 
-        when(internshipOfferRepository.save(givenInternshipOffer)).thenReturn(expectedInternshipOffer);
+        when(internshipOfferRepository.save(givenInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
 
         //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
@@ -266,14 +267,15 @@ public class InternshipServiceTest {
     public void getAllInternshipOfferOfMonitor() {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedInternshipOffer = expectedInternshipOfferList.get(0);
         expectedMonitor = getMonitorWithId();
 
-        when(internshipOfferRepository.findAllByMonitor_IdAndIsDisabledFalse(expectedMonitor.getId()))
+        when(internshipOfferRepository.findAllBySessionAndMonitor_IdAndIsDisabledFalse(expectedInternshipOffer.getSession(), expectedMonitor.getId()))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
         final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllInternshipOfferOfMonitor(expectedMonitor.getId());
+                service.getAllInternshipOfferOfMonitor(expectedInternshipOffer.getSession(), expectedMonitor.getId());
 
         // Assert
         List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
@@ -295,7 +297,7 @@ public class InternshipServiceTest {
                 .thenReturn(expectedInternshipApplicationList);
         //Act
         final Optional<List<InternshipApplication>> optionalInternshipApplications =
-                service.getAllInternshipApplicationOfStudent(expectedStudent.getUsername());
+                service.getAllInternshipApplicationOfStudent(getSession(new Date()), expectedStudent.getUsername());
 
         //Assert
         List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);

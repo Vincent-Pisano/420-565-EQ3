@@ -15,5 +15,5 @@ X    Après que la tâche n'est plus In-Progress ET durant le Code Review, s'ass
 
 Points d'actions du SPRINT 3:
 -   Après que la tâche n'est plus In-Progress ET durant le Code Review, s'assurer que le code respecte les règles de clean code.
--   Pendant les Daily, augmenter la communication et la transparence entre les membres de l'équipe sur les problèmes (répartition du temps/de la charge) et l'avancement de chacun.
+-   Pendant les daily, s'accorder au moins 2 à 3 minutes pour discuter de la communications entres les membres de l'équipes sur  les problèmes (répartition du temps/de la charge)     et l'avancement de chacun.
 

@@ -4,7 +4,6 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.Binary;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -49,7 +48,7 @@ class BackendControllerTest {
     private InternshipOffer expectedInternshipOffer;
     private Internship expectedInternship;
     private CV expectedCV;
-    private List<InternshipApplication> expectedInternshipApplcationList;
+    private List<String> expectedSessionList;
     private PDFDocument expectedPDFDocument;
     private String expectedDocumentName;
     private Binary expectedImage;
@@ -355,10 +354,10 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() throws Exception {
+    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday())
+        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed())
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY)
@@ -370,6 +369,25 @@ class BackendControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfStudent() throws Exception {
+        //Arrange
+        expectedStudent = getStudentWithId();
+        expectedSessionList = getListOfSessions();
+        when(service.getAllSessionsOfStudent(expectedStudent.getId()))
+                .thenReturn(Optional.of(expectedSessionList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSIONS_STUDENT + expectedStudent.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
     }
 
     @Test
@@ -407,6 +425,25 @@ class BackendControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualSupervisorList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfMonitor() throws Exception {
+        //Arrange
+        expectedMonitor = getMonitorWithId();
+        expectedSessionList = getSessionList();
+        when(service.getAllSessionsOfMonitor(expectedMonitor.getId()))
+                .thenReturn(Optional.of(expectedSessionList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSIONS_INTERNSHIP_OFFER_MONITOR + expectedMonitor.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
     }
 
     @Test

@@ -4,6 +4,10 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,14 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.eq3.backend.utils.Utils.*;
@@ -32,7 +29,7 @@ public class BackendService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipRepository internshipRepository;
-    private final EvaluationRepository evaluationRepository;
+    private final MongoTemplate mongoTemplate;
     private final InternshipApplicationRepository internshipApplicationRepository;
 
     BackendService(StudentRepository studentRepository,
@@ -41,7 +38,7 @@ public class BackendService {
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipRepository internshipRepository,
-                   EvaluationRepository evaluationRepository,
+                   MongoTemplate mongoTemplate,
                    InternshipApplicationRepository internshipApplicationRepository) {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
@@ -49,7 +46,7 @@ public class BackendService {
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipRepository = internshipRepository;
-        this.evaluationRepository = evaluationRepository;
+        this.mongoTemplate = mongoTemplate;
         this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
@@ -137,43 +134,64 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    public Optional<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() {
-        Date currentDate = new Date();
-        List<Student> allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday = new ArrayList<>();
+    public Optional<List<String>> getAllSessionsOfStudent(String idStudent) {
+        List<String> sessions = new ArrayList<>();
+        Optional<Student> optionalStudent = studentRepository.findStudentByIdAndIsDisabledFalse(idStudent);
+
+        optionalStudent.ifPresent(student -> updateSessionsFromStudent(sessions, student));
+        Collections.reverse(sessions);
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    private void updateSessionsFromStudent(List<String> sessions, Student student) {
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(student);
+        internshipApplications.forEach(internshipApplication -> {
+            InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
+            if (!sessions.contains(currentOffer.getSession())) {
+                sessions.add(currentOffer.getSession());
+            }
+        });
+    }
+
+    public Optional<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() {
+        List<Student> studentWaitingAndInterviewDatePassed = new ArrayList<>();
         List<InternshipApplication> internshipApplicationsWithInterviewDate =
                 internshipApplicationRepository.findAllByInterviewDateIsNotNull();
-        for (InternshipApplication currentInternshipApplication: internshipApplicationsWithInterviewDate) {
-            Date internshipApplicationDate = currentInternshipApplication.getInterviewDate();
-            if (currentInternshipApplication.getStatus() == InternshipApplication.ApplicationStatus.WAITING) {
-                allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.add(currentInternshipApplication.getStudent());
-            }
-            else if (internshipApplicationDate.before(currentDate) && !allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.contains(currentInternshipApplication.getStudent())) {
-                allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.add(currentInternshipApplication.getStudent());
-            }
-        }
-        return allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.isEmpty() ? Optional.empty() : Optional.of(allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday);
+
+        internshipApplicationsWithInterviewDate.forEach(internshipApplication ->
+                setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(studentWaitingAndInterviewDatePassed, internshipApplication));
+        System.out.println(studentWaitingAndInterviewDatePassed.size());
+        return studentWaitingAndInterviewDatePassed.isEmpty() ? Optional.empty() : Optional.of(studentWaitingAndInterviewDatePassed);
     }
+
+    private void setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(List<Student> students, InternshipApplication internshipApplication) {
+        if (internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.WAITING &&
+            internshipApplication.getInterviewDate().before( new Date()) &&
+            !students.contains(internshipApplication.getStudent())) {
+            students.add(internshipApplication.getStudent());
+        }
+    }
+
     public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
         List<Student> studentsWithoutInterviewDate = studentRepository.findAllByIsDisabledFalse();
         List<InternshipApplication> internshipApplicationsWithInterviewDate =
                 internshipApplicationRepository.findAllByInterviewDateIsNotNull();
 
-        for (InternshipApplication internshipApplication : internshipApplicationsWithInterviewDate) {
-            studentsWithoutInterviewDate.remove(internshipApplication.getStudent());
-        }
+        internshipApplicationsWithInterviewDate.forEach(internshipApplication -> studentsWithoutInterviewDate.remove(internshipApplication.getStudent()));
+
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
 
     public Optional<List<Student>> getAllStudentsWithInternship() {
         List<Student> studentsWithInternship = new ArrayList<>();
         List<InternshipApplication> completedInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
-        for (InternshipApplication internshipApplication : completedInternshipApplications) {
+        completedInternshipApplications.forEach(internshipApplication -> {
             if (internshipApplication.statusIsCompleted()){
                 if (!studentsWithInternship.contains(internshipApplication.getStudent())){
                     studentsWithInternship.add(internshipApplication.getStudent());
                 }
             }
-        }
+        });
         return studentsWithInternship.isEmpty() ? Optional.empty() : Optional.of(studentsWithInternship);
     }
 
@@ -182,9 +200,8 @@ public class BackendService {
         List<InternshipApplication> internshipApplicationsWithoutInterviewDate =
                 internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse();
 
-        for (InternshipApplication internshipApplication : internshipApplicationsWithoutInterviewDate) {
-            studentsWaitingInterview.add(internshipApplication.getStudent());
-        }
+        internshipApplicationsWithoutInterviewDate.forEach(internshipApplication -> studentsWaitingInterview.add(internshipApplication.getStudent()));
+
         return studentsWaitingInterview.isEmpty() ? Optional.empty() :
                 Optional.of(studentsWaitingInterview.stream().distinct().collect(Collectors.toList()));
     }
@@ -216,6 +233,25 @@ public class BackendService {
     public Optional<List<Supervisor>> getAllSupervisors() {
         List<Supervisor> supervisors = supervisorRepository.findAllByIsDisabledFalse();
         return supervisors.isEmpty() ? Optional.empty() : Optional.of(supervisors);
+    }
+
+    public Optional<List<String>> getAllSessionsOfMonitor(String idMonitor) {
+        Query query = new Query(getCriteriaQueryGetAllSessionsOfMonitor(idMonitor));
+
+        List<String> sessions = mongoTemplate
+                .getCollection(COLLECTION_NAME_INTERNSHIP_OFFER)
+                .distinct(FIELD_SESSION, query.getQueryObject() ,String.class)
+                .into(new ArrayList<>());
+
+        Collections.reverse(sessions);
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    private Criteria getCriteriaQueryGetAllSessionsOfMonitor(String idMonitor) {
+        List<Criteria> expression =  new ArrayList<>();
+        expression.add(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
+        expression.add(Criteria.where(FIELD_IS_DISABLED).is(false));
+        return new Criteria().andOperator(expression.toArray(expression.toArray(new Criteria[expression.size()])));
     }
 
     public Optional<Monitor> getMonitorByUsername(String username) {

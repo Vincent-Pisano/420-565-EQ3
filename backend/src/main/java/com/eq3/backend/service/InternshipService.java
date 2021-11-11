@@ -4,7 +4,6 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfDocument;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -31,14 +30,12 @@ public class InternshipService {
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
     private final InternshipManagerRepository internshipManagerRepository;
-    private final SupervisorRepository supervisorRepository;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipApplicationRepository internshipApplicationRepository,
                    InternshipRepository internshipRepository,
-                   InternshipManagerRepository internshipManagerRepository,
-                      SupervisorRepository supervisorRepository
+                   InternshipManagerRepository internshipManagerRepository
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
@@ -46,7 +43,6 @@ public class InternshipService {
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
         this.internshipManagerRepository = internshipManagerRepository;
-        this.supervisorRepository = supervisorRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -63,6 +59,8 @@ public class InternshipService {
 
     private InternshipOffer getInternshipOffer(String InternshipOfferJson, MultipartFile multipartFile) throws IOException {
         InternshipOffer internshipOffer = mapInternshipOffer(InternshipOfferJson);
+        internshipOffer.setSession(getSession(internshipOffer.getStartDate()));
+
         if (multipartFile != null) {
             try {
                 internshipOffer.setPDFDocument(extractDocument(multipartFile));
@@ -72,6 +70,14 @@ public class InternshipService {
             }
         }
         return internshipOffer;
+    }
+
+    private String getSession(Date startDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month <= 5 ? year + " Hiver" : year + " Été";
     }
 
     private InternshipOffer mapInternshipOffer(String internshipOfferJson) throws IOException {
@@ -112,9 +118,9 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipOffer>> getAllInternshipOfferOfMonitor(String idMonitor) {
+    public Optional<List<InternshipOffer>> getAllInternshipOfferOfMonitor(String session, String idMonitor) {
         List<InternshipOffer> internshipOffers =
-                internshipOfferRepository.findAllByMonitor_IdAndIsDisabledFalse(idMonitor);
+                internshipOfferRepository.findAllBySessionAndMonitor_IdAndIsDisabledFalse(session, idMonitor);
 
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
@@ -129,14 +135,21 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String studentUsername) {
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String session, String studentUsername) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
-        List<InternshipApplication> internshipApplications = new ArrayList<>();
+        List<InternshipApplication> internshipApplicationsOfStudent = new ArrayList<>();
 
-        if (optionalStudent.isPresent())
-            internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(optionalStudent.get());
+        optionalStudent.ifPresent(student -> {
+            List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(student);
+            internshipApplications.forEach(internshipApplication -> {
+                InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+                if (session.equals(internshipOffer.getSession())) {
+                    internshipApplicationsOfStudent.add(internshipApplication);
+                }
+            });
+        });
 
-        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+        return internshipApplicationsOfStudent.isEmpty() ? Optional.empty() : Optional.of(internshipApplicationsOfStudent);
     }
 
     public Optional<List<InternshipApplication>> getAllInternshipApplicationOfInternshipOffer(String id) {

@@ -37,9 +37,7 @@ public class CVService {
     }
 
     private Boolean addToListCV(MultipartFile multipartFile, Optional<Student> optionalStudent) {
-        boolean isPresent = optionalStudent.isPresent();
-        if (isPresent) {
-            Student student = optionalStudent.get();
+        optionalStudent.ifPresent(student -> {
             List<CV> listCV = student.getCVList();
             if (listCV.size() < 10) {
                 try {
@@ -49,11 +47,9 @@ public class CVService {
                             + " at extractDocument in CVService : " + e.getMessage());
                 }
                 student.setCVList(listCV);
-            } else {
-                isPresent = false;
             }
-        }
-        return isPresent;
+        });
+        return optionalStudent.isPresent();
     }
 
     public Optional<Student> deleteCV(String idStudent, String idCV) {
@@ -65,14 +61,12 @@ public class CVService {
     }
 
     private Boolean deleteCVFromListCV(Optional<Student> optionalStudent, String idCV) {
-        Boolean isPresent = optionalStudent.isPresent();
-        if (isPresent) {
-            Student student = optionalStudent.get();
+        optionalStudent.ifPresent(student -> {
             List<CV> listCV = student.getCVList();
             listCV.removeIf(cv -> cv.getId().equals(idCV));
             student.setCVList(listCV);
-        }
-        return isPresent;
+        });
+        return optionalStudent.isPresent();
     }
 
     public Optional<Student> updateActiveCV(String idStudent, String idCV) {
@@ -84,16 +78,14 @@ public class CVService {
     }
 
     public Boolean updateActiveCVFromListCV(Optional<Student> optionalStudent, String idCV) {
-        Boolean isPresent = optionalStudent.isPresent();
-        if (isPresent) {
-            Student student = optionalStudent.get();
+        optionalStudent.ifPresent(student -> {
             List<CV> listCV = student.getCVList();
             for (CV cv : listCV) {
                 updateCVActive(idCV, cv);
             }
             student.setCVList(listCV);
-        }
-        return isPresent;
+        });
+        return optionalStudent.isPresent();
     }
 
     public Optional<Student> validateCVOfStudent(String idStudent) {
@@ -101,12 +93,11 @@ public class CVService {
 
         optionalStudent.ifPresent(student -> {
             List<CV> CVList = student.getCVList();
-            for (CV currentCV : CVList) {
-                if (currentCV.getIsActive()) {
-                    currentCV.setStatus(CV.CVStatus.VALID);
+            CVList.forEach(cv -> {
+                if (cv.getIsActive()) {
+                    cv.setStatus(CV.CVStatus.VALID);
                 }
-                break;
-            }
+            });
             studentRepository.save(student);
         });
 

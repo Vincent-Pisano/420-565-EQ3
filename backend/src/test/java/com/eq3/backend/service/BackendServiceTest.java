@@ -3,18 +3,21 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 
+import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.MongoCollection;
 import org.bson.types.Binary;
+import org.bson.Document;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +47,13 @@ class BackendServiceTest {
     private InternshipManagerRepository internshipManagerRepository;
 
     @Mock
-    private EvaluationRepository evaluationRepository;
+    private MongoTemplate mongoTemplate;
+
+    @Mock
+    private MongoCollection<Document> collection;
+
+    @Mock
+    private DistinctIterable distinctIterable;
 
     @Mock
     private InternshipOfferRepository internshipOfferRepository;
@@ -61,12 +70,14 @@ class BackendServiceTest {
     private Supervisor expectedSupervisor;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipApplication> expectedInternshipApplicationList;
+    private List<String> expectedSessionList;
     private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
     private Binary expectedImage;
     private Internship expectedInternship;
     private List<Internship> expectedInternshipList;
+    private List<String> expectedSessionsList;
 
     @Test
     //@Disabled
@@ -269,15 +280,14 @@ class BackendServiceTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testGetAllStudentsWithoutInterviewDate() {
         //Arrange
         expectedStudentList = getListOfStudents();
         when(studentRepository.findAllByIsDisabledFalse())
                 .thenReturn(expectedStudentList);
-        expectedInternshipApplicationList = getListOfInternshipApplication();
         when(internshipApplicationRepository.findAllByInterviewDateIsNotNull())
-                .thenReturn(expectedInternshipApplicationList);
+                .thenReturn(new ArrayList<>());
 
         //Act
         final Optional<List<Student>> optionalStudents =
@@ -332,16 +342,16 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday() throws ParseException {
+    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws ParseException {
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplicationWithInterviewDate();
-        expectedStudentList = getListOfStudents();
+        expectedStudentList = Collections.singletonList(getStudentWithId());
         when( internshipApplicationRepository.findAllByInterviewDateIsNotNull()
         ).thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday();
+                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed();
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -407,6 +417,33 @@ class BackendServiceTest {
 
         assertThat(optionalSupervisors.isPresent()).isTrue();
         assertThat(actualSupervisors.size()).isEqualTo(expectedSupervisorList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfMonitor() {
+        //Arrange
+        expectedMonitor = getMonitorWithId();
+        expectedSessionList = getSessionList();
+        when(mongoTemplate
+                .getCollection(any()))
+            .thenReturn(collection);
+        when(collection
+                .distinct(anyString(), any(Document.class), any()))
+            .thenReturn(distinctIterable);
+        when(distinctIterable
+                .into(new ArrayList<>()))
+            .thenReturn(expectedSessionList);
+
+        //Act
+        final Optional<List<String>> optionalSessions =
+                service.getAllSessionsOfMonitor(expectedMonitor.getId());
+
+        //Assert
+        List<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionList.size());
     }
 
     @Test
@@ -515,6 +552,29 @@ class BackendServiceTest {
 
         assertThat(optionalDocument.isPresent()).isTrue();
         assertThat(actualPDFDocument).isEqualTo(expectedEvaluation.getDocument());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfStudent() {
+        //Arrange
+        expectedSessionsList = getListOfSessions();
+        expectedStudent = getStudentWithId();
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        when(studentRepository.findStudentByIdAndIsDisabledFalse(expectedStudent.getId()))
+                .thenReturn(Optional.of(expectedStudent));
+        when(internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(expectedStudent))
+                .thenReturn(expectedInternshipApplicationList);
+
+        //Act
+        final Optional<List<String>> optionalSessions =
+                service.getAllSessionsOfStudent(expectedStudent.getId());
+
+        //Assert
+        List<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionsList.size());
     }
 
     @Test

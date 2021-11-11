@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +57,9 @@ public class InternshipOffer extends Entity{
 
     @Field
     private Department workField;
+
+    @Field
+    private String session;
 
     @DBRef
     private Monitor monitor;

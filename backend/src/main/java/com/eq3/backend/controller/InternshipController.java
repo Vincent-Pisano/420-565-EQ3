@@ -77,16 +77,16 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/internshipOffer/monitor/{id}")
-    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferOfMonitor(@PathVariable String id) {
-        return service.getAllInternshipOfferOfMonitor(id)
+    @GetMapping("/getAll/internshipOffer/{session}/monitor/{id}")
+    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferOfMonitor(@PathVariable String session, @PathVariable String id) {
+        return service.getAllInternshipOfferOfMonitor(session, id)
                 .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/internshipApplication/student/{username}")
-    public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationOfStudent(@PathVariable String username) {
-        return service.getAllInternshipApplicationOfStudent(username)
+    @GetMapping("/getAll/internshipApplication/{session}/student/{username}")
+    public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationOfStudent(@PathVariable String session, @PathVariable String username) {
+        return service.getAllInternshipApplicationOfStudent(session, username)
                 .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

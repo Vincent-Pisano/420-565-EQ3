@@ -10,9 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class UtilsTest {
 
@@ -66,7 +64,7 @@ public class UtilsTest {
 
     public static Monitor getMonitorWithId(){
         Monitor monitor = getMonitorWithoutId();
-        monitor.setId("61478hgk580000jbhd5");
+        monitor.setId("6164accb3418286e9469714a");
         return monitor;
     }
 
@@ -151,8 +149,35 @@ public class UtilsTest {
                 .address("189, rue Mont-Gomery")
                 .city("Montreal")
                 .postalCode("JGH5E8")
+                .session(getSession(new Date()))
                 .monitor(getMonitorWithId())
                 .build();
+    }
+
+    public static String getSession(Date startDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month <= 5 ? year + " Hiver" : year + " Été";
+    }
+
+    public static String getSession() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        return month <= 5 ? year + " Hiver" : year + " Été";
+    }
+
+    public static List<String> getSessionList() {
+        return Collections.singletonList(getSession(getInternshipOfferWithId().getStartDate()));
+    }
+
+    public static List<String> getListOfSessions(){
+        List<String> listSessions = new ArrayList<>();
+        listSessions.add(getSession(new Date()));
+        return listSessions;
     }
 
     public static List<InternshipOffer> getListOfInternshipOffer() {
