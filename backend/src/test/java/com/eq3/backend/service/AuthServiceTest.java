@@ -112,13 +112,36 @@ public class AuthServiceTest {
         when(supervisorRepository.save(any())).thenReturn(expectedSupervisor);
 
         //Act
-        final Optional<Supervisor> optionalSupervisor = service.readmission(id);
+        final Optional<Supervisor> optionalSupervisor = service.readmissionSupervisor(id);
 
         //Assert
         Supervisor actualSupervisor = optionalSupervisor.orElse(null);
 
         assertThat(optionalSupervisor.isPresent()).isTrue();
         assertThat(actualSupervisor).isEqualTo(expectedSupervisor);
+    }
+
+    @Test
+    //@Disabled
+    public void testReadmissionStudent() {
+        //Arrange
+        expectedStudent = getStudentWithId();
+        List<String> expectedSessions = expectedStudent.getSessions();
+        expectedSessions.add(SESSION);
+        Student givenStudent = getStudentWithId();
+        String id = givenStudent.getId();
+
+        when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(expectedStudent));
+        when(studentRepository.save(any())).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent = service.readmissionStudent(id);
+
+        //Assert
+        Student actualStudent= optionalStudent.orElse(null);
+
+        assertThat(optionalStudent.isPresent()).isTrue();
+        assertThat(actualStudent).isEqualTo(expectedStudent);
     }
 
     @Test
