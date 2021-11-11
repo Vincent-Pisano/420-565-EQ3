@@ -20,7 +20,7 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     @Query(value = "{ 'isDisabled':false ,'CVList' : {$elemMatch: { 'status': 'WAITING', 'isActive' : true} } }")
     List<Student> findAllByIsDisabledFalseAndActiveCVWaitingValidation();
 
-    @Query(value = "{'isDisabled':false, 'department': ?0, 'supervisorMap.?1':{'$exists' : false}, 'sessions': [?1]}")
+    @Query(value = "{'isDisabled':false, 'department': ?0, 'supervisorMap.?1':{'$exists' : false}, 'sessions': ?1}")
     List<Student> findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(Department department, String session);
 
     @Query(value = "{'isDisabled':false, CVList:{$size: 0}}")

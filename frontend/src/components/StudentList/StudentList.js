@@ -23,7 +23,7 @@ function StudentList() {
 
   const [students, setStudents] = useState([]);
   // eslint-disable-next-line no-unused-vars
-  const [sessions, setSessions] = useState(user.sessions);
+  const [sessions, setSessions] = useState(auth.isSupervisor() ? user.sessions : []);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [currentStudent, setCurrentStudent] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState("");
