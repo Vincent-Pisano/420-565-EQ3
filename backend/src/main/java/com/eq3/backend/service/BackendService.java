@@ -259,13 +259,23 @@ public class BackendService {
     public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffers() {
         TreeSet<String> sessions = new TreeSet<>();
         String currentSession = getSessionFromDate(new Date());
+        String session = currentSession.substring(5);
+        int year = Integer.parseInt(currentSession.substring(0, 4));
+
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
         internshipOffers.forEach(internshipOffer -> {
-            System.out.println(currentSession.substring(4));
-            if ("Été".equals(currentSession.substring(4))){
+            String internshipOfferSession = internshipOffer.getSession();
+            System.out.println("-------");
+            System.out.println(internshipOfferSession.substring(0, 4));
+            System.out.println(internshipOffer.getSession());
+
+            if (year > Integer.parseInt(internshipOfferSession.substring(0, 4))) {
+
+            }
+            if ("Été".equals(currentSession.substring(5))){
                 
             }
-            System.out.println(internshipOffer.getSession());
+
         });
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
