@@ -5,7 +5,8 @@ import { session } from "../Utils/Store";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
-import ConfirmSubscribeModal from "./ConfirmSubscribeModal";
+import ConfirmSubscribeModal from "./ConfirmReadmissionModal";
+import Readmission from "./Readmission";
 import "./../styles/Home.css";
 import "./../styles/Form.css";
 import "../App.css";
@@ -30,25 +31,23 @@ function Home() {
 
   function checkUser() {
     if (auth.isStudent()) {
-      return (
-        <>
-          <CVList />
-        </>
-      );
-    } else if (auth.isSupervisor()) {
       if (!user.sessions.includes(session)) {
         return (
           <>
-            <hr className="modal_separator mx-auto"/>
-            <h2 className="cont_title_form">Réinscription nécessaire</h2>
-            <p>Veuillez vous réinscrire pour la session : "{session}"</p>
-            <Container className="cont_btn">
-              <button className="btn_submit" onClick={showModal}>
-                Réinscrivez-vous
-              </button>
-            </Container>
+            <Readmission showModal={showModal} session={session} />
+            <CVList />
           </>
         );
+      } else {
+        return (
+          <>
+            <CVList />
+          </>
+        );
+      }
+    } else if (auth.isSupervisor()) {
+      if (!user.sessions.includes(session)) {
+        return <Readmission showModal={showModal} session={session} />;
       }
     }
   }
@@ -58,10 +57,14 @@ function Home() {
   }
 
   function checkForModal() {
-    if (auth.isSupervisor()) {
+    if (auth.isSupervisor() || auth.isStudent()) {
       return (
         <>
-          <ConfirmSubscribeModal show={show} handleClose={handleClose} session={session}/>
+          <ConfirmSubscribeModal
+            show={show}
+            handleClose={handleClose}
+            session={session}
+          />
         </>
       );
     }
