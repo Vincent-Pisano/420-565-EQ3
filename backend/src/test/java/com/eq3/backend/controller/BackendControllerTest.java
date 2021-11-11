@@ -375,25 +375,6 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllSessionsOfStudent() throws Exception {
-        //Arrange
-        expectedStudent = getStudentWithId();
-        expectedSessionList = getListOfSessions();
-        when(service.getAllSessionsOfStudent(expectedStudent.getId()))
-                .thenReturn(Optional.of(expectedSessionList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSIONS_STUDENT + expectedStudent.getId())
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualSessionList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
     public void testGetAllSessionsOfInternshipOffers() throws Exception {
         //Arrange
         expectedSessionList = getListOfSessions();

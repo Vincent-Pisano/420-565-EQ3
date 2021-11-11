@@ -22,6 +22,7 @@ function InternshipApplicationList() {
 
   let state = history.location.state;
   let internshipOffer = history.location.state;
+  let session = state !== undefined ? state.session : undefined;
   
   let isInternshipManagerSignature =
     history.location.pathname === "/listInternshipApplication/signature";
@@ -46,35 +47,24 @@ function InternshipApplicationList() {
     useState({});
   const [internshipApplications, setInternshipApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [sessions, setSessions] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [sessions, setSessions] = useState(auth.isStudent() ? user.sessions : []);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
 
   useEffect(() => {
     setErrorMessage("");
     setInternshipApplications([]);
     if (auth.isStudent()) {
-      if (sessions.length === 0 && currentSession === undefined) {
-        axios
-          .get(`http://localhost:9090/getAll/sessions/student/${auth.user.id}`)
-          .then((response) => {
-            setSessions(response.data);
-            setCurrentSession(response.data[0]);
-          })
-          .catch((err) => {
-            setErrorMessage("Vous n'avez appliqué à aucune offre de stage");
-          });
-      } else if (currentSession !== undefined) {
-        axios
-          .get(
-            `http://localhost:9090/getAll/internshipApplication/${currentSession}/student/${user.username}`
-          )
-          .then((response) => {
-            setInternshipApplications(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Aucune Application enregistrée pour le moment");
-          });
-      }
+    axios
+      .get(
+        `http://localhost:9090/getAll/internshipApplication/${currentSession}/student/${user.username}`
+      )
+      .then((response) => {
+        setInternshipApplications(response.data);
+      })
+      .catch((err) => {
+        setErrorMessage("Aucune Application enregistrée pour le moment");
+      });
     } else if (auth.isInternshipManager()) {
       if (isInternshipManagerSignature) {
         axios
@@ -109,16 +99,16 @@ function InternshipApplicationList() {
     } else if (auth.isSupervisor()) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/${state.session}/student/${username}`
+          `http://localhost:9090/getAll/internshipApplication/${session}/student/${username}`
         )
         .then((response) => {
           setInternshipApplications(response.data);
         })
         .catch((err) => {
-          setErrorMessage("Erreur ! Aucune application de stages");
+          setErrorMessage("Erreur ! Aucune application de stage");
         });
     }
-  }, [user.username, internshipOffer, isInternshipManagerSignature, username, sessions, currentSession, state.session]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature, username, sessions, currentSession, session]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);

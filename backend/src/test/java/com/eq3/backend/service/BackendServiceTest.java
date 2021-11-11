@@ -583,29 +583,6 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllSessionsOfStudent() {
-        //Arrange
-        expectedSessionsList = getListOfSessions();
-        expectedStudent = getStudentWithId();
-        expectedInternshipApplicationList = getListOfInternshipApplication();
-        when(studentRepository.findStudentByIdAndIsDisabledFalse(expectedStudent.getId()))
-                .thenReturn(Optional.of(expectedStudent));
-        when(internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(expectedStudent))
-                .thenReturn(expectedInternshipApplicationList);
-
-        //Act
-        final Optional<List<String>> optionalSessions =
-                service.getAllSessionsOfStudent(expectedStudent.getId());
-
-        //Assert
-        List<String> actualSessions = optionalSessions.orElse(null);
-
-        assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions.size()).isEqualTo(expectedSessionsList.size());
-    }
-
-    @Test
-    //@Disabled
     public void testDownloadInternshipContractDocument() throws IOException {
         //Arrange
         expectedPDFDocument = getDocument();

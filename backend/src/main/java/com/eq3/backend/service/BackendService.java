@@ -137,15 +137,6 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    public Optional<List<String>> getAllSessionsOfStudent(String idStudent) {
-        List<String> sessions = new ArrayList<>();
-        Optional<Student> optionalStudent = studentRepository.findStudentByIdAndIsDisabledFalse(idStudent);
-
-        optionalStudent.ifPresent(student -> updateSessionsFromStudent(sessions, student));
-        Collections.reverse(sessions);
-        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
-    }
-
     private void updateSessionsFromStudent(List<String> sessions, Student student) {
         List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(student);
         internshipApplications.forEach(internshipApplication -> {
