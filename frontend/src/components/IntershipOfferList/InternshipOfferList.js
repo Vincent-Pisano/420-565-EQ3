@@ -3,6 +3,7 @@ import axios from "axios";
 import auth from "../../services/Auth";
 import { useHistory } from "react-router";
 import InternshipOffer from "./InternshipOffer";
+import SessionDropdown from "../SessionDropdown/SessionDropdown";
 import "../../styles/List.css";
 import "../../styles/Session.css";
 import { Container } from "react-bootstrap";
@@ -62,7 +63,9 @@ function InternshipOfferList() {
     } else if (auth.isMonitor()) {
       if (sessions.length === 0 && currentSession === undefined) {
         axios
-          .get(`http://localhost:9090/getAll/sessions/internshipOffer/monitor/${auth.user.id}`)
+          .get(
+            `http://localhost:9090/getAll/sessions/internshipOffer/monitor/${auth.user.id}`
+          )
           .then((response) => {
             setSessions(response.data);
             setCurrentSession(response.data[0]);
@@ -70,9 +73,7 @@ function InternshipOfferList() {
           .catch((err) => {
             setErrorMessage("Vous n'avez déposé aucune offre de stage");
           });
-      } else if (
-        currentSession !== undefined
-      ) {
+      } else if (currentSession !== undefined) {
         axios
           .get(
             `http://localhost:9090/getAll/internshipOffer/${currentSession}/monitor/${auth.user.id}`
@@ -106,32 +107,17 @@ function InternshipOfferList() {
   function showSessionsList() {
     if (auth.isMonitor() && sessions.length !== 0) {
       return (
-        <div className="menu-item">
-          <p className="menu-item-title">{currentSession}</p>
-          <ul>
-            {sessions.map((session, i) => (
-              <li key={i}>
-                <button
-                  className={
-                    "menu-item-button" +
-                    (currentSession === session
-                      ? " menu-item-button-selected"
-                      : "")
-                  }
-                  onClick={() => changeCurrentSession(session)}
-                >
-                  {session}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <SessionDropdown
+          sessions={sessions}
+          currentSession={currentSession}
+          changeCurrentSession={changeCurrentSession}
+        />
       );
     }
   }
 
   function changeCurrentSession(session) {
-    setCurrentSession(session)
+    setCurrentSession(session);
   }
 
   return (

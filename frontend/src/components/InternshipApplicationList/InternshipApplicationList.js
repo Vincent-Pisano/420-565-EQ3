@@ -12,6 +12,7 @@ import InternshipApplicationSignatureModal from "./Modal/InternshipApplicationSi
 import InternshipApplicationMonitorModal from "./Modal/InternshipApplicationMonitorModal";
 import InternshipApplicationSupervisorModal from "./Modal/InternshipApplicationSupervisorModal";
 import InternshipApplicationSupervisorEnterpriseEvaluationModal from "./Modal/InternshipApplicationSupervisorEnterpriseEvaluationModal";
+import SessionDropdown from "../SessionDropdown/SessionDropdown";
 
 function InternshipApplicationList() {
   let user = auth.user;
@@ -62,19 +63,17 @@ function InternshipApplicationList() {
           .catch((err) => {
             setErrorMessage("Vous n'avez appliqué à aucune offre de stage");
           });
-      } else if (
-        currentSession !== undefined
-      ){
-      axios
-        .get(
-          `http://localhost:9090/getAll/internshipApplication/${currentSession}/student/${user.username}`
-        )
-        .then((response) => {
-          setInternshipApplications(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage("Aucune Application enregistrée pour le moment");
-        });
+      } else if (currentSession !== undefined) {
+        axios
+          .get(
+            `http://localhost:9090/getAll/internshipApplication/${currentSession}/student/${user.username}`
+          )
+          .then((response) => {
+            setInternshipApplications(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Application enregistrée pour le moment");
+          });
       }
     } else if (auth.isInternshipManager()) {
       if (isInternshipManagerSignature) {
@@ -119,7 +118,14 @@ function InternshipApplicationList() {
           setErrorMessage("Erreur ! Aucune application de stages");
         });
     }
-  }, [user.username, internshipOffer, isInternshipManagerSignature, username, sessions, currentSession]);
+  }, [
+    user.username,
+    internshipOffer,
+    isInternshipManagerSignature,
+    username,
+    sessions,
+    currentSession,
+  ]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -238,33 +244,18 @@ function InternshipApplicationList() {
     if (auth.isStudent()) {
       if (sessions.length !== 0) {
         return (
-          <div className="menu-item">
-            <p className="menu-item-title">{currentSession}</p>
-            <ul>
-              {sessions.map((session, i) => (
-                <li key={i}>
-                  <button
-                    className={
-                      "menu-item-button" +
-                      (currentSession === session
-                        ? " menu-item-button-selected"
-                        : "")
-                    }
-                    onClick={() => changeCurrentSession(session)}
-                  >
-                    {session}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <SessionDropdown
+            sessions={sessions}
+            currentSession={currentSession}
+            changeCurrentSession={changeCurrentSession}
+          />
         );
       }
     }
   }
 
   function changeCurrentSession(session) {
-    setCurrentSession(session)
+    setCurrentSession(session);
   }
 
   return (
