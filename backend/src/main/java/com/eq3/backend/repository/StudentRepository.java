@@ -2,6 +2,7 @@ package com.eq3.backend.repository;
 
 import com.eq3.backend.model.Department;
 import com.eq3.backend.model.Student;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,7 +33,7 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     Optional<Student> findStudentByIdAndIsDisabledFalse(String id);
 
-    @Query(value = "{'isDisabled':false, 'supervisorMap.?1': DBRef('supervisor', ObjectId(?0)), 'sessions': ?1}")
-    List<Student> findAllBySupervisor_IdAndIsDisabledFalse(String idSupervisor, String session);
+    @Query(value = "{'isDisabled':false, 'supervisorMap.?1.$id': ?0, 'sessions': ?1}")
+    List<Student> findAllBySupervisor_IdAndIsDisabledFalse(ObjectId idSupervisor, String session);
 }
 

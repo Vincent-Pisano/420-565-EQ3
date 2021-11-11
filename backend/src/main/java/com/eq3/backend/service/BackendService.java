@@ -126,7 +126,7 @@ public class BackendService {
     }
 
     public Optional<List<Student>> getAllStudentsWithSupervisor(String idSupervisor, String session) {
-        List<Student> students = studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(idSupervisor, session);
+        List<Student> students = studentRepository.findAllBySupervisor_IdAndIsDisabledFalse(new ObjectId(idSupervisor), session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)).get());
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
