@@ -138,9 +138,7 @@ public class BackendService {
         List<String> sessions = new ArrayList<>();
         Optional<Student> optionalStudent = studentRepository.findStudentByIdAndIsDisabledFalse(idStudent);
 
-        optionalStudent.ifPresent(student -> {
-            updateSessionsFromStudent(sessions, student);
-        });
+        optionalStudent.ifPresent(student -> updateSessionsFromStudent(sessions, student));
         Collections.reverse(sessions);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
@@ -160,17 +158,15 @@ public class BackendService {
         List<InternshipApplication> internshipApplicationsWithInterviewDate =
                 internshipApplicationRepository.findAllByInterviewDateIsNotNull();
 
-        internshipApplicationsWithInterviewDate.forEach(internshipApplication -> {
-            setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(studentWaitingAndInterviewDatePassed, internshipApplication);
-        });
+        internshipApplicationsWithInterviewDate.forEach(internshipApplication ->
+                setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(studentWaitingAndInterviewDatePassed, internshipApplication));
         System.out.println(studentWaitingAndInterviewDatePassed.size());
         return studentWaitingAndInterviewDatePassed.isEmpty() ? Optional.empty() : Optional.of(studentWaitingAndInterviewDatePassed);
     }
 
     private void setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(List<Student> students, InternshipApplication internshipApplication) {
-        Date currentDate = new Date();
         if (internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.WAITING &&
-            internshipApplication.getInterviewDate().before(currentDate) &&
+            internshipApplication.getInterviewDate().before( new Date()) &&
             !students.contains(internshipApplication.getStudent())) {
             students.add(internshipApplication.getStudent());
         }
