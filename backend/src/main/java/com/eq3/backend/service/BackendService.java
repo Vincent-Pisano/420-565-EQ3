@@ -4,6 +4,10 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,10 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,7 +29,7 @@ public class BackendService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipRepository internshipRepository;
-    private final EvaluationRepository evaluationRepository;
+    private final MongoTemplate mongoTemplate;
     private final InternshipApplicationRepository internshipApplicationRepository;
 
     BackendService(StudentRepository studentRepository,
@@ -38,7 +38,7 @@ public class BackendService {
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipRepository internshipRepository,
-                   EvaluationRepository evaluationRepository,
+                   MongoTemplate mongoTemplate,
                    InternshipApplicationRepository internshipApplicationRepository) {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
@@ -46,7 +46,7 @@ public class BackendService {
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipRepository = internshipRepository;
-        this.evaluationRepository = evaluationRepository;
+        this.mongoTemplate = mongoTemplate;
         this.internshipApplicationRepository = internshipApplicationRepository;
     }
 
@@ -168,6 +168,7 @@ public class BackendService {
         }
         return allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday.isEmpty() ? Optional.empty() : Optional.of(allStudentsWithApplicationStatusWaitingAndInterviewDatePassedToday);
     }
+
     public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
         List<Student> studentsWithoutInterviewDate = studentRepository.findAllByIsDisabledFalse();
         List<InternshipApplication> internshipApplicationsWithInterviewDate =
@@ -231,6 +232,25 @@ public class BackendService {
     public Optional<List<Supervisor>> getAllSupervisors() {
         List<Supervisor> supervisors = supervisorRepository.findAllByIsDisabledFalse();
         return supervisors.isEmpty() ? Optional.empty() : Optional.of(supervisors);
+    }
+
+    public Optional<List<String>> getAllSessionsOfMonitor(String idMonitor) {
+        Query query = new Query(getCriteriaQueryGetAllSessionsOfMonitor(idMonitor));
+
+        List<String> sessions = mongoTemplate
+                .getCollection(COLLECTION_NAME_INTERNSHIP_OFFER)
+                .distinct(FIELD_SESSION, query.getQueryObject() ,String.class)
+                .into(new ArrayList<>());
+
+        Collections.reverse(sessions);
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    private Criteria getCriteriaQueryGetAllSessionsOfMonitor(String idMonitor) {
+        List<Criteria> expression =  new ArrayList<>();
+        expression.add(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));
+        expression.add(Criteria.where(FIELD_IS_DISABLED).is(false));
+        return new Criteria().andOperator(expression.toArray(expression.toArray(new Criteria[expression.size()])));
     }
 
     public Optional<Monitor> getMonitorByUsername(String username) {

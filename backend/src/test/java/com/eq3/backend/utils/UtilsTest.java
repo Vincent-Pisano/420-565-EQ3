@@ -10,10 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class UtilsTest {
 
@@ -67,7 +64,7 @@ public class UtilsTest {
 
     public static Monitor getMonitorWithId(){
         Monitor monitor = getMonitorWithoutId();
-        monitor.setId("61478hgk580000jbhd5");
+        monitor.setId("6164accb3418286e9469714a");
         return monitor;
     }
 
@@ -162,7 +159,11 @@ public class UtilsTest {
         cal.setTime(startDate);
         int month = cal.get(Calendar.MONTH);
         int year = cal.get(Calendar.YEAR);
-        return month <= 6 ? "HIV" + year : "AUT" + year;
+        return month <= 5 ? year + " Hiver" : year + " Été";
+    }
+
+    public static List<String> getSessionList() {
+        return Collections.singletonList(getSession(getInternshipOfferWithId().getStartDate()));
     }
 
     public static List<String> getListOfSessions(){

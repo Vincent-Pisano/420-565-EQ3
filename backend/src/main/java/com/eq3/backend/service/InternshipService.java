@@ -78,7 +78,7 @@ public class InternshipService {
         cal.setTime(startDate);
         int month = cal.get(Calendar.MONTH);
         int year = cal.get(Calendar.YEAR);
-        return month <= 6 ? "HIV" + year : "AUT" + year;
+        return month <= 5 ? year + " Hiver" : year + " Été";
     }
 
     private InternshipOffer mapInternshipOffer(String internshipOfferJson) throws IOException {
@@ -119,9 +119,9 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipOffer>> getAllInternshipOfferOfMonitor(String idMonitor) {
+    public Optional<List<InternshipOffer>> getAllInternshipOfferOfMonitor(String session, String idMonitor) {
         List<InternshipOffer> internshipOffers =
-                internshipOfferRepository.findAllByMonitor_IdAndIsDisabledFalse(idMonitor);
+                internshipOfferRepository.findAllBySessionAndMonitor_IdAndIsDisabledFalse(session, idMonitor);
 
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }

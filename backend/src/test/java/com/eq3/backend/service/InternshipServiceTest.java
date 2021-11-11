@@ -108,7 +108,8 @@ public class InternshipServiceTest {
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         InternshipOffer givenInternshipOffer = getInternshipOfferWithoutId();
 
-        when(internshipOfferRepository.save(givenInternshipOffer)).thenReturn(expectedInternshipOffer);
+        when(internshipOfferRepository.save(givenInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
 
         //Act
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
@@ -266,14 +267,15 @@ public class InternshipServiceTest {
     public void getAllInternshipOfferOfMonitor() {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedInternshipOffer = expectedInternshipOfferList.get(0);
         expectedMonitor = getMonitorWithId();
 
-        when(internshipOfferRepository.findAllByMonitor_IdAndIsDisabledFalse(expectedMonitor.getId()))
+        when(internshipOfferRepository.findAllBySessionAndMonitor_IdAndIsDisabledFalse(expectedInternshipOffer.getSession(), expectedMonitor.getId()))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
         final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllInternshipOfferOfMonitor(expectedMonitor.getId());
+                service.getAllInternshipOfferOfMonitor(expectedInternshipOffer.getSession(), expectedMonitor.getId());
 
         // Assert
         List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
