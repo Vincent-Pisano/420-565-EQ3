@@ -7,9 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
-const Supervisor = ({ supervisor, onDoubleClick }) => {
+const Supervisor = ({ supervisor, onClick }) => {
   return (
-    <Row className="list_node" onDoubleClick={() => onDoubleClick(supervisor)}>
+    <Row className="list_node" onClick={() => onClick(supervisor)}>
       <Col xs={3}>
         <FontAwesomeIcon
           className="fa-3x"

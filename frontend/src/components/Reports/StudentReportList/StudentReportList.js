@@ -133,7 +133,7 @@ function StudentReportList() {
     }
   }, [title]);
 
-  function onDoubleClick(student) {
+  function onClick(student) {
     if (title === "Étudiants en attente d’entrevue") {
       history.push({
         pathname: `/reports/listInternshipApplication/${student.username}`,
@@ -210,8 +210,8 @@ function StudentReportList() {
               <Student
                 key={student.id}
                 student={student}
-                onDoubleClick={
-                  auth.isInternshipManager() ? onDoubleClick : null
+                onClick={
+                  auth.isInternshipManager() ? onClick : null
                 }
               />
             ))}

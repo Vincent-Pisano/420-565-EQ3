@@ -41,7 +41,7 @@ function SupervisorList() {
               <Supervisor
                 key={supervisor.id}
                 supervisor={supervisor}
-                onDoubleClick={showAssignableStudents}
+                onClick={showAssignableStudents}
               />
             ))}
           </ul>

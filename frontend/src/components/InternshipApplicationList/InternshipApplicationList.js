@@ -253,7 +253,7 @@ function InternshipApplicationList() {
               <InternshipApplication
                 key={internshipApplication.id}
                 internshipApplication={internshipApplication}
-                onDoubleClick={showModal}
+                onClick={showModal}
                 isInternshipManagerSignature={isInternshipManagerSignature}
               />
             ))}

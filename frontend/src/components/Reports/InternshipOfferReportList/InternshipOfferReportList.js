@@ -53,7 +53,7 @@ function InternshipOfferReportList() {
               <InternshipOffer
                 key={internshipOffers.indexOf(internshipOffer)}
                 internshipOffer={internshipOffer}
-                onDoubleClick={showInternshipOffer}
+                onClick={showInternshipOffer}
               />
             ))}
           </ul>

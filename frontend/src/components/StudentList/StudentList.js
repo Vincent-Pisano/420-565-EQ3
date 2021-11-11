@@ -185,7 +185,7 @@ function StudentList() {
               <Student
                 key={student.id}
                 student={student}
-                onDoubleClick={
+                onClick={
                   auth.isInternshipManager()
                     ? showModal
                     : auth.isSupervisor()

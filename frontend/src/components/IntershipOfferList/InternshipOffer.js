@@ -2,11 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
-const InternshipOffer = ({ internshipOffer, onDoubleClick }) => {
+const InternshipOffer = ({ internshipOffer, onClick }) => {
   return (
     <Row
       className="list_node_internship"
-      onDoubleClick={() => onDoubleClick(internshipOffer)}
+      onClick={() => onClick(internshipOffer)}
     >
       <Col xs={3}>
         <FontAwesomeIcon className="fa-3x" icon={faEnvelope} />

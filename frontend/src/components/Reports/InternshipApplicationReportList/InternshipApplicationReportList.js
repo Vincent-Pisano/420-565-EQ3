@@ -74,7 +74,7 @@ function InternshipApplicationReportList() {
               <InternshipApplication
                 key={internshipApplication.id}
                 internshipApplication={internshipApplication}
-                onDoubleClick={showModal}
+                onClick={showModal}
               />
             ))}
           </ul>

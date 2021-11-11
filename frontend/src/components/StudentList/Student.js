@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
-const Student = ({ student, onDoubleClick }) => {
+const Student = ({ student, onClick }) => {
   let icon =
     student.department === "COMPUTER_SCIENCE"
       ? faLaptopCode
@@ -19,7 +19,7 @@ const Student = ({ student, onDoubleClick }) => {
 
   return (
     <>
-      <Row className="list_node" onDoubleClick={() => onDoubleClick(student)}>
+      <Row className="list_node" onClick={() => onClick(student)}>
         <Col xs={3}>
           <FontAwesomeIcon className="fa-3x" icon={icon} />
         </Col>

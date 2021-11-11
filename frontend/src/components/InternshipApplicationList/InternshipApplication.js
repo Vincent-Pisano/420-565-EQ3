@@ -11,7 +11,7 @@ import auth from "../../services/Auth";
 
 const InternshipApplication = ({
   internshipApplication,
-  onDoubleClick,
+  onClick,
   isInternshipManagerSignature,
 }) => {
   let internshipOffer = internshipApplication.internshipOffer;
@@ -20,7 +20,7 @@ const InternshipApplication = ({
   return (
     <Row
       className="list_node"
-      onDoubleClick={() => onDoubleClick(internshipApplication)}
+      onClick={() => onClick(internshipApplication)}
     >
       <Col xs={3}>
         <FontAwesomeIcon
