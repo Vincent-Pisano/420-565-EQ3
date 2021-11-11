@@ -22,7 +22,7 @@ function StudentList() {
   const handleShow = () => setShow(true);
 
   const [students, setStudents] = useState([]);
-  const [sessions, setSessions] = useState([]);
+  const [sessions, setSessions] = useState(user.sessions);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [currentStudent, setCurrentStudent] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState("");
@@ -38,19 +38,22 @@ function StudentList() {
   useEffect(() => {
     if (auth.isSupervisor()) {
       if (isStudentListAssigned) {
+        console.log(currentSession)
         axios
-          .get(`http://localhost:9090/getAll/students/supervisor/${user.id}/${session}`)
+          .get(`http://localhost:9090/getAll/students/supervisor/${user.id}/${currentSession}`)
           .then((response) => {
+            console.log(response.data)
             setStudents(response.data);
           })
           .catch((err) => {
+            console.log(err)
             setErrorMessage(
               "Erreur! Aucun étudiant n'a été assigné pour le moment"
             );
           });
       } else {
         axios
-          .get(`http://localhost:9090/getAll/students/${user.department}/${session}`)
+          .get(`http://localhost:9090/getAll/students/${user.department}/${currentSession}`)
           .then((response) => {
             setStudents(response.data);
           })
@@ -83,7 +86,7 @@ function StudentList() {
           });
       }
     }
-  }, [history, isStudentListAssigned, supervisor, title, user.department, user.id]);
+  }, [history, isStudentListAssigned, supervisor, title, user.department, user.id, currentSession]);
 
   function showModal(student) {
     setCurrentStudent(student);
