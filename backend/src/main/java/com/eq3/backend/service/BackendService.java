@@ -265,15 +265,13 @@ public class BackendService {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
         internshipOffers.forEach(internshipOffer -> {
             String internshipOfferSession = internshipOffer.getSession();
-            System.out.println("-------");
-            System.out.println(internshipOfferSession.substring(0, 4));
-            System.out.println(internshipOffer.getSession());
+            int internshipOfferYear = Integer.parseInt(internshipOfferSession.substring(0, 4));
 
-            if (year > Integer.parseInt(internshipOfferSession.substring(0, 4))) {
-
+            if (internshipOfferYear > year) {
+                sessions.add(internshipOffer.getSession());
             }
-            if ("Été".equals(currentSession.substring(5))){
-                
+            else if ("Hiver".equals(session) && internshipOfferYear == year){
+                sessions.add(internshipOffer.getSession());
             }
 
         });

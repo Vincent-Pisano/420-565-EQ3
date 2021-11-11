@@ -193,6 +193,24 @@ public class UtilsTest {
         return internshipOffers;
     }
 
+    public static List<InternshipOffer> getListOfInternshipOfferWithDifferentSession() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+
+        InternshipOffer internshipOffer1 = getInternshipOfferWithId();
+        c.add(Calendar.MONTH, 6);
+        internshipOffer1.setSession(getSession(c.getTime()));
+
+        InternshipOffer internshipOffer2 = getInternshipOfferWithId();
+        c.add(Calendar.MONTH, 6);
+        internshipOffer2.setSession(getSession(c.getTime()));
+
+        List<InternshipOffer> internshipOffers = new ArrayList<>();
+        internshipOffers.add(internshipOffer1);
+        internshipOffers.add(internshipOffer2);
+        return internshipOffers;
+    }
+
     public static InternshipApplication getInternshipApplication() {
         return InternshipApplication.builder()
                 .id("91448hkk58e00c02w02bjd4")

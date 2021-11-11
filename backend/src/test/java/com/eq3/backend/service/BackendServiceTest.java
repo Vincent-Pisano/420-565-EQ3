@@ -452,8 +452,10 @@ class BackendServiceTest {
     //@Disabled
     public void testGetAllNextSessionsOfInternshipOffers() {
         //Arrange
-        expectedInternshipOfferList = getListOfInternshipOffer();
-        expectedSessionList = getSessionList();
+        expectedInternshipOfferList = getListOfInternshipOfferWithDifferentSession();
+        TreeSet<String> expectedSessionTree = new TreeSet<>();
+        expectedInternshipOfferList.forEach(internshipOffer ->
+                expectedSessionTree.add(internshipOffer.getSession()));
         when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
@@ -465,7 +467,7 @@ class BackendServiceTest {
         TreeSet<String> actualSessions = optionalSessions.orElse(null);
 
         assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions.size()).isEqualTo(expectedSessionList.size());
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionTree.size());
     }
 
     @Test
