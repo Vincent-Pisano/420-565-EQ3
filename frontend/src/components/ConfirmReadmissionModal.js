@@ -5,12 +5,18 @@ import axios from "axios";
 import "../styles/Form.css";
 import { useFormFields } from "../lib/hooksLib";
 
-const ConfirmSubscribeModal = ({ show, handleClose, session }) => {
+const ConfirmReadmissionModal = ({ show, handleClose, session }) => {
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [passwordFields, handleFieldChange] = useFormFields({
     password: "",
     confirmPassword: "",
   });
+
+  let url = auth.isSupervisor()
+    ? "http://localhost:9090/readmission/supervisor/"
+    : auth.isStudent()
+    ? "http://localhost:9090/readmission/student/"
+    : "";
 
   let user = auth.user;
 
@@ -22,12 +28,12 @@ const ConfirmSubscribeModal = ({ show, handleClose, session }) => {
         passwordFields.confirmPassword === user.password
       ) {
         axios
-          .post(
-            `http://localhost:9090/readmission/supervisor/${user.id}`
-          )
+          .post(`${url + user.id}`)
           .then((response) => {
-              auth.updateUser(response.data)
-            setErrorMessageModal(`Confirmation de la réinscription pour la session ${session}`);
+            auth.updateUser(response.data);
+            setErrorMessageModal(
+              `Confirmation de la réinscription pour la session ${session}`
+            );
             setTimeout(() => {
               setErrorMessageModal("");
               handleClose();
@@ -131,4 +137,4 @@ const ConfirmSubscribeModal = ({ show, handleClose, session }) => {
   );
 };
 
-export default ConfirmSubscribeModal;
+export default ConfirmReadmissionModal;
