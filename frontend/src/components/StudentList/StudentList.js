@@ -21,6 +21,8 @@ function StudentList() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  console.log(user.sessions)
+
   const [students, setStudents] = useState([]);
   const [sessions, setSessions] = useState(user.sessions);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
@@ -38,15 +40,14 @@ function StudentList() {
   useEffect(() => {
     if (auth.isSupervisor()) {
       if (isStudentListAssigned) {
-        console.log(currentSession)
         axios
           .get(`http://localhost:9090/getAll/students/supervisor/${user.id}/${currentSession}`)
           .then((response) => {
-            console.log(response.data)
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
-            console.log(err)
+            setStudents([]);
             setErrorMessage(
               "Erreur! Aucun étudiant n'a été assigné pour le moment"
             );
@@ -56,8 +57,10 @@ function StudentList() {
           .get(`http://localhost:9090/getAll/students/${user.department}/${currentSession}`)
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
+            setStudents([]);
             setErrorMessage(
               "Erreur! Aucun étudiant ne s'est inscrit pour le moment"
             );
