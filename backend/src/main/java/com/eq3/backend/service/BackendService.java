@@ -275,14 +275,6 @@ public class BackendService {
                 }
             }
         });
-
-        int i = 0;
-        System.out.println(allInternshipApplicationsInCurrentAndNextSessions.size());
-        for (InternshipApplication internshipApplicationss: allInternshipApplicationsInCurrentAndNextSessions) {
-            System.out.println("Internship Application number : " + i +" / "+ internshipApplicationss.getInternshipOffer().getSession());
-            i++;
-        }
-
         Collections.reverse(allInternshipApplicationsInCurrentAndNextSessions);
         return allInternshipApplicationsInCurrentAndNextSessions.isEmpty() ? Optional.empty() : Optional.of(allInternshipApplicationsInCurrentAndNextSessions);
     }
