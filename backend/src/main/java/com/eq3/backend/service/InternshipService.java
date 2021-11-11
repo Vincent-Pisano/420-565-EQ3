@@ -4,7 +4,6 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfDocument;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -138,19 +137,19 @@ public class InternshipService {
 
     public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String session, String studentUsername) {
         Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
-        List<InternshipApplication> internshipApplications = new ArrayList<>();
+        List<InternshipApplication> internshipApplicationsOfStudent = new ArrayList<>();
 
-        if (optionalStudent.isPresent())
-            internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(optionalStudent.get());
-        for (int i = 0; i< internshipApplications.size(); i++) {
-            InternshipOffer currentOffer = internshipApplications.get(i).getInternshipOffer();
-            if (!currentOffer.getSession().equals(session)){
-                internshipApplications.remove(internshipApplications.get(i));
-                i --;
-            }
-        }
+        optionalStudent.ifPresent(student -> {
+            List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(student);
+            internshipApplications.forEach(internshipApplication -> {
+                InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+                if (session.equals(internshipOffer.getSession())) {
+                    internshipApplicationsOfStudent.add(internshipApplication);
+                }
+            });
+        });
 
-        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+        return internshipApplicationsOfStudent.isEmpty() ? Optional.empty() : Optional.of(internshipApplicationsOfStudent);
     }
 
     public Optional<List<InternshipApplication>> getAllInternshipApplicationOfInternshipOffer(String id) {

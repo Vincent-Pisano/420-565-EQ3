@@ -17,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -347,7 +345,7 @@ class BackendServiceTest {
     public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws ParseException {
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplicationWithInterviewDate();
-        expectedStudentList = getListOfStudents();
+        expectedStudentList = Collections.singletonList(getStudentWithId());
         when( internshipApplicationRepository.findAllByInterviewDateIsNotNull()
         ).thenReturn(expectedInternshipApplicationList);
 
