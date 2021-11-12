@@ -14,7 +14,7 @@ public class Utils {
     public final static String ASSETS_PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\assets\\";
 
     public final static String CONTRACT_FILE_NAME = "Contract.pdf";
-    public final static String EVALUATION_FILE_NAME = "Contract.pdf";
+    public final static String EVALUATION_FILE_NAME = "Evaluation.pdf";
 
     public final static String ENTERPRISE_ENGAGEMENT_KEY = "Enterprise";
     public final static String ENTERPRISE_ENGAGEMENT_VALUES
