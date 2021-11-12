@@ -137,16 +137,6 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    private void updateSessionsFromStudent(List<String> sessions, Student student) {
-        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findAllByStudentAndIsDisabledFalse(student);
-        internshipApplications.forEach(internshipApplication -> {
-            InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
-            if (!sessions.contains(currentOffer.getSession())) {
-                sessions.add(currentOffer.getSession());
-            }
-        });
-    }
-
     public Optional<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() {
         List<Student> studentWaitingAndInterviewDatePassed = new ArrayList<>();
         List<InternshipApplication> internshipApplicationsWithInterviewDate =

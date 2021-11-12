@@ -1,9 +1,9 @@
 import { React, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
-import auth from "../services/Auth";
+import auth from "../../services/Auth";
 import axios from "axios";
-import "../styles/Form.css";
-import { useFormFields } from "../lib/hooksLib";
+import "../../styles/Form.css";
+import { useFormFields } from "../../lib/hooksLib";
 
 const ConfirmReadmissionModal = ({ show, handleClose, session }) => {
   const [errorMessageModal, setErrorMessageModal] = useState("");
