@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface InternshipApplicationRepository extends MongoRepository<InternshipApplication, String> {
-
     List<InternshipApplication> findAllByIsDisabledFalse();
 
     List<InternshipApplication> findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus status);

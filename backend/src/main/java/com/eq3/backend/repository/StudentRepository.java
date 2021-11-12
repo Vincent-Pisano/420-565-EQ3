@@ -31,8 +31,6 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     List<Student> findAllByIsDisabledFalse();
 
-    Optional<Student> findStudentByIdAndIsDisabledFalse(String id);
-
     @Query(value = "{'isDisabled':false, 'supervisorMap.?1.$id': ?0, 'sessions': ?1}")
     List<Student> findAllBySupervisor_IdAndIsDisabledFalse(ObjectId idSupervisor, String session);
 }

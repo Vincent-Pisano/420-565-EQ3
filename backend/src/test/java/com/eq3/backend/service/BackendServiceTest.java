@@ -22,7 +22,6 @@ import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -78,7 +77,6 @@ class BackendServiceTest {
     private Binary expectedImage;
     private Internship expectedInternship;
     private List<Internship> expectedInternshipList;
-    private List<String> expectedSessionsList;
     private List<InternshipOffer> expectedInternshipOfferList;
 
     @Test

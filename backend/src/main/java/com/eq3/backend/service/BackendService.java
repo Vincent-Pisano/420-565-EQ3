@@ -117,10 +117,8 @@ public class BackendService {
     }
 
     public Optional<List<Student>> getAllStudentsWithoutSupervisor(Department department, String session) {
-        System.out.println(session);
         List<Student> students = studentRepository.
                 findAllByIsDisabledFalseAndDepartmentAndSupervisorMapIsEmptyAndSessionContains(department, session);
-        System.out.println(students);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
@@ -144,7 +142,6 @@ public class BackendService {
 
         internshipApplicationsWithInterviewDate.forEach(internshipApplication ->
                 setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(studentWaitingAndInterviewDatePassed, internshipApplication));
-        System.out.println(studentWaitingAndInterviewDatePassed.size());
         return studentWaitingAndInterviewDatePassed.isEmpty() ? Optional.empty() : Optional.of(studentWaitingAndInterviewDatePassed);
     }
 

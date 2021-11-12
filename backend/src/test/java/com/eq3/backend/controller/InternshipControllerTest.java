@@ -3,7 +3,6 @@ package com.eq3.backend.controller;
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.InternshipService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Date;
 
@@ -47,5 +46,4 @@ public class CV {
         this.isActive = false;
         this.status = CVStatus.INVALID;
     }
-
 }

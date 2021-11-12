@@ -8,5 +8,4 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class InternshipManager extends User{
-
 }
