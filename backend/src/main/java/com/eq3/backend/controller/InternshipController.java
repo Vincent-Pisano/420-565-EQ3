@@ -5,7 +5,6 @@ import com.eq3.backend.model.Internship;
 import com.eq3.backend.model.InternshipApplication;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.service.InternshipService;
-import org.apache.catalina.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

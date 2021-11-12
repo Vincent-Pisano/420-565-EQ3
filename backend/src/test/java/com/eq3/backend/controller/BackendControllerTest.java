@@ -412,7 +412,7 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void getAllSupervisorsOfSession() throws Exception {
+    public void testGetAllSupervisorsOfSession() throws Exception {
         //Arrange
         expectedSupervisorList = getListOfSupervisors();
         when(service.getAllSupervisorsOfSession(SESSION))

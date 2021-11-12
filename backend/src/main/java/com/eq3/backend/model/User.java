@@ -6,7 +6,6 @@ import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder(toBuilder = true)

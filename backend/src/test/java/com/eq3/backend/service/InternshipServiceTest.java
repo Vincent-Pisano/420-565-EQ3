@@ -25,7 +25,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.lenient;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(MockitoExtension.class)
 public class InternshipServiceTest {
@@ -281,7 +280,7 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllInternshipApplicationOfStudent() throws Exception {
+    public void testGetAllInternshipApplicationOfStudent(){
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplication();
         expectedStudent = getStudentWithId();
@@ -302,7 +301,7 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllInternshipApplicationOfInternshipOffer() throws Exception {
+    public void testGetAllInternshipApplicationOfInternshipOffer(){
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplication();
         expectedInternshipOffer = getInternshipOfferWithId();
@@ -412,7 +411,7 @@ public class InternshipServiceTest {
 
     @Test
     //@Disabled
-    public void testUpdateInternshipApplication() throws Exception {
+    public void testUpdateInternshipApplication(){
         //Arrange
         expectedInternshipApplication = getInternshipApplication();
         InternshipApplication givenInternshipApplication = getInternshipApplication();
@@ -478,7 +477,7 @@ public class InternshipServiceTest {
         student.setSignature(getImage());
 
         when(internshipRepository.findById(givenInternship.getId()))
-                .thenReturn(Optional.ofNullable(givenInternship));
+                .thenReturn(Optional.of(givenInternship));
         lenient().when(internshipRepository.save(any(Internship.class)))
                 .thenReturn(expectedInternship);
         //Act

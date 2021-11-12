@@ -212,7 +212,6 @@ public class InternshipService {
         contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
 
         _internship.setInternshipContract(contract);
-
     }
 
     public Optional<Internship> signInternshipContractByStudent(String idInternship) {
@@ -238,7 +237,6 @@ public class InternshipService {
         contract.setContent(new Binary(BsonBinarySubType.BINARY, baos.toByteArray()));
 
         _internship.setInternshipContract(contract);
-
     }
 
     public Optional<Internship> signInternshipContractByInternshipManager(String idInternship) {

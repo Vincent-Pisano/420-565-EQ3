@@ -17,5 +17,4 @@ public class Evaluation extends Entity{
 
     @Field
     private PDFDocument document;
-
 }

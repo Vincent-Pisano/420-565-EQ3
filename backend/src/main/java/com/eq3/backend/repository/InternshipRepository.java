@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface InternshipRepository extends MongoRepository<Internship, String> {
-
     Optional<Internship> findByInternshipApplication_Id(String id);
 
     List<Internship> findByStudentEvaluationNullAndIsDisabledFalse();
