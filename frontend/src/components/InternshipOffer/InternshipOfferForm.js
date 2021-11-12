@@ -150,7 +150,7 @@ const InternshipOfferForm = () => {
             onChange={setMonitor}
             type="text"
             placeholder="Entrer le nom d'utilisateur du moniteur"
-            className="input_form active_inp_form"
+            className="input_form input_form_internship_offer  active_inp_form"
             required
           />
         </Form.Group>
@@ -274,7 +274,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer le nom du poste de travail"
-                      className="input_form active_inp_form"
+                      className="input_form input_form_internship_offer active_inp_form"
                       required
                     />
                   </Form.Group>
@@ -284,7 +284,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer une description du poste"
-                      className="input_form active_inp_form"
+                      className="input_form input_form_internship_offer active_inp_form"
                       required
                     />
                   </Form.Group>
@@ -297,7 +297,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="date"
                       placeholder="Entrer la date de début du stage"
-                      className="input_form active_inp_form"
+                      className="input_form input_form_internship_offer active_inp_form"
                       required
                     />
                   </Form.Group>
@@ -310,7 +310,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="date"
                       placeholder="Entrer la date de fin du stage"
-                      className="input_form active_inp_form"
+                      className="input_form input_form_internship_offer active_inp_form"
                       required
                     />
                   </Form.Group>
@@ -323,7 +323,7 @@ const InternshipOfferForm = () => {
                       min="0"
                       max="40"
                       placeholder="Entrer la quantité d'heures par semaine"
-                      className="input_form active_inp_form"
+                      className="input_form input_form_internship_offer active_inp_form"
                       required
                     />
                   </Form.Group>
@@ -336,7 +336,7 @@ const InternshipOfferForm = () => {
                       min="0"
                       max="100"
                       placeholder="Entrer le salaire en dollars($) par heure"
-                      className="input_form active_inp_form"
+                      className="input_form input_form_internship_offer active_inp_form"
                       required
                     />
                   </Form.Group>
@@ -472,7 +472,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer l'adresse de l'entreprise"
-                      className="input_form"
+                      className="input_form input_form_internship_offer "
                       required
                     />
                   </Form.Group>
@@ -482,7 +482,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer la ville de l'entreprise"
-                      className="input_form"
+                      className="input_form input_form_internship_offer "
                       required
                     />
                   </Form.Group>
@@ -492,7 +492,7 @@ const InternshipOfferForm = () => {
                       onChange={handleFieldChange}
                       type="text"
                       placeholder="Entrer le code postal de l'entreprise"
-                      className="input_form"
+                      className="input_form input_form_internship_offer "
                       required
                       minLength="6"
                       maxLength="6"
