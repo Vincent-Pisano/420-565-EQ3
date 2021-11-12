@@ -18,10 +18,7 @@ const InternshipApplication = ({
   let student = internshipApplication.student;
 
   return (
-    <Row
-      className="list_node"
-      onClick={() => onClick(internshipApplication)}
-    >
+    <Row className="list_node" onClick={() => onClick(internshipApplication)}>
       <Col xs={3}>
         <FontAwesomeIcon
           className="fa-3x"

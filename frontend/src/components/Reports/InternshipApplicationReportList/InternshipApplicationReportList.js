@@ -26,18 +26,16 @@ function InternshipApplicationReportList() {
   useEffect(() => {
     setErrorMessage("");
     setInternshipApplications([]);
-      axios
-        .get(
-          `http://localhost:9090/getAll/internshipApplication/student/${username}`
-        )
-        .then((response) => {
-          setInternshipApplications(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage(
-            "Erreur ! Aucune application de stages"
-          );
-        });
+    axios
+      .get(
+        `http://localhost:9090/getAll/internshipApplication/student/${username}`
+      )
+      .then((response) => {
+        setInternshipApplications(response.data);
+      })
+      .catch((err) => {
+        setErrorMessage("Erreur ! Aucune application de stages");
+      });
   }, [title, username]);
 
   function showModal(internshipApplication) {

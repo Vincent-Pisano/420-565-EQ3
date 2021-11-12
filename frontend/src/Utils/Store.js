@@ -6,4 +6,4 @@ if (date.getUTCMonth() > 2 && date.getUTCMonth() < 8) {
   session = date.getFullYear() + 1 + " Hiver";
 }
 
-export { session }
+export { session };

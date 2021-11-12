@@ -51,8 +51,10 @@ const InternshipApplicationInternshipManagerModal = ({
     if (currentInternshipApplication.status !== "ACCEPTED") {
       currentInternshipApplication.student.cvlist = [];
       currentInternshipApplication.student.signature = undefined;
+
       if (currentInternshipApplication.student.supervisor !== null)
         currentInternshipApplication.student.supervisor.signature = undefined;
+
       currentInternshipApplication.internshipOffer.pdfdocument = undefined;
       currentInternshipApplication.internshipOffer.monitor.signature =
         undefined;
@@ -64,11 +66,10 @@ const InternshipApplicationInternshipManagerModal = ({
         .post(`http://localhost:9090/save/internship`, internship)
         .then((response) => {
           setInternshipApplications(
-            internshipApplications.filter((internshipApplication) => {
-              return (
+            internshipApplications.filter(
+              (internshipApplication) =>
                 internshipApplication.id !== currentInternshipApplication.id
-              );
-            })
+            )
           );
           if (internshipApplications.length === 1) {
             setTimeout(() => {
@@ -166,7 +167,11 @@ const InternshipApplicationInternshipManagerModal = ({
                   </Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    defaultValue={currentInternshipApplication !== undefined ? currentInternshipApplication.status : ""}
+                    defaultValue={
+                      currentInternshipApplication !== undefined
+                        ? currentInternshipApplication.status
+                        : ""
+                    }
                     onChange={(event) => {
                       currentInternshipApplication.status = event.target.value;
                     }}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { session } from "../../Utils/Store"
+import { session } from "../../Utils/Store";
 import { Container } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Supervisor from "./Supervisor";

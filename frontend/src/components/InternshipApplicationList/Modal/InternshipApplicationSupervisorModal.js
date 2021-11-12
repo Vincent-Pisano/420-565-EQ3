@@ -74,7 +74,7 @@ const InternshipApplicationSupervisorModal = ({
                     className="select_form d_block"
                     defaultValue={
                       currentInternshipApplication !== undefined &&
-                      currentInternshipApplication.interviewDate !== null && 
+                      currentInternshipApplication.interviewDate !== null &&
                       currentInternshipApplication.interviewDate !== undefined
                         ? formatDate(currentInternshipApplication.interviewDate)
                         : ""

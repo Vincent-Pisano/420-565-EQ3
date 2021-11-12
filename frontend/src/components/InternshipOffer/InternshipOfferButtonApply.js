@@ -1,7 +1,6 @@
 import { Container } from "react-bootstrap";
 
 const InternshipOfferButtonApply = ({
-  fields,
   applyInternshipOffer,
   errorMessage,
 }) => {

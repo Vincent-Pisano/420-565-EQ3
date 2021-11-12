@@ -28,6 +28,7 @@ const InternshipApplicationStudentModal = ({
       fields.status !== undefined
         ? fields.status
         : currentInternshipApplication.status;
+
     currentInternshipApplication.interviewDate =
       fields.interviewDate !== undefined
         ? fields.interviewDate
@@ -66,8 +67,10 @@ const InternshipApplicationStudentModal = ({
   }
 
   function isValidatedOrCompleted() {
-    return currentInternshipApplication.status === "VALIDATED" || 
-    currentInternshipApplication.status === "COMPLETED";
+    return (
+      currentInternshipApplication.status === "VALIDATED" ||
+      currentInternshipApplication.status === "COMPLETED"
+    );
   }
 
   return (
@@ -94,15 +97,9 @@ const InternshipApplicationStudentModal = ({
                     required
                     disabled={isValidatedOrCompleted()}
                   >
-                    <option value="ACCEPTED">
-                      Acceptée
-                    </option>
-                    <option value="NOT_ACCEPTED">
-                      Refusée
-                    </option>
-                    <option value="WAITING">
-                      En attente
-                    </option>
+                    <option value="ACCEPTED">Acceptée</option>
+                    <option value="NOT_ACCEPTED">Refusée</option>
+                    <option value="WAITING">En attente</option>
                     <option disabled value="VALIDATED">
                       Validée
                     </option>
@@ -121,8 +118,8 @@ const InternshipApplicationStudentModal = ({
                     placeholder="Date d'entrevue"
                     className="select_form d_block"
                     defaultValue={
-                      currentInternshipApplication.interviewDate !== null
-                      && currentInternshipApplication.interviewDate !== undefined
+                      currentInternshipApplication.interviewDate !== null &&
+                      currentInternshipApplication.interviewDate !== undefined
                         ? formatDate(currentInternshipApplication.interviewDate)
                         : ""
                     }

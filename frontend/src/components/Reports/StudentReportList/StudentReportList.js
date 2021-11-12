@@ -42,7 +42,7 @@ function StudentReportList() {
         .catch((err) => {
           setErrorMessage("Erreur! Aucun étudiants a un CV à valider");
         });
-    }else if (title === "Étudiants enregistrés") {
+    } else if (title === "Étudiants enregistrés") {
       axios
         .get(`http://localhost:9090/getAll/students`)
         .then((response) => {
@@ -113,11 +113,7 @@ function StudentReportList() {
             "Erreur! Tous les étudiants ont leur entreprise évaluée par leurs superviseurs"
           );
         });
-    }
-    else if (
-      title ===
-      "Étudiants en attente d'une réponse d'entrevue"
-    ) {
+    } else if (title === "Étudiants en attente d'une réponse d'entrevue") {
       axios
         .get(
           `http://localhost:9090/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today`
@@ -210,9 +206,7 @@ function StudentReportList() {
               <Student
                 key={student.id}
                 student={student}
-                onClick={
-                  auth.isInternshipManager() ? onClick : null
-                }
+                onClick={auth.isInternshipManager() ? onClick : null}
               />
             ))}
           </ul>

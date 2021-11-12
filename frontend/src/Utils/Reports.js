@@ -47,8 +47,7 @@ let reports = [
   },
   {
     id: "8",
-    title:
-      "Étudiants n’ayant pas encore été évalués par leur moniteur",
+    title: "Étudiants n’ayant pas encore été évalués par leur moniteur",
     link: reportLink + "listStudents",
     icon: faUserCircle,
   },

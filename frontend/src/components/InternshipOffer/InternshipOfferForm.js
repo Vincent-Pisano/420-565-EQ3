@@ -196,11 +196,9 @@ const InternshipOfferForm = () => {
       });
       if (!hasApplied) {
         if (!hasAlreadyApplied) {
-          console.log(user.sessions.includes(internshipOffer.session));
           if (user.sessions.includes(internshipOffer.session)) {
             return (
               <InternshipOfferButtonApply
-                fields={fields}
                 errorMessage={errorMessage}
                 applyInternshipOffer={applyInternshipOffer}
               />

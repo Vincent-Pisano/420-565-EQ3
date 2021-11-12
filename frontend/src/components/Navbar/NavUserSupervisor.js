@@ -13,7 +13,7 @@ const NavUserSupervisor = () => {
       </NavDropdown.Item>
 
       <NavDropdown.Item as={Link} to="/listStudents/assigned">
-        Liste de vos étudiants 
+        Liste de vos étudiants
       </NavDropdown.Item>
 
       <NavDropdown.Item
