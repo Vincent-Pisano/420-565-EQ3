@@ -162,7 +162,7 @@ public class UtilsTest {
         cal.setTime(startDate);
         int month = cal.get(Calendar.MONTH);
         int year = cal.get(Calendar.YEAR);
-        return month <= 5 ? year + " Hiver" : year + " Été";
+        return month <= 5 ? year + " Hiver" : year + " Ete";
     }
 
     public static String getSession() {
@@ -259,6 +259,22 @@ public class UtilsTest {
         internshipApplications.add(internshipApplication2);
         return internshipApplications;
     }
+    public static List<InternshipApplication> getListOfAcceptedInternshipApplication() {
+        InternshipApplication internshipApplication1 = getInternshipApplication();
+        InternshipApplication internshipApplication2 = getInternshipApplication();
+        internshipApplication1.setStatus(InternshipApplication.ApplicationStatus.ACCEPTED);
+        internshipApplication2.setStatus(InternshipApplication.ApplicationStatus.ACCEPTED);
+        Student student = getStudentWithId();
+        student.setId("61478hgk58e00c02c02bwj1");
+        internshipApplication2.setStudent(student);
+
+
+        List<InternshipApplication> internshipApplications = new ArrayList<>();
+        internshipApplications.add(internshipApplication1);
+        internshipApplications.add(internshipApplication2);
+        return internshipApplications;
+    }
+
     public static List<InternshipApplication> getListOfInternshipApplicationWithDifferentStudent() {
         List<InternshipApplication> internshipApplications = getListOfInternshipApplication();
         InternshipApplication internshipApplication = internshipApplications.get(0);

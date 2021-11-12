@@ -490,6 +490,24 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllInternshipApplicationsInCurrentAndNextSessions() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfAcceptedInternshipApplication();
+
+        when(internshipApplicationRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedInternshipApplicationList);
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllInternshipApplicationsInCurrentAndNextSessions();
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testAssignSupervisorToStudent() {
         //Arrange
         expectedStudent = getStudentWithId();

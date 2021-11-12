@@ -228,6 +228,55 @@ public class BackendService {
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
 
+    public String getCurrentSession() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int currentMonth = cal.get(Calendar.MONTH);
+        int currentYear = cal.get(Calendar.YEAR);
+        String currentSession;
+        if (currentMonth > 2 && currentMonth < 8) {
+            currentSession = "ETE";
+        }
+        else
+            currentSession = "HIV";
+
+        return currentSession;
+    }
+
+    public int getCurrentYear() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int currentYear = cal.get(Calendar.YEAR);
+        return  currentYear;
+    }
+
+    public Optional<List<InternshipApplication>> getAllInternshipApplicationsInCurrentAndNextSessions() {
+        List<InternshipApplication> allInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
+        List<InternshipApplication> allInternshipApplicationsInCurrentAndNextSessions = new ArrayList<>();
+        int currentYear = getCurrentYear();
+        allInternshipApplications.forEach(internshipApplication -> {
+            InternshipOffer currentInternshipOffer = internshipApplication.getInternshipOffer();
+            String currentInternshipOfferSession = currentInternshipOffer.getSession();
+            Calendar currentInternshipOfferSessionDate = Calendar.getInstance();
+            String currentSession = getCurrentSession();
+            if (currentSession.equals("HIV")) {
+                currentInternshipOfferSessionDate.setTime(currentInternshipOffer.getEndDate());
+                if (currentInternshipOfferSessionDate.get(Calendar.YEAR) >= currentYear && internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.ACCEPTED) {
+                    allInternshipApplicationsInCurrentAndNextSessions.add(internshipApplication);
+                }
+            }
+            else {
+                if ((currentInternshipOfferSessionDate.get(Calendar.YEAR) > currentYear  ||
+                        (currentInternshipOfferSession.toUpperCase().contains("ETE") && currentInternshipOfferSessionDate.get(Calendar.YEAR) == currentYear)
+                    ) && internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.ACCEPTED) {
+                    allInternshipApplicationsInCurrentAndNextSessions.add(internshipApplication);
+                }
+            }
+        });
+        Collections.reverse(allInternshipApplicationsInCurrentAndNextSessions);
+        return allInternshipApplicationsInCurrentAndNextSessions.isEmpty() ? Optional.empty() : Optional.of(allInternshipApplicationsInCurrentAndNextSessions);
+    }
+
     private Criteria getCriteriaQueryGetAllSessionsOfMonitor(String idMonitor) {
         List<Criteria> expression =  new ArrayList<>();
         expression.add(Criteria.where(QUERY_CRITERIA_MONITOR_ID).is(new ObjectId(idMonitor)));

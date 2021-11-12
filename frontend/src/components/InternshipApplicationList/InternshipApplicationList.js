@@ -30,21 +30,20 @@ function InternshipApplicationList() {
   let title = auth.isStudent()
     ? "Liste de vos applications de stage"
     : auth.isMonitor()
-    ? "Listes des applications pour l'offre : " + internshipOffer.jobName
-    : auth.isInternshipManager()
-    ? isInternshipManagerSignature
-      ? "Liste des applications de stages à signer"
-      : "Liste des applications de stages acceptées"
-    : auth.isSupervisor()
-    ? state.title
-    : "Vous ne devriez pas voir cette page";
+      ? "Listes des applications pour l'offre : " + internshipOffer.jobName
+      : auth.isInternshipManager()
+        ? isInternshipManagerSignature
+          ? "Liste des applications de stages à signer"
+          : "Liste des applications de stages acceptées"
+        : auth.isSupervisor()
+          ? state.title
+          : "Vous ne devriez pas voir cette page";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [currentInternshipApplication, setCurrentInternshipApplication] =
-    useState({});
+  const [currentInternshipApplication, setCurrentInternshipApplication] = useState({});
   const [internshipApplications, setInternshipApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   // eslint-disable-next-line no-unused-vars
@@ -79,14 +78,15 @@ function InternshipApplicationList() {
           .catch((err) => {
             setErrorMessage("Aucune Application validée pour le moment");
           });
-      } else {
+      }
+      else {
         axios
-          .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
+          .get(`http://localhost:9090/getAll/internshipApplications/in/current/and/next/sessions`)
           .then((response) => {
             setInternshipApplications(response.data);
           })
           .catch((err) => {
-            setErrorMessage("Aucune Application acceptée pour le moment");
+            setErrorMessage("Aucune Application d'offre de stage disponible pour le moment");
           });
       }
     } else if (auth.isMonitor()) {
@@ -96,6 +96,7 @@ function InternshipApplicationList() {
         )
         .then((response) => {
           setInternshipApplications(response.data);
+
         })
         .catch((err) => {
           setErrorMessage("Aucune Application enregistrée pour le moment");
