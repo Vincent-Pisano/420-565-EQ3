@@ -58,7 +58,7 @@ function InternshipOfferList() {
             setCurrentSession(response.data[0]);
           })
           .catch((err) => {
-            setErrorMessage("Vous n'avez déposé aucune offre de stage");
+            setErrorMessage(`Aucune offre de stage déposée...`);
           });
       } else if (currentSession !== undefined) {
         axios

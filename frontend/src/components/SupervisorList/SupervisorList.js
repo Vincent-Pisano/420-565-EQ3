@@ -24,9 +24,9 @@ function SupervisorList() {
   }, [supervisors.length]);
 
   function showAssignableStudents(supervisor) {
+    sessionStorage.setItem("supervisor", JSON.stringify(supervisor));
     history.push({
-      pathname: "/listStudents",
-      supervisor: supervisor,
+      pathname: "/listStudents/assigned",
     });
   }
 

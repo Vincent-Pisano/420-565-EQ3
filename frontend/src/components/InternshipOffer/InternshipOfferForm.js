@@ -63,6 +63,27 @@ const InternshipOfferForm = () => {
     history.goBack();
   }
 
+  function applyInternshipOffer() {
+    fields.monitor.signature = undefined;
+    axios
+      .post(
+        `http://localhost:9090/apply/internshipOffer/${user.username}`,
+        fields
+      )
+      .then((response) => {
+        setHasApplied(true);
+        setTimeout(() => {
+          redirect();
+        }, 3000);
+        setErrorMessage(
+          "Votre demande a été acceptée, vous allez être redirigé"
+        );
+      })
+      .catch((error) => {
+        setErrorMessage("Erreur lors de l'application à l'ofre de stage stage");
+      });
+  }
+
   function onCreatePost(e) {
     e.preventDefault();
     if (!isLoading) {
@@ -175,15 +196,23 @@ const InternshipOfferForm = () => {
       });
       if (!hasApplied) {
         if (!hasAlreadyApplied) {
-          return (
-            <InternshipOfferButtonApply
-              fields={fields}
-              setHasApplied={setHasApplied}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
-              redirect={redirect}
-            />
-          );
+          console.log(user.sessions.includes(internshipOffer.session));
+          if (user.sessions.includes(internshipOffer.session)) {
+            return (
+              <InternshipOfferButtonApply
+                fields={fields}
+                errorMessage={errorMessage}
+                applyInternshipOffer={applyInternshipOffer}
+              />
+            );
+          } else {
+            return (
+              <p style={{ color: "red" }}>
+                Erreur ! Vous n'êtes pas inscrit à la session{" "}
+                {internshipOffer.session}
+              </p>
+            );
+          }
         } else {
           return (
             <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
@@ -224,7 +253,7 @@ const InternshipOfferForm = () => {
 
   return (
     <Container fluid className="cont_principal">
-      <Row className="cont_central">
+      <Row className="cont_central_internship_offer">
         <Col md="auto" className="cont_form">
           <Row>
             <Container className="cont_title_form">

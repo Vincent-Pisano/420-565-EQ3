@@ -12,10 +12,14 @@ import "../../styles/List.css";
 
 function StudentList() {
   let history = useHistory();
-  let supervisor = history.location.supervisor;
 
   let isStudentListAssigned =
     history.location.pathname === "/listStudents/assigned";
+
+  let supervisor =
+    isStudentListAssigned && sessionStorage.getItem("supervisor") !== null
+      ? JSON.parse(sessionStorage.getItem("supervisor"))
+      : undefined;
   let user = auth.user;
 
   const [show, setShow] = useState(false);
@@ -27,7 +31,9 @@ function StudentList() {
   const [sessions, setSessions] = useState(
     auth.isSupervisor() ? user.sessions : []
   );
-  const [currentSession, setCurrentSession] = useState(sessions[0]);
+  const [currentSession, setCurrentSession] = useState(
+    sessions.length > 0 ? sessions[sessions.length - 1] : sessions[0]
+  );
   const [currentStudent, setCurrentStudent] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -35,7 +41,7 @@ function StudentList() {
     ? isStudentListAssigned
       ? "Étudiants qui vous sont assignés"
       : "Étudiants de votre département"
-    : supervisor !== undefined
+    : isStudentListAssigned
     ? "Étudiants de ce département à assigner"
     : "Étudiants avec un CV à valider";
 
@@ -80,18 +86,22 @@ function StudentList() {
           )
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
             setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
+            setStudents([]);
           });
       } else {
         axios
           .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
             setErrorMessage("Erreur! Aucun CV à valider actuellement");
+            setStudents([]);
           });
       }
     }
@@ -113,7 +123,7 @@ function StudentList() {
   function checkIfSupervisor(student) {
     let state = {
       title: `Application aux offres de stage de : ${student.firstName} ${student.lastName}`,
-      session: currentSession
+      session: currentSession,
     };
     history.push({
       pathname: `/listInternshipApplication/${student.username}`,

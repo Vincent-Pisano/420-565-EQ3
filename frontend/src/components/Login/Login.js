@@ -73,7 +73,7 @@ const Login = () => {
 
   return (
     <Container fluid className="cont_principal">
-      <Row className="cont_central">
+      <Row className="cont_central_auth">
         <Col md="auto">
           <Row>
             <Container className="cont_title_form">

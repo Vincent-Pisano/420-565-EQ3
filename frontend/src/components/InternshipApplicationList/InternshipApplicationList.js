@@ -23,7 +23,7 @@ function InternshipApplicationList() {
   let state = history.location.state;
   let internshipOffer = history.location.state;
   let session = state !== undefined ? state.session : undefined;
-  
+
   let isInternshipManagerSignature =
     history.location.pathname === "/listInternshipApplication/signature";
 
@@ -48,23 +48,27 @@ function InternshipApplicationList() {
   const [internshipApplications, setInternshipApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   // eslint-disable-next-line no-unused-vars
-  const [sessions, setSessions] = useState(auth.isStudent() ? user.sessions : []);
-  const [currentSession, setCurrentSession] = useState(sessions[0]);
+  const [sessions, setSessions] = useState(
+    auth.isStudent() ? user.sessions : []
+  );
+  const [currentSession, setCurrentSession] = useState(
+    sessions.length > 0 ? sessions[sessions.length - 1] : sessions[0]
+  );
 
   useEffect(() => {
     setErrorMessage("");
     setInternshipApplications([]);
     if (auth.isStudent()) {
-    axios
-      .get(
-        `http://localhost:9090/getAll/internshipApplication/${currentSession}/student/${user.username}`
-      )
-      .then((response) => {
-        setInternshipApplications(response.data);
-      })
-      .catch((err) => {
-        setErrorMessage("Aucune Application enregistrée pour le moment");
-      });
+      axios
+        .get(
+          `http://localhost:9090/getAll/internshipApplication/${currentSession}/student/${user.username}`
+        )
+        .then((response) => {
+          setInternshipApplications(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage("Aucune Application enregistrée pour cette session");
+        });
     } else if (auth.isInternshipManager()) {
       if (isInternshipManagerSignature) {
         axios
@@ -108,7 +112,15 @@ function InternshipApplicationList() {
           setErrorMessage("Erreur ! Aucune application de stage");
         });
     }
-  }, [user.username, internshipOffer, isInternshipManagerSignature, username, sessions, currentSession, session]);
+  }, [
+    user.username,
+    internshipOffer,
+    isInternshipManagerSignature,
+    username,
+    sessions,
+    currentSession,
+    session,
+  ]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
