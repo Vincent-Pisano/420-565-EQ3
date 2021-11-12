@@ -254,11 +254,9 @@ public class BackendService {
         List<InternshipApplication> allInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
         List<InternshipApplication> allInternshipApplicationsInCurrentAndNextSessions = new ArrayList<>();
         int currentYear = getCurrentYear();
-        System.out.println("Current session- > " + getCurrentSession());
         allInternshipApplications.forEach(internshipApplication -> {
             InternshipOffer currentInternshipOffer = internshipApplication.getInternshipOffer();
             String currentInternshipOfferSession = currentInternshipOffer.getSession();
-            String currentInternshipOfferSessionName = currentInternshipOfferSession.substring(0, 2);
             Calendar currentInternshipOfferSessionDate = Calendar.getInstance();
             String currentSession = getCurrentSession();
             if (currentSession.equals("HIV")) {
@@ -269,7 +267,7 @@ public class BackendService {
             }
             else {
                 if ((currentInternshipOfferSessionDate.get(Calendar.YEAR) > currentYear  ||
-                        (currentInternshipOfferSessionName.equals("ETE") && currentInternshipOfferSessionDate.get(Calendar.YEAR) == currentYear)
+                        (currentInternshipOfferSession.toUpperCase().contains("ETE") && currentInternshipOfferSessionDate.get(Calendar.YEAR) == currentYear)
                     ) && internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.ACCEPTED) {
                     allInternshipApplicationsInCurrentAndNextSessions.add(internshipApplication);
                 }
