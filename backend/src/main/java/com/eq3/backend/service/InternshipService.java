@@ -8,8 +8,12 @@ import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.internet.MimeMessage;
 
 import static com.eq3.backend.generator.GenerateContract.*;
 import static com.eq3.backend.utils.Utils.*;
@@ -30,12 +34,14 @@ public class InternshipService {
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
     private final InternshipManagerRepository internshipManagerRepository;
+    private final JavaMailSender mailSender;
 
     InternshipService(StudentRepository studentRepository,
                    InternshipOfferRepository internshipOfferRepository,
                    InternshipApplicationRepository internshipApplicationRepository,
                    InternshipRepository internshipRepository,
-                   InternshipManagerRepository internshipManagerRepository
+                   InternshipManagerRepository internshipManagerRepository,
+                   JavaMailSender mailSender
     ) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
@@ -43,6 +49,7 @@ public class InternshipService {
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
         this.internshipManagerRepository = internshipManagerRepository;
+        this.mailSender = mailSender;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -179,6 +186,7 @@ public class InternshipService {
         InternshipApplication internshipApplication = new InternshipApplication();
         internshipApplication.setInternshipOffer(internshipOffer);
         internshipApplication.setStudent(student);
+        sendEmail(student, internshipOffer);
         return internshipApplicationRepository.save(internshipApplication);
     }
 
@@ -305,5 +313,25 @@ public class InternshipService {
             }
         });
         return optionalInternship.map(internshipRepository::save);
+    }
+
+    private void sendEmail(Student student, InternshipOffer offer) {
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse("G12345");
+        if (optionalManager.isPresent()) {
+            InternshipManager manager = optionalManager.get();
+            try {
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+                helper.addTo(manager.getEmail());
+                helper.setSubject("Un étudiant vient d'appliquer à une offre");
+                helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + "vient d'appliquer à l'offre :");
+                helper.setText("\n" + offer.getJobName() + "\n" + offer.getDescription());
+
+                mailSender.send(message);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
