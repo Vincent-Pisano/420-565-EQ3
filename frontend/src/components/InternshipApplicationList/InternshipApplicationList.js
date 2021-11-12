@@ -43,7 +43,6 @@ function InternshipApplicationList() {
   const [currentInternshipApplication, setCurrentInternshipApplication] = useState({});
   const [internshipApplications, setInternshipApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isFiltered, setIsFilterred] = useState(false);
 
   useEffect(() => {
     setErrorMessage("");
@@ -70,17 +69,7 @@ function InternshipApplicationList() {
             setErrorMessage("Aucune Application validée pour le moment");
           });
       }
-      else if (isFiltered === false) {
-        axios
-          .get(`http://localhost:9090/getAll/accepted/internshipApplication`)
-          .then((response) => {
-            setInternshipApplications(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Aucune Application acceptée pour le moment");
-          });
-      }
-      else if (isFiltered) {
+      else {
         axios
           .get(`http://localhost:9090/getAll/internshipApplications/in/current/and/next/sessions`)
           .then((response) => {
@@ -114,7 +103,7 @@ function InternshipApplicationList() {
           setErrorMessage("Erreur ! Aucune application de stages");
         });
     }
-  }, [user.username, internshipOffer, isInternshipManagerSignature, username, isFiltered]);
+  }, [user.username, internshipOffer, isInternshipManagerSignature, username]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
@@ -130,34 +119,6 @@ function InternshipApplicationList() {
 
   function isCurrentApplicationCompleted() {
     return currentInternshipApplication.status === "COMPLETED";
-  }
-
-  function makeSessionFilterEnabled(bool) {
-    setIsFilterred(bool)
-    console.log(bool)
-  }
-
-  function showFilterOptions() {
-    if (auth.isInternshipManager && title === "Liste des applications de stages acceptées") {
-      return (
-        <div  className="">
-          <ul>
-            <li>
-              <button
-                className={"menu-item-button"}
-                onClick={() => makeSessionFilterEnabled(false)}
-              >Toutes les session
-              </button>
-              <button
-                className={"menu-item-button"}
-                onClick={() => makeSessionFilterEnabled(true)}
-              >Session courrante + celles à venir
-              </button>
-            </li>
-          </ul>
-        </div>
-      );
-    }
   }
 
   function checkForModal() {
@@ -261,7 +222,6 @@ function InternshipApplicationList() {
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
         <h2 className="cont_title_form">{title}</h2>
-        {showFilterOptions()}
         <Container className="cont_list">
           <p>{errorMessage}</p>
           <ul>
