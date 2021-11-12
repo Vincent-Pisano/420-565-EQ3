@@ -83,6 +83,10 @@ div.home-container {
 
 @media only screen and (max-width: 600px) {
 
+  .menu-item {
+    width: 80%;
+  } 
+
     .menu-item ul {
         padding-left: 10%;
     }
