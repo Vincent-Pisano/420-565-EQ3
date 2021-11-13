@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface MonitorRepository extends CassandraRepository<Monitor, String>{
 
-    @AllowFiltering
     Optional<Monitor> findByUsernameAndPassword(String username, String password);
+
+    Optional<Monitor> findByEmail(String email);
 }

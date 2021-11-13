@@ -29,7 +29,14 @@ public class AuthService {
     public Optional<Student> signUp(Student student) {
         Optional<Student> optionalStudent = Optional.empty();
         try {
-            optionalStudent = Optional.of(studentRepository.save(student));
+            String email = student.getEmail();
+            Optional<Student> verifStudent = studentRepository.findByEmail(email);
+            if(!verifStudent.isPresent()) {
+                optionalStudent = Optional.of(studentRepository.save(student));
+            }
+            else {
+                return Optional.empty();
+            }
         } catch (DuplicateKeyException exception) {
             exception.printStackTrace();
         }
@@ -39,7 +46,11 @@ public class AuthService {
     public Optional<Monitor> signUp(Monitor monitor) {
         Optional<Monitor> optionalMonitor = Optional.empty();
         try {
-            optionalMonitor = Optional.of(monitorRepository.save(monitor));
+            String email = monitor.getEmail();
+            Optional<Monitor> verifMonitor = monitorRepository.findByEmail(email);
+            if(!verifMonitor.isPresent()) {
+                optionalMonitor = Optional.of(monitorRepository.save(monitor));
+            }
         } catch (DuplicateKeyException exception) {
             exception.printStackTrace();
         }
@@ -49,7 +60,11 @@ public class AuthService {
     public Optional<Supervisor> signUp(Supervisor supervisor) {
         Optional<Supervisor> optionalSupervisor = Optional.empty();
         try {
-            optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
+            String email = supervisor.getEmail();
+            Optional<Supervisor> verifSupervisor = supervisorRepository.findByEmail(email);
+            if(!verifSupervisor.isPresent()) {
+                optionalSupervisor = Optional.of(supervisorRepository.save(supervisor));
+            }
         } catch (DuplicateKeyException exception) {
             exception.printStackTrace();
         }

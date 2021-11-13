@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends CassandraRepository<Student, String> {
 
-    @AllowFiltering
     Optional<Student> findByUsernameAndPassword(String username, String password);
+
+    Optional<Student> findByEmail(String email);
 }
