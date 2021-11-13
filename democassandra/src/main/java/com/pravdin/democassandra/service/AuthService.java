@@ -1,8 +1,10 @@
 package com.pravdin.democassandra.service;
 
+import com.pravdin.democassandra.model.InternshipManager;
 import com.pravdin.democassandra.model.Monitor;
 import com.pravdin.democassandra.model.Student;
 import com.pravdin.democassandra.model.Supervisor;
+import com.pravdin.democassandra.repositories.InternshipManagerRepository;
 import com.pravdin.democassandra.repositories.MonitorRepository;
 import com.pravdin.democassandra.repositories.StudentRepository;
 import com.pravdin.democassandra.repositories.SupervisorRepository;
@@ -25,6 +27,9 @@ public class AuthService {
 
     @Autowired
     private SupervisorRepository supervisorRepository;
+
+    @Autowired
+    private InternshipManagerRepository internshipManagerRepository;
 
     public Optional<Student> signUp(Student student) {
         Optional<Student> optionalStudent = Optional.empty();
@@ -81,6 +86,10 @@ public class AuthService {
 
     public Optional<Supervisor> loginSupervisor(String username, String password) {
         return supervisorRepository.findByUsernameAndPassword(username, password);
+    }
+
+    public Optional<InternshipManager> loginInternshipManager(String username, String password) {
+        return internshipManagerRepository.findByUsernameAndPassword(username, password);
     }
 
     public Optional<List<Student>> getAllStudent(){

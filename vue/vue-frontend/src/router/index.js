@@ -5,6 +5,7 @@ import Login from '../views/Login'
 import SignupStudent from '../views/SignupStudent'
 import SignupMonitor from '../views/SignupMonitor'
 import SignupSupervisor from '../views/SignupSupervisor'
+import ProfilePage from '../views/ProfilePage'
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: '/signUpSupervisor',
     name: 'SignUpSupervisor',
     component: SignupSupervisor,
+  },
+  {
+    path: '/profile',
+    name: 'ProfilePage',
+    component: ProfilePage,
   },
 ]
 

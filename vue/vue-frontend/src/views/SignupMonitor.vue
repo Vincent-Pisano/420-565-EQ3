@@ -86,6 +86,7 @@
 
 <script>
 import axios from "axios";
+import router from "./../router/index";
 
 export default {
   name: "SignupMonitor",
@@ -116,6 +117,7 @@ export default {
           .post("http://localhost:9090/signUp/monitor", this.fields)
           .then(function (response) {
             console.log(response.data);
+            router.push('/');
           })
           .catch((error) => {
             console.log(error);

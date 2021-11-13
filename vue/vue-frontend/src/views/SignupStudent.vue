@@ -73,6 +73,7 @@
 
 <script>
 import axios from "axios";
+import router from "./../router/index";
 
 export default {
   name: "SignupStudent",
@@ -102,6 +103,7 @@ export default {
           .post("http://localhost:9090/signUp/student", this.fields)
           .then(function (response) {
             console.log(response.data);
+            router.push('/');
           })
           .catch((error) => {
             console.log(error);

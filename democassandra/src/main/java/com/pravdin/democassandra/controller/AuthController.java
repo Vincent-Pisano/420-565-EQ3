@@ -1,5 +1,6 @@
 package com.pravdin.democassandra.controller;
 
+import com.pravdin.democassandra.model.InternshipManager;
 import com.pravdin.democassandra.model.Monitor;
 import com.pravdin.democassandra.model.Student;
 import com.pravdin.democassandra.model.Supervisor;
@@ -59,6 +60,13 @@ public class AuthController {
     public ResponseEntity<Supervisor> loginSupervisor(@PathVariable String username, @PathVariable String password) {
         return service.loginSupervisor(username, password)
                 .map(_supervisor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisor))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/login/internshipManager/{username}/{password}")
+    public ResponseEntity<InternshipManager> loginInternshipManager(@PathVariable String username, @PathVariable String password) {
+        return service.loginInternshipManager(username, password)
+                .map(_internshipManager -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipManager))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 

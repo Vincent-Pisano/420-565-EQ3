@@ -30,6 +30,7 @@
 
 <script>
 import axios from "axios";
+import router from "./../router/index";
 
 function getUserType(username) {
   if (username.startsWith("E")) {
@@ -71,7 +72,11 @@ export default {
               this.pw
           )
           .then(function (response) {
-            console.log(response.data);
+            sessionStorage.setItem("user", JSON.stringify(response.data));
+            var user = sessionStorage.getItem("user");
+            var viewName = JSON.parse(user);
+            console.log(viewName);
+            router.push('/profile');
           })
           .catch((error) => {
             console.log(error)
