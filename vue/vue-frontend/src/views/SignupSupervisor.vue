@@ -103,7 +103,7 @@ export default {
           .post("http://localhost:9090/signUp/supervisor", this.fields)
           .then(function (response) {
             console.log(response.data);
-            router.push('/');
+            router.push("/");
           })
           .catch((error) => {
             console.log(error);
@@ -111,6 +111,12 @@ export default {
           });
       }
     },
+    deleteUserFromStorage: function () {
+      sessionStorage.removeItem("user");
+    },
+  },
+  created: function () {
+    this.deleteUserFromStorage();
   },
 };
 </script>

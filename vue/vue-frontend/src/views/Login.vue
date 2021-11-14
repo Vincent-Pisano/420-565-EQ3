@@ -20,9 +20,9 @@
           placeholder="Entrez votre mot de passe"
         />
       </div>
-       <div class="form-control">
-          <p>{{errorMessage}}</p>
-       </div>
+      <div class="form-control">
+        <p>{{ errorMessage }}</p>
+      </div>
       <input type="submit" value="Se connecter" class="btn btn-block" />
     </form>
   </div>
@@ -58,7 +58,7 @@ export default {
     onSubmit(e) {
       e.preventDefault();
       if (!this.username || !this.pw) {
-        this.errorMessage = "Erreur! Veillez remplir tous les champs!"
+        this.errorMessage = "Erreur! Veillez remplir tous les champs!";
         return;
       } else {
         var userType = getUserType(this.username);
@@ -76,14 +76,21 @@ export default {
             var user = sessionStorage.getItem("user");
             var viewName = JSON.parse(user);
             console.log(viewName);
-            router.push('/profile');
+            router.push("/profile");
           })
           .catch((error) => {
-            console.log(error)
-            this.errorMessage = "Erreur de connection, vérifiez le nom d'utilisateur et le mot de passe!"
+            console.log(error);
+            this.errorMessage =
+              "Erreur de connection, vérifiez le nom d'utilisateur et le mot de passe!";
           });
       }
     },
+    deleteUserFromStorage: function () {
+      sessionStorage.removeItem("user");
+    },
+  },
+  created: function () {
+    this.deleteUserFromStorage();
   },
 };
 </script>

@@ -111,6 +111,12 @@ export default {
           });
       }
     },
+    deleteUserFromStorage: function () {
+      sessionStorage.removeItem("user");
+    },
+  },
+  created: function () {
+    this.deleteUserFromStorage();
   },
 };
 </script>
