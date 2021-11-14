@@ -23,6 +23,7 @@ export default{
                 monitor: {},
               },
               user: JSON.parse(sessionStorage.getItem("user")),
+              monitorUsername: "",
               errorMessage: ""
             }
         },
@@ -31,35 +32,55 @@ export default{
         },
         methods: {
             onSubmit() {
-                this.internshipOffer.monitor = this.user
-                this.formatDates()
-                axios
-                    .post("http://localhost:9090/save/internshipOffer", this.internshipOffer)
-                    .then((response) => {
-                        this.errorMessage = "L'offre de stage a été sauvegardé"
-                        console.log(response.data);
-                        createRouter({
-                            history: createWebHistory,
-                            routes: [{path: `/home`, component: Home}]
-                        })
-                        router.push({path:`/home`})
+                if (this.internshipOffer.workDays.length > 0) {
+                    if (this.user.username.charAt(0)==="M"){
+                        this.internshipOffer.monitor = this.user
+                    } else if (this.user.username.charAt(0)==="G") {
+                        axios
+                            .get(`http://localhost:9090/get/monitor/${this.monitorUsername}`)
+                            .then((response) => {
+                            this.internshipOffer.monitor = response.data;
+                            })
+                            .catch((error) => {
+                            console.log(error)
+                            this.errorMessage = "Erreur! Le moniteur est inexistant"
+                        });
                     }
-                ).catch((error) => {
-                    console.log(error)
-                    this.errorMessage = "Erreur! L'offre de stage est invalide"
-                });
-            },
-            formatDates() {
-                if(this.internshipOffer){
-                    this.internshipOffer.startDate = this.formatDate(this.internshipOffer.startDate)
-                    this.internshipOffer.endDate = this.formatDate(this.internshipOffer.endDate)
+                    if (this.internshipOffer.monitor.username !== undefined){
+                        this.formatDates()
+                        axios
+                            .post("http://localhost:9090/save/internshipOffer", this.internshipOffer)
+                            .then((response) => {
+                                this.errorMessage = "L'offre de stage a été sauvegardé"
+                                console.log(response.data);
+                                createRouter({
+                                    history: createWebHistory,
+                                    routes: [{path: `/home`, component: Home}]
+                                })
+                                router.push({path:`/home`})
+                            }
+                        ).catch((error) => {
+                            console.log(error)
+                            this.errorMessage = "Erreur! L'offre de stage est invalide"
+                        });
+                    } else {
+                        this.errorMessage = "Erreur! Le moniteur est inexistant"
+                    }
+                    } else {
+                        this.errorMessage = "Veuillez entrez au moins une journée de travail"
+                    }
+                },
+                formatDates() {
+                    if(this.internshipOffer){
+                        this.internshipOffer.startDate = this.formatDate(this.internshipOffer.startDate)
+                        this.internshipOffer.endDate = this.formatDate(this.internshipOffer.endDate)
+                    }
+                },
+                formatDate(dateString) {
+                    let date = new Date(dateString)
+                    let dateFormatted = date.toISOString().split('T')[0]
+                    return dateFormatted;
                 }
-            },
-            formatDate(dateString) {
-                let date = new Date(dateString)
-                let dateFormatted = date.toISOString().split('T')[0]
-                return dateFormatted;
-            }
         }
     }
 
@@ -82,7 +103,14 @@ export default{
           class="input_form_sign d_block active_inp_form"
           v-model.lazy="internshipOffer.jobName"
           required/>
-          
+          <input
+          v-if="this.user.username.charAt(0) === 'G'"
+          id="monitorUsername"
+          type="text"
+          placeholder="Entrer le nom d'utilisateur du moniteur"
+          class="input_form_sign d_block active_inp_form"
+          v-model.lazy="monitorUsername"
+          required/>
           <input
           id="description"
           type="text"

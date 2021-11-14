@@ -32,7 +32,10 @@ export default{
       <ul v-if="checkIfLogin() === true" class="nav-link-header">
             <router-link to="/home" class="nav-links-header">{{this.user.username}}</router-link>
             <div v-if="this.user.username.charAt(0) === 'M'">
-                <router-link to="/internshipOffer" class="nav-links-header">Offre de stage</router-link>
+                <router-link to="/internshipOffer" class="nav-links-header">Dépôt d'offre</router-link>
+            </div>
+            <div v-if="this.user.username.charAt(0) === 'G'">
+                <router-link to="/internshipOffer" class="nav-links-header">Dépôt d'offre</router-link>
             </div>
             <router-link to="/" class="nav-links-header" v-on:click="logout()">Déconnexion</router-link>
         </ul>
