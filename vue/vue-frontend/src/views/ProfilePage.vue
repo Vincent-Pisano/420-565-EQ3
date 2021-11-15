@@ -19,7 +19,14 @@
           <p>Poste de travail: {{ this.user.jobTitle }}</p>
         </div>
         <br />
-        <ButtonToInternshipOfferForm />
+        <div
+          v-if="
+            this.user.username.startsWith('G') ||
+            this.user.username.startsWith('M')
+          "
+        >
+          <ButtonToInternshipOfferForm />
+        </div>
         <br />
         <p><button @click="logOut()">Se déconnecter</button></p>
       </div>

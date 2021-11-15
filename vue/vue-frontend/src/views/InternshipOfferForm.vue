@@ -2,6 +2,19 @@
   <div class="container">
     <h1 class="title">Ajout d'offre de stage</h1>
     <form @submit="onSubmit" class="add-form">
+      <div v-if="this.user.username.startsWith('G')">
+        <div class="form-control">
+          <label>Moniteur</label>
+          <input
+            type="text"
+            v-model="fields.monitor"
+            name="monitor"
+            placeholder="Entrez le nom d'utilisateur du moniteur"
+            required
+          />
+        </div>
+      </div>
+
       <div class="form-control">
         <label>Nom du poste</label>
         <input
@@ -46,6 +59,66 @@
           required
         />
       </div>
+
+      <h1 class="title">Jours de travail</h1>
+      <br />
+      <input
+        type="checkbox"
+        id="lundi"
+        name="lundi"
+        value="Lundi"
+        v-model="workDaysCheckboxes.lundi"
+      />
+      <label for="lundi"> Lundi</label><br />
+      <input
+        type="checkbox"
+        id="mardi"
+        name="mardi"
+        value="Mardi"
+        v-model="workDaysCheckboxes.mardi"
+      />
+      <label for="mardi"> Mardi</label><br />
+      <input
+        type="checkbox"
+        id="mercredi"
+        name="mercredi"
+        value="Mercredi"
+        v-model="workDaysCheckboxes.mercredi"
+      />
+      <label for="mercredi"> Mercredi</label><br />
+      <input
+        type="checkbox"
+        id="jeudi"
+        name="jeudi"
+        value="Jeudi"
+        v-model="workDaysCheckboxes.jeudi"
+      />
+      <label for="jeudi"> Jeudi</label><br />
+      <input
+        type="checkbox"
+        id="vendredi"
+        name="vendredi"
+        value="Vendredi"
+        v-model="workDaysCheckboxes.vendredi"
+      />
+      <label for="vendredi"> Vendredi</label><br />
+      <input
+        type="checkbox"
+        id="samedi"
+        name="samedi"
+        value="Samedi"
+        v-model="workDaysCheckboxes.samedi"
+      />
+      <label for="samedi"> Samedi</label><br />
+      <input
+        type="checkbox"
+        id="dimanche"
+        name="dimanche"
+        value="Dimanche"
+        v-model="workDaysCheckboxes.dimanche"
+      />
+      <label for="dimanche"> Dimanche</label><br /><br />
+
       <div class="form-control">
         <label>Salaire par heure</label>
         <input
@@ -110,19 +183,23 @@
       </div>
       <input type="submit" value="Ajouter" class="btn btn-block" />
     </form>
+    <ButtonGoBackToProfile />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import router from "./../router/index";
+import ButtonGoBackToProfile from '../components/ButtonGoBackToProfile.vue';
 
 export default {
+  components: { ButtonGoBackToProfile },
   name: "InternshipOfferForm",
   inheritAttrs: false,
   data() {
     return {
       fields: {
+        monitor: "",
         jobName: "",
         description: "",
         startDate: "",
@@ -136,12 +213,34 @@ export default {
         workShift: "DAY",
         workField: "COMPUTER_SCIENCE",
       },
+      workDaysCheckboxes: {
+        lundi: "",
+        mardi: "",
+        mercredi: "",
+        jeudi: "",
+        vendredi: "",
+        samedi: "",
+        dimanche: "",
+      },
+      user: this.getUserInfo(),
       errorMessage: "",
     };
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
+
+      if (this.user.username.startsWith("M")) {
+        this.fields.monitor = this.user.username;
+      }
+      var daysFromCheckboxes = [];
+      for (const day in this.workDaysCheckboxes) {
+        console.log(`${day}: ${this.workDaysCheckboxes[day]}`);
+        if (this.workDaysCheckboxes[day]) {
+          daysFromCheckboxes.push(day);
+        }
+      }
+      this.fields.workDays = daysFromCheckboxes;
       axios
         .post("http://localhost:9090/add/internshipOffer", this.fields)
         .then(function (response) {
@@ -153,6 +252,31 @@ export default {
           this.errorMessage = "Erreur de création!";
         });
     },
+    logOut() {
+      router.push("/");
+    },
+    getUserInfo: function () {
+      console.log(sessionStorage.getItem("user"));
+      if (sessionStorage.getItem("user") !== null) {
+        var user = sessionStorage.getItem("user");
+        var viewName = JSON.parse(user);
+        if (
+          !(
+            viewName.username.startsWith("G") ||
+            viewName.username.startsWith("M")
+          )
+        ) {
+          this.logOut();
+        } else {
+          return viewName;
+        }
+      } else {
+        this.logOut();
+      }
+    },
+  },
+  created: function () {
+    this.getUserInfo();
   },
 };
 </script>
