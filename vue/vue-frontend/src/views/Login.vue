@@ -73,9 +73,6 @@ export default {
           )
           .then(function (response) {
             sessionStorage.setItem("user", JSON.stringify(response.data));
-            var user = sessionStorage.getItem("user");
-            var viewName = JSON.parse(user);
-            console.log(viewName);
             router.push("/profile");
           })
           .catch((error) => {
