@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.eq3.backend.utils.Utils.getNextSessionFromDate;
 import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -102,7 +103,7 @@ public class InternshipServiceTest {
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         InternshipOffer givenInternshipOffer = getInternshipOfferWithoutId();
 
-        when(internshipOfferRepository.save(givenInternshipOffer))
+        when(internshipOfferRepository.save(any()))
                 .thenReturn(expectedInternshipOffer);
 
         //Act
@@ -336,7 +337,28 @@ public class InternshipServiceTest {
         List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
         assertThat(optionalInternshipApplications.isPresent()).isTrue();
         assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
 
+    @Test
+    //@Disabled
+    public void testGetAllAcceptedInternshipApplicationsNextSessions() {
+        //Arrange
+        expectedInternshipApplicationList = getListOfAcceptedInternshipApplication();
+        expectedInternshipOfferList = getListOfInternshipOffer();
+
+        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(any()))
+                .thenReturn(expectedInternshipOfferList);
+        when(internshipApplicationRepository.findAllByIsDisabledFalseAndInternshipOfferInAndStatus(
+                any(), any()
+        )).thenReturn(expectedInternshipApplicationList);
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllAcceptedInternshipApplicationsNextSessions();
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
     }
 
     @Test
