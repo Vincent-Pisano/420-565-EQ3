@@ -1,7 +1,6 @@
 package com.pravdin.democassandra.controller;
 
 import com.pravdin.democassandra.model.InternshipOffer;
-import com.pravdin.democassandra.model.Student;
 import com.pravdin.democassandra.service.InternshipService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
