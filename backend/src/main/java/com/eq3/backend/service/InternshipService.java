@@ -305,9 +305,9 @@ public class InternshipService {
         return optionalInternship.map(internshipRepository::save);
     }
 
-    private void sendEmail(Student student, InternshipOffer offer) {
+    private void (Student student, InternshipOffer offer) {
         Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse("G1");
-        if (optionalManager.isPresent()) {
+        if (optionalManagsendEmailer.isPresent()) {
             InternshipManager manager = optionalManager.get();
             try {
                 MimeMessage message = mailSender.createMimeMessage();
