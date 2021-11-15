@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../components/Home.vue'
 import SignUp from '../components/SignUp/SignUp.vue'
 import Login from '../components/Login/Login.vue'
-import InternshipOffer from '../components/InternshipOffer/InternshipOffer.vue'
+import InternshipOfferForm from '../components/InternshipOffer/InternshipOfferForm.vue'
+import InternshipOfferList from '../components/InternshipOffer/InternshipOfferList.vue'
+import ValidateOffer from '../components/InternshipOffer/ValidateOffer.vue'
 
 const routes = [
   {
@@ -23,7 +25,18 @@ const routes = [
   {
     path: '/internshipOffer',
     name: 'InternshipOffer',
-    component: InternshipOffer
+    component: InternshipOfferForm,
+  },
+  {
+    path: '/listInternshipOffer',
+    name: 'InternshipOfferList',
+    component: InternshipOfferList
+  },
+  {
+    path: '/validatesOffer',
+    name: 'ValidateOffer',
+    component: ValidateOffer,
+    props:true
   }
 ]
 

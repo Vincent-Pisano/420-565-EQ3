@@ -91,7 +91,7 @@ export default{
 
 <template>
     <NavBar/>
-    <div id  = "signUpMonitor" class="form-group">
+    <div id  = "internshipOfferForm" class="form-group">
         <div class="cont_tabs_login">
             <h2 class="pt-3">Offre de Stage</h2>
         </div>
