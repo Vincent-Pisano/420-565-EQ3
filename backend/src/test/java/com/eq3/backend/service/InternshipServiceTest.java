@@ -102,7 +102,7 @@ public class InternshipServiceTest {
         expectedInternshipOffer.setMonitor(getMonitorWithId());
         InternshipOffer givenInternshipOffer = getInternshipOfferWithoutId();
 
-        when(internshipOfferRepository.save(givenInternshipOffer))
+        when(internshipOfferRepository.save(any()))
                 .thenReturn(expectedInternshipOffer);
 
         //Act
