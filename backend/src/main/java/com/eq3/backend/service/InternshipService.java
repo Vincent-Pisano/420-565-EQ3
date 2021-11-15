@@ -8,8 +8,12 @@ import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +24,10 @@ import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.Optional;
@@ -318,9 +326,42 @@ public class InternshipService {
                 helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
 
                 mailSender.send(message);
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+    @Scheduled(cron = "0 0 8 * * *")
+    void sendEmailToGSWhenStudentGetsInterviewed() {
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.systemDefault());
+        ZonedDateTime tomorrow = today.plusDays(1);
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByInterviewDateBetweenAndIsDisabledFalse(Date.from(today.toInstant()), Date.from(tomorrow.toInstant()));
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse("G1");
+        if (optionalManager.isPresent()) {
+            InternshipManager manager = optionalManager.get();
+            for (InternshipApplication currentInternship : internshipApplications) {
+                try {
+                    MimeMessage message = mailSender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    Student currentStudent = currentInternship.getStudent();
+                    helper.addTo(manager.getEmail());
+                    helper.setSubject("Convocation à une entrevue d'un étudiant");
+                    helper.setText("L'étudiant " + currentStudent.getFirstName() + " " + currentStudent.getFirstName() + " va être convoqué a une entrevue de stage aujourd'hui!");
+                    mailSender.send(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Configuration
+    @EnableScheduling
+    @ConditionalOnProperty(name = "scheduling.enabled", matchIfMissing = true)
+    static
+    class SchedulingConfiguration {
+
+    }
 }
+
