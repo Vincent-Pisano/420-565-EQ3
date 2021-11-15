@@ -178,7 +178,7 @@ public class InternshipService {
         InternshipApplication internshipApplication = new InternshipApplication();
         internshipApplication.setInternshipOffer(internshipOffer);
         internshipApplication.setStudent(student);
-        sendEmail(student, internshipOffer);
+        sendEmailWhenStudentAppliesToNewInternshipOffer(student, internshipOffer);
         return internshipApplicationRepository.save(internshipApplication);
     }
 
@@ -305,9 +305,9 @@ public class InternshipService {
         return optionalInternship.map(internshipRepository::save);
     }
 
-    private void (Student student, InternshipOffer offer) {
+    private void sendEmailWhenStudentAppliesToNewInternshipOffer(Student student, InternshipOffer offer) {
         Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse("G1");
-        if (optionalManagsendEmailer.isPresent()) {
+        if (optionalManager.isPresent()) {
             InternshipManager manager = optionalManager.get();
             try {
                 MimeMessage message = mailSender.createMimeMessage();
