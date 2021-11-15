@@ -306,7 +306,7 @@ public class InternshipService {
     }
 
     private void sendEmail(Student student, InternshipOffer offer) {
-        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse("G12345");
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse("G1");
         if (optionalManager.isPresent()) {
             InternshipManager manager = optionalManager.get();
             try {
@@ -315,8 +315,7 @@ public class InternshipService {
 
                 helper.addTo(manager.getEmail());
                 helper.setSubject("Un étudiant vient d'appliquer à une offre");
-                helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + "vient d'appliquer à l'offre :");
-                helper.setText("\n" + offer.getJobName() + "\n" + offer.getDescription());
+                helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
 
                 mailSender.send(message);
             } catch (Exception e){
