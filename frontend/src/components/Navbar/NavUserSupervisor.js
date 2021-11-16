@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { URL_STUDENT_LIST_FROM_DEPARTMENT } from "../../Utils/URL"
 
 const NavUserSupervisor = () => {
   return (
@@ -8,7 +9,7 @@ const NavUserSupervisor = () => {
       title={<span className="nav-links-header">Options Superviseur</span>}
       menuVariant="dark"
     >
-      <NavDropdown.Item as={Link} to="/listStudents">
+      <NavDropdown.Item as={Link} to={URL_STUDENT_LIST_FROM_DEPARTMENT}>
         Liste des étudiants du département
       </NavDropdown.Item>
 

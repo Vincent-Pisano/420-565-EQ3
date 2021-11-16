@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { URL_STUDENT_LIST_CV_TO_VALIDATE } from "../../Utils/URL"
 
 const NavUserGs = () => {
   return (
@@ -29,11 +30,7 @@ const NavUserGs = () => {
       >
         Liste Applications
       </NavDropdown.Item>
-      <NavDropdown.Item
-        as={Link}
-        className="nav-item-cust"
-        to="/studentList/validate/cv"
-      >
+      <NavDropdown.Item as={Link} className="nav-item-cust" to={URL_STUDENT_LIST_CV_TO_VALIDATE}>
         Liste CV
       </NavDropdown.Item>
       <NavDropdown.Item

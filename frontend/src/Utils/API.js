@@ -1,6 +1,9 @@
+const URL_BACKEND = "http://localhost:9090/";
+
 export const GET_ALL_SESSIONS_OF_STUDENTS =
-  "http://localhost:9090/getAll/sessions/students";
+  URL_BACKEND + "getAll/sessions/students";
 export const GET_ALL_STUDENT_WITH_CV_ACTIVE_NOT_VALID =
-  "http://localhost:9090/getAll/student/CVActiveNotValid/";
+  URL_BACKEND + "getAll/student/CVActiveNotValid/";
+export const GET_ALL_STUDENT_FROM_DEPARTMENT = URL_BACKEND + "getAll/students/";
 export const GET_ALL_STUDENTS_WITHOUT_SUPERVISOR =
-  "http://localhost:9090/getAll/students/noSupervisor/";
+  URL_BACKEND + "getAll/students/noSupervisor/";
