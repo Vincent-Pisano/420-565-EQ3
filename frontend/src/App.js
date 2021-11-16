@@ -17,6 +17,7 @@ import NavigationBar from "../src/components/Navbar/NavigationBar";
 import ReportsHome from './components/Reports/ReportsHome';
 
 import StudentListCVToValidate from './components/StudentList/List/StudentListCVToValidate';
+import StudentListAssignSupervisor from './components/StudentList/List/StudentListAssignSupervisor';
 
 function App () {
 
@@ -34,7 +35,7 @@ function App () {
           <ProtectedRoute path="/reports/listInternshipApplication/:username" exact component={InternshipApplicationReportList}/>
           <ProtectedRoute path="/reports/listInternshipOffer" exact component={InternshipOfferReportList}/>
           <ProtectedRoute path="/listStudents" exact component={StudentList}/>
-          <ProtectedRoute path="/listStudents/assigned" exact component={StudentList}/>
+          <ProtectedRoute path="/listStudents/assigned" exact component={StudentListAssignSupervisor}/>
           <ProtectedRoute path="/listInternshipOffer" exact component={InternshipOfferList}/>
           <ProtectedRoute path="/listInternshipApplication" exact component={InternshipApplicationList}/>
           <ProtectedRoute path="/listInternshipApplication/signature" exact component={InternshipApplicationList}/>
