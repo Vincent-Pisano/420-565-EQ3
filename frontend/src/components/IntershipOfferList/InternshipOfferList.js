@@ -32,7 +32,9 @@ function InternshipOfferList() {
       ) {
         if (sessions.length === 0 && currentSession === undefined) {
           axios
-            .get(`http://localhost:9090/getAll/next/sessions/internshipOffer/unvalidated`)
+            .get(
+              `http://localhost:9090/getAll/next/sessions/internshipOffer/unvalidated`
+            )
             .then((response) => {
               setSessions(response.data);
               setCurrentSession(response.data[0]);
@@ -41,14 +43,16 @@ function InternshipOfferList() {
               setErrorMessage(`Aucune offre de stage déposée...`);
             });
         } else if (currentSession !== undefined) {
-        axios
-          .get(`http://localhost:9090/getAll/internshipOffer/unvalidated/${currentSession}`)
-          .then((response) => {
-            setInternshipOffers(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Aucune Offre de stage à valider");
-          });
+          axios
+            .get(
+              `http://localhost:9090/getAll/internshipOffer/unvalidated/${currentSession}`
+            )
+            .then((response) => {
+              setInternshipOffers(response.data);
+            })
+            .catch((err) => {
+              setErrorMessage("Aucune Offre de stage à valider");
+            });
         }
       } else if (title === "Rapport des offres validées")
         axios

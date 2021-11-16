@@ -1,4 +1,3 @@
-
 import { Container } from "react-bootstrap";
 import Student from "./Student";
 import SessionDropdown from "../SessionDropdown/SessionDropdown";

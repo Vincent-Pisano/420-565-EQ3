@@ -4,8 +4,8 @@ import { useHistory } from "react-router";
 import InternshipOffer from "../../IntershipOfferList/InternshipOffer";
 import "../../../styles/List.css";
 import { Container } from "react-bootstrap";
-import SessionDropdown from "../../SessionDropdown/SessionDropdown"
-import "../../../styles/Session.css"
+import SessionDropdown from "../../SessionDropdown/SessionDropdown";
+import "../../../styles/Session.css";
 
 function InternshipOfferReportList() {
   let history = useHistory();
@@ -30,14 +30,16 @@ function InternshipOfferReportList() {
             setErrorMessage(`Aucune offre de stage déposée à valider...`);
           });
       } else if (currentSession !== undefined) {
-      axios
-        .get(`http://localhost:9090/getAll/internshipOffer/unvalidated/${currentSession}`)
-        .then((response) => {
-          setInternshipOffers(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage("Aucune Offre de stage à valider");
-        });
+        axios
+          .get(
+            `http://localhost:9090/getAll/internshipOffer/unvalidated/${currentSession}`
+          )
+          .then((response) => {
+            setInternshipOffers(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Offre de stage à valider");
+          });
       }
     } else if (title === "Offres validées") {
       if (sessions.length === 0 && currentSession === undefined) {
@@ -51,14 +53,16 @@ function InternshipOfferReportList() {
             setErrorMessage(`Aucune offre de stage validée...`);
           });
       } else if (currentSession !== undefined) {
-      axios
-        .get(`http://localhost:9090/getAll/internshipOffer/validated/${currentSession}`)
-        .then((response) => {
-          setInternshipOffers(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage("Aucune Offre de stage validée");
-        });
+        axios
+          .get(
+            `http://localhost:9090/getAll/internshipOffer/validated/${currentSession}`
+          )
+          .then((response) => {
+            setInternshipOffers(response.data);
+          })
+          .catch((err) => {
+            setErrorMessage("Aucune Offre de stage validée");
+          });
       }
     }
   }, [currentSession, sessions.length, title]);

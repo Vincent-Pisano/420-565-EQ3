@@ -1,6 +1,8 @@
 import StudentList from "../StudentListTemplate";
 import { session } from "../../../Utils/Store";
 import AssignSupervisorModal from "../Modal/AssignSupervisorModal";
+import { TITLE_STUDENT_SUPERVISOR_TO_ASSIGN } from "../../../Utils/TITLE";
+import { GET_ALL_STUDENTS_WITHOUT_SUPERVISOR } from "../../../Utils/API";
 
 function StudentListAssignSupervisor() {
   let supervisor =
@@ -17,12 +19,15 @@ function StudentListAssignSupervisor() {
 
   const [currentStudent, setCurrentStudent] = useState(undefined);
 
-  const title = "Étudiants de ce département à assigner";
+  const title = TITLE_STUDENT_SUPERVISOR_TO_ASSIGN;
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:9090/getAll/students/noSupervisor/${supervisor.department}/${session}`
+        GET_ALL_STUDENTS_WITHOUT_SUPERVISOR +
+          supervisor.department +
+          "/" +
+          session
       )
       .then((response) => {
         setStudents(response.data);
