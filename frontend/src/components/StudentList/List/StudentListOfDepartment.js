@@ -11,6 +11,10 @@ import {
   GET_ALL_SESSIONS_OF_STUDENTS,
   GET_ALL_STUDENT_FROM_DEPARTMENT,
 } from "../../../Utils/API";
+import {
+  ERROR_NO_STUDENT_SUBSCRIBED,
+  ERROR_NO_STUDENT_SUBSCRIBED_TO_THIS_SESSION,
+} from "../../../Utils/ERRORS";
 
 function StudentListOfDepartment() {
   let history = useHistory();
@@ -36,7 +40,7 @@ function StudentListOfDepartment() {
           setCurrentSession(response.data[0]);
         })
         .catch((err) => {
-          setErrorMessage(`Erreur! Aucun étudiant n'est enregistré`);
+          setErrorMessage(ERROR_NO_STUDENT_SUBSCRIBED);
         });
     } else if (currentSession !== undefined) {
       axios
@@ -51,9 +55,7 @@ function StudentListOfDepartment() {
           setErrorMessage("");
         })
         .catch((err) => {
-          setErrorMessage(
-            "Erreur! Aucun étudiant ne s'est inscrit à cette session"
-          );
+          setErrorMessage(ERROR_NO_STUDENT_SUBSCRIBED_TO_THIS_SESSION);
           setStudents([]);
         });
     }

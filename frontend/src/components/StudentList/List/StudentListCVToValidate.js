@@ -8,6 +8,7 @@ import {
   GET_ALL_SESSIONS_OF_STUDENTS,
   GET_ALL_STUDENT_WITH_CV_ACTIVE_NOT_VALID,
 } from "../../../Utils/API";
+import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_CV_TO_VALIDATE } from "../../../Utils/ERRORS";
 
 function StudentListCVToValidate() {
   const [show, setShow] = useState(false);
@@ -35,7 +36,7 @@ function StudentListCVToValidate() {
           setCurrentSession(response.data[0]);
         })
         .catch((err) => {
-          setErrorMessage(`Erreur! Aucun étudiant n'est enregistré`);
+          setErrorMessage(ERROR_NO_STUDENT_SUBSCRIBED);
         });
     } else if (currentSession !== undefined) {
       axios
@@ -45,7 +46,7 @@ function StudentListCVToValidate() {
           setErrorMessage("");
         })
         .catch((err) => {
-          setErrorMessage("Erreur! Aucun CV à valider actuellement");
+          setErrorMessage(ERROR_NO_CV_TO_VALIDATE);
           setStudents([]);
         });
     }

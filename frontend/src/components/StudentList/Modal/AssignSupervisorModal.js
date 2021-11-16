@@ -3,6 +3,12 @@ import { Button, Modal, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import axios from "axios";
 import auth from "../../../services/Auth";
+import { ASSIGN_SUPERVISOR_TO_STUDENT } from "../../../Utils/API"
+import { 
+  ERROR_NO_MORE_STUDENT_TO_ASSIGN,
+  ERROR_ASSIGN_SUPERVISOR,
+  CONFIRM_ASSIGN_SUPERVISOR
+} from "../../../Utils/ERRORS"
 
 const AssignSupervisorModal = ({
   show,
@@ -20,7 +26,7 @@ const AssignSupervisorModal = ({
   function AssignStudent() {
     axios
       .post(
-        `http://localhost:9090/assign/supervisor/${currentStudent.id}/${supervisor.id}`
+        ASSIGN_SUPERVISOR_TO_STUDENT + currentStudent.id + "/" + supervisor.id
       )
       .then((response) => {
         let assignedStudent = response.data;
@@ -37,17 +43,17 @@ const AssignSupervisorModal = ({
             });
           }, 3000);
           setErrorMessage(
-            "Plus aucun étudiant à assigner, vous allez être redirigé"
+            ERROR_NO_MORE_STUDENT_TO_ASSIGN
           );
         }
         setTimeout(() => {
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal("Confirmation de l'assignation");
+        setErrorMessageModal(CONFIRM_ASSIGN_SUPERVISOR);
       })
       .catch((err) => {
-        setErrorMessageModal("Erreur durant l'assignation du Superviseur");
+        setErrorMessageModal(ERROR_ASSIGN_SUPERVISOR);
       });
   }
 

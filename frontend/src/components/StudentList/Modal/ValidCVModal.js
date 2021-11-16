@@ -3,6 +3,8 @@ import { Button, Modal, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import axios from "axios";
 import auth from "../../../services/Auth";
+import { VALIDATE_CV, VIEW_CV } from "../../../Utils/API"
+import { ERROR_NO_MORE_CV_TO_VALID, ERROR_VALID_CV, CONFIRM_VALID_CV } from "../../../Utils/ERRORS"
 
 const ValidCVModal = ({
   show,
@@ -23,7 +25,7 @@ const ValidCVModal = ({
 
   function ValidCV() {
     axios
-      .post(`http://localhost:9090/validate/CV/${currentStudent.id}`)
+      .post(VALIDATE_CV + currentStudent.id)
       .then((response) => {
         let validatedStudent = response.data;
         setStudents(
@@ -38,16 +40,16 @@ const ValidCVModal = ({
               pathname: `/home/${auth.user.username}`,
             });
           }, 3000);
-          setErrorMessage("Plus aucun CV à Valider, vous allez être redirigé");
+          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID);
         }
         setTimeout(() => {
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal("Confirmation de la validation");
+        setErrorMessageModal(ERROR_VALID_CV);
       })
       .catch((err) => {
-        setErrorMessageModal("Erreur durant la validation du CV");
+        setErrorMessageModal(CONFIRM_VALID_CV);
       });
   }
 
@@ -74,7 +76,7 @@ const ValidCVModal = ({
             <a
               className="btn btn-warning btn-lg mt-3"
               download
-              href={`http://localhost:9090/get/CV/document/${
+              href={`${VIEW_CV}${
                 currentStudent === undefined
                   ? ""
                   : currentStudent.id +

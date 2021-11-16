@@ -8,6 +8,7 @@ import {
   TITLE_APPLICATION_LIST_OF_STUDENT,
 } from "../../../Utils/TITLE";
 import { GET_ALL_STUDENTS_OF_SUPERVISOR } from "../../../Utils/API";
+import { ERROR_NO_STUDENT_ASSIGNED } from "../../../Utils/ERRORS";
 
 function StudentListAssignedSupervisor() {
   let history = useHistory();
@@ -34,7 +35,7 @@ function StudentListAssignedSupervisor() {
       })
       .catch((err) => {
         setErrorMessage(
-          "Erreur! Aucun étudiant n'a été assigné à cette session"
+          ERROR_NO_STUDENT_ASSIGNED
         );
         setStudents([]);
       });
