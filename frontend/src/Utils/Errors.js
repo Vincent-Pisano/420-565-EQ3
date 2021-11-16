@@ -1,0 +1,1 @@
+export const ERROR_NO_STUDENT_TO_ASSIGN = "Erreur! Aucun étudiant à assigner actuellement";

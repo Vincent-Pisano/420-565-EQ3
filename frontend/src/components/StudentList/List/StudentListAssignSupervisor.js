@@ -3,10 +3,13 @@ import { session } from "../../../Utils/Store";
 import AssignSupervisorModal from "../Modal/AssignSupervisorModal";
 import { TITLE_STUDENT_SUPERVISOR_TO_ASSIGN } from "../../../Utils/TITLE";
 import { GET_ALL_STUDENTS_WITHOUT_SUPERVISOR } from "../../../Utils/API";
+import { React, useState, useEffect } from "react";
+import axios from "axios";
+import { ERROR_NO_STUDENT_TO_ASSIGN } from "../../../Utils/Errors";
 
 function StudentListAssignSupervisor() {
   let supervisor =
-    isStudentListAssigned && sessionStorage.getItem("supervisor") !== null
+    sessionStorage.getItem("supervisor") !== null
       ? JSON.parse(sessionStorage.getItem("supervisor"))
       : undefined;
 
@@ -34,7 +37,7 @@ function StudentListAssignSupervisor() {
         setErrorMessage("");
       })
       .catch((err) => {
-        setErrorMessage("Erreur! Aucun étudiant à assigner actuellement");
+        setErrorMessage(ERROR_NO_STUDENT_TO_ASSIGN);
         setStudents([]);
       });
   }, []);
