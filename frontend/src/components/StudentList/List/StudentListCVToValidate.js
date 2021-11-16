@@ -1,4 +1,4 @@
-import StudentList from "../StudentList2";
+import StudentList from "../StudentListTemplate";
 import ValidCVModal from "../Modal/ValidCVModal";
 
 function StudentListCVToValidate() {
