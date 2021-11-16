@@ -1,15 +1,20 @@
 import StudentList from "../StudentListTemplate";
 import { useHistory } from "react-router";
-import auth from "../../../services/Auth"
+import auth from "../../../services/Auth";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import { TITLE_STUDENT_LIST_OF_DEPARTMENT } from "../../../Utils/TITLE"
-import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENT_FROM_DEPARTMENT } from "../../../Utils/API"
+import {
+  TITLE_STUDENT_LIST_OF_DEPARTMENT,
+  TITLE_APPLICATION_LIST_OF_STUDENT,
+} from "../../../Utils/TITLE";
+import {
+  GET_ALL_SESSIONS_OF_STUDENTS,
+  GET_ALL_STUDENT_FROM_DEPARTMENT,
+} from "../../../Utils/API";
 
 function StudentListOfDepartment() {
-
-    let history = useHistory();
-    let user = auth.user;
+  let history = useHistory();
+  let user = auth.user;
 
   const [students, setStudents] = useState([]);
 
@@ -17,7 +22,7 @@ function StudentListOfDepartment() {
   const [currentSession, setCurrentSession] = useState(
     sessions.length > 0 ? sessions[sessions.length - 1] : sessions[0]
   );
-  
+
   const [errorMessage, setErrorMessage] = useState("");
 
   let title = TITLE_STUDENT_LIST_OF_DEPARTMENT;
@@ -36,14 +41,19 @@ function StudentListOfDepartment() {
     } else if (currentSession !== undefined) {
       axios
         .get(
-            GET_ALL_STUDENT_FROM_DEPARTMENT + user.department + "/" + currentSession
+          GET_ALL_STUDENT_FROM_DEPARTMENT +
+            user.department +
+            "/" +
+            currentSession
         )
         .then((response) => {
           setStudents(response.data);
           setErrorMessage("");
         })
         .catch((err) => {
-          setErrorMessage("Erreur! Aucun étudiant ne s'est inscrit à cette session");
+          setErrorMessage(
+            "Erreur! Aucun étudiant ne s'est inscrit à cette session"
+          );
           setStudents([]);
         });
     }
@@ -51,7 +61,11 @@ function StudentListOfDepartment() {
 
   function showStudent(student) {
     let state = {
-      title: `Application aux offres de stage de : ${student.firstName} ${student.lastName}`,
+      title:
+        TITLE_APPLICATION_LIST_OF_STUDENT +
+        student.firstName +
+        " " +
+        student.lastName,
       session: currentSession,
     };
     history.push({
@@ -61,15 +75,15 @@ function StudentListOfDepartment() {
   }
 
   return (
-      <StudentList
-        title={title}
-        students={students}
-        errorMessage={errorMessage}
-        onClick={showStudent}
-        sessions={sessions}
-        currentSession={currentSession}
-        setCurrentSession={setCurrentSession}
-      />
+    <StudentList
+      title={title}
+      students={students}
+      errorMessage={errorMessage}
+      onClick={showStudent}
+      sessions={sessions}
+      currentSession={currentSession}
+      setCurrentSession={setCurrentSession}
+    />
   );
 }
 
