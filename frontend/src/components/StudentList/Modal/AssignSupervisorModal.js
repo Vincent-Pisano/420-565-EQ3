@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import axios from "axios";
-import auth from "../../services/Auth";
+import auth from "../../../services/Auth";
 
 const AssignSupervisorModal = ({
   show,
