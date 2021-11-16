@@ -30,6 +30,9 @@ public class UtilsURL {
     public final static String URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY = "/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today/";
     public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors/";
     public final static String URL_GET_ALL_SESSIONS_INTERNSHIP_OFFER_MONITOR = "/getAll/sessions/internshipOffer/monitor/";
+    public final static String URL_GET_ALL_SESSION_OF_STUDENTS = "/getAll/sessions/students";
+    public final static String URL_GET_ALL_SESSION_OF_INVALID_INTERNSHIP_OFFERS = "/getAll/sessions/invalid/internshipOffer";
+    public final static String URL_GET_ALL_SESSION_OF_VALID_INTERNSHIP_OFFERS = "/getAll/sessions/valid/internshipOffer";
     public final static String URL_GET_MONITOR = "/get/monitor/";
     public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/";
     public final static String URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT = "/get/internshipOffer/document/";

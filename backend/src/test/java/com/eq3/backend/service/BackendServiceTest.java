@@ -71,6 +71,7 @@ class BackendServiceTest {
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipApplication> expectedInternshipApplicationList;
     private List<String> expectedSessionList;
+    private TreeSet<String> expectedSessionTreeSet;
     private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
@@ -204,6 +205,47 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllSessionOfStudents() {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+        expectedStudentList = getListOfStudents();
+        expectedStudentList.forEach(student -> student.setSessions(Collections.singletonList(SESSION)));
+
+        when(studentRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllSessionOfStudents();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudents() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudents(SESSION);
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithoutSupervisor() {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -234,25 +276,6 @@ class BackendServiceTest {
         //Act
         final Optional<List<Student>> optionalStudents =
                 service.getAllStudentsWithSupervisor(expectedSupervisor.getId(), SESSION);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudents() {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
-                .thenReturn(expectedStudentList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudents(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -388,7 +411,7 @@ class BackendServiceTest {
             internshipOffer.setSession(SESSION);
         });
         expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
-        
+
         when(internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse()
         ).thenReturn(expectedInternshipList);
 
@@ -480,9 +503,9 @@ class BackendServiceTest {
     public void testGetAllNextSessionsOfInternshipOffers() {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOfferWithDifferentSession();
-        TreeSet<String> expectedSessionTree = new TreeSet<>();
+        expectedSessionTreeSet = new TreeSet<>();
         expectedInternshipOfferList.forEach(internshipOffer ->
-                expectedSessionTree.add(internshipOffer.getSession()));
+                expectedSessionTreeSet.add(internshipOffer.getSession()));
         when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
@@ -494,7 +517,53 @@ class BackendServiceTest {
         TreeSet<String> actualSessions = optionalSessions.orElse(null);
 
         assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions.size()).isEqualTo(expectedSessionTree.size());
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionTreeSet.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfInvalidInternshipOffers() {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+        expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedInternshipOfferList.forEach(internshipOffer ->
+                internshipOffer.setSession(SESSION));
+
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllSessionsOfInvalidInternshipOffers();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfValidInternshipOffers() {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+        expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedInternshipOfferList.forEach(internshipOffer ->
+                internshipOffer.setSession(SESSION));
+
+        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllSessionsOfValidInternshipOffers();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
     }
 
     @Test

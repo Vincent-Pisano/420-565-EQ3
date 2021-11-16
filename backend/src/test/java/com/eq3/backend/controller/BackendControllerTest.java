@@ -16,11 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static com.eq3.backend.utils.UtilsURL.*;
@@ -50,8 +46,8 @@ class BackendControllerTest {
     private InternshipOffer expectedInternshipOffer;
     private Internship expectedInternship;
     private CV expectedCV;
-    List<InternshipApplication> expectedInternshipApplicationList;
     private List<String> expectedSessionList;
+    private TreeSet<String> expectedSessionTreeSet;
     private PDFDocument expectedPDFDocument;
     private String expectedDocumentName;
     private Binary expectedImage;
@@ -221,6 +217,26 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllSessionOfStudents() throws Exception {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+
+        when(service.getAllSessionOfStudents())
+                .thenReturn(Optional.of(expectedSessionTreeSet));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_STUDENTS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithoutSupervisor() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -386,6 +402,46 @@ class BackendControllerTest {
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfInvalidInternshipOffers() throws Exception {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+
+        when(service.getAllSessionsOfInvalidInternshipOffers())
+                .thenReturn(Optional.of(expectedSessionTreeSet));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_INVALID_INTERNSHIP_OFFERS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfValidInternshipOffers() throws Exception {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+
+        when(service.getAllSessionsOfValidInternshipOffers())
+                .thenReturn(Optional.of(expectedSessionTreeSet));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_VALID_INTERNSHIP_OFFERS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
         //Assert
         MockHttpServletResponse response = result.getResponse();
         var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
