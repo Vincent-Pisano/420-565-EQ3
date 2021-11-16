@@ -397,7 +397,7 @@ class BackendControllerTest {
     public void testGetAllSessionsOfInternshipOffers() throws Exception {
         //Arrange
         expectedSessionList = getListOfSessions();
-        when(service.getAllNextSessionsOfInternshipOffers())
+        when(service.getAllNextSessionsOfInternshipOffersValidated())
                 .thenReturn(Optional.of(new TreeSet<>(expectedSessionList)));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS)

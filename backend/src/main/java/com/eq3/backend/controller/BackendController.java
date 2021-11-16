@@ -141,7 +141,14 @@ public class BackendController {
 
     @GetMapping("/getAll/next/sessions/internshipOffer")
     public ResponseEntity<TreeSet<String>> getAllNextSessionsOfInternshipOffers(){
-        return service.getAllNextSessionsOfInternshipOffers()
+        return service.getAllNextSessionsOfInternshipOffersValidated()
+                .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/next/sessions/internshipOffer/unvalidated")
+    public ResponseEntity<TreeSet<String>> getAllNextSessionsOfInternshipOffersUnvalidated(){
+        return service.getAllNextSessionsOfInternshipOffersUnvalidated()
                 .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

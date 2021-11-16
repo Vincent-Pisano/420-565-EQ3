@@ -511,7 +511,7 @@ class BackendServiceTest {
 
         //Act
         final Optional<TreeSet<String>> optionalSessions =
-                service.getAllNextSessionsOfInternshipOffers();
+                service.getAllNextSessionsOfInternshipOffersValidated();
 
         //Assert
         TreeSet<String> actualSessions = optionalSessions.orElse(null);
