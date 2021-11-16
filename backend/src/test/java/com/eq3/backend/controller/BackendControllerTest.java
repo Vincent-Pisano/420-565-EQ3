@@ -412,6 +412,24 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllSessionsOfInternshipOffersUnvalidated() throws Exception {
+        //Arrange
+        expectedSessionList = getListOfSessions();
+        when(service.getAllNextSessionsOfInternshipOffersUnvalidated())
+                .thenReturn(Optional.of(new TreeSet<>(expectedSessionList)));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS_UNVALIDATED)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllSessionsOfInvalidInternshipOffers() throws Exception {
         //Arrange
         expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
