@@ -1,5 +1,7 @@
 export const URL_STUDENT_LIST_CV_TO_VALIDATE = "/studentList/validate/cv";
 export const URL_STUDENT_LIST_FROM_DEPARTMENT = "/studentList/from/department";
+export const URL_STUDENT_LIST_ASSIGN_SUPERVISOR = "/listStudents/assign";
+export const URL_STUDENT_LIST_ASSIGNED_SUPERVISOR = "/listStudents/assigned";
 
 /*const HOME_PAGE_URL = [
   {

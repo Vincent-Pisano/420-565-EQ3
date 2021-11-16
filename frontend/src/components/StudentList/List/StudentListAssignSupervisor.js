@@ -1,17 +1,20 @@
 import StudentList from "../StudentListTemplate";
 import { session } from "../../../Utils/Store";
+import { useHistory } from "react-router";
 import AssignSupervisorModal from "../Modal/AssignSupervisorModal";
 import { TITLE_STUDENT_SUPERVISOR_TO_ASSIGN } from "../../../Utils/TITLE";
 import { GET_ALL_STUDENTS_WITHOUT_SUPERVISOR } from "../../../Utils/API";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import { ERROR_NO_STUDENT_TO_ASSIGN } from "../../../Utils/Errors";
+import { ERROR_NO_STUDENT_TO_ASSIGN } from "../../../Utils/ERRORS";
 
 function StudentListAssignSupervisor() {
-  let supervisor =
-    sessionStorage.getItem("supervisor") !== null
-      ? JSON.parse(sessionStorage.getItem("supervisor"))
-      : undefined;
+
+  
+  let history = useHistory();
+  let state = history.location.state;
+
+  let supervisor = state.supervisor;
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -40,7 +43,7 @@ function StudentListAssignSupervisor() {
         setErrorMessage(ERROR_NO_STUDENT_TO_ASSIGN);
         setStudents([]);
       });
-  }, []);
+  }, [supervisor.department]);
 
   function showModal(student) {
     setCurrentStudent(student);

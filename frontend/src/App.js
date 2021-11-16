@@ -2,7 +2,12 @@ import './App.css';
 import SignUp from './components/SignUp/SignUp';
 import Home from './components/Home';
 import Login from './components/Login/Login';
-import { URL_STUDENT_LIST_CV_TO_VALIDATE, URL_STUDENT_LIST_FROM_DEPARTMENT } from './Utils/URL'
+import { 
+  URL_STUDENT_LIST_CV_TO_VALIDATE, 
+  URL_STUDENT_LIST_FROM_DEPARTMENT, 
+  URL_STUDENT_LIST_ASSIGN_SUPERVISOR, 
+  URL_STUDENT_LIST_ASSIGNED_SUPERVISOR 
+} from './Utils/URL'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
 import StudentList from './components/StudentList/StudentList';
@@ -18,6 +23,7 @@ import ReportsHome from './components/Reports/ReportsHome';
 
 import StudentListCVToValidate from './components/StudentList/List/StudentListCVToValidate';
 import StudentListAssignSupervisor from './components/StudentList/List/StudentListAssignSupervisor';
+import StudentListAssignedSupervisor from './components/StudentList/List/StudentListAssignedSupervisor';
 import StudentListOfDepartment from './components/StudentList/List/StudentListOfDepartment';
 
 function App () {
@@ -36,7 +42,6 @@ function App () {
           <ProtectedRoute path="/reports/listInternshipApplication/:username" exact component={InternshipApplicationReportList}/>
           <ProtectedRoute path="/reports/listInternshipOffer" exact component={InternshipOfferReportList}/>
           <ProtectedRoute path="/listStudents" exact component={StudentList}/>
-          <ProtectedRoute path="/listStudents/assigned" exact component={StudentListAssignSupervisor}/>
           <ProtectedRoute path="/listInternshipOffer" exact component={InternshipOfferList}/>
           <ProtectedRoute path="/listInternshipApplication" exact component={InternshipApplicationList}/>
           <ProtectedRoute path="/listInternshipApplication/signature" exact component={InternshipApplicationList}/>
@@ -47,6 +52,8 @@ function App () {
 
           <ProtectedRoute path={URL_STUDENT_LIST_CV_TO_VALIDATE} exact component={StudentListCVToValidate}/>
           <ProtectedRoute path={URL_STUDENT_LIST_FROM_DEPARTMENT} exact component={StudentListOfDepartment}/>
+          <ProtectedRoute path={URL_STUDENT_LIST_ASSIGN_SUPERVISOR} exact component={StudentListAssignSupervisor}/>
+          <ProtectedRoute path={URL_STUDENT_LIST_ASSIGNED_SUPERVISOR} exact component={StudentListAssignedSupervisor}/>
 
           <Route path="*" exact component={Login}/>
         </Switch>           

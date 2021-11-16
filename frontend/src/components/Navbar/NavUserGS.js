@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { URL_STUDENT_LIST_CV_TO_VALIDATE } from "../../Utils/URL"
+import { 
+  URL_STUDENT_LIST_CV_TO_VALIDATE } from "../../Utils/URL"
 
 const NavUserGs = () => {
   return (

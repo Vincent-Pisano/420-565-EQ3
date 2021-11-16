@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import { useHistory } from "react-router";
 import Supervisor from "./Supervisor";
 import "../../styles/List.css";
+import { URL_STUDENT_LIST_ASSIGN_SUPERVISOR } from "../../Utils/URL"
 
 function SupervisorList() {
   let history = useHistory();
@@ -24,9 +25,12 @@ function SupervisorList() {
   }, [supervisors.length]);
 
   function showAssignableStudents(supervisor) {
-    sessionStorage.setItem("supervisor", JSON.stringify(supervisor));
+    let state = {
+      supervisor: supervisor,
+    };
     history.push({
-      pathname: "/listStudents/assigned",
+      pathname: URL_STUDENT_LIST_ASSIGN_SUPERVISOR,
+      state: state
     });
   }
 
