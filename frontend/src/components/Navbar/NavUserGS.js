@@ -29,7 +29,7 @@ const NavUserGs = () => {
       >
         Liste Applications
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} className="nav-item-cust" to="/listStudents">
+      <NavDropdown.Item as={Link} className="nav-item-cust" to="/studentList/validate/cv">
         Liste CV
       </NavDropdown.Item>
       <NavDropdown.Item
