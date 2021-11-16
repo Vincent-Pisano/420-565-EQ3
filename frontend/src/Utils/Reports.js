@@ -6,7 +6,7 @@ import {
   faUserEdit,
   faUserTag,
   faUserClock,
-  faIdBadge
+  faIdBadge,
 } from "@fortawesome/free-solid-svg-icons";
 
 const reportLink = "reports/";
@@ -77,7 +77,7 @@ let reports = [
     title: "Étudiants dont le superviseur n’a pas encore évalué l’entreprise",
     link: reportLink + "listStudents",
     icon: faIdBadge,
-  }
+  },
 ];
 
 export function ReportsList() {

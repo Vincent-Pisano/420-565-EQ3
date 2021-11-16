@@ -259,8 +259,14 @@ public class BackendService {
         return new Criteria().andOperator(expression.toArray(expression.toArray(new Criteria[0])));
     }
 
-    public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffers() {
+    public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffersValidated() {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
+        TreeSet<String> sessions = setNextSessionsOfInternshipOffers(internshipOffers);
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffersUnvalidated() {
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
         TreeSet<String> sessions = setNextSessionsOfInternshipOffers(internshipOffers);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }

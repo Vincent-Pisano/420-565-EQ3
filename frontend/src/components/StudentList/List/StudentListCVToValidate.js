@@ -3,8 +3,11 @@ import ValidCVModal from "../Modal/ValidCVModal";
 
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import { TITLE_STUDENT_LIST_CV_TO_VALIDATE } from "../../../Utils/TITLE"
-import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENT_WITH_CV_ACTIVE_NOT_VALID } from "../../../Utils/API"
+import { TITLE_STUDENT_LIST_CV_TO_VALIDATE } from "../../../Utils/TITLE";
+import {
+  GET_ALL_SESSIONS_OF_STUDENTS,
+  GET_ALL_STUDENT_WITH_CV_ACTIVE_NOT_VALID,
+} from "../../../Utils/API";
 
 function StudentListCVToValidate() {
   const [show, setShow] = useState(false);
@@ -18,7 +21,7 @@ function StudentListCVToValidate() {
   const [currentSession, setCurrentSession] = useState(
     sessions.length > 0 ? sessions[sessions.length - 1] : sessions[0]
   );
-  
+
   const [errorMessage, setErrorMessage] = useState("");
 
   let title = TITLE_STUDENT_LIST_CV_TO_VALIDATE;
@@ -36,9 +39,7 @@ function StudentListCVToValidate() {
         });
     } else if (currentSession !== undefined) {
       axios
-        .get(
-            GET_ALL_STUDENT_WITH_CV_ACTIVE_NOT_VALID + currentSession
-        )
+        .get(GET_ALL_STUDENT_WITH_CV_ACTIVE_NOT_VALID + currentSession)
         .then((response) => {
           setStudents(response.data);
           setErrorMessage("");

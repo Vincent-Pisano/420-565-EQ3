@@ -74,7 +74,6 @@ function InternshipApplicationReportList() {
         );
       }
     }
-    
   }
 
   return (

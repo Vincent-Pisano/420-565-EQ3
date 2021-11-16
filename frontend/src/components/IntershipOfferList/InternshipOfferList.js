@@ -30,17 +30,33 @@ function InternshipOfferList() {
         title === "Liste des offres de stages non validées" ||
         title === "Rapport des offres non-validées"
       ) {
-        axios
-          .get(`http://localhost:9090/getAll/internshipOffer/unvalidated`)
-          .then((response) => {
-            setInternshipOffers(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Aucune Offre de stage à valider");
-          });
+        if (sessions.length === 0 && currentSession === undefined) {
+          axios
+            .get(
+              `http://localhost:9090/getAll/next/sessions/internshipOffer/unvalidated`
+            )
+            .then((response) => {
+              setSessions(response.data);
+              setCurrentSession(response.data[0]);
+            })
+            .catch((err) => {
+              setErrorMessage(`Aucune offre de stage déposée...`);
+            });
+        } else if (currentSession !== undefined) {
+          axios
+            .get(
+              `http://localhost:9090/getAll/internshipOffer/unvalidated/${currentSession}`
+            )
+            .then((response) => {
+              setInternshipOffers(response.data);
+            })
+            .catch((err) => {
+              setErrorMessage("Aucune Offre de stage à valider");
+            });
+        }
       } else if (title === "Rapport des offres validées")
         axios
-          .get(`http://localhost:9090/getAll/internshipOffer/validated`)
+          .get(`http://localhost:9090/getAll/internshipOffer/validated/`)
           .then((response) => {
             setInternshipOffers(response.data);
           })
@@ -117,7 +133,7 @@ function InternshipOfferList() {
   }
 
   function showSessionsList() {
-    if ((auth.isMonitor() || auth.isStudent()) && sessions.length !== 0) {
+    if (sessions.length !== 0) {
       return (
         <SessionDropdown
           sessions={sessions}

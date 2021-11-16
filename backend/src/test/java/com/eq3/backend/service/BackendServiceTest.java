@@ -511,7 +511,29 @@ class BackendServiceTest {
 
         //Act
         final Optional<TreeSet<String>> optionalSessions =
-                service.getAllNextSessionsOfInternshipOffers();
+                service.getAllNextSessionsOfInternshipOffersValidated();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionTreeSet.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllNextSessionsOfInternshipOffersUnvalidated() {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOfferWithDifferentSession();
+        expectedSessionTreeSet = new TreeSet<>();
+        expectedInternshipOfferList.forEach(internshipOffer ->
+                expectedSessionTreeSet.add(internshipOffer.getSession()));
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllNextSessionsOfInternshipOffersUnvalidated();
 
         //Assert
         TreeSet<String> actualSessions = optionalSessions.orElse(null);

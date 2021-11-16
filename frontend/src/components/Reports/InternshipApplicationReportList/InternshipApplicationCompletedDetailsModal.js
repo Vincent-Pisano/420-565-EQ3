@@ -17,12 +17,15 @@ const InternshipApplicationDetailsModal = ({
       ? currentInternshipOffer.monitor
       : undefined;
 
-      let student =
-      currentInternshipApplication !== undefined
-        ? currentInternshipApplication.student
-        : undefined;
+  let student =
+    currentInternshipApplication !== undefined
+      ? currentInternshipApplication.student
+      : undefined;
 
-    let supervisor = student !== undefined ? student.supervisorMap[currentInternshipOffer.session] : undefined
+  let supervisor =
+    student !== undefined
+      ? student.supervisorMap[currentInternshipOffer.session]
+      : undefined;
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -36,7 +39,7 @@ const InternshipApplicationDetailsModal = ({
           <Col md={12}>
             <Form>
               <Container className="cont_inputs">
-              <Form.Group controlId="enterpriseName">
+                <Form.Group controlId="enterpriseName">
                   <Form.Label className="labelFields">
                     Nom de l'entreprise
                   </Form.Label>
@@ -53,14 +56,20 @@ const InternshipApplicationDetailsModal = ({
                     Adresse du stage
                   </Form.Label>
                   <Form.Control
-                    value={currentInternshipOffer.address + ", " + currentInternshipOffer.city+ ", " + currentInternshipOffer.postalCode}
+                    value={
+                      currentInternshipOffer.address +
+                      ", " +
+                      currentInternshipOffer.city +
+                      ", " +
+                      currentInternshipOffer.postalCode
+                    }
                     disabled
                     type="text"
                     className="input_form active_inp_form"
                     required
                   />
                 </Form.Group>
-                <hr className="modal_separator mx-auto"/>
+                <hr className="modal_separator mx-auto" />
                 <Form.Group controlId="monitorName">
                   <Form.Label className="labelFields">
                     Nom du monitor
@@ -86,7 +95,7 @@ const InternshipApplicationDetailsModal = ({
                     required
                   />
                 </Form.Group>
-                <hr className="modal_separator mx-auto"/>
+                <hr className="modal_separator mx-auto" />
                 <Form.Group controlId="monitorName">
                   <Form.Label className="labelFields">
                     Nom du Superviseur

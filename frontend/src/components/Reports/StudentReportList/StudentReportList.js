@@ -39,7 +39,9 @@ function StudentReportList() {
     } else if (currentSession !== undefined) {
       if (title === "Étudiants avec aucun CV") {
         axios
-          .get(`http://localhost:9090/getAll/students/without/CV/${currentSession}`)
+          .get(
+            `http://localhost:9090/getAll/students/without/CV/${currentSession}`
+          )
           .then((response) => {
             setStudents(response.data);
             setErrorMessage("");
@@ -50,13 +52,17 @@ function StudentReportList() {
           });
       } else if (title === "Étudiants avec un CV à valider") {
         axios
-          .get(`http://localhost:9090/getAll/student/CVActiveNotValid/${currentSession}`)
+          .get(
+            `http://localhost:9090/getAll/student/CVActiveNotValid/${currentSession}`
+          )
           .then((response) => {
             setStudents(response.data);
             setErrorMessage("");
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiant n'a de CV à valider cette session");
+            setErrorMessage(
+              "Erreur! Aucun étudiant n'a de CV à valider cette session"
+            );
             setStudents([]);
           });
       } else if (title === "Étudiants enregistrés") {
@@ -67,14 +73,18 @@ function StudentReportList() {
             setErrorMessage("");
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiant n'est enregistré cette session");
+            setErrorMessage(
+              "Erreur! Aucun étudiant n'est enregistré cette session"
+            );
             setStudents([]);
           });
       } else if (
         title === "Étudiants n'ayant aucune convocation à une entrevue"
       ) {
         axios
-          .get(`http://localhost:9090/getAll/students/without/interviewDate/${currentSession}`)
+          .get(
+            `http://localhost:9090/getAll/students/without/interviewDate/${currentSession}`
+          )
           .then((response) => {
             setStudents(response.data);
             setErrorMessage("");
@@ -87,13 +97,17 @@ function StudentReportList() {
           });
       } else if (title === "Étudiants en attente d’entrevue") {
         axios
-          .get(`http://localhost:9090/getAll/students/waiting/interview/${currentSession}`)
+          .get(
+            `http://localhost:9090/getAll/students/waiting/interview/${currentSession}`
+          )
           .then((response) => {
             setStudents(response.data);
             setErrorMessage("");
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiant en attente d'entrevue cette session");
+            setErrorMessage(
+              "Erreur! Aucun étudiant en attente d'entrevue cette session"
+            );
             setStudents([]);
           });
       } else if (title === "Étudiants en attente d'une réponse d'entrevue") {
@@ -113,15 +127,19 @@ function StudentReportList() {
           });
       } else if (title === "Étudiants ayant trouvé un stage") {
         axios
-          .get(`http://localhost:9090/getAll/students/with/Internship/${currentSession}`)
+          .get(
+            `http://localhost:9090/getAll/students/with/Internship/${currentSession}`
+          )
           .then((response) => {
             setStudents(response.data);
             setErrorMessage("");
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucuns étudiants n'a trouvé de stage ctte session.");
+            setErrorMessage(
+              "Erreur! Aucuns étudiants n'a trouvé de stage ctte session."
+            );
           });
-          setStudents([]);
+        setStudents([]);
       } else if (
         title === "Étudiants n’ayant pas encore été évalués par leur moniteur"
       ) {
@@ -157,17 +175,20 @@ function StudentReportList() {
             );
             setStudents([]);
           });
-      } 
+      }
     }
   }, [currentSession, sessions.length, title]);
 
   function onClick(student) {
-    if (title === "Étudiants en attente d’entrevue" || "Étudiants en attente d'une réponse d'entrevue") {
+    if (
+      title === "Étudiants en attente d’entrevue" ||
+      "Étudiants en attente d'une réponse d'entrevue"
+    ) {
       history.push({
         pathname: `/reports/listInternshipApplication/${student.username}`,
         state: {
           title: `Applications de ${student.firstName} ${student.lastName} pour la session ${currentSession}`,
-          session: currentSession
+          session: currentSession,
         },
       });
     } else {
