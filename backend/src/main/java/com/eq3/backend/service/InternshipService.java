@@ -356,6 +356,35 @@ public class InternshipService {
         }
     }
 
+    private void sendEmailToSupervisorAboutEvaluation() {
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of("UTC"));
+        ZonedDateTime tomorrow = today.plusDays(1);
+        List<Internship> internships = internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
+        for (Internship currentInternship : internships) {
+            InternshipApplication internshipApplication = currentInternship.getInternshipApplication();
+            Student currentStudent = internshipApplication.getStudent();
+            Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(getSessionFromDate(Date.from(today.toInstant())));
+            InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
+            Monitor currentMonitor = currentOffer.getMonitor();
+            ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of("UTC")).minusDays(14).plusMinutes(1);
+            if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
+                try {
+                    MimeMessage message = mailSender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.addTo(currentSupervisor.getEmail());
+                    helper.setSubject("Remise de l'évaluation de l'entreprise");
+                    helper.setText("Bonjour " + currentSupervisor.getFirstName() + " " + currentSupervisor.getFirstName() + "\n" +
+                            "vous devez remettre l'évaluation de l'entreprise : " +
+                            currentMonitor.getEnterpriseName() + "\n" +
+                            "d'ici deux semaines.");
+                    mailSender.send(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     @Configuration
     @EnableScheduling
     @ConditionalOnProperty(name = "scheduling.enabled", matchIfMissing = true)
