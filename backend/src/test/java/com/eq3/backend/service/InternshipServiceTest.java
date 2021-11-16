@@ -223,12 +223,12 @@ public class InternshipServiceTest {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalseAndSession(SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
         final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllUnvalidatedInternshipOffer();
+                service.getAllUnvalidatedInternshipOffer(SESSION);
 
         // Assert
         List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
@@ -243,12 +243,12 @@ public class InternshipServiceTest {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
         final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllValidatedInternshipOffer();
+                service.getAllValidatedInternshipOffer(SESSION);
 
         // Assert
         List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);

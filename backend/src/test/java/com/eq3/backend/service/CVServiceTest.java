@@ -140,12 +140,12 @@ public class CVServiceTest {
         //Arrange
         expectedStudentList = getListOfStudents();
 
-        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation())
+        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidationAndSessionsContains(SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentWithCVActiveWaitingValidation();
+                service.getAllStudentWithCVActiveWaitingValidation(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);

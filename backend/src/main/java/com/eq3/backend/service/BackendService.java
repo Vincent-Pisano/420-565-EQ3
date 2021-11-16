@@ -110,8 +110,15 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    public Optional<List<Student>> getAllStudents() {
+    public Optional<TreeSet<String>> getAllSessionOfStudents() {
+        TreeSet<String> sessions = new TreeSet<>();
         List<Student> students = studentRepository.findAllByIsDisabledFalse();
+        students.forEach(student -> sessions.addAll(student.getSessions()));
+        return sessions.isEmpty() ? Optional.empty() : Optional.of((TreeSet<String>) sessions.descendingSet());
+    }
+
+    public Optional<List<Student>> getAllStudents(String session) {
+        List<Student> students = studentRepository.findAllByIsDisabledFalseAndSessionsContains(session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
@@ -129,8 +136,8 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    public Optional<List<Student>> getAllStudentsWithoutCV() {
-        List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty();
+    public Optional<List<Student>> getAllStudentsWithoutCV(String session) {
+        List<Student> students = studentRepository.findAllByIsDisabledFalseAndCVListIsEmptyAndSessionsContains(session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
@@ -258,6 +265,25 @@ public class BackendService {
             }
         });
         return sessions;
+    }
+
+    public Optional<TreeSet<String>> getAllSessionsOfInvalidInternshipOffers() {
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
+        TreeSet<String> sessions = setSessionsOfInternshipOffers(internshipOffers);
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    public Optional<TreeSet<String>> getAllSessionsOfValidInternshipOffers() {
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
+        TreeSet<String> sessions = setSessionsOfInternshipOffers(internshipOffers);
+        return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
+    }
+
+    private TreeSet<String> setSessionsOfInternshipOffers(List<InternshipOffer> internshipOffers) {
+        TreeSet<String> sessions = new TreeSet<>();
+        internshipOffers.forEach(internshipOffer -> sessions.add(internshipOffer.getSession()));
+
+        return (TreeSet<String>) sessions.descendingSet();
     }
 
     public Optional<Monitor> getMonitorByUsername(String username) {

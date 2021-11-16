@@ -117,13 +117,15 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
+    public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer(String session) {
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalseAndSession(session);
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipOffer>> getAllValidatedInternshipOffer() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
+    public Optional<List<InternshipOffer>> getAllValidatedInternshipOffer(String session) {
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(session);
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 

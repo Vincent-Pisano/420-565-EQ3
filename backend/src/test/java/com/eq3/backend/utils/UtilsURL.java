@@ -18,10 +18,10 @@ public class UtilsURL {
     // BackendController
     public final static String URL_SAVE_SIGNATURE = "/save/signature/";
     public final static String URL_GET_ALL_STUDENTS_FROM_DEPARTMENT = "/getAll/students/";
-    public final static String URL_GET_ALL_STUDENTS = "/getAll/students";
+    public final static String URL_GET_ALL_STUDENTS = "/getAll/students/";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = "/getAll/students/noSupervisor/";
     public final static String URL_GET_ALL_STUDENTS_WITH_SUPERVISOR = "/getAll/students/supervisor/";
-    public final static String URL_GET_ALL_STUDENTS_WITHOUT_CV = "/getAll/students/without/CV";
+    public final static String URL_GET_ALL_STUDENTS_WITHOUT_CV = "/getAll/students/without/CV/";
     public final static String URL_GET_ALL_STUDENTS_WITH_INTERNSHIP = "/getAll/students/with/Internship";
     public final static String URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE = "/getAll/students/without/interviewDate";
     public final static String URL_GET_ALL_STUDENTS_WAITING_INTERVIEW = "/getAll/students/waiting/interview";
@@ -53,8 +53,8 @@ public class UtilsURL {
     public final static String URL_GET_ENGAGEMENTS = "/get/default/engagements";
     public final static String URL_GET_INTERNSHIP_FROM_INTERNSHIP_APPLICATION = "/get/internship/";
     public final static String URL_GET_ALL_INTERNSHIP_OFFERS = "/getAll/internshipOffer/";
-    public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/unvalidated";
-    public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/validated";
+    public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/unvalidated/";
+    public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/validated/";
     public final static String URL_MONITOR = "/monitor/";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/";
     public final static String URL_STUDENT = "/student/";

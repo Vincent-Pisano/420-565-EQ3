@@ -235,10 +235,10 @@ public class InternshipControllerTest {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(service.getAllUnvalidatedInternshipOffer())
+        when(service.getAllUnvalidatedInternshipOffer(SESSION))
                 .thenReturn(Optional.of(expectedInternshipOfferList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -255,10 +255,10 @@ public class InternshipControllerTest {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(service.getAllValidatedInternshipOffer())
+        when(service.getAllValidatedInternshipOffer(SESSION))
                 .thenReturn(Optional.of(expectedInternshipOfferList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

@@ -247,12 +247,12 @@ class BackendServiceTest {
     public void testGetAllStudents() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalse())
+        when(studentRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudents();
+                service.getAllStudents(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -266,12 +266,12 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutCV() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty())
+        when(studentRepository.findAllByIsDisabledFalseAndCVListIsEmptyAndSessionsContains(SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutCV();
+                service.getAllStudentsWithoutCV(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);

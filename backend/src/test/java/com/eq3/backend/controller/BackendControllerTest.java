@@ -205,10 +205,10 @@ class BackendControllerTest {
     public void testGetAllStudents() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudents())
+        when(service.getAllStudents(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -284,10 +284,10 @@ class BackendControllerTest {
     public void testGetAllStudentsWithoutCV() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutCV())
+        when(service.getAllStudentsWithoutCV(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_CV)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_CV + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
