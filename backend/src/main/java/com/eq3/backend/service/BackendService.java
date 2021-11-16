@@ -142,40 +142,49 @@ public class BackendService {
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
     }
 
-    public Optional<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() {
+    public Optional<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(String session) {
         List<Student> studentWaitingAndInterviewDatePassed = new ArrayList<>();
         List<InternshipApplication> internshipApplicationsWithInterviewDate =
                 internshipApplicationRepository.findAllByInterviewDateIsNotNull();
 
         internshipApplicationsWithInterviewDate.forEach(internshipApplication ->
-                setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(studentWaitingAndInterviewDatePassed, internshipApplication));
+                setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(studentWaitingAndInterviewDatePassed, internshipApplication, session));
         return studentWaitingAndInterviewDatePassed.isEmpty() ? Optional.empty() : Optional.of(studentWaitingAndInterviewDatePassed);
     }
 
-    private void setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(List<Student> students, InternshipApplication internshipApplication) {
+    private void setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(List<Student> students, InternshipApplication internshipApplication, String session) {
+        Student student = internshipApplication.getStudent();
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
         if (internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.WAITING &&
-            internshipApplication.getInterviewDate().before( new Date()) &&
-            !students.contains(internshipApplication.getStudent())) {
+            internshipApplication.getInterviewDate().before(new Date()) &&
+            !students.contains(internshipApplication.getStudent()) &&
+                student.getSessions().contains(session) &&
+                session.equals(internshipOffer.getSession())) {
             students.add(internshipApplication.getStudent());
         }
     }
 
-    public Optional<List<Student>> getAllStudentsWithoutInterviewDate() {
-        List<Student> studentsWithoutInterviewDate = studentRepository.findAllByIsDisabledFalse();
+    public Optional<List<Student>> getAllStudentsWithoutInterviewDate(String session) {
+        List<Student> studentsWithoutInterviewDate = studentRepository.findAllByIsDisabledFalseAndSessionsContains(session);
         List<InternshipApplication> internshipApplicationsWithInterviewDate =
                 internshipApplicationRepository.findAllByInterviewDateIsNotNull();
 
-        internshipApplicationsWithInterviewDate.forEach(internshipApplication -> studentsWithoutInterviewDate.remove(internshipApplication.getStudent()));
-
+        internshipApplicationsWithInterviewDate.forEach(internshipApplication -> {
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            if (session.equals(internshipOffer.getSession()))
+                studentsWithoutInterviewDate.remove(internshipApplication.getStudent());
+        });
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
 
-    public Optional<List<Student>> getAllStudentsWithInternship() {
+    public Optional<List<Student>> getAllStudentsWithInternship(String session) {
         List<Student> studentsWithInternship = new ArrayList<>();
         List<InternshipApplication> completedInternshipApplications = internshipApplicationRepository.findAllByIsDisabledFalse();
         completedInternshipApplications.forEach(internshipApplication -> {
             if (internshipApplication.statusIsCompleted()){
-                if (!studentsWithInternship.contains(internshipApplication.getStudent())){
+                InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+                if (!studentsWithInternship.contains(internshipApplication.getStudent()) &&
+                session.equals(internshipOffer.getSession())){
                     studentsWithInternship.add(internshipApplication.getStudent());
                 }
             }
@@ -183,36 +192,44 @@ public class BackendService {
         return studentsWithInternship.isEmpty() ? Optional.empty() : Optional.of(studentsWithInternship);
     }
 
-    public Optional<List<Student>> getAllStudentsWaitingInterview() {
+    public Optional<List<Student>> getAllStudentsWaitingInterview(String session) {
         List<Student> studentsWaitingInterview = new ArrayList<>();
         List<InternshipApplication> internshipApplicationsWithoutInterviewDate =
                 internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse();
 
-        internshipApplicationsWithoutInterviewDate.forEach(internshipApplication -> studentsWaitingInterview.add(internshipApplication.getStudent()));
+        internshipApplicationsWithoutInterviewDate.forEach(internshipApplication -> {
+                    Student student = internshipApplication.getStudent();
+                    InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+                    if (student.getSessions().contains(session) && session.equals(internshipOffer.getSession())){
+                        studentsWaitingInterview.add(student);
+                    }
+                }
+        );
 
         return studentsWaitingInterview.isEmpty() ? Optional.empty() :
                 Optional.of(studentsWaitingInterview.stream().distinct().collect(Collectors.toList()));
     }
 
-    public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(){
+    public Optional<List<Student>> getAllStudentsWithoutStudentEvaluation(String session){
         List<Internship> internshipListWithoutStudentEvaluation =
                 internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse();
-        List<Student> studentList = getAllStudentsFromInternships(internshipListWithoutStudentEvaluation);
+        List<Student> studentList = getAllStudentsFromInternships(internshipListWithoutStudentEvaluation, session);
         return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }
 
-    public Optional<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(){
+    public Optional<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(String session){
         List<Internship> internshipListWithoutEnterpriseEvaluation =
                 internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
-        List<Student> studentList = getAllStudentsFromInternships(internshipListWithoutEnterpriseEvaluation);
+        List<Student> studentList = getAllStudentsFromInternships(internshipListWithoutEnterpriseEvaluation, session);
         return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }
 
-    private List<Student> getAllStudentsFromInternships(List<Internship> internshipListWithoutStudentEvaluation){
+    private List<Student> getAllStudentsFromInternships(List<Internship> internshipListWithoutStudentEvaluation, String session){
         List<Student> studentList = new ArrayList<>();
         internshipListWithoutStudentEvaluation .forEach(internship -> {
             InternshipApplication internshipApplication = internship.getInternshipApplication();
-            if(internshipApplication.statusIsCompleted())
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            if(internshipApplication.statusIsCompleted() && session.equals(internshipOffer.getSession()))
                 studentList.add(internshipApplication.getStudent());
         });
         return studentList.stream().distinct().collect(Collectors.toList());

@@ -28,6 +28,13 @@ public class UtilsTest {
     public final static String PDF_EVALUATION_FILEPATH =
             System.getProperty("user.dir") + "\\src\\test\\ressources\\assets\\studentEvaluation.pdf";
 
+    public static Student getStudentWithIdAndSession(){
+        Student student = getStudentWithoutId();
+        student.setId("61478hgk58e00c02c02bhd5");
+        student.setSessions(Collections.singletonList(SESSION));
+        return student;
+    }
+
     public static Student getStudentWithId(){
         Student student = getStudentWithoutId();
         student.setId("61478hgk58e00c02c02bhd5");
@@ -48,6 +55,17 @@ public class UtilsTest {
     public static List<Student> getListOfStudents(){
         Student student1 = getStudentWithId();
         Student student2 = getStudentWithId();
+        List<Student> studentsList = new ArrayList();
+        studentsList.add(student1);
+        studentsList.add(student2);
+        return studentsList;
+    }
+
+    public static List<Student> getListOfStudentsWithSessions(){
+        Student student1 = getStudentWithId();
+        student1.setSessions(Collections.singletonList(SESSION));
+        Student student2 = getStudentWithId();
+        student2.setSessions(Collections.singletonList(SESSION));
         List<Student> studentsList = new ArrayList();
         studentsList.add(student1);
         studentsList.add(student2);

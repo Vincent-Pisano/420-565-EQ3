@@ -83,44 +83,44 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/without/interviewDate")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutInterviewDate() {
-        return service.getAllStudentsWithoutInterviewDate()
+    @GetMapping("/getAll/students/without/interviewDate/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutInterviewDate(@PathVariable String session) {
+        return service.getAllStudentsWithoutInterviewDate(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today")
-    public ResponseEntity<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() {
-        return service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed()
+    @GetMapping("/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(@PathVariable String session) {
+        return service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/with/Internship")
-    public ResponseEntity<List<Student>> getAllStudentsWithInternship() {
-        return service.getAllStudentsWithInternship()
+    @GetMapping("/getAll/students/with/Internship/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithInternship(@PathVariable String session) {
+        return service.getAllStudentsWithInternship(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/waiting/interview")
-    public ResponseEntity<List<Student>> getAllStudentsWaitingInterview() {
-        return service.getAllStudentsWaitingInterview()
+    @GetMapping("/getAll/students/waiting/interview/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWaitingInterview(@PathVariable String session) {
+        return service.getAllStudentsWaitingInterview(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/student/studentEvaluation/unevaluated")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutStudentEvaluation(){
-        return service.getAllStudentsWithoutStudentEvaluation()
+    @GetMapping("/getAll/student/studentEvaluation/unevaluated/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutStudentEvaluation(@PathVariable String session){
+        return service.getAllStudentsWithoutStudentEvaluation(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/student/enterpriseEvaluation/unevaluated")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(){
-        return service.getAllStudentsWithoutEnterpriseEvaluation()
+    @GetMapping("/getAll/student/enterpriseEvaluation/unevaluated/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(@PathVariable String session){
+        return service.getAllStudentsWithoutEnterpriseEvaluation(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

@@ -13,6 +13,7 @@ function InternshipApplicationReportList() {
 
   let state = history.location.state;
   let title = state.title;
+  let session = state.session;
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -28,7 +29,7 @@ function InternshipApplicationReportList() {
     setInternshipApplications([]);
     axios
       .get(
-        `http://localhost:9090/getAll/internshipApplication/student/${username}`
+        `http://localhost:9090/getAll/internshipApplication/${session}/student/${username}`
       )
       .then((response) => {
         setInternshipApplications(response.data);
@@ -36,7 +37,7 @@ function InternshipApplicationReportList() {
       .catch((err) => {
         setErrorMessage("Erreur ! Aucune application de stages");
       });
-  }, [title, username]);
+  }, [session, title, username]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);

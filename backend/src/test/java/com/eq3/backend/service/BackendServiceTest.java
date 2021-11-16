@@ -285,14 +285,14 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutInterviewDate() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalse())
+        when(studentRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
                 .thenReturn(expectedStudentList);
         when(internshipApplicationRepository.findAllByInterviewDateIsNotNull())
                 .thenReturn(new ArrayList<>());
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutInterviewDate();
+                service.getAllStudentsWithoutInterviewDate(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -305,14 +305,20 @@ class BackendServiceTest {
     //@Disabled
     public void testGetAllStudentsWaitingInterview() {
         //Arrange
-        expectedStudentList = getListOfStudents();
         expectedInternshipApplicationList = getListOfInternshipApplicationWithDifferentStudent();
+        expectedInternshipApplicationList.forEach(internshipApplication -> {
+            Student student = internshipApplication.getStudent();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            student.setSessions(Collections.singletonList(SESSION));
+            internshipOffer.setSession(SESSION);
+        });
+        expectedStudentList = getListOfStudentsWithSessions();
         when(internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse())
                 .thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWaitingInterview();
+                service.getAllStudentsWaitingInterview(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -327,12 +333,16 @@ class BackendServiceTest {
         //Arrange
         expectedStudentList = getListOfStudents();
         expectedInternshipApplicationList = getListOfCompletedInternshipApplication();
+        expectedInternshipApplicationList.forEach(internshipApplication -> {
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+        });
         when(internshipApplicationRepository.findAllByIsDisabledFalse())
                 .thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithInternship();
+                service.getAllStudentsWithInternship(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -346,13 +356,19 @@ class BackendServiceTest {
     public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws ParseException {
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplicationWithInterviewDate();
-        expectedStudentList = Collections.singletonList(getStudentWithId());
+        expectedInternshipApplicationList.forEach(internshipApplication -> {
+            Student student = internshipApplication.getStudent();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+            student.setSessions(Collections.singletonList(SESSION));
+        });
+        expectedStudentList = Collections.singletonList(getStudentWithIdAndSession());
         when( internshipApplicationRepository.findAllByInterviewDateIsNotNull()
         ).thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed();
+                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -366,13 +382,19 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutStudentEvaluation() throws IOException {
         //Arrange
         expectedInternshipList = getInternshipListCompleted();
+        expectedInternshipList.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+        });
         expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
+        
         when(internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse()
         ).thenReturn(expectedInternshipList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutStudentEvaluation();
+                service.getAllStudentsWithoutStudentEvaluation(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -386,13 +408,19 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutEnterpriseEvaluation() throws IOException {
         //Arrange
         expectedInternshipList = getInternshipListCompleted();
+        expectedInternshipList.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+        });
         expectedStudentList = getListOfStudentsWithoutEnterpriseEvaluation();
+
         when(internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse()
         ).thenReturn(expectedInternshipList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutEnterpriseEvaluation();
+                service.getAllStudentsWithoutEnterpriseEvaluation(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);

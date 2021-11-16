@@ -74,47 +74,70 @@ function StudentReportList() {
         title === "Étudiants n'ayant aucune convocation à une entrevue"
       ) {
         axios
-          .get(`http://localhost:9090/getAll/students/without/interviewDate`)
+          .get(`http://localhost:9090/getAll/students/without/interviewDate/${currentSession}`)
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
             setErrorMessage(
-              "Erreur! Aucun étudiant n'a pas de convocation à une entrevue"
+              "Erreur! Aucun étudiant n'a pas de convocation à une entrevue cette session"
             );
+            setStudents([]);
           });
       } else if (title === "Étudiants en attente d’entrevue") {
         axios
-          .get(`http://localhost:9090/getAll/students/waiting/interview`)
+          .get(`http://localhost:9090/getAll/students/waiting/interview/${currentSession}`)
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
-            setErrorMessage("Erreur! Aucun étudiant en attente d'entrevue");
+            setErrorMessage("Erreur! Aucun étudiant en attente d'entrevue cette session");
+            setStudents([]);
           });
+      } else if (title === "Étudiants en attente d'une réponse d'entrevue") {
+        axios
+          .get(
+            `http://localhost:9090/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today/${currentSession}`
+          )
+          .then((response) => {
+            setStudents(response.data);
+            setErrorMessage("");
+          })
+          .catch((err) => {
+            setErrorMessage(
+              "Erreur! Tous les étudiants ont eu une réponse d'entrevue"
+            );
+            setStudents([]);
+          });
+      } else if (title === "Étudiants ayant trouvé un stage") {
+        axios
+          .get(`http://localhost:9090/getAll/students/with/Internship/${currentSession}`)
+          .then((response) => {
+            setStudents(response.data);
+            setErrorMessage("");
+          })
+          .catch((err) => {
+            setErrorMessage("Erreur! Aucuns étudiants n'a trouvé de stage ctte session.");
+          });
+          setStudents([]);
       } else if (
         title === "Étudiants n’ayant pas encore été évalués par leur moniteur"
       ) {
         axios
           .get(
-            `http://localhost:9090/getAll/student/studentEvaluation/unevaluated`
+            `http://localhost:9090/getAll/student/studentEvaluation/unevaluated/${currentSession}`
           )
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
             setErrorMessage(
-              "Erreur! Tous les étudiants ont été évalués par leur moniteur"
+              "Erreur! Tous les étudiants ont été évalués par leur moniteur cette session"
             );
-          });
-      } else if (title === "Étudiants ayant trouvé un stage") {
-        axios
-          .get(`http://localhost:9090/getAll/students/with/Internship`)
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucuns étudiants n'a trouvé de stage.");
+            setStudents([]);
           });
       } else if (
         title ===
@@ -122,30 +145,19 @@ function StudentReportList() {
       ) {
         axios
           .get(
-            `http://localhost:9090/getAll/student/enterpriseEvaluation/unevaluated`
+            `http://localhost:9090/getAll/student/enterpriseEvaluation/unevaluated/${currentSession}`
           )
           .then((response) => {
             setStudents(response.data);
+            setErrorMessage("");
           })
           .catch((err) => {
             setErrorMessage(
               "Erreur! Tous les étudiants ont leur entreprise évaluée par leurs superviseurs"
             );
+            setStudents([]);
           });
-      } else if (title === "Étudiants en attente d'une réponse d'entrevue") {
-        axios
-          .get(
-            `http://localhost:9090/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today`
-          )
-          .then((response) => {
-            setStudents(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage(
-              "Erreur! Tous les étudiants ont leur entreprise évaluée par leurs superviseurs"
-            );
-          });
-      }
+      } 
     }
   }, [currentSession, sessions.length, title]);
 
@@ -153,7 +165,10 @@ function StudentReportList() {
     if (title === "Étudiants en attente d’entrevue") {
       history.push({
         pathname: `/reports/listInternshipApplication/${student.username}`,
-        state: state,
+        state: {
+          title: `Applications de ${student.firstName} ${student.lastName} pour la session ${currentSession}`,
+          session: currentSession
+        },
       });
     } else {
       setCurrentStudent(student);

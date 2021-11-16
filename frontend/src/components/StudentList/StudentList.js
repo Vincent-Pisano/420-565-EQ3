@@ -93,16 +93,30 @@ function StudentList() {
             setStudents([]);
           });
       } else {
-        axios
-          .get(`http://localhost:9090/getAll/student/CVActiveNotValid`)
-          .then((response) => {
-            setStudents(response.data);
-            setErrorMessage("");
-          })
-          .catch((err) => {
-            setErrorMessage("Erreur! Aucun CV à valider actuellement");
-            setStudents([]);
-          });
+        if (sessions.length === 0 && currentSession === undefined) {
+          axios
+            .get(`http://localhost:9090/getAll/sessions/students`)
+            .then((response) => {
+              setSessions(response.data);
+              setCurrentSession(response.data[0]);
+            })
+            .catch((err) => {
+              setErrorMessage(`Erreur! Aucun étudiant n'est enregistré`);
+            });
+        } else if (currentSession !== undefined) {
+          axios
+            .get(
+              `http://localhost:9090/getAll/student/CVActiveNotValid/${currentSession}`
+            )
+            .then((response) => {
+              setStudents(response.data);
+              setErrorMessage("");
+            })
+            .catch((err) => {
+              setErrorMessage("Erreur! Aucun CV à valider actuellement");
+              setStudents([]);
+            });
+        }
       }
     }
   }, [
@@ -113,6 +127,7 @@ function StudentList() {
     user.department,
     user.id,
     currentSession,
+    sessions.length,
   ]);
 
   function showModal(student) {
@@ -132,7 +147,7 @@ function StudentList() {
   }
 
   function showSessionsList() {
-    if (auth.isSupervisor() && sessions.length !== 0) {
+    if (sessions.length !== 0) {
       return (
         <SessionDropdown
           sessions={sessions}
