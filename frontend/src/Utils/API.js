@@ -12,3 +12,8 @@ export const VIEW_CV = URL_BACKEND + "get/CV/document/";
 
 //SUPERVISOR LIST
 export const GET_ALL_SUPERVISORS = URL_BACKEND + "getAll/supervisors/";
+
+//CV List
+export const UPDATE_ACTIVE_CV = URL_BACKEND + "update/ActiveCV/";
+export const DELETE_CV = URL_BACKEND + "delete/CV/";
+export const SAVE_CV = URL_BACKEND + "save/CV/";

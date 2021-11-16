@@ -1,7 +1,7 @@
 import React from "react";
-import CVButtonDownload from "./CVButtonDownload";
-import CVButtonDelete from "./CVButtonDelete";
-import CVButtonActive from "./CVButtonActive";
+import CVButtonDownload from "./Button/CVButtonDownload";
+import CVButtonDelete from "./Button/CVButtonDelete";
+import CVButtonActive from "./Button/CVButtonActive";
 import auth from "../../services/Auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes, faSyncAlt } from "@fortawesome/free-solid-svg-icons";

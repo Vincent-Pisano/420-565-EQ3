@@ -2,7 +2,7 @@ import React from "react";
 import auth from "../../services/Auth";
 import "../../styles/List.css";
 import { Container } from "react-bootstrap";
-import CVButtonDeposit from "./CVButtonDeposit";
+import CVButtonDeposit from "./Button/CVButtonDeposit";
 import CVTable from "./CVTable";
 
 const CVList = () => {

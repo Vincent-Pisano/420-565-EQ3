@@ -40,7 +40,7 @@ const ValidCVModal = ({
               pathname: `/home/${auth.user.username}`,
             });
           }, 3000);
-          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID);
+          setErrorMessage(CONFIRM_VALID_CV);
         }
         setTimeout(() => {
           setErrorMessageModal("");
@@ -49,7 +49,7 @@ const ValidCVModal = ({
         setErrorMessageModal(ERROR_VALID_CV);
       })
       .catch((err) => {
-        setErrorMessageModal(CONFIRM_VALID_CV);
+        setErrorMessageModal(ERROR_NO_MORE_CV_TO_VALID);
       });
   }
 

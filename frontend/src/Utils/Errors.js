@@ -14,3 +14,14 @@ export const CONFIRM_VALID_CV = "Confirmation de la validation";
 
 //SUPERVISOR LIST
 export const ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION = "Aucun Superviseur enregistré pour cette session";
+
+//CV LIST
+export const ERROR_ACTIVE_CV = "Erreur de traitement de CV!";
+export const ERROR_DELETE_CV = "Erreur! Le fichier n'a pas été supprimé";
+export const ERROR_SAVE_CV = "Erreur d'envoi de fichier";
+export const ERROR_CV_LIST_MAX_SIZE = "Erreur! Taille maximale de fichiers atteinte(10)";
+export const ERROR_CV_INVALID_FORMAT = "Erreur! veuillez soumettre un fichier sous format .pdf";
+
+export const CONFIRM_ACTIVE_CV = "Le CV est maintenant actif";
+export const CONFIRM_DELETE_CV = "Le fichier a été supprimé";
+export const CONFIRM_SAVE_CV = "Le fichier a été déposé";

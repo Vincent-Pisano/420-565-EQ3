@@ -112,14 +112,14 @@ public class CVService {
         }
         if (cv.getId().equals(idCV)) {
             cv.setIsActive(true);
-            cv.setStatus(CV.CVStatus.WAITING);
+            if (cv.getStatus() != CV.CVStatus.VALID)
+                cv.setStatus(CV.CVStatus.WAITING);
         }
     }
 
     public Optional<List<Student>> getAllStudentWithCVActiveWaitingValidation(String session) {
         List<Student> studentList =
                 studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidationAndSessionsContains(session);
-        System.out.println(studentList);
         studentList.forEach(student -> cleanUpStudentCVList(Optional.ofNullable(student)));
         return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }

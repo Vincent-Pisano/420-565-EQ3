@@ -1,56 +1,43 @@
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import { useState } from "react";
-import "./../../styles/CV.css";
-import auth from "../../services/Auth";
+import "./../../../styles/CV.css";
+import auth from "../../../services/Auth";
 import axios from "axios";
 import { useHistory } from "react-router";
+import { UPDATE_ACTIVE_CV } from "../../../Utils/API";
+import { ERROR_ACTIVE_CV, CONFIRM_ACTIVE_CV } from "../../../Utils/ERRORS";
 
-const CVButtonDelete = ({ documentId }) => {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+const CVModalActive = ({handleClose, show, documentId}) => {
 
   const [errorMessage, setErrorMessage] = useState("");
-
   let history = useHistory();
-
   let user = auth.user;
-
-  function reset() {
-    handleShow();
-    setErrorMessage("");
-  }
 
   function onCreatePost(e) {
     e.preventDefault();
     axios
-      .delete(`http://localhost:9090/delete/CV/${user.id}/${documentId}`)
+      .post(UPDATE_ACTIVE_CV + user.id + "/" + documentId)
       .then((response) => {
         user = response.data;
         auth.updateUser(user);
-        setErrorMessage("Le fichier a été supprimé");
+        setErrorMessage(CONFIRM_ACTIVE_CV);
         setTimeout(() => {
           handleClose();
+          setErrorMessage("")
           history.push({
             pathname: `/home/${user.username}`,
           });
         }, 1000);
       })
       .catch((error) => {
-        setErrorMessage("Erreur! Le fichier n'a pas été supprimé");
+        setErrorMessage(ERROR_ACTIVE_CV);
       });
   }
 
   return (
-    <>
-      <button className="btn btn-danger btn-sm" onClick={reset}>
-        Supprimer
-      </button>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
-          <Modal.Title>Êtes-vous certain de supprimer ce fichier?</Modal.Title>
+          <Modal.Title>Êtes-vous certain de mettre ce CV actif?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
@@ -91,7 +78,6 @@ const CVButtonDelete = ({ documentId }) => {
           </Row>
         </Modal.Footer>
       </Modal>
-    </>
   );
 };
-export default CVButtonDelete;
+export default CVModalActive;
