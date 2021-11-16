@@ -2,7 +2,7 @@ import './App.css';
 import SignUp from './components/SignUp/SignUp';
 import Home from './components/Home';
 import Login from './components/Login/Login';
-import { URL_STUDENT_LIST_CV_TO_VALIDATE } from './Utils/URL'
+import { URL_STUDENT_LIST_CV_TO_VALIDATE, URL_STUDENT_LIST_FROM_DEPARTMENT } from './Utils/URL'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
 import StudentList from './components/StudentList/StudentList';
@@ -17,6 +17,7 @@ import NavigationBar from "../src/components/Navbar/NavigationBar";
 import ReportsHome from './components/Reports/ReportsHome';
 
 import StudentListCVToValidate from './components/StudentList/List/StudentListCVToValidate';
+import StudentListOfDepartment from './components/StudentList/List/StudentListOfDepartment';
 
 function App () {
 
@@ -44,6 +45,7 @@ function App () {
           {/* NEW ROUTES */}
 
           <ProtectedRoute path={URL_STUDENT_LIST_CV_TO_VALIDATE} exact component={StudentListCVToValidate}/>
+          <ProtectedRoute path={URL_STUDENT_LIST_FROM_DEPARTMENT} exact component={StudentListOfDepartment}/>
 
           <Route path="*" exact component={Login}/>
         </Switch>           
