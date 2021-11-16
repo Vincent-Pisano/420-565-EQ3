@@ -5,6 +5,7 @@ import Login from '../components/Login/Login.vue'
 import InternshipOfferForm from '../components/InternshipOffer/InternshipOfferForm.vue'
 import InternshipOfferList from '../components/InternshipOffer/InternshipOfferList.vue'
 import ValidateOffer from '../components/InternshipOffer/ValidateOffer.vue'
+import CV from '../components/CV/CV.vue'
 
 const routes = [
   {
@@ -37,6 +38,11 @@ const routes = [
     name: 'ValidateOffer',
     component: ValidateOffer,
     props:true
+  },
+  {
+    path: '/cv',
+    name: 'CV',
+    component: CV
   }
 ]
 

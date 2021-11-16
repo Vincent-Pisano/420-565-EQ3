@@ -34,6 +34,9 @@ export default{
             <div v-if="this.user.username.charAt(0) === 'M'">
                 <router-link to="/internshipOffer" class="nav-links-header">Dépôt d'offres</router-link>
             </div>
+            <div v-if="this.user.username.charAt(0) === 'E'">
+                <router-link to="/cv" class="nav-links-header">Vos CV</router-link>
+            </div>
             <div v-if="this.user.username.charAt(0) === 'G'">
                 <router-link to="/internshipOffer" class="nav-links-header">Dépôt d'offres</router-link>
                 <router-link to="/listInternshipOffer" class="nav-links-header">Validation d'offres</router-link>
