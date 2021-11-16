@@ -104,6 +104,14 @@ public class InternshipController {
                 .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @GetMapping(value="/getAll/accepted/internshipApplications/current/and/next/sessions")
+    public ResponseEntity<List<InternshipApplication>> getAllAcceptedInternshipApplicationsNextSessions(){
+        return service.getAllAcceptedInternshipApplicationsNextSessions()
+                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @GetMapping("/getAll/validated/internshipApplication")
     public ResponseEntity<List<InternshipApplication>> getAllValidatedInternshipApplications() {
         return service.getAllValidatedInternshipApplications()

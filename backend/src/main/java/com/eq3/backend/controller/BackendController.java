@@ -153,13 +153,6 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value="/getAll/internshipApplications/in/current/and/next/sessions")
-    public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationsInCurrentAndNextSessions(){
-        return service.getAllInternshipApplicationsInCurrentAndNextSessions()
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
     @GetMapping(value = "/get/internshipOffer/document/{id}", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
         return service.downloadInternshipOfferDocument(id)

@@ -163,6 +163,17 @@ public class InternshipService {
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
     }
 
+    public Optional<List<InternshipApplication>> getAllAcceptedInternshipApplicationsNextSessions() {
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(getNextSessionFromDate(new Date()));
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByIsDisabledFalseAndInternshipOfferInAndStatus(
+                        internshipOffers, InternshipApplication.ApplicationStatus.ACCEPTED
+                );
+
+        return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
     public Optional<List<InternshipApplication>> getAllValidatedInternshipApplications() {
         List<InternshipApplication> internshipApplications =
                 internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.VALIDATED);

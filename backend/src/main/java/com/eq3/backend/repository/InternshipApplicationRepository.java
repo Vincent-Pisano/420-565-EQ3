@@ -1,6 +1,7 @@
 package com.eq3.backend.repository;
 
 import com.eq3.backend.model.InternshipApplication;
+import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.model.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -23,4 +24,8 @@ public interface InternshipApplicationRepository extends MongoRepository<Interns
     List<InternshipApplication> findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse();
 
     List<InternshipApplication> findAllByInterviewDateIsNotNull();
+
+    List<InternshipApplication> findAllByIsDisabledFalseAndInternshipOfferInAndStatus(
+            List<InternshipOffer> internshipOffers, InternshipApplication.ApplicationStatus status
+    );
 }
