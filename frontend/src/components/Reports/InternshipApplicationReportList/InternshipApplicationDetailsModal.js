@@ -46,6 +46,7 @@ const InternshipApplicationDetailsModal = ({
                     disabled
                   >
                     <option value="ACCEPTED">Acceptée</option>
+                    <option value="COMPLETED">Complétée</option>
                     <option value="NOT_ACCEPTED">Refusée</option>
                     <option value="WAITING">En attente</option>
                     <option disabled value="VALIDATED">

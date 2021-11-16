@@ -23,11 +23,7 @@ const InternshipApplication = ({
         <FontAwesomeIcon
           className="fa-3x"
           icon={
-            auth.isInternshipManager()
-              ? isInternshipManagerSignature
-                ? faSignature
-                : faSyncAlt
-              : internshipApplication.status === "ACCEPTED"
+              internshipApplication.status === "ACCEPTED"
               ? faCheck
               : internshipApplication.status === "NOT_ACCEPTED"
               ? faTimes

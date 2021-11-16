@@ -5,6 +5,7 @@ import "../../../styles/List.css";
 import { Container } from "react-bootstrap";
 import InternshipApplication from "../../InternshipApplicationList/InternshipApplication";
 import InternshipApplicationDetailsModal from "./InternshipApplicationDetailsModal";
+import InternshipApplicationCompletedDetailsModal from "./InternshipApplicationCompletedDetailsModal";
 
 function InternshipApplicationReportList() {
   let history = useHistory();
@@ -52,14 +53,28 @@ function InternshipApplicationReportList() {
   }
 
   function checkForModal() {
-    return (
-      <InternshipApplicationDetailsModal
-        show={show}
-        handleClose={handleClose}
-        currentInternshipApplication={currentInternshipApplication}
-        showIntershipOffer={showIntershipOffer}
-      />
-    );
+    if (currentInternshipApplication !== undefined) {
+      if (currentInternshipApplication.status !== "COMPLETED") {
+        return (
+          <InternshipApplicationDetailsModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+            showIntershipOffer={showIntershipOffer}
+          />
+        );
+      } else {
+        return (
+          <InternshipApplicationCompletedDetailsModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+            showIntershipOffer={showIntershipOffer}
+          />
+        );
+      }
+    }
+    
   }
 
   return (
