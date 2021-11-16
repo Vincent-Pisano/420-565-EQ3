@@ -397,9 +397,11 @@ public class InternshipService {
         for (Internship currentInternship : internships) {
             InternshipApplication internshipApplication = currentInternship.getInternshipApplication();
             Student currentStudent = internshipApplication.getStudent();
-            Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(getSessionFromDate(Date.from(today.toInstant())));
+            System.out.println(getSessionFromDate(Date.from(today.toInstant())));
+
             InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
             Monitor currentMonitor = currentOffer.getMonitor();
+            Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(currentOffer.getSession());
             ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of("UTC")).minusDays(14).plusMinutes(1);
             if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
                 try {
@@ -407,7 +409,7 @@ public class InternshipService {
                     MimeMessageHelper helper = new MimeMessageHelper(message, true);
                     helper.addTo(currentSupervisor.getEmail());
                     helper.setSubject("Remise de l'évaluation de l'entreprise");
-                    helper.setText("Bonjour " + currentSupervisor.getFirstName() + " " + currentSupervisor.getFirstName() + "\n" +
+                    helper.setText("Bonjour " + currentSupervisor.getFirstName() + " " + currentSupervisor.getLastName() + "\n" +
                             "vous devez remettre l'évaluation de l'entreprise : " +
                             currentMonitor.getEnterpriseName() + "\n" +
                             "d'ici deux semaines.");
