@@ -44,15 +44,12 @@ public class InternshipService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final JavaMailSender mailSender;
 
-    private final String MANAGER_USERNAME = "G12345";
-
     InternshipService(StudentRepository studentRepository,
-                   InternshipOfferRepository internshipOfferRepository,
-                   InternshipApplicationRepository internshipApplicationRepository,
-                   InternshipRepository internshipRepository,
-                   InternshipManagerRepository internshipManagerRepository,
-                   JavaMailSender mailSender
-    ) {
+                      InternshipOfferRepository internshipOfferRepository,
+                      InternshipApplicationRepository internshipApplicationRepository,
+                      InternshipRepository internshipRepository,
+                      InternshipManagerRepository internshipManagerRepository,
+                      JavaMailSender mailSender) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
@@ -316,7 +313,7 @@ public class InternshipService {
     }
 
     private void sendEmailWhenStudentAppliesToNewInternshipOffer(Student student, InternshipOffer offer) {
-        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(MANAGER_USERNAME);
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
         if (optionalManager.isPresent()) {
             InternshipManager manager = optionalManager.get();
             try {
@@ -333,9 +330,10 @@ public class InternshipService {
             }
         }
     }
-    @Scheduled(cron = "0 0 8 * * *")
+
+    @Scheduled(cron = "0 * * * * *")
     void sendMails(){
-        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(MANAGER_USERNAME);
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
         if (optionalManager.isPresent()) {
             InternshipManager manager = optionalManager.get();
             sendEmailToGSWhenStudentGetsInterviewed(manager);
@@ -390,6 +388,8 @@ public class InternshipService {
             }
         }
     }
+
+    
 
     @Configuration
     @EnableScheduling
