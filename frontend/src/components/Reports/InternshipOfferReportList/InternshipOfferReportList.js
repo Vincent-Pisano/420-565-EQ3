@@ -27,7 +27,7 @@ function InternshipOfferReportList() {
             setCurrentSession(response.data[0]);
           })
           .catch((err) => {
-            setErrorMessage(`Aucune offre de stage déposée...`);
+            setErrorMessage(`Aucune offre de stage déposée à valider...`);
           });
       } else if (currentSession !== undefined) {
       axios

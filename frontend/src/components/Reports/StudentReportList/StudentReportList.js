@@ -162,7 +162,7 @@ function StudentReportList() {
   }, [currentSession, sessions.length, title]);
 
   function onClick(student) {
-    if (title === "Étudiants en attente d’entrevue") {
+    if (title === "Étudiants en attente d’entrevue" || "Étudiants en attente d'une réponse d'entrevue") {
       history.push({
         pathname: `/reports/listInternshipApplication/${student.username}`,
         state: {

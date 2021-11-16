@@ -90,39 +90,41 @@ function Home() {
   }
 
   function checkSignature() {
-    if (hasASignature) {
-      return (
-        <Container className="cont_btn_file">
-          <p className="btn_submit" disabled>
-            Signature déposée
-          </p>
-        </Container>
-      );
-    } else {
-      return (
-        <>
-          <Form className="mb-5 mt-2">
-            <Form.Group controlId="document" className="cont_file_form">
-              <Form.Label className="labelFields">Signature</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => {
-                  saveSignature(e.target.files[0]);
-                }}
-                className="input_file_form"
-                accept="image/png"
-              />
-            </Form.Group>
-          </Form>
-          <p
-            style={{
-              color: "red",
-            }}
-          >
-            {errorMessage}
-          </p>
-        </>
-      );
+    if (!auth.isSupervisor()) {
+      if (hasASignature) {
+        return (
+          <Container className="cont_btn_file">
+            <p className="btn_submit" disabled>
+              Signature déposée
+            </p>
+          </Container>
+        );
+      } else {
+        return (
+          <>
+            <Form className="mb-5 mt-2">
+              <Form.Group controlId="document" className="cont_file_form">
+                <Form.Label className="labelFields">Signature</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => {
+                    saveSignature(e.target.files[0]);
+                  }}
+                  className="input_file_form"
+                  accept="image/png"
+                />
+              </Form.Group>
+            </Form>
+            <p
+              style={{
+                color: "red",
+              }}
+            >
+              {errorMessage}
+            </p>
+          </>
+        );
+      }
     }
   }
 

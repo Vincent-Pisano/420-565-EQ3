@@ -119,6 +119,7 @@ public class CVService {
     public Optional<List<Student>> getAllStudentWithCVActiveWaitingValidation(String session) {
         List<Student> studentList =
                 studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidationAndSessionsContains(session);
+        System.out.println(studentList);
         studentList.forEach(student -> cleanUpStudentCVList(Optional.ofNullable(student)));
         return studentList.isEmpty() ? Optional.empty() : Optional.of(studentList);
     }

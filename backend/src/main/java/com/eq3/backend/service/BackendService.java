@@ -286,6 +286,7 @@ public class BackendService {
 
     public Optional<TreeSet<String>> getAllSessionsOfInvalidInternshipOffers() {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
+        System.out.println(internshipOffers.size());
         TreeSet<String> sessions = setSessionsOfInternshipOffers(internshipOffers);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
