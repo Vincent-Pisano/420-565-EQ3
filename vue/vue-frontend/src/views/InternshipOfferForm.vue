@@ -1,196 +1,198 @@
 <template>
-  <div class="container">
-    <h1 class="title">Ajout d'offre de stage</h1>
-    <form @submit="onSubmit" class="add-form">
-      <div v-if="this.user.username.startsWith('G')">
+  <div v-if="this.user != null">
+    <div class="container">
+      <h1 class="title">Ajout d'offre de stage</h1>
+      <form @submit="onSubmit" class="add-form">
+        <div v-if="this.user.username.startsWith('G')">
+          <div class="form-control">
+            <label>Moniteur</label>
+            <input
+              type="text"
+              v-model="fields.monitor"
+              name="monitor"
+              placeholder="Entrez le nom d'utilisateur du moniteur"
+              required
+            />
+          </div>
+        </div>
+
         <div class="form-control">
-          <label>Moniteur</label>
+          <label>Nom du poste</label>
           <input
             type="text"
-            v-model="fields.monitor"
-            name="monitor"
-            placeholder="Entrez le nom d'utilisateur du moniteur"
+            v-model="fields.jobName"
+            name="jobName"
+            placeholder="Entrez le nom du poste"
             required
           />
         </div>
-      </div>
+        <div class="form-control">
+          <label>Description du poste</label>
+          <input
+            type="text"
+            v-model="fields.description"
+            name="description"
+            placeholder="Entrez la description du poste"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label>Date de début du stage</label>
+          <input
+            type="date"
+            v-model="fields.startDate"
+            name="startDate"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label>Date de fin du stage</label>
+          <input type="date" v-model="fields.endDate" name="endDate" required />
+        </div>
+        <div class="form-control">
+          <label>Nombre d'heures par semaine</label>
+          <input
+            type="number"
+            v-model="fields.weeklyWorkTime"
+            name="weeklyWorkTime"
+            min="0"
+            max="40"
+            required
+          />
+        </div>
 
-      <div class="form-control">
-        <label>Nom du poste</label>
+        <h1 class="title">Jours de travail</h1>
+        <br />
         <input
-          type="text"
-          v-model="fields.jobName"
-          name="jobName"
-          placeholder="Entrez le nom du poste"
-          required
+          type="checkbox"
+          id="lundi"
+          name="lundi"
+          value="Lundi"
+          v-model="workDaysCheckboxes.lundi"
         />
-      </div>
-      <div class="form-control">
-        <label>Description du poste</label>
+        <label for="lundi"> Lundi</label><br />
         <input
-          type="text"
-          v-model="fields.description"
-          name="description"
-          placeholder="Entrez la description du poste"
-          required
+          type="checkbox"
+          id="mardi"
+          name="mardi"
+          value="Mardi"
+          v-model="workDaysCheckboxes.mardi"
         />
-      </div>
-      <div class="form-control">
-        <label>Date de début du stage</label>
+        <label for="mardi"> Mardi</label><br />
         <input
-          type="date"
-          v-model="fields.startDate"
-          name="startDate"
-          required
+          type="checkbox"
+          id="mercredi"
+          name="mercredi"
+          value="Mercredi"
+          v-model="workDaysCheckboxes.mercredi"
         />
-      </div>
-      <div class="form-control">
-        <label>Date de fin du stage</label>
-        <input type="date" v-model="fields.endDate" name="endDate" required />
-      </div>
-      <div class="form-control">
-        <label>Nombre d'heures par semaine</label>
+        <label for="mercredi"> Mercredi</label><br />
         <input
-          type="number"
-          v-model="fields.weeklyWorkTime"
-          name="weeklyWorkTime"
-          min="0"
-          max="40"
-          required
+          type="checkbox"
+          id="jeudi"
+          name="jeudi"
+          value="Jeudi"
+          v-model="workDaysCheckboxes.jeudi"
         />
-      </div>
+        <label for="jeudi"> Jeudi</label><br />
+        <input
+          type="checkbox"
+          id="vendredi"
+          name="vendredi"
+          value="Vendredi"
+          v-model="workDaysCheckboxes.vendredi"
+        />
+        <label for="vendredi"> Vendredi</label><br />
+        <input
+          type="checkbox"
+          id="samedi"
+          name="samedi"
+          value="Samedi"
+          v-model="workDaysCheckboxes.samedi"
+        />
+        <label for="samedi"> Samedi</label><br />
+        <input
+          type="checkbox"
+          id="dimanche"
+          name="dimanche"
+          value="Dimanche"
+          v-model="workDaysCheckboxes.dimanche"
+        />
+        <label for="dimanche"> Dimanche</label><br /><br />
 
-      <h1 class="title">Jours de travail</h1>
-      <br />
-      <input
-        type="checkbox"
-        id="lundi"
-        name="lundi"
-        value="Lundi"
-        v-model="workDaysCheckboxes.lundi"
-      />
-      <label for="lundi"> Lundi</label><br />
-      <input
-        type="checkbox"
-        id="mardi"
-        name="mardi"
-        value="Mardi"
-        v-model="workDaysCheckboxes.mardi"
-      />
-      <label for="mardi"> Mardi</label><br />
-      <input
-        type="checkbox"
-        id="mercredi"
-        name="mercredi"
-        value="Mercredi"
-        v-model="workDaysCheckboxes.mercredi"
-      />
-      <label for="mercredi"> Mercredi</label><br />
-      <input
-        type="checkbox"
-        id="jeudi"
-        name="jeudi"
-        value="Jeudi"
-        v-model="workDaysCheckboxes.jeudi"
-      />
-      <label for="jeudi"> Jeudi</label><br />
-      <input
-        type="checkbox"
-        id="vendredi"
-        name="vendredi"
-        value="Vendredi"
-        v-model="workDaysCheckboxes.vendredi"
-      />
-      <label for="vendredi"> Vendredi</label><br />
-      <input
-        type="checkbox"
-        id="samedi"
-        name="samedi"
-        value="Samedi"
-        v-model="workDaysCheckboxes.samedi"
-      />
-      <label for="samedi"> Samedi</label><br />
-      <input
-        type="checkbox"
-        id="dimanche"
-        name="dimanche"
-        value="Dimanche"
-        v-model="workDaysCheckboxes.dimanche"
-      />
-      <label for="dimanche"> Dimanche</label><br /><br />
-
-      <div class="form-control">
-        <label>Salaire par heure</label>
-        <input
-          type="number"
-          v-model="fields.hourlySalary"
-          name="hourlySalary"
-          min="0"
-          max="100"
-          required
-        />
-      </div>
-      <div class="form-control">
-        <label>Entrez l'adresse</label>
-        <input
-          type="text"
-          v-model="fields.address"
-          name="address"
-          placeholder="Entrez l'adresse"
-          required
-        />
-      </div>
-      <div class="form-control">
-        <label>Entrez la ville</label>
-        <input
-          type="text"
-          v-model="fields.city"
-          name="city"
-          placeholder="Entrez la ville"
-          required
-        />
-      </div>
-      <div class="form-control">
-        <label>Entrez le code postal</label>
-        <input
-          type="text"
-          v-model="fields.postalCode"
-          name="postalCode"
-          placeholder="Entrez le code postal"
-          minLength="6"
-          maxLength="6"
-          required
-        />
-      </div>
-      <div class="form-control">
-        <label>Type d'horaire</label>
-        <select v-model="fields.workShift" name="workShift" class="classic">
-          <option value="DAY">Jour</option>
-          <option value="NIGHT">Nuit</option>
-          <option value="FLEXIBLE">Flexible</option>
-        </select>
-      </div>
-      <div class="form-control">
-        <label>Type d'offre de stage</label>
-        <select v-model="fields.workField" name="workField" class="classic">
-          <option value="COMPUTER_SCIENCE">Informatique</option>
-          <option value="ARCHITECTURE">Architecture</option>
-          <option value="NURSING">Infirmier</option>
-        </select>
-      </div>
-      <div class="form-control">
-        <p>{{ errorMessage }}</p>
-      </div>
-      <input type="submit" value="Ajouter" class="btn btn-block" />
-    </form>
-    <ButtonGoBackToProfile />
+        <div class="form-control">
+          <label>Salaire par heure</label>
+          <input
+            type="number"
+            v-model="fields.hourlySalary"
+            name="hourlySalary"
+            min="0"
+            max="100"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label>Entrez l'adresse</label>
+          <input
+            type="text"
+            v-model="fields.address"
+            name="address"
+            placeholder="Entrez l'adresse"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label>Entrez la ville</label>
+          <input
+            type="text"
+            v-model="fields.city"
+            name="city"
+            placeholder="Entrez la ville"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label>Entrez le code postal</label>
+          <input
+            type="text"
+            v-model="fields.postalCode"
+            name="postalCode"
+            placeholder="Entrez le code postal"
+            minLength="6"
+            maxLength="6"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label>Type d'horaire</label>
+          <select v-model="fields.workShift" name="workShift" class="classic">
+            <option value="DAY">Jour</option>
+            <option value="NIGHT">Nuit</option>
+            <option value="FLEXIBLE">Flexible</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <label>Type d'offre de stage</label>
+          <select v-model="fields.workField" name="workField" class="classic">
+            <option value="COMPUTER_SCIENCE">Informatique</option>
+            <option value="ARCHITECTURE">Architecture</option>
+            <option value="NURSING">Infirmier</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <p>{{ errorMessage }}</p>
+        </div>
+        <input type="submit" value="Ajouter" class="btn btn-block" />
+      </form>
+      <ButtonGoBackToProfile />
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import router from "./../router/index";
-import ButtonGoBackToProfile from '../components/ButtonGoBackToProfile.vue';
+import ButtonGoBackToProfile from "../components/ButtonGoBackToProfile.vue";
 
 export default {
   components: { ButtonGoBackToProfile },

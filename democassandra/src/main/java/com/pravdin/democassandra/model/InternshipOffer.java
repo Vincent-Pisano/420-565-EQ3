@@ -24,7 +24,7 @@ public class InternshipOffer{
     }
 
     @PrimaryKey
-    private String id = UUID.randomUUID().toString();;
+    private String id = UUID.randomUUID().toString();
 
     private String jobName;
     private String description;
