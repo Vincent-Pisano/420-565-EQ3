@@ -377,14 +377,17 @@ public class InternshipService {
         internships.forEach(internship -> {
             InternshipApplication internshipApplication = internship.getInternshipApplication();
             Student currentStudent = internshipApplication.getStudent();
-            Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(getSessionFromDate(Date.from(today.toInstant())));
+            System.out.println(getSessionFromDate(Date.from(today.toInstant())));
+
             InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
             Monitor currentMonitor = currentOffer.getMonitor();
+            Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(currentOffer.getSession());
             ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
+            
             if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
                 try {
                     generateEmailForSupervisorAboutEvaluation(currentSupervisor, currentMonitor);
-                } catch (Exception e) {
+                } catch(Exception e) {
                     e.printStackTrace();
                 }
             }
