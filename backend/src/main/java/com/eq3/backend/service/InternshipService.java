@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import static com.eq3.backend.generator.GenerateContract.*;
@@ -317,15 +318,9 @@ public class InternshipService {
         if (optionalManager.isPresent()) {
             InternshipManager manager = optionalManager.get();
             try {
-                MimeMessage message = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-                helper.addTo(manager.getEmail());
-                helper.setSubject("Un étudiant vient d'appliquer à une offre");
-                helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
-
-                mailSender.send(message);
+                generateEmailWhenStudentAppliesToNewInternshipOffer(student, offer, manager);
             } catch (Exception e) {
+
                 e.printStackTrace();
             }
         }
@@ -343,81 +338,98 @@ public class InternshipService {
     }
 
     private void sendEmailToGSWhenStudentGetsInterviewed(InternshipManager manager) {
-        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of("UTC"));
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
         ZonedDateTime tomorrow = today.plusDays(1);
         List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByInterviewDateBetweenAndIsDisabledFalse(Date.from(today.toInstant()), Date.from(tomorrow.toInstant()));
-            for (InternshipApplication currentInternship : internshipApplications) {
-                try {
-                    MimeMessage message = mailSender.createMimeMessage();
-                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
-                    Student currentStudent = currentInternship.getStudent();
-                    helper.addTo(manager.getEmail());
-                    helper.setSubject("Convocation à une entrevue d'un étudiant");
-                    helper.setText("L'étudiant " + currentStudent.getFirstName() + " " + currentStudent.getFirstName() +
-                            " va être convoqué a une entrevue de stage aujourd'hui!");
-                    mailSender.send(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        internshipApplications.forEach(internshipApplication -> {
+            try {
+                generateEmailWhenStudentsGetsInterviewed(manager, internshipApplication);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }
+        });
+    }
 
     private void sendEmailToMonitorAboutEvaluation() {
-        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of("UTC"));
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
         ZonedDateTime tomorrow = today.plusDays(1);
         List<Internship> internships = internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse();
-        for (Internship currentInternship : internships) {
-            InternshipApplication internshipApplication = currentInternship.getInternshipApplication();
+        internships.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
             Student currentStudent = internshipApplication.getStudent();
             InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
             Monitor currentMonitor = currentOffer.getMonitor();
-            ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of("UTC")).minusDays(14).plusMinutes(1);
+            ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
             if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
                 try {
-                    MimeMessage message = mailSender.createMimeMessage();
-                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
-                    helper.addTo(currentMonitor.getEmail());
-                    helper.setSubject("Remise de l'évaluation de l'étudiant");
-                    helper.setText("Bonjour " + currentMonitor.getFirstName() + " " + currentMonitor.getFirstName() + "\n" +
-                            "vous devez remettre l'évaluation de l'étudiant : " +
-                            currentStudent.getFirstName() + " " + currentStudent.getFirstName() + "\n" +
-                            "d'ici deux semaines.");
-                    mailSender.send(message);
+                    generateEmailForMonitorAboutEvaluation(currentStudent, currentMonitor);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }
+        });
     }
 
     private void sendEmailToSupervisorAboutEvaluation() {
-        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of("UTC"));
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
         ZonedDateTime tomorrow = today.plusDays(1);
         List<Internship> internships = internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
-        for (Internship currentInternship : internships) {
-            InternshipApplication internshipApplication = currentInternship.getInternshipApplication();
+        internships.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
             Student currentStudent = internshipApplication.getStudent();
             Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(getSessionFromDate(Date.from(today.toInstant())));
             InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
             Monitor currentMonitor = currentOffer.getMonitor();
-            ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of("UTC")).minusDays(14).plusMinutes(1);
+            ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
             if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
                 try {
-                    MimeMessage message = mailSender.createMimeMessage();
-                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
-                    helper.addTo(currentSupervisor.getEmail());
-                    helper.setSubject("Remise de l'évaluation de l'entreprise");
-                    helper.setText("Bonjour " + currentSupervisor.getFirstName() + " " + currentSupervisor.getFirstName() + "\n" +
-                            "vous devez remettre l'évaluation de l'entreprise : " +
-                            currentMonitor.getEnterpriseName() + "\n" +
-                            "d'ici deux semaines.");
-                    mailSender.send(message);
+                    generateEmailForSupervisorAboutEvaluation(currentSupervisor, currentMonitor);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }
+        });
     }
+
+    private void generateEmailWhenStudentAppliesToNewInternshipOffer(Student student, InternshipOffer offer, InternshipManager manager) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.addTo(manager.getEmail());
+        helper.setSubject("Un étudiant vient d'appliquer à une offre");
+        helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
+
+        mailSender.send(message);
+    }
+
+    private void generateEmailForSupervisorAboutEvaluation(Supervisor currentSupervisor, Monitor currentMonitor) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.addTo(currentSupervisor.getEmail());
+        helper.setSubject(EMAIL_SUBJECT_SUPERVISOR_ABOUT_EVALUATION);
+        helper.setText(getEmailTextForSupervisorAboutEvaluation(currentSupervisor, currentMonitor));
+        mailSender.send(message);
+    }
+
+    private void generateEmailForMonitorAboutEvaluation(Student currentStudent, Monitor currentMonitor) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.addTo(currentMonitor.getEmail());
+        helper.setSubject(EMAIL_SUBJECT_MONITOR_ABOUT_EVALUATION);
+        helper.setText(getEmailTextForMonitorAboutEvaluation(currentStudent, currentMonitor));
+        mailSender.send(message);
+    }
+
+    private void generateEmailWhenStudentsGetsInterviewed(InternshipManager manager, InternshipApplication internshipApplication) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        Student currentStudent = internshipApplication.getStudent();
+        helper.addTo(manager.getEmail());
+        helper.setSubject(EMAIL_SUBJECT_INTERVIEW_STUDENT);
+        helper.setText(getEmailTextWhenStudentsGetsInterviewed(currentStudent));
+        mailSender.send(message);
+    }
+
 
     @Configuration
     @EnableScheduling
