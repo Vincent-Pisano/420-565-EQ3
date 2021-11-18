@@ -1,7 +1,9 @@
 package com.eq3.backend.utils;
 
+import com.eq3.backend.model.Monitor;
 import com.eq3.backend.model.PDFDocument;
 import com.eq3.backend.model.Student;
+import com.eq3.backend.model.Supervisor;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +43,31 @@ public class Utils {
 
     public final static int POSITION_YEAR_IN_SESSION = 0;
     public final static int POSITION_TAG_IN_SESSION = 1;
+
+    public final static String EMAIL_SUBJECT_SUPERVISOR_ABOUT_EVALUATION = "Remise de l'évaluation de l'entreprise";
+    public final static String EMAIL_SUBJECT_MONITOR_ABOUT_EVALUATION = "Remise de l'évaluation de l'étudiant";
+    public final static String EMAIL_SUBJECT_INTERVIEW_STUDENT = "Convocation à une entrevue d'un étudiant";
+
+    public final static String UTC_TIME_ZONE = "UTC";
+
+    public static String getEmailTextForSupervisorAboutEvaluation(Supervisor supervisor, Monitor monitor){
+        return "Bonjour " + supervisor.getFirstName() + " " + supervisor.getFirstName() + "\n" +
+                "vous devez remettre l'évaluation de l'entreprise : " +
+                monitor.getEnterpriseName() + "\n" +
+                "d'ici deux semaines.";
+    }
+
+    public static String getEmailTextForMonitorAboutEvaluation(Student student, Monitor monitor){
+        return "Bonjour " + monitor.getFirstName() + " " + monitor.getFirstName() + "\n" +
+                "vous devez remettre l'évaluation de l'étudiant : " +
+                student.getFirstName() + " " + student.getFirstName() + "\n" +
+                "d'ici deux semaines.";
+    }
+
+    public static String getEmailTextWhenStudentsGetsInterviewed(Student student){
+        return "L'étudiant " + student.getFirstName() + " " + student.getFirstName() +
+                " va être convoqué a une entrevue de stage aujourd'hui!";
+    }
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {
         PDFDocument PDFDocument = new PDFDocument();

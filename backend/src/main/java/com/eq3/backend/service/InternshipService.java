@@ -8,14 +8,27 @@ import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import static com.eq3.backend.generator.GenerateContract.*;
 import static com.eq3.backend.utils.Utils.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.Optional;
@@ -30,19 +43,21 @@ public class InternshipService {
     private final InternshipApplicationRepository internshipApplicationRepository;
     private final InternshipRepository internshipRepository;
     private final InternshipManagerRepository internshipManagerRepository;
+    private final JavaMailSender mailSender;
 
     InternshipService(StudentRepository studentRepository,
-                   InternshipOfferRepository internshipOfferRepository,
-                   InternshipApplicationRepository internshipApplicationRepository,
-                   InternshipRepository internshipRepository,
-                   InternshipManagerRepository internshipManagerRepository
-    ) {
+                      InternshipOfferRepository internshipOfferRepository,
+                      InternshipApplicationRepository internshipApplicationRepository,
+                      InternshipRepository internshipRepository,
+                      InternshipManagerRepository internshipManagerRepository,
+                      JavaMailSender mailSender) {
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipApplicationRepository = internshipApplicationRepository;
         this.internshipRepository = internshipRepository;
         this.internshipManagerRepository = internshipManagerRepository;
+        this.mailSender = mailSender;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -182,6 +197,7 @@ public class InternshipService {
         InternshipApplication internshipApplication = new InternshipApplication();
         internshipApplication.setInternshipOffer(internshipOffer);
         internshipApplication.setStudent(student);
+        sendEmailWhenStudentAppliesToNewInternshipOffer(student, internshipOffer);
         return internshipApplicationRepository.save(internshipApplication);
     }
 
@@ -307,4 +323,133 @@ public class InternshipService {
         });
         return optionalInternship.map(internshipRepository::save);
     }
+
+    private void sendEmailWhenStudentAppliesToNewInternshipOffer(Student student, InternshipOffer offer) {
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
+        if (optionalManager.isPresent()) {
+            InternshipManager manager = optionalManager.get();
+            try {
+                generateEmailWhenStudentAppliesToNewInternshipOffer(student, offer, manager);
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Scheduled(cron = "0 8 * * * *")
+    void sendMails(){
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
+        if (optionalManager.isPresent()) {
+            InternshipManager manager = optionalManager.get();
+            sendEmailToGSWhenStudentGetsInterviewed(manager);
+            sendEmailToMonitorAboutEvaluation();
+            sendEmailToSupervisorAboutEvaluation();
+        }
+    }
+
+    private void sendEmailToGSWhenStudentGetsInterviewed(InternshipManager manager) {
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
+        ZonedDateTime tomorrow = today.plusDays(1);
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByInterviewDateBetweenAndIsDisabledFalse(Date.from(today.toInstant()), Date.from(tomorrow.toInstant()));
+        internshipApplications.forEach(internshipApplication -> {
+            try {
+                generateEmailWhenStudentsGetsInterviewed(manager, internshipApplication);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void sendEmailToMonitorAboutEvaluation() {
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
+        ZonedDateTime tomorrow = today.plusDays(1);
+        List<Internship> internships = internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse();
+        internships.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            Student currentStudent = internshipApplication.getStudent();
+            InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
+            Monitor currentMonitor = currentOffer.getMonitor();
+            ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
+            if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
+                try {
+                    generateEmailForMonitorAboutEvaluation(currentStudent, currentMonitor);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void sendEmailToSupervisorAboutEvaluation() {
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
+        ZonedDateTime tomorrow = today.plusDays(1);
+        List<Internship> internships = internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
+        internships.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            Student currentStudent = internshipApplication.getStudent();
+
+            InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
+            Monitor currentMonitor = currentOffer.getMonitor();
+            Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(currentOffer.getSession());
+            ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
+
+            if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
+                try {
+                    generateEmailForSupervisorAboutEvaluation(currentSupervisor, currentMonitor);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void generateEmailWhenStudentAppliesToNewInternshipOffer(Student student, InternshipOffer offer, InternshipManager manager) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.addTo(manager.getEmail());
+        helper.setSubject("Un étudiant vient d'appliquer à une offre");
+        helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
+
+        mailSender.send(message);
+    }
+
+    private void generateEmailForSupervisorAboutEvaluation(Supervisor currentSupervisor, Monitor currentMonitor) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.addTo(currentSupervisor.getEmail());
+        helper.setSubject(EMAIL_SUBJECT_SUPERVISOR_ABOUT_EVALUATION);
+        helper.setText(getEmailTextForSupervisorAboutEvaluation(currentSupervisor, currentMonitor));
+        mailSender.send(message);
+    }
+
+    private void generateEmailForMonitorAboutEvaluation(Student currentStudent, Monitor currentMonitor) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.addTo(currentMonitor.getEmail());
+        helper.setSubject(EMAIL_SUBJECT_MONITOR_ABOUT_EVALUATION);
+        helper.setText(getEmailTextForMonitorAboutEvaluation(currentStudent, currentMonitor));
+        mailSender.send(message);
+    }
+
+    private void generateEmailWhenStudentsGetsInterviewed(InternshipManager manager, InternshipApplication internshipApplication) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        Student currentStudent = internshipApplication.getStudent();
+        helper.addTo(manager.getEmail());
+        helper.setSubject(EMAIL_SUBJECT_INTERVIEW_STUDENT);
+        helper.setText(getEmailTextWhenStudentsGetsInterviewed(currentStudent));
+        mailSender.send(message);
+    }
+
+
+    @Configuration
+    @EnableScheduling
+    @ConditionalOnProperty(name = "scheduling.enabled", matchIfMissing = true)
+    static
+    class SchedulingConfiguration {
+
+    }
 }
+

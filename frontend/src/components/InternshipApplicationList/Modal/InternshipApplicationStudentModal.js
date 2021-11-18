@@ -120,7 +120,7 @@ const InternshipApplicationStudentModal = ({
                     className="select_form d_block"
                     defaultValue={
                       currentInternshipApplication.interviewDate !== null &&
-                      currentInternshipApplication.interviewDate !== undefined
+                        currentInternshipApplication.interviewDate !== undefined
                         ? formatDate(currentInternshipApplication.interviewDate)
                         : ""
                     }
