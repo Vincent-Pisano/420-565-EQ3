@@ -21,8 +21,8 @@ function InternshipOfferList() {
       ? "Liste des offres de stages non validées"
       : state.title
     : auth.isStudent()
-    ? "Liste des offres de stages de votre département"
-    : "Liste de vos offres de stage";
+      ? "Liste des offres de stages de votre département"
+      : "Liste de vos offres de stage";
 
   useEffect(() => {
     if (auth.isInternshipManager()) {
@@ -50,18 +50,20 @@ function InternshipOfferList() {
     } else if (auth.isStudent()) {
       if (sessions.length === 0 && currentSession === undefined) {
         axios
-          .get(`http://localhost:9090/getAll/next/sessions/internshipOffer`)
+          .get(
+            `http://localhost:9090/getAll/next/sessions/internshipOffer`
+          )
           .then((response) => {
             setSessions(response.data);
             setCurrentSession(response.data[0]);
           })
           .catch((err) => {
-            setErrorMessage(`Aucune offre de stage déposée...`);
+            setErrorMessage("Vous n'avez déposé aucune offre de stage");
           });
       } else if (currentSession !== undefined) {
         axios
           .get(
-            `http://localhost:9090/getAll/internshipOffer/${currentSession}/${auth.user.department}`
+            `http://localhost:9090/getAll/internshipOffer/${currentSession}/c${auth.user.department}`
           )
           .then((response) => {
             setInternshipOffers(response.data);
@@ -144,7 +146,7 @@ function InternshipOfferList() {
               <InternshipOffer
                 key={internshipOffers.indexOf(internshipOffer)}
                 internshipOffer={internshipOffer}
-                onClick={showInternshipOffer}
+                onDoubleClick={showInternshipOffer}
               />
             ))}
           </ul>

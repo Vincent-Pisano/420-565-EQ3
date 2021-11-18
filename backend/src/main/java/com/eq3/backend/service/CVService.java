@@ -5,8 +5,12 @@ import com.eq3.backend.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import static com.eq3.backend.utils.Utils.*;
 
 import java.io.IOException;
@@ -18,10 +22,14 @@ import java.util.Optional;
 public class CVService {
 
     private final Logger logger;
-
     private final StudentRepository studentRepository;
+    private final JavaMailSender mailSender;
+    private final InternshipManagerRepository internshipManagerRepository;
 
-    CVService(StudentRepository studentRepository) {
+
+    CVService(StudentRepository studentRepository, JavaMailSender mailSender, InternshipManagerRepository internshipManagerRepository) {
+        this.mailSender = mailSender;
+        this.internshipManagerRepository = internshipManagerRepository;
         this.logger = LoggerFactory.getLogger(BackendService.class);
         this.studentRepository = studentRepository;
     }
@@ -71,21 +79,72 @@ public class CVService {
 
     public Optional<Student> updateActiveCV(String idStudent, String idCV) {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
-        optionalStudent = updateActiveCVFromListCV(optionalStudent, idCV)
-                ? Optional.of(studentRepository.save(optionalStudent.get()))
-                : Optional.empty();
+        optionalStudent = updateActiveCVFromListCV(optionalStudent, idCV);
+        optionalStudent.ifPresent(student -> {
+            sendEmailForActiveCV(student);
+            studentRepository.save(student);
+        });
         return cleanUpStudentCVList(optionalStudent);
     }
 
-    public Boolean updateActiveCVFromListCV(Optional<Student> optionalStudent, String idCV) {
+    private Optional<Student> updateActiveCVFromListCV(Optional<Student> optionalStudent, String idCV) {
         optionalStudent.ifPresent(student -> {
             List<CV> listCV = student.getCVList();
             for (CV cv : listCV) {
-                updateCVActive(idCV, cv);
+                setNewActiveCV(idCV, cv);
             }
             student.setCVList(listCV);
         });
-        return optionalStudent.isPresent();
+        return optionalStudent;
+    }
+
+    private void setNewActiveCV(String idCV, CV cv) {
+        if (cv.getIsActive()) {
+            cv.setIsActive(false);
+            if (cv.getStatus() == CV.CVStatus.WAITING)
+                cv.setStatus(CV.CVStatus.INVALID);
+        }
+        if (cv.getId().equals(idCV)) {
+            cv.setIsActive(true);
+            cv.setStatus(CV.CVStatus.WAITING);
+        }
+    }
+
+    private void sendEmailForActiveCV(Student student) {
+        Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
+        optionalManager.ifPresent(internshipManager -> {
+            try {
+                createEmailForActiveCV(student, internshipManager);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void createEmailForActiveCV(Student student, InternshipManager internshipManager) throws MessagingException {
+        CV cvActive = getActiveCV(student);
+        if (cvActive != null) {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.addTo(internshipManager.getEmail());
+            helper.setSubject(EMAIL_SUBJECT_ACTIVE_CV);
+            helper.setText(getEmailTextActiveCV(student, cvActive));
+            mailSender.send(message);
+        }else {
+            logger.error("Couldn't find active cv for student " + student.getUsername());
+        }
+    }
+
+    private CV getActiveCV(Student student){
+        CV cvActive = null;
+        List<CV> cvList = student.getCVList();
+        for (CV cv : cvList) {
+            if (cv.getIsActive()){
+                cvActive = cv;
+                break;
+            }
+        }
+        return cvActive;
     }
 
     public Optional<Student> validateCVOfStudent(String idStudent) {
@@ -102,18 +161,6 @@ public class CVService {
         });
 
         return cleanUpStudentCVList(optionalStudent);
-    }
-
-    private void updateCVActive(String idCV, CV cv) {
-        if (cv.getIsActive()) {
-            cv.setIsActive(false);
-            if (cv.getStatus() == CV.CVStatus.WAITING)
-                cv.setStatus(CV.CVStatus.INVALID);
-        }
-        if (cv.getId().equals(idCV)) {
-            cv.setIsActive(true);
-            cv.setStatus(CV.CVStatus.WAITING);
-        }
     }
 
     public Optional<List<Student>> getAllStudentWithCVActiveWaitingValidation() {
