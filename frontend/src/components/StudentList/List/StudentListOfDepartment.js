@@ -1,11 +1,10 @@
 import StudentList from "../StudentListTemplate";
-import { useHistory } from "react-router";
 import auth from "../../../services/Auth";
 import { React, useState, useEffect } from "react";
+import StudentInfoModal from "../Modal/StudentInfoModal";
 import axios from "axios";
 import {
-  TITLE_STUDENT_LIST_OF_DEPARTMENT,
-  TITLE_APPLICATION_LIST_OF_STUDENT,
+  TITLE_STUDENT_LIST_OF_DEPARTMENT
 } from "../../../Utils/TITLE";
 import {
   GET_ALL_SESSIONS_OF_STUDENTS,
@@ -17,11 +16,14 @@ import {
 } from "../../../Utils/ERRORS";
 
 function StudentListOfDepartment() {
-  let history = useHistory();
   let user = auth.user;
 
-  const [students, setStudents] = useState([]);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
+  const [students, setStudents] = useState([]);
+  const [currentStudent, setCurrentStudent] = useState(undefined);
   const [sessions, setSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(
     sessions.length > 0 ? sessions[sessions.length - 1] : sessions[0]
@@ -61,31 +63,28 @@ function StudentListOfDepartment() {
     }
   }, [currentSession, sessions.length, user.department]);
 
-  function showStudent(student) {
-    let state = {
-      title:
-        TITLE_APPLICATION_LIST_OF_STUDENT +
-        student.firstName +
-        " " +
-        student.lastName,
-      session: currentSession,
-    };
-    history.push({
-      pathname: `/listInternshipApplication/${student.username}`,
-      state: state,
-    });
+  function showModal(student) {
+    setCurrentStudent(student);
+    handleShow();
   }
 
   return (
-    <StudentList
-      title={title}
-      students={students}
-      errorMessage={errorMessage}
-      onClick={showStudent}
-      sessions={sessions}
-      currentSession={currentSession}
-      setCurrentSession={setCurrentSession}
-    />
+    <>
+      <StudentList
+        title={title}
+        students={students}
+        errorMessage={errorMessage}
+        onClick={showModal}
+        sessions={sessions}
+        currentSession={currentSession}
+        setCurrentSession={setCurrentSession}
+      />
+      <StudentInfoModal
+        show={show}
+        handleClose={handleClose}
+        currentStudent={currentStudent}
+      />
+    </>
   );
 }
 

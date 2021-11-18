@@ -4,7 +4,10 @@ import {
   URL_STUDENT_LIST_CV_TO_VALIDATE,
   URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED,
   URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE,
-  URL_INTERNSHIP_OFFER_LIST_UNVALIDATED
+  URL_INTERNSHIP_OFFER_LIST_UNVALIDATED,
+  URL_SUPERVISOR_LIST,
+  URL_INTERNSHIP_OFFER_FORM,
+  REPORT_LINK
 } from "../../Utils/URL";
 
 const NavUserGs = () => {
@@ -17,7 +20,7 @@ const NavUserGs = () => {
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/formInternshipOffer"
+        to={URL_INTERNSHIP_OFFER_FORM}
       >
         Dépôt Offre
       </NavDropdown.Item>
@@ -45,7 +48,7 @@ const NavUserGs = () => {
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/listSupervisors"
+        to={URL_SUPERVISOR_LIST}
       >
         Assignation
       </NavDropdown.Item>
@@ -56,7 +59,7 @@ const NavUserGs = () => {
       >
         Signature d'applications
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} className="nav-item-cust" to="/reports">
+      <NavDropdown.Item as={Link} className="nav-item-cust" to={REPORT_LINK}>
         Voir les Rapports
       </NavDropdown.Item>
     </NavDropdown>

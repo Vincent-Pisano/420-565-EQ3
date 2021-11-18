@@ -8,6 +8,7 @@ import InternshipApplicationSignatureModal from "../Modal/InternshipApplicationS
 import { GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT } from "../../../Utils/API";
 import { ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION } from "../../../Utils/ERRORS";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER } from "../../../Utils/TITLE";
+import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipApplicationListOfStudent() {
   let user = auth.user;
@@ -55,8 +56,10 @@ function InternshipApplicationListOfStudent() {
 
   function showIntershipOffer(internshipOffer) {
     history.push({
-      pathname: "/formInternshipOffer",
-      state: internshipOffer,
+      pathname: URL_INTERNSHIP_OFFER_FORM,
+      state: {
+        internshipOffer: internshipOffer
+      }
     });
   }
 

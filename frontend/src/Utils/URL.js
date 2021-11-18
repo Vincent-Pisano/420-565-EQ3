@@ -1,6 +1,6 @@
 //STUDENT LIST
 export const URL_STUDENT_LIST_CV_TO_VALIDATE = "/studentList/validate/cv";
-export const URL_STUDENT_LIST_FROM_DEPARTMENT = "/studentList/from/department";
+export const URL_STUDENT_LIST_OF_DEPARTMENT = "/studentList/department";
 export const URL_STUDENT_LIST_ASSIGN_SUPERVISOR = "/studentList/assign";
 export const URL_STUDENT_LIST_ASSIGNED_SUPERVISOR = "/studentList/assigned";
 
@@ -19,22 +19,25 @@ export const URL_INTERNSHIP_OFFER_LIST_UNVALIDATED = "/internshipOfferList/unval
 export const URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT = "/internshipOfferList/department";
 export const URL_INTERNSHIP_OFFER_LIST_OF_MONITOR = "/internshipOfferList/monitor";
 
-//REPORTS
-const reportLink = "/reports";
+//INTERNSHIP OFFER FORM
+export const URL_INTERNSHIP_OFFER_FORM = "/internshipOfferForm"
 
-export const URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION = reportLink + "/internshipOfferList/unvalidated";
-export const URL_INTERNSHIP_OFFER_LIST_VALIDATED = reportLink + "/internshipOfferList/validated";
-export const URL_STUDENT_LIST_SUBSCRIBED = reportLink + "/studentList/subscribed";
-export const URL_STUDENT_LIST_WITHOUT_CV = reportLink + "/studentList/without/cv";
-export const URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION = reportLink + "/studentList/with/cv/waiting/validation";
-export const URL_STUDENT_LIST_WITHOUT_INTERVIEW = reportLink + "/studentList/without/interview";
-export const URL_STUDENT_LIST_WAITING_INTERVIEW = reportLink + "/studentList/waiting/interview";
-export const URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER = reportLink + "/studentList/waiting/interview/answer";
-export const URL_STUDENT_LIST_WITH_INTERNSHIP = reportLink + "/studentList/with/internship";
-export const URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION = reportLink + "/studentList/without/supervisor/evaluation";
-export const URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION = reportLink + "/studentList/without/monitor/evaluation";
-export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT = reportLink + "/internshipApplicationList/waiting/student/";
-export const URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT = reportLink + "/internshipApplicationList/completed/student/";
+//REPORTS
+export const REPORT_LINK = "/reports";
+
+export const URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION = REPORT_LINK + "/internshipOfferList/unvalidated";
+export const URL_INTERNSHIP_OFFER_LIST_VALIDATED = REPORT_LINK + "/internshipOfferList/validated";
+export const URL_STUDENT_LIST_SUBSCRIBED = REPORT_LINK + "/studentList/subscribed";
+export const URL_STUDENT_LIST_WITHOUT_CV = REPORT_LINK + "/studentList/without/cv";
+export const URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION = REPORT_LINK + "/studentList/with/cv/waiting/validation";
+export const URL_STUDENT_LIST_WITHOUT_INTERVIEW = REPORT_LINK + "/studentList/without/interview";
+export const URL_STUDENT_LIST_WAITING_INTERVIEW = REPORT_LINK + "/studentList/waiting/interview";
+export const URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER = REPORT_LINK + "/studentList/waiting/interview/answer";
+export const URL_STUDENT_LIST_WITH_INTERNSHIP = REPORT_LINK + "/studentList/with/internship";
+export const URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION = REPORT_LINK + "/studentList/without/supervisor/evaluation";
+export const URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION = REPORT_LINK + "/studentList/without/monitor/evaluation";
+export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/student/";
+export const URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT = REPORT_LINK + "/internshipApplicationList/completed/student/";
 
 
 

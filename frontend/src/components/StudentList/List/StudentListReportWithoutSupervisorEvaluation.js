@@ -5,7 +5,7 @@ import axios from "axios";
 import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_STUDENTS_FOR_SUPERVISOR_EVALUATION } from "../../../Utils/ERRORS";
 import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENTS_WITHOUT_SUPERVISOR_EVALUATION } from "../../../Utils/API";
 import { URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT } from "../../../Utils/URL";
-
+import { TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED } from "../../../Utils/TITLE";
 
 function StudentListReportWithoutSupervisorEvaluation() {
   let history = useHistory();
@@ -47,7 +47,7 @@ function StudentListReportWithoutSupervisorEvaluation() {
     history.push({
       pathname: URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + student.username,
       state: {
-        title: `Applications complétées de ${student.firstName} ${student.lastName} pour la session ${currentSession}`,
+        title: TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED(student, currentSession),
         session: currentSession,
       },
     });

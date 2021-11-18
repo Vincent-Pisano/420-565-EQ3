@@ -5,6 +5,7 @@ import axios from "axios";
 import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_STUDENT_WAITING_INTERVIEW } from "../../../Utils/ERRORS";
 import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENTS_WAITING_INTERVIEW } from "../../../Utils/API";
 import { URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT } from "../../../Utils/URL";
+import { TITLE_INTERNSHIP_APPLICATION_LIST_WAITING } from "../../../Utils/TITLE";
 
 function StudentListReportWaitingInterview() {
   let history = useHistory();
@@ -46,7 +47,7 @@ function StudentListReportWaitingInterview() {
     history.push({
       pathname: URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT + student.username,
       state: {
-        title: `Applications de ${student.firstName} ${student.lastName} pour la session ${currentSession}`,
+        title: TITLE_INTERNSHIP_APPLICATION_LIST_WAITING(student, currentSession),
         session: currentSession,
       },
     });

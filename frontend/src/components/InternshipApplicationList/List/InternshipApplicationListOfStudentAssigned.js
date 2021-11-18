@@ -6,6 +6,7 @@ import InternshipApplicationSupervisorEnterpriseEvaluationModal from "../Modal/I
 import InternshipApplicationSupervisorModal from "../Modal/InternshipApplicationSupervisorModal";
 import { GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT } from "../../../Utils/API";
 import { ERROR_NO_INTERNSHIP_APPLICATION_YET } from "../../../Utils/ERRORS";
+import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipApplicationListOfStudentAssigned() {
   let history = useHistory();
@@ -45,8 +46,10 @@ function InternshipApplicationListOfStudentAssigned() {
 
   function showIntershipOffer(internshipOffer) {
     history.push({
-      pathname: "/formInternshipOffer",
-      state: internshipOffer,
+      pathname: URL_INTERNSHIP_OFFER_FORM,
+      state: {
+        internshipOffer: internshipOffer
+      }
     });
   }
 

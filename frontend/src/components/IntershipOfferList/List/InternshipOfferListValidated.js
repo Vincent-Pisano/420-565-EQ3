@@ -5,6 +5,7 @@ import InternshipOfferListTemplate from "../InternshipOfferListTemplate";
 import { TITLE_INTERNSHIP_OFFER_LIST_UNVALIDATED } from "../../../Utils/TITLE";
 import { GET_ALL_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS, GET_ALL_VALIDATED_INTERNSHIP_OFFERS } from "../../../Utils/API";
 import { ERROR_NO_INTERNSHIP_OFFER_VALIDATED } from "../../../Utils/ERRORS";
+import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipOfferListUnvalidated() {
   let history = useHistory();
@@ -45,8 +46,10 @@ function InternshipOfferListUnvalidated() {
 
   function showInternshipOffer(internshipOffer) {
     history.push({
-      pathname: "/formInternshipOffer",
-      state: internshipOffer,
+      pathname: URL_INTERNSHIP_OFFER_FORM,
+      state: {
+        internshipOffer: internshipOffer
+      }
     });
   }
 

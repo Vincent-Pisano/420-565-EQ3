@@ -6,6 +6,7 @@ import InternshipApplicationInternshipManagerModal from "../Modal/InternshipAppl
 import { GET_ALL_INTERNSHIP_APPLICATIONS_ACCEPTED_NEXT_SESSIONS } from "../../../Utils/API";
 import { ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION } from "../../../Utils/ERRORS";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_ACCEPTED } from "../../../Utils/TITLE";
+import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipApplicationListAccepted() {
   let history = useHistory();
@@ -41,8 +42,10 @@ function InternshipApplicationListAccepted() {
 
   function showIntershipOffer(internshipOffer) {
     history.push({
-      pathname: "/formInternshipOffer",
-      state: internshipOffer,
+      pathname: URL_INTERNSHIP_OFFER_FORM,
+      state: {
+        internshipOffer: internshipOffer
+      },
     });
   }
 

@@ -6,6 +6,7 @@ import InternshipOfferListTemplate from "../InternshipOfferListTemplate";
 import { TITLE_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT } from "../../../Utils/TITLE";
 import { GET_ALL_NEXT_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS, GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT } from "../../../Utils/API";
 import { ERROR_NO_INTERNSHIP_OFFER_FOUND, ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET } from "../../../Utils/ERRORS";
+import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipOfferListOfDepartment() {
   let history = useHistory();
@@ -46,8 +47,10 @@ function InternshipOfferListOfDepartment() {
 
   function showInternshipOffer(internshipOffer) {
     history.push({
-      pathname: "/formInternshipOffer",
-      state: internshipOffer,
+      pathname: URL_INTERNSHIP_OFFER_FORM,
+      state: {
+        internshipOffer: internshipOffer
+      }
     });
   }
 

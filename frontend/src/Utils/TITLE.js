@@ -43,4 +43,10 @@ export const TITLE_STUDENT_LIST_WAITING_INTERVIEW_ANSWER = "Étudiants en attent
 export const TITLE_STUDENT_LIST_WITH_INTERNSHIP = "Étudiants ayant trouvé un stage";
 export const TITLE_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION = "Étudiants dont le superviseur n’a pas encore évalué l’entreprise";
 export const TITLE_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION = "Étudiants n’ayant pas encore été évalués par leur moniteur";
+export function TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED(student, session) {
+  return `Applications complétées de ${student.firstName} ${student.lastName} pour la session ${session}`;
+}
+export function TITLE_INTERNSHIP_APPLICATION_LIST_WAITING(student, session) {
+  return `Applications en attente de ${student.firstName} ${student.lastName} pour la session ${session}`;
+}
 

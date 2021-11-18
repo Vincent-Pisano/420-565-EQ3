@@ -12,7 +12,8 @@ import "../../styles/Form.css";
 const InternshipOfferForm = () => {
   let user = auth.user;
   let history = useHistory();
-  let internshipOffer = history.location.state;
+  let state = history.location.state;
+  let internshipOffer = state !== undefined ? state.internshipOffer : undefined
   let isLoading = false;
   let title =
     internshipOffer === undefined

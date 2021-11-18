@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { URL_INTERNSHIP_OFFER_LIST_OF_MONITOR } from "../../Utils/URL"
+import { URL_INTERNSHIP_OFFER_LIST_OF_MONITOR, URL_INTERNSHIP_OFFER_FORM } from "../../Utils/URL"
 
 const NavUserMonitor = () => {
   return (
@@ -9,7 +9,7 @@ const NavUserMonitor = () => {
       title={<span className="nav-links-header">Options Moniteur</span>}
       menuVariant="dark"
     >
-      <NavDropdown.Item as={Link} to="/formInternshipOffer">
+      <NavDropdown.Item as={Link} to={URL_INTERNSHIP_OFFER_FORM}>
         Dépôt d'offres de stage
       </NavDropdown.Item>
       <NavDropdown.Item as={Link} to={URL_INTERNSHIP_OFFER_LIST_OF_MONITOR}>
