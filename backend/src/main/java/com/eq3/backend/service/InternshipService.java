@@ -377,7 +377,6 @@ public class InternshipService {
         internships.forEach(internship -> {
             InternshipApplication internshipApplication = internship.getInternshipApplication();
             Student currentStudent = internshipApplication.getStudent();
-            System.out.println(getSessionFromDate(Date.from(today.toInstant())));
 
             InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
             Monitor currentMonitor = currentOffer.getMonitor();

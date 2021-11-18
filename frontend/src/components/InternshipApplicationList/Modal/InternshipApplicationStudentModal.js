@@ -35,7 +35,7 @@ const InternshipApplicationStudentModal = ({
         : currentInternshipApplication.interviewDate;
     currentInternshipApplication.student.cvlist = [];
     currentInternshipApplication.student.signature = undefined;
-    if (currentInternshipApplication.student.supervisor !== null)
+    if (currentInternshipApplication.student.supervisor !== null && currentInternshipApplication.student.supervisor !== undefined)
       currentInternshipApplication.student.supervisor.signature = undefined;
     currentInternshipApplication.internshipOffer.pdfdocument = undefined;
     currentInternshipApplication.internshipOffer.monitor.signature = undefined;
@@ -119,7 +119,7 @@ const InternshipApplicationStudentModal = ({
                     className="select_form d_block"
                     defaultValue={
                       currentInternshipApplication.interviewDate !== null &&
-                      currentInternshipApplication.interviewDate !== undefined
+                        currentInternshipApplication.interviewDate !== undefined
                         ? formatDate(currentInternshipApplication.interviewDate)
                         : ""
                     }
