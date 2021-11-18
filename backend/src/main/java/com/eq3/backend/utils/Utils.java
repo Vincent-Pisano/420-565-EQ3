@@ -48,6 +48,8 @@ public class Utils {
     public final static String EMAIL_SUBJECT_MONITOR_ABOUT_EVALUATION = "Remise de l'évaluation de l'étudiant";
     public final static String EMAIL_SUBJECT_INTERVIEW_STUDENT = "Convocation à une entrevue d'un étudiant";
 
+    public final static String EMAIL_SUBJECT_INTERVIEW_ONE_WEEK_BEFORE_STUDENT = "Convocation a votre entrevue dans une semaine";
+
     public final static String UTC_TIME_ZONE = "UTC";
 
     public static String getEmailTextForSupervisorAboutEvaluation(Supervisor supervisor, Monitor monitor){

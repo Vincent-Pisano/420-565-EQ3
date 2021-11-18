@@ -337,7 +337,7 @@ public class InternshipService {
         }
     }
 
-    @Scheduled(cron = "0 8 * * * *")
+    @Scheduled(cron = "* * * * * *")
     void sendMails(){
         Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
         if (optionalManager.isPresent()) {
@@ -406,19 +406,17 @@ public class InternshipService {
     }
 
     private void sendEmailToStudentAboutInterviewOneWeekBefore() {
-        ZonedDateTime todaysDate = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
+        ZonedDateTime todayDate = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
 
         List<Internship> internships = internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
         internships.forEach(internship -> {
             InternshipApplication internshipApplication = internship.getInternshipApplication();
             Student currentStudent = internshipApplication.getStudent();
-
-            InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
             ZonedDateTime currentInterviewDate = ZonedDateTime.ofInstant(internshipApplication.getInterviewDate().toInstant(), ZoneId.of(UTC_TIME_ZONE));
 
-            ZonedDateTime interviewDateMinus7days = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(7);
+            ZonedDateTime interviewDateMinus7days = ZonedDateTime.ofInstant(currentInterviewDate.toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(7);
 
-            if (interviewDateMinus7days.equals(todaysDate)) {
+            if (interviewDateMinus7days.equals(todayDate)) {
                 try {
                     generateEmailToStudentAboutInterviewOneWeekBefore(currentStudent);
                 } catch(Exception e) {
@@ -443,7 +441,7 @@ public class InternshipService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.addTo(student.getEmail());
-        helper.setSubject(EMAIL_SUBJECT_SUPERVISOR_ABOUT_EVALUATION);
+        helper.setSubject(EMAIL_SUBJECT_INTERVIEW_ONE_WEEK_BEFORE_STUDENT);
         helper.setText(getEmailTextStudentAboutInterviewOneWeekBefore(student));
         mailSender.send(message);
     }
