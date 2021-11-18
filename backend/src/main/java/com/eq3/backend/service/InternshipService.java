@@ -413,9 +413,7 @@ public class InternshipService {
             InternshipApplication internshipApplication = internship.getInternshipApplication();
             Student currentStudent = internshipApplication.getStudent();
             ZonedDateTime currentInterviewDate = ZonedDateTime.ofInstant(internshipApplication.getInterviewDate().toInstant(), ZoneId.of(UTC_TIME_ZONE));
-
             ZonedDateTime interviewDateMinus7days = ZonedDateTime.ofInstant(currentInterviewDate.toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(7);
-
             if (interviewDateMinus7days.equals(todayDate)) {
                 try {
                     generateEmailToStudentAboutInterviewOneWeekBefore(currentStudent);
