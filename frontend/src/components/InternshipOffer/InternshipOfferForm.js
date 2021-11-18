@@ -8,6 +8,7 @@ import InternshipOfferButtonDownload from "./InternshipOfferButtonDownload";
 import InternshipOfferButtonValidate from "./InternshipOfferButtonValidate";
 import InternshipOfferButtonApply from "./InternshipOfferButtonApply";
 import "../../styles/Form.css";
+import { GET_ARCHITECTURE_DEPT, GET_COMPUTER_SCIENCE_DEPT, GET_NURSING_DEPT } from "../../Utils/DEPARTMENTS";
 
 const InternshipOfferForm = () => {
   let user = auth.user;
@@ -40,7 +41,7 @@ const InternshipOfferForm = () => {
           city: "",
           postalCode: "",
           workShift: "DAY",
-          workField: "COMPUTER_SCIENCE",
+          workField: GET_COMPUTER_SCIENCE_DEPT,
           monitor: {},
         }
   );
@@ -524,9 +525,9 @@ const InternshipOfferForm = () => {
                       className="select_form d_block"
                       required
                     >
-                      <option value="ARCHITECTURE">Architecture</option>
-                      <option value="COMPUTER_SCIENCE">Informatique</option>
-                      <option value="NURSING">Infirmier</option>
+                      <option value={GET_ARCHITECTURE_DEPT}>Architecture</option>
+                      <option value={GET_COMPUTER_SCIENCE_DEPT}>Informatique</option>
+                      <option value={GET_NURSING_DEPT}>Infirmier</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group

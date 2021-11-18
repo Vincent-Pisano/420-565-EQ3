@@ -6,6 +6,7 @@ import {
   faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
+import { GET_ARCHITECTURE_DEPT, GET_COMPUTER_SCIENCE_DEPT, GET_NURSING_DEPT } from "../../Utils/DEPARTMENTS";
 
 const Supervisor = ({ supervisor, onClick }) => {
   return (
@@ -14,11 +15,11 @@ const Supervisor = ({ supervisor, onClick }) => {
         <FontAwesomeIcon
           className="fa-3x"
           icon={
-            supervisor.department === "COMPUTER_SCIENCE"
+            supervisor.department === GET_COMPUTER_SCIENCE_DEPT
               ? faLaptop
-              : supervisor.department === "NURSING"
+              : supervisor.department === GET_NURSING_DEPT
               ? faBriefcaseMedical
-              : supervisor.department === "ARCHITECTURE"
+              : supervisor.department === GET_ARCHITECTURE_DEPT
               ? faHome
               : faUserCircle
           }

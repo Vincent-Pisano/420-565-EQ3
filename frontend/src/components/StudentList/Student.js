@@ -6,14 +6,19 @@ import {
   faStethoscope,
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
+import {
+  GET_ARCHITECTURE_DEPT,
+  GET_COMPUTER_SCIENCE_DEPT,
+  GET_NURSING_DEPT,
+} from "../../Utils/DEPARTMENTS";
 
 const Student = ({ student, onClick }) => {
   let icon =
-    student.department === "COMPUTER_SCIENCE"
+    student.department === GET_COMPUTER_SCIENCE_DEPT
       ? faLaptopCode
-      : student.department === "ARCHITECTURE"
+      : student.department === GET_ARCHITECTURE_DEPT
       ? faLandmark
-      : student.department === "NURSING"
+      : student.department === GET_NURSING_DEPT
       ? faStethoscope
       : faUserCircle;
 

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
+import { GET_ARCHITECTURE_DEPT, GET_COMPUTER_SCIENCE_DEPT, GET_NURSING_DEPT } from "../../Utils/DEPARTMENTS";
 
 const SignUpStudent = () => {
   let history = useHistory();
@@ -12,7 +13,7 @@ const SignUpStudent = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [fields, handleFieldChange] = useFormFields({
-    department: "COMPUTER_SCIENCE",
+    department: GET_COMPUTER_SCIENCE_DEPT,
     username: "",
     password: "",
     email: "",
@@ -107,9 +108,9 @@ const SignUpStudent = () => {
             className="select_form active_select "
             required
           >
-            <option value="COMPUTER_SCIENCE">Informatique</option>
-            <option value="ARCHITECTURE">Architecture</option>
-            <option value="NURSING">Infirmier</option>
+            <option value={GET_COMPUTER_SCIENCE_DEPT}>Informatique</option>
+            <option value={GET_ARCHITECTURE_DEPT}>Architecture</option>
+            <option value={GET_NURSING_DEPT}>Infirmier</option>
           </Form.Control>
         </Form.Group>
         <Container className="cont_btn">
