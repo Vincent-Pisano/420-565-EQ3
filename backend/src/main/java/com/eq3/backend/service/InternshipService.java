@@ -382,7 +382,7 @@ public class InternshipService {
             Monitor currentMonitor = currentOffer.getMonitor();
             Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(currentOffer.getSession());
             ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
-            
+
             if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
                 try {
                     generateEmailForSupervisorAboutEvaluation(currentSupervisor, currentMonitor);
