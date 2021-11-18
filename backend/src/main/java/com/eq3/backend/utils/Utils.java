@@ -69,6 +69,11 @@ public class Utils {
                 " va être convoqué a une entrevue de stage aujourd'hui!";
     }
 
+    public static String getEmailTextStudentAboutInterviewOneWeekBefore(Student student){
+        return "L'étudiant " + student.getFirstName() + " " + student.getFirstName() +
+                " va être convoqué a une entrevue de dans 1 semaine.";
+    }
+
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {
         PDFDocument PDFDocument = new PDFDocument();
         PDFDocument.setName(multipartFile.getOriginalFilename());
