@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { 
-  URL_STUDENT_LIST_CV_TO_VALIDATE, URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED, URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE } from "../../Utils/URL"
+import {
+  URL_STUDENT_LIST_CV_TO_VALIDATE,
+  URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED,
+  URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE,
+  URL_INTERNSHIP_OFFER_LIST_UNVALIDATED
+} from "../../Utils/URL";
 
 const NavUserGs = () => {
   return (
@@ -20,7 +24,7 @@ const NavUserGs = () => {
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/listInternshipOffer"
+        to={URL_INTERNSHIP_OFFER_LIST_UNVALIDATED}
       >
         Liste Offres
       </NavDropdown.Item>
@@ -31,7 +35,11 @@ const NavUserGs = () => {
       >
         Liste Applications
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} className="nav-item-cust" to={URL_STUDENT_LIST_CV_TO_VALIDATE}>
+      <NavDropdown.Item
+        as={Link}
+        className="nav-item-cust"
+        to={URL_STUDENT_LIST_CV_TO_VALIDATE}
+      >
         Liste CV
       </NavDropdown.Item>
       <NavDropdown.Item

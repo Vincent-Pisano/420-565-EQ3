@@ -19,7 +19,12 @@ import {
   URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER,
   URL_STUDENT_LIST_WITH_INTERNSHIP,
   URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
-  URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION
+  URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION,
+  URL_INTERNSHIP_OFFER_LIST_UNVALIDATED,
+  URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
+  URL_INTERNSHIP_OFFER_LIST_VALIDATED,
+  URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT,
+  URL_INTERNSHIP_OFFER_LIST_OF_MONITOR
 } from './Utils/URL'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
@@ -49,6 +54,11 @@ import StudentListReportWithoutSupervisorEvaluation from './components/StudentLi
 import InternshipApplicationListOfStudent from './components/InternshipApplicationList/List/InternshipApplicationListOfStudent';
 import InternshipApplicationListAccepted from './components/InternshipApplicationList/List/InternshipApplicationListAccepted';
 import InternshipApplicationListSignatureInternshipManager from './components/InternshipApplicationList/List/InternshipApplicationListSignatureInternshipManager';
+
+import InternshipOfferListUnvalidated from './components/IntershipOfferList/List/InternshipOfferListUnvalidated';
+import InternshipOfferListValidated from './components/IntershipOfferList/List/InternshipOfferListValidated';
+import InternshipOfferListOfDepartment from './components/IntershipOfferList/List/InternshipOfferListOfDepartment';
+import InternshipOfferListOfMonitor from './components/IntershipOfferList/List/InternshipOfferListOfMonitor';
 
 import SupervisorList from './components/SupervisorList/List/SupervisorList';
 
@@ -84,7 +94,13 @@ function App () {
           <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT} exact component={InternshipApplicationListOfStudent}/>
           <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED} exact component={InternshipApplicationListAccepted}/>
           <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE} exact component={InternshipApplicationListSignatureInternshipManager}/>
-
+          
+          <ProtectedRoute path={URL_INTERNSHIP_OFFER_LIST_UNVALIDATED} exact component={InternshipOfferListUnvalidated}/>
+          <ProtectedRoute path={URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT} exact component={InternshipOfferListOfDepartment}/>
+          <ProtectedRoute path={URL_INTERNSHIP_OFFER_LIST_OF_MONITOR} exact component={InternshipOfferListOfMonitor}/>
+          
+          <ProtectedRoute path={URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION} exact component={InternshipOfferListUnvalidated}/>
+          <ProtectedRoute path={URL_INTERNSHIP_OFFER_LIST_VALIDATED} exact component={InternshipOfferListValidated}/>
           <ProtectedRoute path={URL_STUDENT_LIST_SUBSCRIBED} exact component={StudentListReportSubscribed}/>
           <ProtectedRoute path={URL_STUDENT_LIST_WITHOUT_CV} exact component={StudentListReportWithoutCV}/>
           <ProtectedRoute path={URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION} exact component={StudentListCVToValidate}/>

@@ -12,11 +12,16 @@ export const URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT = "/internshipApplicatio
 export const URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED = "/internshipApplicationList/accepted";
 export const URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE = "/internshipApplicationList/signature";
 
+//INTERNSHIP OFFER LIST
+export const URL_INTERNSHIP_OFFER_LIST_UNVALIDATED = "/internshipOfferList/unvalidated";
+export const URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT = "/internshipOfferList/department";
+export const URL_INTERNSHIP_OFFER_LIST_OF_MONITOR = "/internshipOfferList/monitor";
+
 //REPORTS
 const reportLink = "/reports";
 
-export const URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION = reportLink + "/listInternshipOffer";
-export const URL_INTERNSHIP_OFFER_LIST_VALIDATED = reportLink + "/listInternshipOffer";
+export const URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION = reportLink + "/internshipOfferList/unvalidated";
+export const URL_INTERNSHIP_OFFER_LIST_VALIDATED = reportLink + "/internshipOfferList/validated";
 export const URL_STUDENT_LIST_SUBSCRIBED = reportLink + "/studentList/subscribed";
 export const URL_STUDENT_LIST_WITHOUT_CV = reportLink + "/studentList/without/cv";
 export const URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION = reportLink + "/studentList/with/cv/waiting/validation";

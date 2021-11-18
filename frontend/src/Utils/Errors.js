@@ -17,6 +17,13 @@ export const ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION = "Aucune A
 export const ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION = "Aucune Application d'offre de stage acceptée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION = "Aucune Application validée pour cette session"
 
+//INTERNSHIP OFFER LIST
+export const ERROR_NO_INTERNSHIP_OFFER_FOUND = "Aucune offre de stage déposée...";
+export const ERROR_NO_INTERNSHIP_OFFER_TO_VALIDATE = "Aucune offre de stage à valider";
+export const ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET = "Aucune Offre de stage n'a été validé pour le moment";
+export const ERROR_NO_INTERNSHIP_OFFER_DEPOSITED = "Vous n'avez déposé aucune offre de stage";
+export const ERROR_NO_INTERNSHIP_OFFER_DEPOSITED_FOR_THIS_SESSION = "Vous n'avez déposé aucune offre de stage pour cette session";
+
 //SUPERVISOR LIST
 export const ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION = "Aucun Superviseur enregistré pour cette session";
 
@@ -32,6 +39,7 @@ export const CONFIRM_DELETE_CV = "Le fichier a été supprimé";
 export const CONFIRM_SAVE_CV = "Le fichier a été déposé";
 
 //REPORTS
+export const ERROR_NO_INTERNSHIP_OFFER_VALIDATED = "Aucune Offre de stage validée...";
 export const ERROR_NO_STUDENT_SUBSCRIBED_THIS_SESSION = "Erreur! Aucun étudiant n'est enregistré cette session";
 export const ERROR_NO_STUDENT_WITHOUT_CV = "Erreur! Aucun étudiant n'a pas de CV";
 export const ERROR_NO_STUDENT_WITHOUT_INTERVIEW_DATE = "Erreur! Aucun étudiant n'a pas de convocation à une entrevue cette session";

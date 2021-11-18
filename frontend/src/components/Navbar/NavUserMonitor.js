@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { URL_INTERNSHIP_OFFER_LIST_OF_MONITOR } from "../../Utils/URL"
 
 const NavUserMonitor = () => {
   return (
@@ -11,7 +12,7 @@ const NavUserMonitor = () => {
       <NavDropdown.Item as={Link} to="/formInternshipOffer">
         Dépôt d'offres de stage
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/listInternshipOffer">
+      <NavDropdown.Item as={Link} to={URL_INTERNSHIP_OFFER_LIST_OF_MONITOR}>
         Liste d'offres de stage
       </NavDropdown.Item>
 

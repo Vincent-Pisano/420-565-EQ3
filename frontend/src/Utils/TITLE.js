@@ -16,6 +16,14 @@ export const TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER =
 export const TITLE_INTERNSHIP_APPLICATION_LIST_ACCEPTED =
 "Liste des applications de stages acceptées";
 
+//INTERNSHIP OFFER LIST
+export const TITLE_INTERNSHIP_OFFER_LIST_UNVALIDATED =
+"Liste des offres de stages non validées"
+export const TITLE_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT =
+"Liste des offres de stages de votre département"
+export const TITLE_INTERNSHIP_OFFER_LIST_OF_MONITOR =
+"Liste de vos offres de stage"
+
 //SUPERVISOR LIST
 export const TITLE_SUPERVISOR_LIST_OF_SESSION =
 "Liste des superviseurs de stages inscrit en : ";
