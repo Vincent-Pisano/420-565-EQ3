@@ -3,12 +3,12 @@ import { Button, Modal, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import axios from "axios";
 import auth from "../../../services/Auth";
-import { ASSIGN_SUPERVISOR_TO_STUDENT } from "../../../Utils/API"
-import { 
+import { ASSIGN_SUPERVISOR_TO_STUDENT } from "../../../Utils/API";
+import {
   ERROR_NO_MORE_STUDENT_TO_ASSIGN,
   ERROR_ASSIGN_SUPERVISOR,
-  CONFIRM_ASSIGN_SUPERVISOR
-} from "../../../Utils/ERRORS"
+  CONFIRM_ASSIGN_SUPERVISOR,
+} from "../../../Utils/ERRORS";
 
 const AssignSupervisorModal = ({
   show,
@@ -42,9 +42,7 @@ const AssignSupervisorModal = ({
               pathname: `/home/${auth.user.username}`,
             });
           }, 3000);
-          setErrorMessage(
-            ERROR_NO_MORE_STUDENT_TO_ASSIGN
-          );
+          setErrorMessage(ERROR_NO_MORE_STUDENT_TO_ASSIGN);
         }
         setTimeout(() => {
           setErrorMessageModal("");

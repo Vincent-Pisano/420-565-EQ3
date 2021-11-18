@@ -3,8 +3,12 @@ import { Button, Modal, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import axios from "axios";
 import auth from "../../../services/Auth";
-import { VALIDATE_CV, VIEW_CV } from "../../../Utils/API"
-import { ERROR_NO_MORE_CV_TO_VALID, ERROR_VALID_CV, CONFIRM_VALID_CV } from "../../../Utils/ERRORS"
+import { VALIDATE_CV, VIEW_CV } from "../../../Utils/API";
+import {
+  ERROR_NO_MORE_CV_TO_VALID,
+  ERROR_VALID_CV,
+  CONFIRM_VALID_CV,
+} from "../../../Utils/ERRORS";
 
 const ValidCVModal = ({
   show,

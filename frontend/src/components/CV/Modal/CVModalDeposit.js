@@ -34,7 +34,7 @@ const CVModalDelete = ({ handleClose, show }) => {
             setErrorMessage(CONFIRM_SAVE_CV);
             setTimeout(() => {
               handleClose();
-              setErrorMessage("")
+              setErrorMessage("");
               history.push({
                 pathname: `/home/${user.username}`,
               });

@@ -7,7 +7,7 @@ import {
   URL_INTERNSHIP_OFFER_LIST_UNVALIDATED,
   URL_SUPERVISOR_LIST,
   URL_INTERNSHIP_OFFER_FORM,
-  REPORT_LINK
+  REPORT_LINK,
 } from "../../Utils/URL";
 
 const NavUserGs = () => {

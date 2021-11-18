@@ -35,9 +35,7 @@ function StudentListAssignedSupervisor() {
         setErrorMessage("");
       })
       .catch((err) => {
-        setErrorMessage(
-          ERROR_NO_STUDENT_ASSIGNED
-        );
+        setErrorMessage(ERROR_NO_STUDENT_ASSIGNED);
         setStudents([]);
       });
   }, [currentSession, user.id]);
@@ -52,7 +50,8 @@ function StudentListAssignedSupervisor() {
       session: currentSession,
     };
     history.push({
-      pathname: URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED + student.username,
+      pathname:
+        URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED + student.username,
       state: state,
     });
   }

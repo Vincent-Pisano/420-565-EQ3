@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory,useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import axios from "axios";
 import InternshipApplicationListTemplate from "../InternshipApplicationListTemplate";
 import InternshipApplicationSupervisorEnterpriseEvaluationModal from "../Modal/InternshipApplicationSupervisorEnterpriseEvaluationModal";
@@ -15,7 +15,7 @@ function InternshipApplicationListOfStudentAssigned() {
   let state = history.location.state;
   let session = state !== undefined ? state.session : undefined;
 
-  let title = state !== undefined ? state.title : "";;
+  let title = state !== undefined ? state.title : "";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -28,15 +28,13 @@ function InternshipApplicationListOfStudentAssigned() {
 
   useEffect(() => {
     axios
-        .get(
-            GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) + username
-        )
-        .then((response) => {
-          setInternshipApplications(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage(ERROR_NO_INTERNSHIP_APPLICATION_YET);
-        });
+      .get(GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) + username)
+      .then((response) => {
+        setInternshipApplications(response.data);
+      })
+      .catch((err) => {
+        setErrorMessage(ERROR_NO_INTERNSHIP_APPLICATION_YET);
+      });
   }, [session, username]);
 
   function showModal(internshipApplication) {
@@ -48,8 +46,8 @@ function InternshipApplicationListOfStudentAssigned() {
     history.push({
       pathname: URL_INTERNSHIP_OFFER_FORM,
       state: {
-        internshipOffer: internshipOffer
-      }
+        internshipOffer: internshipOffer,
+      },
     });
   }
 
@@ -57,27 +55,27 @@ function InternshipApplicationListOfStudentAssigned() {
     return currentInternshipApplication.status === "COMPLETED";
   }
 
-  function checkForModal(){
+  function checkForModal() {
     if (isCurrentApplicationCompleted()) {
-        return (
-          <>
-            <InternshipApplicationSupervisorEnterpriseEvaluationModal
-              show={show}
-              handleClose={handleClose}
-              currentInternshipApplication={currentInternshipApplication}
-            />
-          </>
-        );
-      } else {
-        return (
-          <InternshipApplicationSupervisorModal
+      return (
+        <>
+          <InternshipApplicationSupervisorEnterpriseEvaluationModal
             show={show}
             handleClose={handleClose}
             currentInternshipApplication={currentInternshipApplication}
-            showIntershipOffer={showIntershipOffer}
           />
-        );
-      }
+        </>
+      );
+    } else {
+      return (
+        <InternshipApplicationSupervisorModal
+          show={show}
+          handleClose={handleClose}
+          currentInternshipApplication={currentInternshipApplication}
+          showIntershipOffer={showIntershipOffer}
+        />
+      );
+    }
   }
 
   return (

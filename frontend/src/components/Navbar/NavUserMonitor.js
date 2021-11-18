@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { URL_INTERNSHIP_OFFER_LIST_OF_MONITOR, URL_INTERNSHIP_OFFER_FORM } from "../../Utils/URL"
+import {
+  URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
+  URL_INTERNSHIP_OFFER_FORM,
+} from "../../Utils/URL";
 
 const NavUserMonitor = () => {
   return (

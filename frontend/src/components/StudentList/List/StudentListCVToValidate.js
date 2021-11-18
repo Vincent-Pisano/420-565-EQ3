@@ -8,7 +8,10 @@ import {
   GET_ALL_SESSIONS_OF_STUDENTS,
   GET_ALL_STUDENT_WITH_CV_ACTIVE_NOT_VALID,
 } from "../../../Utils/API";
-import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_CV_TO_VALIDATE } from "../../../Utils/ERRORS";
+import {
+  ERROR_NO_STUDENT_SUBSCRIBED,
+  ERROR_NO_CV_TO_VALIDATE,
+} from "../../../Utils/ERRORS";
 
 function StudentListCVToValidate() {
   const [show, setShow] = useState(false);

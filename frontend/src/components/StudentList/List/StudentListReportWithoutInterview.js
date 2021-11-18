@@ -3,8 +3,14 @@ import { useHistory } from "react-router";
 import StudentInfoModal from "../Modal/StudentInfoModal";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_STUDENT_WITHOUT_INTERVIEW_DATE } from "../../../Utils/ERRORS";
-import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE } from "../../../Utils/API";
+import {
+  ERROR_NO_STUDENT_SUBSCRIBED,
+  ERROR_NO_STUDENT_WITHOUT_INTERVIEW_DATE,
+} from "../../../Utils/ERRORS";
+import {
+  GET_ALL_SESSIONS_OF_STUDENTS,
+  GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE,
+} from "../../../Utils/API";
 
 function StudentListReportWithoutInterview() {
   let history = useHistory();

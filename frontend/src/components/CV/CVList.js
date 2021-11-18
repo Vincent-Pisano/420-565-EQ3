@@ -4,7 +4,7 @@ import "../../styles/List.css";
 import { Container } from "react-bootstrap";
 import CVButtonDeposit from "./Button/CVButtonDeposit";
 import CVTable from "./CVTable";
-import { TITLE_CV_LIST } from "../../Utils/TITLE"
+import { TITLE_CV_LIST } from "../../Utils/TITLE";
 
 const CVList = () => {
   let user = auth.user;

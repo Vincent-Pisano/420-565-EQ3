@@ -34,7 +34,11 @@ const InternshipApplicationDetailsModal = ({
           <Form.Group controlId="monitorName">
             <Form.Label className="labelFields">Nom du Superviseur</Form.Label>
             <Form.Control
-              value={supervisor !== undefined ? supervisor.lastName + " " + supervisor.firstName : ""}
+              value={
+                supervisor !== undefined
+                  ? supervisor.lastName + " " + supervisor.firstName
+                  : ""
+              }
               disabled
               type="text"
               className="input_form active_inp_form"
@@ -57,9 +61,7 @@ const InternshipApplicationDetailsModal = ({
         </>
       );
     } else {
-      return (
-        <p style={{color: 'red'}}>Aucun superviseur assigné !</p>
-      )
+      return <p style={{ color: "red" }}>Aucun superviseur assigné !</p>;
     }
   }
 
@@ -92,13 +94,15 @@ const InternshipApplicationDetailsModal = ({
                     Adresse du stage
                   </Form.Label>
                   <Form.Control
-                    value={currentInternshipOffer !== undefined ? 
-                      currentInternshipOffer.address +
-                      ", " +
-                      currentInternshipOffer.city +
-                      ", " +
-                      currentInternshipOffer.postalCode
-                    : ""}
+                    value={
+                      currentInternshipOffer !== undefined
+                        ? currentInternshipOffer.address +
+                          ", " +
+                          currentInternshipOffer.city +
+                          ", " +
+                          currentInternshipOffer.postalCode
+                        : ""
+                    }
                     disabled
                     type="text"
                     className="input_form active_inp_form"
@@ -111,7 +115,11 @@ const InternshipApplicationDetailsModal = ({
                     Nom du monitor
                   </Form.Label>
                   <Form.Control
-                    value={monitor !== undefined ? monitor.lastName + " " + monitor.firstName : ""}
+                    value={
+                      monitor !== undefined
+                        ? monitor.lastName + " " + monitor.firstName
+                        : ""
+                    }
                     disabled
                     type="text"
                     className="input_form active_inp_form"

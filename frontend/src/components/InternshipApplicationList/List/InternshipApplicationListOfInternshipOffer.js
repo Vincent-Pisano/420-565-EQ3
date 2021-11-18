@@ -26,15 +26,15 @@ function InternshipApplicationListOfInternshipOffer() {
 
   useEffect(() => {
     axios
-        .get(
-            GET_ALL_INTERNSHIP_APPLICATIONS_OF_INTERNSHIP_OFFER + internshipOffer.id
-        )
-        .then((response) => {
-          setInternshipApplications(response.data);
-        })
-        .catch((err) => {
-          setErrorMessage(ERROR_NO_INTERNSHIP_APPLICATION_YET);
-        });
+      .get(
+        GET_ALL_INTERNSHIP_APPLICATIONS_OF_INTERNSHIP_OFFER + internshipOffer.id
+      )
+      .then((response) => {
+        setInternshipApplications(response.data);
+      })
+      .catch((err) => {
+        setErrorMessage(ERROR_NO_INTERNSHIP_APPLICATION_YET);
+      });
   }, [internshipOffer.id]);
 
   function showModal(internshipApplication) {
@@ -46,28 +46,28 @@ function InternshipApplicationListOfInternshipOffer() {
     return currentInternshipApplication.status === "COMPLETED";
   }
 
-  function checkForModal(){
+  function checkForModal() {
     if (isCurrentApplicationCompleted()) {
-        return (
-          <>
-            <InternshipApplicationMonitorModal
-              show={show}
-              handleClose={handleClose}
-              currentInternshipApplication={currentInternshipApplication}
-            />
-          </>
-        );
-      } else {
-        return (
-          <>
-            <InternshipApplicationSignatureModal
-              show={show}
-              handleClose={handleClose}
-              currentInternshipApplication={currentInternshipApplication}
-            />
-          </>
-        );
-      }
+      return (
+        <>
+          <InternshipApplicationMonitorModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+          />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <InternshipApplicationSignatureModal
+            show={show}
+            handleClose={handleClose}
+            currentInternshipApplication={currentInternshipApplication}
+          />
+        </>
+      );
+    }
   }
 
   return (

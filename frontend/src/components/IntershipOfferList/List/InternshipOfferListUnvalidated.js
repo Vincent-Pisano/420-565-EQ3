@@ -3,8 +3,14 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import InternshipOfferListTemplate from "../InternshipOfferListTemplate";
 import { TITLE_INTERNSHIP_OFFER_LIST_UNVALIDATED } from "../../../Utils/TITLE";
-import { GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS, GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_OFFER_FOUND, ERROR_NO_INTERNSHIP_OFFER_TO_VALIDATE } from "../../../Utils/ERRORS";
+import {
+  GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS,
+  GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS,
+} from "../../../Utils/API";
+import {
+  ERROR_NO_INTERNSHIP_OFFER_FOUND,
+  ERROR_NO_INTERNSHIP_OFFER_TO_VALIDATE,
+} from "../../../Utils/ERRORS";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipOfferListUnvalidated() {
@@ -15,14 +21,15 @@ function InternshipOfferListUnvalidated() {
   const [sessions, setSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [errorMessage, setErrorMessage] = useState("");
-  let title = state !== undefined && state.title !== undefined ? state.title : TITLE_INTERNSHIP_OFFER_LIST_UNVALIDATED;
+  let title =
+    state !== undefined && state.title !== undefined
+      ? state.title
+      : TITLE_INTERNSHIP_OFFER_LIST_UNVALIDATED;
 
   useEffect(() => {
     if (sessions.length === 0 && currentSession === undefined) {
       axios
-        .get(
-            GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS
-        )
+        .get(GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS)
         .then((response) => {
           setSessions(response.data);
           setCurrentSession(response.data[0]);
@@ -32,9 +39,7 @@ function InternshipOfferListUnvalidated() {
         });
     } else if (currentSession !== undefined) {
       axios
-        .get(
-            GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS + currentSession
-        )
+        .get(GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS + currentSession)
         .then((response) => {
           setInternshipOffers(response.data);
         })
@@ -48,8 +53,8 @@ function InternshipOfferListUnvalidated() {
     history.push({
       pathname: URL_INTERNSHIP_OFFER_FORM,
       state: {
-        internshipOffer: internshipOffer
-      }
+        internshipOffer: internshipOffer,
+      },
     });
   }
 

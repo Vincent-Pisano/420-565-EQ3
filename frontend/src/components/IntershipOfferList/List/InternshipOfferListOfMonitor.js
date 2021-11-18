@@ -51,7 +51,7 @@ function InternshipOfferListOfMonitor() {
     history.push({
       pathname: URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER,
       state: {
-          internshipOffer:internshipOffer
+        internshipOffer: internshipOffer,
       },
     });
   }

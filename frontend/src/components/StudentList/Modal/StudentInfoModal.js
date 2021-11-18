@@ -1,7 +1,6 @@
 import { Button, Modal, Row, Col } from "react-bootstrap";
 const StudentInfoModal = ({ show, handleClose, currentStudent }) => {
-
-    currentStudent = currentStudent !== undefined ? currentStudent : {}
+  currentStudent = currentStudent !== undefined ? currentStudent : {};
 
   return (
     <>
@@ -20,7 +19,10 @@ const StudentInfoModal = ({ show, handleClose, currentStudent }) => {
           </Row>
           <Row>
             <Col>
-              Date d'inscription: {currentStudent.creationDate !== undefined ? currentStudent.creationDate.substring(0, 10) : ""}
+              Date d'inscription:{" "}
+              {currentStudent.creationDate !== undefined
+                ? currentStudent.creationDate.substring(0, 10)
+                : ""}
             </Col>
           </Row>
         </Modal.Body>

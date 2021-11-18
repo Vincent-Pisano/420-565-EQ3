@@ -19,10 +19,7 @@ const CVButtonDeposit = () => {
         Déposer un CV
       </Button>
 
-      <CVModalDeposit
-        handleClose={handleClose}
-        show={show}
-      />
+      <CVModalDeposit handleClose={handleClose} show={show} />
     </>
   );
 };

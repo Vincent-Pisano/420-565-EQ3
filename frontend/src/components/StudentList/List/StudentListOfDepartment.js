@@ -3,9 +3,7 @@ import auth from "../../../services/Auth";
 import { React, useState, useEffect } from "react";
 import StudentInfoModal from "../Modal/StudentInfoModal";
 import axios from "axios";
-import {
-  TITLE_STUDENT_LIST_OF_DEPARTMENT
-} from "../../../Utils/TITLE";
+import { TITLE_STUDENT_LIST_OF_DEPARTMENT } from "../../../Utils/TITLE";
 import {
   GET_ALL_SESSIONS_OF_STUDENTS,
   GET_ALL_STUDENT_FROM_DEPARTMENT,

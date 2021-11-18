@@ -58,8 +58,8 @@ function InternshipApplicationListOfStudent() {
     history.push({
       pathname: URL_INTERNSHIP_OFFER_FORM,
       state: {
-        internshipOffer: internshipOffer
-      }
+        internshipOffer: internshipOffer,
+      },
     });
   }
 

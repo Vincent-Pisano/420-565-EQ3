@@ -2,8 +2,14 @@ import StudentList from "../StudentListTemplate";
 import { useHistory } from "react-router";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_STUDENTS_WAITING_INTERVIEW_ANSWER } from "../../../Utils/ERRORS";
-import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENTS_WAITING_INTERVIEW_ANSWER } from "../../../Utils/API";
+import {
+  ERROR_NO_STUDENT_SUBSCRIBED,
+  ERROR_NO_STUDENTS_WAITING_INTERVIEW_ANSWER,
+} from "../../../Utils/ERRORS";
+import {
+  GET_ALL_SESSIONS_OF_STUDENTS,
+  GET_ALL_STUDENTS_WAITING_INTERVIEW_ANSWER,
+} from "../../../Utils/API";
 import { URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT } from "../../../Utils/URL";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_WAITING } from "../../../Utils/TITLE";
 
@@ -45,9 +51,13 @@ function StudentListReportWaitingInterviewAnswer() {
 
   function showInternshipApplications(student) {
     history.push({
-      pathname: URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT + student.username,
+      pathname:
+        URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT + student.username,
       state: {
-        title: TITLE_INTERNSHIP_APPLICATION_LIST_WAITING(student, currentSession),
+        title: TITLE_INTERNSHIP_APPLICATION_LIST_WAITING(
+          student,
+          currentSession
+        ),
         session: currentSession,
       },
     });

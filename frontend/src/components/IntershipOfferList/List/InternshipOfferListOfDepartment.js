@@ -4,8 +4,14 @@ import auth from "../../../services/Auth";
 import { useHistory } from "react-router";
 import InternshipOfferListTemplate from "../InternshipOfferListTemplate";
 import { TITLE_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT } from "../../../Utils/TITLE";
-import { GET_ALL_NEXT_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS, GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_OFFER_FOUND, ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET } from "../../../Utils/ERRORS";
+import {
+  GET_ALL_NEXT_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS,
+  GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT,
+} from "../../../Utils/API";
+import {
+  ERROR_NO_INTERNSHIP_OFFER_FOUND,
+  ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET,
+} from "../../../Utils/ERRORS";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipOfferListOfDepartment() {
@@ -20,37 +26,38 @@ function InternshipOfferListOfDepartment() {
 
   useEffect(() => {
     if (sessions.length === 0 && currentSession === undefined) {
-        axios
-          .get(GET_ALL_NEXT_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS)
-          .then((response) => {
-            setSessions(response.data);
-            setCurrentSession(response.data[0]);
-          })
-          .catch((err) => {
-            setErrorMessage(ERROR_NO_INTERNSHIP_OFFER_FOUND);
-          });
-      } else if (currentSession !== undefined) {
-        axios
-          .get(
-            GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT + currentSession + "/"  + user.department
-          )
-          .then((response) => {
-            setInternshipOffers(response.data);
-          })
-          .catch((err) => {
-            setErrorMessage(
-                ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET
-            );
-          });
-      }
+      axios
+        .get(GET_ALL_NEXT_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS)
+        .then((response) => {
+          setSessions(response.data);
+          setCurrentSession(response.data[0]);
+        })
+        .catch((err) => {
+          setErrorMessage(ERROR_NO_INTERNSHIP_OFFER_FOUND);
+        });
+    } else if (currentSession !== undefined) {
+      axios
+        .get(
+          GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT +
+            currentSession +
+            "/" +
+            user.department
+        )
+        .then((response) => {
+          setInternshipOffers(response.data);
+        })
+        .catch((err) => {
+          setErrorMessage(ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET);
+        });
+    }
   }, [currentSession, sessions.length, user.department]);
 
   function showInternshipOffer(internshipOffer) {
     history.push({
       pathname: URL_INTERNSHIP_OFFER_FORM,
       state: {
-        internshipOffer: internshipOffer
-      }
+        internshipOffer: internshipOffer,
+      },
     });
   }
 

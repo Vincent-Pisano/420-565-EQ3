@@ -13,7 +13,7 @@ const InternshipOfferForm = () => {
   let user = auth.user;
   let history = useHistory();
   let state = history.location.state;
-  let internshipOffer = state !== undefined ? state.internshipOffer : undefined
+  let internshipOffer = state !== undefined ? state.internshipOffer : undefined;
   let isLoading = false;
   let title =
     internshipOffer === undefined

@@ -29,7 +29,7 @@ function InternshipApplicationListReportCompleted() {
   useEffect(() => {
     axios
       .get(
-        GET_ALL_COMPLETED_INTERNSHIP_APPLICATIONS_OF_STUDENT(session)  + username
+        GET_ALL_COMPLETED_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) + username
       )
       .then((response) => {
         setInternshipApplications(response.data);
@@ -50,8 +50,8 @@ function InternshipApplicationListReportCompleted() {
     history.push({
       pathname: URL_INTERNSHIP_OFFER_FORM,
       state: {
-        internshipOffer: internshipOffer
-      }
+        internshipOffer: internshipOffer,
+      },
     });
   }
 
@@ -64,11 +64,11 @@ function InternshipApplicationListReportCompleted() {
         onClick={showModal}
       />
       <InternshipApplicationCompletedDetailsModal
-            show={show}
-            handleClose={handleClose}
-            currentInternshipApplication={currentInternshipApplication}
-            showIntershipOffer={showIntershipOffer}
-          />
+        show={show}
+        handleClose={handleClose}
+        currentInternshipApplication={currentInternshipApplication}
+        showIntershipOffer={showIntershipOffer}
+      />
     </>
   );
 }

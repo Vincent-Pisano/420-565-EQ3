@@ -3,11 +3,11 @@ import axios from "axios";
 import { session } from "../../../Utils/Store";
 import { useHistory } from "react-router";
 import "../../../styles/List.css";
-import { URL_STUDENT_LIST_ASSIGN_SUPERVISOR } from "../../../Utils/URL"
-import { GET_ALL_SUPERVISORS } from "../../../Utils/API"
-import { TITLE_SUPERVISOR_LIST_OF_SESSION } from "../../../Utils/TITLE"
-import { ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION } from "../../../Utils/ERRORS"
-import SupervisorListTemplate from "../SupervisorListTemplate"
+import { URL_STUDENT_LIST_ASSIGN_SUPERVISOR } from "../../../Utils/URL";
+import { GET_ALL_SUPERVISORS } from "../../../Utils/API";
+import { TITLE_SUPERVISOR_LIST_OF_SESSION } from "../../../Utils/TITLE";
+import { ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION } from "../../../Utils/ERRORS";
+import SupervisorListTemplate from "../SupervisorListTemplate";
 
 function SupervisorList() {
   let history = useHistory();
@@ -15,7 +15,7 @@ function SupervisorList() {
   const [supervisors, setSupervisors] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-  let title = TITLE_SUPERVISOR_LIST_OF_SESSION + session
+  let title = TITLE_SUPERVISOR_LIST_OF_SESSION + session;
 
   useEffect(() => {
     axios
@@ -34,16 +34,16 @@ function SupervisorList() {
     };
     history.push({
       pathname: URL_STUDENT_LIST_ASSIGN_SUPERVISOR,
-      state: state
+      state: state,
     });
   }
 
   return (
-    <SupervisorListTemplate 
-        title={title}
-        supervisors={supervisors}
-        errorMessage={errorMessage}
-        onClick={showAssignableStudents}
+    <SupervisorListTemplate
+      title={title}
+      supervisors={supervisors}
+      errorMessage={errorMessage}
+      onClick={showAssignableStudents}
     />
   );
 }

@@ -2,8 +2,7 @@ import { Container } from "react-bootstrap";
 import Supervisor from "./Supervisor";
 import "../../styles/List.css";
 
-function SupervisorListTemplate({title, supervisors, errorMessage, onClick}) {
-
+function SupervisorListTemplate({ title, supervisors, errorMessage, onClick }) {
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">

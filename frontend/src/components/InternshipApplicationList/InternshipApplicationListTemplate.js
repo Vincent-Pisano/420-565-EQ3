@@ -7,27 +7,26 @@ import SessionDropdown from "../SessionDropdown/SessionDropdown";
 import auth from "../../services/Auth";
 
 function InternshipApplicationListTemplate({
-    title,
-    internshipApplications,
-    errorMessage,
-    onClick,
-    sessions,
-    currentSession,
-    setCurrentSession,
+  title,
+  internshipApplications,
+  errorMessage,
+  onClick,
+  sessions,
+  currentSession,
+  setCurrentSession,
 }) {
-
   function changeCurrentSession(session) {
     setCurrentSession(session);
   }
 
   function showSessionsList() {
-      if (auth.isStudent())
+    if (auth.isStudent())
       return (
         <SessionDropdown
-        sessions={sessions}
-        currentSession={currentSession}
-        changeCurrentSession={changeCurrentSession}
-      />
+          sessions={sessions}
+          currentSession={currentSession}
+          changeCurrentSession={changeCurrentSession}
+        />
       );
   }
 

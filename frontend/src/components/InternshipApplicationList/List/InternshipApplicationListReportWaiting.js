@@ -29,7 +29,7 @@ function InternshipApplicationListReportWaiting() {
   useEffect(() => {
     axios
       .get(
-        GET_ALL_WAITING_INTERNSHIP_APPLICATIONS_OF_STUDENT(session)  + username
+        GET_ALL_WAITING_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) + username
       )
       .then((response) => {
         setInternshipApplications(response.data);
@@ -50,8 +50,8 @@ function InternshipApplicationListReportWaiting() {
     history.push({
       pathname: URL_INTERNSHIP_OFFER_FORM,
       state: {
-        internshipOffer: internshipOffer
-      }
+        internshipOffer: internshipOffer,
+      },
     });
   }
   return (
@@ -63,11 +63,11 @@ function InternshipApplicationListReportWaiting() {
         onClick={showModal}
       />
       <InternshipApplicationDetailsModal
-            show={show}
-            handleClose={handleClose}
-            currentInternshipApplication={currentInternshipApplication}
-            showIntershipOffer={showIntershipOffer}
-          />
+        show={show}
+        handleClose={handleClose}
+        currentInternshipApplication={currentInternshipApplication}
+        showIntershipOffer={showIntershipOffer}
+      />
     </>
   );
 }

@@ -2,16 +2,20 @@ import StudentList from "../StudentListTemplate";
 import { useHistory } from "react-router";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_STUDENTS_FOR_MONITOR_EVALUATION } from "../../../Utils/ERRORS";
-import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENTS_WITHOUT_MONITOR_EVALUATION } from "../../../Utils/API";
+import {
+  ERROR_NO_STUDENT_SUBSCRIBED,
+  ERROR_NO_STUDENTS_FOR_MONITOR_EVALUATION,
+} from "../../../Utils/ERRORS";
+import {
+  GET_ALL_SESSIONS_OF_STUDENTS,
+  GET_ALL_STUDENTS_WITHOUT_MONITOR_EVALUATION,
+} from "../../../Utils/API";
 import { URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT } from "../../../Utils/URL";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED } from "../../../Utils/TITLE";
-
 
 function StudentListReportWithoutMonitorEvaluation() {
   let history = useHistory();
   let state = history.location.state;
-
 
   const [students, setStudents] = useState([]);
   const [sessions, setSessions] = useState([]);
@@ -47,9 +51,13 @@ function StudentListReportWithoutMonitorEvaluation() {
 
   function showInternshipApplications(student) {
     history.push({
-      pathname: URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + student.username,
+      pathname:
+        URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + student.username,
       state: {
-        title: TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED(student, currentSession),
+        title: TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED(
+          student,
+          currentSession
+        ),
         session: currentSession,
       },
     });

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { URL_STUDENT_LIST_OF_DEPARTMENT, URL_STUDENT_LIST_ASSIGNED_SUPERVISOR } from "../../Utils/URL"
+import {
+  URL_STUDENT_LIST_OF_DEPARTMENT,
+  URL_STUDENT_LIST_ASSIGNED_SUPERVISOR,
+} from "../../Utils/URL";
 
 const NavUserSupervisor = () => {
   return (

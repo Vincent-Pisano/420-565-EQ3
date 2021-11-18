@@ -9,8 +9,6 @@ import axios from "axios";
 import { ERROR_NO_STUDENT_TO_ASSIGN } from "../../../Utils/ERRORS";
 
 function StudentListAssignSupervisor() {
-
-  
   let history = useHistory();
   let state = history.location.state;
 
