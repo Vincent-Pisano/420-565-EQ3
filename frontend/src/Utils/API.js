@@ -10,6 +10,13 @@ export const ASSIGN_SUPERVISOR_TO_STUDENT = URL_BACKEND + "assign/supervisor/";
 export const VALIDATE_CV = URL_BACKEND + "validate/CV/";
 export const VIEW_CV = URL_BACKEND + "get/CV/document/";
 
+//INTERNSHIP APPLICATION LIST
+export function GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) {
+    return URL_BACKEND + "getAll/internshipApplication/" + session + "/student/";
+}
+export const GET_ALL_INTERNSHIP_APPLICATIONS_ACCEPTED_NEXT_SESSIONS = URL_BACKEND + "getAll/accepted/internshipApplications/current/and/next/sessions";
+export const GET_ALL_INTERNSHIP_APPLICATIONS_VALIDATED_NEXT_SESSIONS = URL_BACKEND + "getAll/validated/internshipApplication";
+
 //SUPERVISOR LIST
 export const GET_ALL_SUPERVISORS = URL_BACKEND + "getAll/supervisors/";
 

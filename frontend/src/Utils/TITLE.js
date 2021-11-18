@@ -10,6 +10,12 @@ export const TITLE_APPLICATION_LIST_OF_STUDENT =
   export const TITLE_STUDENT_LIST_ASSIGNED_TO_SUPERVISOR =
   "Étudiants qui vous sont assignés";
 
+//INTERNSHIP APPLICATION LIST
+export const TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER =
+"Liste de vos applications de stage";
+export const TITLE_INTERNSHIP_APPLICATION_LIST_ACCEPTED =
+"Liste des applications de stages acceptées";
+
 //SUPERVISOR LIST
 export const TITLE_SUPERVISOR_LIST_OF_SESSION =
 "Liste des superviseurs de stages inscrit en : ";

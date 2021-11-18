@@ -7,6 +7,11 @@ export const URL_STUDENT_LIST_ASSIGNED_SUPERVISOR = "/studentList/assigned";
 //SUPERVISOR LIST
 export const URL_SUPERVISOR_LIST = "/supervisorList";
 
+//INTERNSHIP APPLICATION LIST
+export const URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT = "/internshipApplicationList/student";
+export const URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED = "/internshipApplicationList/accepted";
+export const URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE = "/internshipApplicationList/signature";
+
 //REPORTS
 const reportLink = "/reports";
 

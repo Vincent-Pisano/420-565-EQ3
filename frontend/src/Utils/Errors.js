@@ -12,6 +12,11 @@ export const ERROR_VALID_CV = "Erreur durant la validation du CV";
 export const CONFIRM_ASSIGN_SUPERVISOR = "Confirmation de l'assignation";
 export const CONFIRM_VALID_CV = "Confirmation de la validation";
 
+//INTERNSHIP APPLICATION LIST
+export const ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION = "Aucune Application enregistrée pour cette session"
+export const ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION = "Aucune Application d'offre de stage acceptée pour cette session"
+export const ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION = "Aucune Application validée pour cette session"
+
 //SUPERVISOR LIST
 export const ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION = "Aucun Superviseur enregistré pour cette session";
 
