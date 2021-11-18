@@ -34,6 +34,15 @@ export const SIGN_CONTRACT_OF_INTERNSHIP_STUDENT = URL_BACKEND + "sign/internshi
 export const SIGN_CONTRACT_OF_INTERNSHIP_INTERNSHIP_MANAGER = URL_BACKEND + "sign/internshipContract/internshipManager/";
 export const UPDATE_INTERNSHIP_APPLICATION = URL_BACKEND + "update/internshipApplication";
 
+//HOME
+export const GET_SIGNATURE = URL_BACKEND + "get/signature/";
+export const SAVE_SIGNATURE = URL_BACKEND + "save/signature/";
+
+//INTERNSHIP OFFER FORM
+export const POST_APPLY_INTERNSHIP_OFFER = URL_BACKEND + "apply/internshipOffer/";
+export const GET_MONITOR = URL_BACKEND + "get/monitor/";
+export const SAVE_INTERNSHIP_OFFER = URL_BACKEND + "save/internshipOffer";
+
 //INTERNSHIP OFFER LIST
 export const GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/next/sessions/internshipOffer/unvalidated";
 export const GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/internshipOffer/unvalidated/";
@@ -69,7 +78,8 @@ export const GET_ALL_STUDENTS_WITH_INTERNSHIP = URL_BACKEND + "getAll/students/w
 export const GET_ALL_STUDENTS_WITHOUT_SUPERVISOR_EVALUATION = URL_BACKEND + "getAll/student/enterpriseEvaluation/unevaluated/";
 export const GET_ALL_STUDENTS_WITHOUT_MONITOR_EVALUATION = URL_BACKEND + "getAll/student/studentEvaluation/unevaluated/";
 
-
-
-
+//SIGN UPS
+export const SIGN_UP_MONITOR = URL_BACKEND + "signUp/monitor";
+export const SIGN_UP_STUDENT = URL_BACKEND + "signUp/student";
+export const SIGN_UP_SUPERVISOR = URL_BACKEND + "signUp/supervisor";
 

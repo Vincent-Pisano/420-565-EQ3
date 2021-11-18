@@ -29,6 +29,17 @@ export const CONFIRM_DEPOSIT = "Confirmation du dépôt";
 export const CONFIRM_SIGNATURE = "Confirmation de la signature";
 export const CONFIRM_MODIFICATIONS = "Confirmation des changements";
 
+//INTERNSHIP OFFER FORM
+export const ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED = "Votre demande a été acceptée, vous allez être redirigé";
+export const ERROR_INTERNSHIP_OFFER_FORM = "Erreur lors de l'application à l'ofre de stage stage";
+export const ERROR_MONITOR_NOT_FOUND = "Erreur! Le moniteur est inexistant";
+export const ERROR_NO_PDF_FOUND = "Erreur! Veuillez soumettre un document .pdf";
+export const ERROR_INVALID_DURATION = "Erreur! Durée de stage invalide !";
+export const ERROR_NO_WORK_DAYS = "Erreur! Choisissez au moins une journée de travail !";
+export const ERROR_INVALID_INTERNSHIP_OFFER = "Erreur! L'offre de stage est invalide";
+
+export const CONFIRM_SAVE_INTERNSHIP_OFFER = "L'offre de stage a été sauvegardé, vous allez être redirigé";
+
 //INTERNSHIP OFFER LIST
 export const ERROR_NO_INTERNSHIP_OFFER_FOUND = "Aucune offre de stage déposée...";
 export const ERROR_NO_INTERNSHIP_OFFER_TO_VALIDATE = "Aucune offre de stage à valider";
@@ -68,4 +79,14 @@ export const ERROR_NO_STUDENTS_WAITING_INTERVIEW_ANSWER = "Erreur! Tous les étu
 export const ERROR_NO_STUDENTS_WITH_INTERNSHIP = "Erreur! Aucuns étudiants n'a trouvé de stage ctte session.";
 export const ERROR_NO_STUDENTS_FOR_MONITOR_EVALUATION = "Erreur! Tous les étudiants ont été évalués par leur moniteur cette session";
 export const ERROR_NO_STUDENTS_FOR_SUPERVISOR_EVALUATION = "Erreur! Tous les étudiants ont leur entreprise évaluée par leurs superviseurs";
+
+//SIGN UPS
+export const ERROR_INVALID_MONITOR_USERNAME = "Le nom de moniteur doit commencer par 'M'.";
+export const ERROR_INVALID_STUDENT_USERNAME = "Le nom d'utilisateur doit commencer par 'E'.";
+export const ERROR_INVALID_SUPERVISOR_USERNAME = "Le nom d'utilisateur doit commencer par 'S'.";
+export const ERROR_USERNAME_EMAIL_ALREADY_EXISTS = "Le nom d'utilisateur ou le courriel existe déjà.";
+
+//HOME
+export const ERROR_SAVE_SIGNATURE = "Erreur lors de la sauvegarde de la signature";
+export const ERROR_SELECT_PNG = "Sélectionnez une image PNG";
 

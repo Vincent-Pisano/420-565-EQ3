@@ -6,6 +6,8 @@ import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
 import { ARCHITECTURE_DEPT, COMPUTER_SCIENCE_DEPT, NURSING_DEPT } from "../../Utils/DEPARTMENTS";
+import { ERROR_INVALID_STUDENT_USERNAME, ERROR_USERNAME_EMAIL_ALREADY_EXISTS } from "../../Utils/Errors_Utils";
+import { SIGN_UP_STUDENT } from "../../Utils/API";
 
 const SignUpStudent = () => {
   let history = useHistory();
@@ -25,12 +27,12 @@ const SignUpStudent = () => {
     e.preventDefault();
 
     if (!fields.username.startsWith("E")) {
-      setErrorMessage("Le nom d'utilisateur doit commencer par 'E'.");
+      setErrorMessage(ERROR_INVALID_STUDENT_USERNAME);
       return;
     }
 
     axios
-      .post("http://localhost:9090/signUp/student", fields)
+      .post(SIGN_UP_STUDENT , fields)
       .then((response) => {
         auth.login(() => {
           history.push({
@@ -40,7 +42,7 @@ const SignUpStudent = () => {
         }, response.data);
       })
       .catch((error) => {
-        setErrorMessage("Le nom d'utilisateur ou le courriel existe déjà.");
+        setErrorMessage(ERROR_USERNAME_EMAIL_ALREADY_EXISTS);
       });
   }
 

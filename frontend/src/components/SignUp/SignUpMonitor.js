@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
+import { SIGN_UP_MONITOR } from "../../Utils/API";
+import { ERROR_INVALID_MONITOR_USERNAME, ERROR_USERNAME_EMAIL_ALREADY_EXISTS } from "../../Utils/Errors_Utils";
 
 const SignUpMonitor = () => {
   let history = useHistory();
@@ -25,12 +27,12 @@ const SignUpMonitor = () => {
     e.preventDefault();
 
     if (!fields.username.startsWith("M")) {
-      setErrorMessage("Le nom de moniteur doit commencer par 'M'.");
+      setErrorMessage(ERROR_INVALID_MONITOR_USERNAME);
       return;
     }
 
     axios
-      .post("http://localhost:9090/signUp/monitor", fields)
+      .post(SIGN_UP_MONITOR, fields) 
       .then((response) => {
         auth.login(() => {
           history.push({
@@ -40,7 +42,7 @@ const SignUpMonitor = () => {
         }, response.data);
       })
       .catch((error) => {
-        setErrorMessage("Le nom d'utilisateur ou le courriel existe déjà.");
+        setErrorMessage(ERROR_USERNAME_EMAIL_ALREADY_EXISTS);
       });
   }
 

@@ -6,7 +6,11 @@ import {
   faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
-import { ARCHITECTURE_DEPT, COMPUTER_SCIENCE_DEPT, NURSING_DEPT } from "../../Utils/DEPARTMENTS";
+import {
+  ARCHITECTURE_DEPT,
+  COMPUTER_SCIENCE_DEPT,
+  NURSING_DEPT,
+} from "../../Utils/DEPARTMENTS";
 
 const Supervisor = ({ supervisor, onClick }) => {
   return (

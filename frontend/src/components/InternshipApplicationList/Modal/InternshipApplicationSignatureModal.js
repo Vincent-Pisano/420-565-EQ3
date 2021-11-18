@@ -6,7 +6,7 @@ import "../../../styles/Form.css";
 import { useHistory } from "react-router";
 import {
   TITLE_INTERNSHIP_SIGNATURE,
-  TITLE_INTERNSHIP_APPLICATION_INFOS
+  TITLE_INTERNSHIP_APPLICATION_INFOS,
 } from "../../../Utils/TITLE";
 import {
   GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
@@ -14,14 +14,14 @@ import {
   SIGN_CONTRACT_OF_INTERNSHIP_MONITOR,
   SIGN_CONTRACT_OF_INTERNSHIP_STUDENT,
   SIGN_CONTRACT_OF_INTERNSHIP_INTERNSHIP_MANAGER,
-  GET_CV
+  GET_CV,
 } from "../../../Utils/API";
 import {
   CONFIRM_SIGNATURE,
   ERROR_WAITING_MONITOR_SIGNATURE,
   ERROR_WAITING_STUDENT_SIGNATURE,
   ERROR_NO_MORE_STUDENT_TO_ASSIGN,
-  ERROR_NO_SIGNATURE
+  ERROR_NO_SIGNATURE,
 } from "../../../Utils/Errors_Utils";
 
 const InternshipApplicationSignatureModal = ({
@@ -47,7 +47,8 @@ const InternshipApplicationSignatureModal = ({
   useEffect(() => {
     axios
       .get(
-        GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION + currentInternshipApplication.id
+        GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION +
+          currentInternshipApplication.id
       )
       .then((response) => {
         setInternship(response.data);
@@ -67,9 +68,7 @@ const InternshipApplicationSignatureModal = ({
       if (auth.isMonitor()) {
         if (internship !== undefined && !internship.signedByMonitor) {
           axios
-            .post(
-              SIGN_CONTRACT_OF_INTERNSHIP_MONITOR + internship.id
-            )
+            .post(SIGN_CONTRACT_OF_INTERNSHIP_MONITOR + internship.id)
             .then((response) => {
               setInternship(response.data);
               setTimeout(() => {
@@ -86,9 +85,7 @@ const InternshipApplicationSignatureModal = ({
         if (internship !== undefined && internship.signedByMonitor) {
           if (!internship.signedByStudent) {
             axios
-              .post(
-                SIGN_CONTRACT_OF_INTERNSHIP_STUDENT + internship.id
-              )
+              .post(SIGN_CONTRACT_OF_INTERNSHIP_STUDENT + internship.id)
               .then((response) => {
                 setInternship(response.data);
                 setTimeout(() => {
@@ -106,9 +103,7 @@ const InternshipApplicationSignatureModal = ({
             setErrorMessageModal("");
             handleClose();
           }, 1000);
-          setErrorMessageModal(
-            ERROR_WAITING_MONITOR_SIGNATURE
-          );
+          setErrorMessageModal(ERROR_WAITING_MONITOR_SIGNATURE);
         }
       } else if (auth.isInternshipManager()) {
         if (internship !== undefined && internship.signedByMonitor) {
@@ -139,9 +134,7 @@ const InternshipApplicationSignatureModal = ({
                         pathname: `/home/${auth.user.username}`,
                       });
                     }, 3000);
-                    setErrorMessage(
-                      ERROR_NO_MORE_STUDENT_TO_ASSIGN
-                    );
+                    setErrorMessage(ERROR_NO_MORE_STUDENT_TO_ASSIGN);
                   }
                   setErrorMessageModal(CONFIRM_SIGNATURE);
                 })
@@ -154,18 +147,14 @@ const InternshipApplicationSignatureModal = ({
               setErrorMessageModal("");
               handleClose();
             }, 1000);
-            setErrorMessageModal(
-              ERROR_WAITING_STUDENT_SIGNATURE
-            );
+            setErrorMessageModal(ERROR_WAITING_STUDENT_SIGNATURE);
           }
         } else {
           setTimeout(() => {
             setErrorMessageModal("");
             handleClose();
           }, 1000);
-          setErrorMessageModal(
-            ERROR_WAITING_MONITOR_SIGNATURE
-          );
+          setErrorMessageModal(ERROR_WAITING_MONITOR_SIGNATURE);
         }
       }
     } else {
