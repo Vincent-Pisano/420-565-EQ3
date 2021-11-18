@@ -16,6 +16,7 @@ export function GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) {
 }
 export const GET_ALL_INTERNSHIP_APPLICATIONS_ACCEPTED_NEXT_SESSIONS = URL_BACKEND + "getAll/accepted/internshipApplications/current/and/next/sessions";
 export const GET_ALL_INTERNSHIP_APPLICATIONS_VALIDATED_NEXT_SESSIONS = URL_BACKEND + "getAll/validated/internshipApplication";
+export const GET_ALL_INTERNSHIP_APPLICATIONS_OF_INTERNSHIP_OFFER = URL_BACKEND + "getAll/internshipApplication/internshipOffer/";
 
 //INTERNSHIP OFFER LIST
 export const GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/next/sessions/internshipOffer/unvalidated";

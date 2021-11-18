@@ -24,7 +24,9 @@ import {
   URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
   URL_INTERNSHIP_OFFER_LIST_VALIDATED,
   URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT,
-  URL_INTERNSHIP_OFFER_LIST_OF_MONITOR
+  URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
+  URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER,
+  URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED
 } from './Utils/URL'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
@@ -54,6 +56,8 @@ import StudentListReportWithoutSupervisorEvaluation from './components/StudentLi
 import InternshipApplicationListOfStudent from './components/InternshipApplicationList/List/InternshipApplicationListOfStudent';
 import InternshipApplicationListAccepted from './components/InternshipApplicationList/List/InternshipApplicationListAccepted';
 import InternshipApplicationListSignatureInternshipManager from './components/InternshipApplicationList/List/InternshipApplicationListSignatureInternshipManager';
+import InternshipApplicationListOfInternshipOffer from './components/InternshipApplicationList/List/InternshipApplicationListOfInternshipOffer';
+import InternshipApplicationListOfStudentAssigned from './components/InternshipApplicationList/List/InternshipApplicationListOfStudentAssigned';
 
 import InternshipOfferListUnvalidated from './components/IntershipOfferList/List/InternshipOfferListUnvalidated';
 import InternshipOfferListValidated from './components/IntershipOfferList/List/InternshipOfferListValidated';
@@ -94,6 +98,8 @@ function App () {
           <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT} exact component={InternshipApplicationListOfStudent}/>
           <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED} exact component={InternshipApplicationListAccepted}/>
           <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE} exact component={InternshipApplicationListSignatureInternshipManager}/>
+          <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER} exact component={InternshipApplicationListOfInternshipOffer}/>
+          <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED + ":username"} exact component={InternshipApplicationListOfStudentAssigned}/>
           
           <ProtectedRoute path={URL_INTERNSHIP_OFFER_LIST_UNVALIDATED} exact component={InternshipOfferListUnvalidated}/>
           <ProtectedRoute path={URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT} exact component={InternshipOfferListOfDepartment}/>

@@ -16,6 +16,7 @@ export const CONFIRM_VALID_CV = "Confirmation de la validation";
 export const ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION = "Aucune Application enregistrée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION = "Aucune Application d'offre de stage acceptée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION = "Aucune Application validée pour cette session"
+export const ERROR_NO_INTERNSHIP_APPLICATION_YET = "Aucune Application enregistrée pour le moment"
 
 //INTERNSHIP OFFER LIST
 export const ERROR_NO_INTERNSHIP_OFFER_FOUND = "Aucune offre de stage déposée...";

@@ -4,6 +4,7 @@ import auth from "../../../services/Auth";
 import { useHistory } from "react-router";
 import InternshipOfferListTemplate from "../InternshipOfferListTemplate";
 import { TITLE_INTERNSHIP_OFFER_LIST_OF_MONITOR } from "../../../Utils/TITLE";
+import { URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER } from "../../../Utils/URL";
 import {
   GET_ALL_SESSIONS_OF_INTERNSHIP_OFFERS_OF_MONITOR,
   GET_ALL_INTERNSHIP_OFFER_OF_MONITOR,
@@ -48,8 +49,10 @@ function InternshipOfferListOfMonitor() {
 
   function showInternshipOffer(internshipOffer) {
     history.push({
-      pathname: "/listInternshipApplication",
-      state: internshipOffer,
+      pathname: URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER,
+      state: {
+          internshipOffer:internshipOffer
+      },
     });
   }
 

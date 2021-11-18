@@ -217,6 +217,7 @@ function InternshipApplicationList() {
       }
     } else if (auth.isSupervisor()) {
       if (isCurrentApplicationCompleted()) {
+        console.log("test")
         return (
           <>
             <InternshipApplicationSupervisorEnterpriseEvaluationModal

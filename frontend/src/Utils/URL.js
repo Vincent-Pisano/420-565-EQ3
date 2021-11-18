@@ -11,6 +11,8 @@ export const URL_SUPERVISOR_LIST = "/supervisorList";
 export const URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT = "/internshipApplicationList/student";
 export const URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED = "/internshipApplicationList/accepted";
 export const URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE = "/internshipApplicationList/signature";
+export const URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER = "/internshipApplicationList/monitor/internshipOffer";
+export const URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED = "/internshipApplicationList/student/";
 
 //INTERNSHIP OFFER LIST
 export const URL_INTERNSHIP_OFFER_LIST_UNVALIDATED = "/internshipOfferList/unvalidated";

@@ -7,6 +7,7 @@ import {
   TITLE_STUDENT_LIST_ASSIGNED_TO_SUPERVISOR,
   TITLE_APPLICATION_LIST_OF_STUDENT,
 } from "../../../Utils/TITLE";
+import { URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED } from "../../../Utils/URL";
 import { GET_ALL_STUDENTS_OF_SUPERVISOR } from "../../../Utils/API";
 import { ERROR_NO_STUDENT_ASSIGNED } from "../../../Utils/ERRORS";
 
@@ -51,7 +52,7 @@ function StudentListAssignedSupervisor() {
       session: currentSession,
     };
     history.push({
-      pathname: `/listInternshipApplication/${student.username}`,
+      pathname: URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED + student.username,
       state: state,
     });
   }
