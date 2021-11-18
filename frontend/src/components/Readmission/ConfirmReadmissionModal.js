@@ -10,7 +10,7 @@ import {
   ERROR_INVALID_PASSWORD,
   ERROR_PASSWORD_NOT_IDENTICAL,
   CONFIRM_READMISSION,
-} from "../../Utils/ERRORS";
+} from "../../Utils/Errors_Utils";
 
 const ConfirmReadmissionModal = ({ show, handleClose, session }) => {
   const [errorMessageModal, setErrorMessageModal] = useState("");

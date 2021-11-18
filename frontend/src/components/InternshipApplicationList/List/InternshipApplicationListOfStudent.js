@@ -6,7 +6,7 @@ import InternshipApplicationListTemplate from "../InternshipApplicationListTempl
 import InternshipApplicationStudentModal from "../Modal/InternshipApplicationStudentModal";
 import InternshipApplicationSignatureModal from "../Modal/InternshipApplicationSignatureModal";
 import { GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION } from "../../../Utils/ERRORS";
+import { ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION } from "../../../Utils/Errors_Utils";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER } from "../../../Utils/TITLE";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 

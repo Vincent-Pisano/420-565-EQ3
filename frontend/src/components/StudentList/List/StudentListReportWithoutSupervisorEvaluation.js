@@ -5,7 +5,7 @@ import axios from "axios";
 import {
   ERROR_NO_STUDENT_SUBSCRIBED,
   ERROR_NO_STUDENTS_FOR_SUPERVISOR_EVALUATION,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 import {
   GET_ALL_SESSIONS_OF_STUDENTS,
   GET_ALL_STUDENTS_WITHOUT_SUPERVISOR_EVALUATION,

@@ -7,7 +7,7 @@ import {
   GET_ALL_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS,
   GET_ALL_VALIDATED_INTERNSHIP_OFFERS,
 } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_OFFER_VALIDATED } from "../../../Utils/ERRORS";
+import { ERROR_NO_INTERNSHIP_OFFER_VALIDATED } from "../../../Utils/Errors_Utils";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipOfferListUnvalidated() {

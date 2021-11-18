@@ -10,7 +10,7 @@ import {
   ERROR_INVALID_FORMAT_PDF,
   CONFIRM_DEPOSIT,
   ERROR_DEPOSIT,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 import axios from "axios";
 import "../../../styles/Form.css";
 

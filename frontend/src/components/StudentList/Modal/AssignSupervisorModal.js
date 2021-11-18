@@ -8,7 +8,7 @@ import {
   ERROR_NO_MORE_STUDENT_TO_ASSIGN,
   ERROR_ASSIGN_SUPERVISOR,
   CONFIRM_ASSIGN_SUPERVISOR,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 
 const AssignSupervisorModal = ({
   show,

@@ -11,7 +11,7 @@ import {
 import {
   ERROR_NO_INTERNSHIP_OFFER_FOUND,
   ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipOfferListOfDepartment() {

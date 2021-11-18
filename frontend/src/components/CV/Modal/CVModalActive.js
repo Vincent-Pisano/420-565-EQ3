@@ -5,7 +5,7 @@ import auth from "../../../services/Auth";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { UPDATE_ACTIVE_CV } from "../../../Utils/API";
-import { ERROR_ACTIVE_CV, CONFIRM_ACTIVE_CV } from "../../../Utils/ERRORS";
+import { ERROR_ACTIVE_CV, CONFIRM_ACTIVE_CV } from "../../../Utils/Errors_Utils";
 
 const CVModalActive = ({ handleClose, show, documentId }) => {
   const [errorMessage, setErrorMessage] = useState("");

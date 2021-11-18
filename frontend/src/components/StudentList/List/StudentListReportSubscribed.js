@@ -6,7 +6,7 @@ import axios from "axios";
 import {
   ERROR_NO_STUDENT_SUBSCRIBED,
   ERROR_NO_STUDENT_SUBSCRIBED_THIS_SESSION,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 import {
   GET_ALL_SESSIONS_OF_STUDENTS,
   GET_ALL_STUDENTS,

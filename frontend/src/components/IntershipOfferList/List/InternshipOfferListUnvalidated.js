@@ -10,7 +10,7 @@ import {
 import {
   ERROR_NO_INTERNSHIP_OFFER_FOUND,
   ERROR_NO_INTERNSHIP_OFFER_TO_VALIDATE,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipOfferListUnvalidated() {

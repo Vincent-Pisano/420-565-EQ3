@@ -5,7 +5,7 @@ import InternshipApplicationListTemplate from "../InternshipApplicationListTempl
 import InternshipApplicationSupervisorEnterpriseEvaluationModal from "../Modal/InternshipApplicationSupervisorEnterpriseEvaluationModal";
 import InternshipApplicationSupervisorModal from "../Modal/InternshipApplicationSupervisorModal";
 import { GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_APPLICATION_YET } from "../../../Utils/ERRORS";
+import { ERROR_NO_INTERNSHIP_APPLICATION_YET } from "../../../Utils/Errors_Utils";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
 function InternshipApplicationListOfStudentAssigned() {

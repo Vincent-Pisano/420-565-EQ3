@@ -4,7 +4,7 @@ import InternshipApplicationListTemplate from "../InternshipApplicationListTempl
 import InternshipApplicationSignatureModal from "../Modal/InternshipApplicationSignatureModal";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER } from "../../../Utils/TITLE";
 import { GET_ALL_INTERNSHIP_APPLICATIONS_VALIDATED_NEXT_SESSIONS } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION } from "../../../Utils/ERRORS";
+import { ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION } from "../../../Utils/Errors_Utils";
 
 function InternshipApplicationListSignatureInternshipManager() {
   let title = TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER;

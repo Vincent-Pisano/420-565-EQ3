@@ -5,7 +5,7 @@ import auth from "../../../services/Auth";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { DELETE_CV } from "../../../Utils/API";
-import { ERROR_DELETE_CV, CONFIRM_DELETE_CV } from "../../../Utils/ERRORS";
+import { ERROR_DELETE_CV, CONFIRM_DELETE_CV } from "../../../Utils/Errors_Utils";
 
 const CVModalDelete = ({ handleClose, show, documentId }) => {
   const [errorMessage, setErrorMessage] = useState("");

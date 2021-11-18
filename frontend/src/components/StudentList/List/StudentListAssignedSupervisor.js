@@ -9,7 +9,7 @@ import {
 } from "../../../Utils/TITLE";
 import { URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED } from "../../../Utils/URL";
 import { GET_ALL_STUDENTS_OF_SUPERVISOR } from "../../../Utils/API";
-import { ERROR_NO_STUDENT_ASSIGNED } from "../../../Utils/ERRORS";
+import { ERROR_NO_STUDENT_ASSIGNED } from "../../../Utils/Errors_Utils";
 
 function StudentListAssignedSupervisor() {
   let history = useHistory();

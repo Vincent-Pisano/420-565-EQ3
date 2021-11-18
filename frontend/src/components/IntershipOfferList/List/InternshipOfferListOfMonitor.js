@@ -12,7 +12,7 @@ import {
 import {
   ERROR_NO_INTERNSHIP_OFFER_DEPOSITED,
   ERROR_NO_INTERNSHIP_OFFER_DEPOSITED_FOR_THIS_SESSION,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 
 function InternshipOfferListOfMonitor() {
   let history = useHistory();

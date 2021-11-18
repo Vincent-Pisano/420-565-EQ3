@@ -11,7 +11,7 @@ import {
 import {
   ERROR_NO_STUDENT_SUBSCRIBED,
   ERROR_NO_STUDENT_SUBSCRIBED_TO_THIS_SESSION,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 
 function StudentListOfDepartment() {
   let user = auth.user;

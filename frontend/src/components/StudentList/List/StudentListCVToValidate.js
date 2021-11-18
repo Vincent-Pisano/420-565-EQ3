@@ -11,7 +11,7 @@ import {
 import {
   ERROR_NO_STUDENT_SUBSCRIBED,
   ERROR_NO_CV_TO_VALIDATE,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 
 function StudentListCVToValidate() {
   const [show, setShow] = useState(false);

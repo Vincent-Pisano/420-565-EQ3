@@ -12,7 +12,7 @@ import {
   ERROR_INVALID_FORMAT_PDF,
   ERROR_DEPOSIT,
   CONFIRM_DEPOSIT,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 import "../../../styles/Form.css";
 
 const InternshipApplicationMonitorModal = ({

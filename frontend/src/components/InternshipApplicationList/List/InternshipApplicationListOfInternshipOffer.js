@@ -5,7 +5,7 @@ import InternshipApplicationListTemplate from "../InternshipApplicationListTempl
 import InternshipApplicationSignatureModal from "../Modal/InternshipApplicationSignatureModal";
 import InternshipApplicationMonitorModal from "../Modal/InternshipApplicationMonitorModal";
 import { GET_ALL_INTERNSHIP_APPLICATIONS_OF_INTERNSHIP_OFFER } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_APPLICATION_YET } from "../../../Utils/ERRORS";
+import { ERROR_NO_INTERNSHIP_APPLICATION_YET } from "../../../Utils/Errors_Utils";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_ACCEPTED } from "../../../Utils/TITLE";
 
 function InternshipApplicationListOfInternshipOffer() {

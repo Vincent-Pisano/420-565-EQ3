@@ -6,7 +6,7 @@ import { TITLE_STUDENT_LIST_SUPERVISOR_TO_ASSIGN } from "../../../Utils/TITLE";
 import { GET_ALL_STUDENTS_WITHOUT_SUPERVISOR } from "../../../Utils/API";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import { ERROR_NO_STUDENT_TO_ASSIGN } from "../../../Utils/ERRORS";
+import { ERROR_NO_STUDENT_TO_ASSIGN } from "../../../Utils/Errors_Utils";
 
 function StudentListAssignSupervisor() {
   let history = useHistory();

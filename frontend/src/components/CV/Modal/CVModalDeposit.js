@@ -10,7 +10,7 @@ import {
   ERROR_CV_INVALID_FORMAT,
   ERROR_CV_LIST_MAX_SIZE,
   CONFIRM_SAVE_CV,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 
 const CVModalDelete = ({ handleClose, show }) => {
   const [document, setDocument] = useState(undefined);

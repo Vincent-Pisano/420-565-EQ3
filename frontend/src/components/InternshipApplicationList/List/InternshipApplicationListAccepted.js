@@ -4,7 +4,7 @@ import axios from "axios";
 import InternshipApplicationListTemplate from "../InternshipApplicationListTemplate";
 import InternshipApplicationInternshipManagerModal from "../Modal/InternshipApplicationInternshipManagerModal";
 import { GET_ALL_INTERNSHIP_APPLICATIONS_ACCEPTED_NEXT_SESSIONS } from "../../../Utils/API";
-import { ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION } from "../../../Utils/ERRORS";
+import { ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION } from "../../../Utils/Errors_Utils";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_ACCEPTED } from "../../../Utils/TITLE";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 

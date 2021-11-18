@@ -6,7 +6,7 @@ import "../../../styles/List.css";
 import { URL_STUDENT_LIST_ASSIGN_SUPERVISOR } from "../../../Utils/URL";
 import { GET_ALL_SUPERVISORS } from "../../../Utils/API";
 import { TITLE_SUPERVISOR_LIST_OF_SESSION } from "../../../Utils/TITLE";
-import { ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION } from "../../../Utils/ERRORS";
+import { ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION } from "../../../Utils/Errors_Utils";
 import SupervisorListTemplate from "../SupervisorListTemplate";
 
 function SupervisorList() {

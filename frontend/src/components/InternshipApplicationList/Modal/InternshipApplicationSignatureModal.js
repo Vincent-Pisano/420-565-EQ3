@@ -22,7 +22,7 @@ import {
   ERROR_WAITING_STUDENT_SIGNATURE,
   ERROR_NO_MORE_STUDENT_TO_ASSIGN,
   ERROR_NO_SIGNATURE
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 
 const InternshipApplicationSignatureModal = ({
   show,

@@ -8,7 +8,7 @@ import {
   ERROR_NO_MORE_CV_TO_VALID,
   ERROR_VALID_CV,
   CONFIRM_VALID_CV,
-} from "../../../Utils/ERRORS";
+} from "../../../Utils/Errors_Utils";
 
 const ValidCVModal = ({
   show,
