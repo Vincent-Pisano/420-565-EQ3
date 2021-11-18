@@ -15,7 +15,11 @@ import {
   URL_STUDENT_LIST_WAITING_INTERVIEW,
   URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT,
   URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED,
-  URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE
+  URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE,
+  URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER,
+  URL_STUDENT_LIST_WITH_INTERNSHIP,
+  URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
+  URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION
 } from './Utils/URL'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
@@ -37,6 +41,10 @@ import StudentListReportSubscribed from './components/StudentList/List/StudentLi
 import StudentListReportWithoutCV from './components/StudentList/List/StudentListReportWithoutCV';
 import StudentListReportWithoutInterview from './components/StudentList/List/StudentListReportWithoutInterview';
 import StudentListReportWaitingInterview from './components/StudentList/List/StudentListReportWaitingInterview';
+import StudentListReportWaitingInterviewAnswer from './components/StudentList/List/StudentListReportWaitingInterviewAnswer';
+import StudentListReportWithInternship from './components/StudentList/List/StudentListReportWithInternship';
+import StudentListReportWithoutMonitorEvaluation from './components/StudentList/List/StudentListReportWithoutMonitorEvaluation';
+import StudentListReportWithoutSupervisorEvaluation from './components/StudentList/List/StudentListReportWithoutSupervisorEvaluation';
 
 import InternshipApplicationListOfStudent from './components/InternshipApplicationList/List/InternshipApplicationListOfStudent';
 import InternshipApplicationListAccepted from './components/InternshipApplicationList/List/InternshipApplicationListAccepted';
@@ -82,7 +90,10 @@ function App () {
           <ProtectedRoute path={URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION} exact component={StudentListCVToValidate}/>
           <ProtectedRoute path={URL_STUDENT_LIST_WITHOUT_INTERVIEW} exact component={StudentListReportWithoutInterview}/>
           <ProtectedRoute path={URL_STUDENT_LIST_WAITING_INTERVIEW} exact component={StudentListReportWaitingInterview}/>
-
+          <ProtectedRoute path={URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER} exact component={StudentListReportWaitingInterviewAnswer}/>
+          <ProtectedRoute path={URL_STUDENT_LIST_WITH_INTERNSHIP} exact component={StudentListReportWithInternship}/>
+          <ProtectedRoute path={URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION} exact component={StudentListReportWithoutSupervisorEvaluation}/>
+          <ProtectedRoute path={URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION} exact component={StudentListReportWithoutMonitorEvaluation}/>
           <Route path="*" exact component={Login}/>
         </Switch>           
       </div>

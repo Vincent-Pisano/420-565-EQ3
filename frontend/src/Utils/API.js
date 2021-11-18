@@ -30,3 +30,12 @@ export const GET_ALL_STUDENTS = URL_BACKEND + "getAll/students/";
 export const GET_ALL_STUDENTS_WITHOUT_CV = URL_BACKEND + "getAll/students/without/CV/";
 export const GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE = URL_BACKEND + "getAll/students/without/interviewDate/";
 export const GET_ALL_STUDENTS_WAITING_INTERVIEW = URL_BACKEND + "getAll/students/waiting/interview/";
+export const GET_ALL_STUDENTS_WAITING_INTERVIEW_ANSWER = URL_BACKEND + "getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today/";
+export const GET_ALL_STUDENTS_WITH_INTERNSHIP = URL_BACKEND + "getAll/students/with/Internship/";
+export const GET_ALL_STUDENTS_WITHOUT_SUPERVISOR_EVALUATION = URL_BACKEND + "getAll/student/enterpriseEvaluation/unevaluated/";
+export const GET_ALL_STUDENTS_WITHOUT_MONITOR_EVALUATION = URL_BACKEND + "getAll/student/studentEvaluation/unevaluated/";
+
+
+
+
+
