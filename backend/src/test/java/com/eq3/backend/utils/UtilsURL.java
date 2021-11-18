@@ -32,7 +32,6 @@ public class UtilsURL {
     public final static String URL_GET_ALL_SESSIONS_INTERNSHIP_OFFER_MONITOR = "/getAll/sessions/internshipOffer/monitor/";
     public final static String URL_GET_MONITOR = "/get/monitor/";
     public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/";
-    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_CURRENT_FUTURE_SESSIONS = "/getAll/internshipApplications/in/current/and/next/sessions";
     public final static String URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT = "/get/internshipOffer/document/";
     public final static String URL_DOWNLOAD_CV_DOCUMENT = "/get/CV/document/";
     public final static String URL_DOWNLOAD_EVALUATION_DOCUMENT = "/get/"+ DOCUMENT_NAME +"/evaluation/document";
@@ -60,6 +59,7 @@ public class UtilsURL {
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/";
     public final static String URL_STUDENT = "/student/";
     public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
+    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_CURRENT_FUTURE_SESSIONS = "/getAll/accepted/internshipApplications/current/and/next/sessions";
     public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_APPLICATIONS = "/getAll/validated/internshipApplication";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_BY_INTERNSHIP_OFFER = "/getAll/internshipApplication/internshipOffer/";
     public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/";

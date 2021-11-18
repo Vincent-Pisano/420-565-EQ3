@@ -496,26 +496,6 @@ class BackendControllerTest {
     }
 
     @Test
-    //@Disabled
-    public void testGetAllInternshipApplicationsInCurrentAndNextSessions() throws Exception {
-        //Arrange
-        expectedInternshipApplicationList = getListOfAcceptedInternshipApplication();
-
-        when(service.getAllInternshipApplicationsInCurrentAndNextSessions())
-                .thenReturn(Optional.of(expectedInternshipApplicationList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_APPLICATIONS_CURRENT_FUTURE_SESSIONS)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualInternshipApplications = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualInternshipApplications).isNotNull();
-    }
-
-    @Test
     //Disabled
     public void testDownloadInternshipOfferDocument() throws Exception {
         // Arrange
