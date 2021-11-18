@@ -8,7 +8,8 @@ import InternshipOfferButtonDownload from "./InternshipOfferButtonDownload";
 import InternshipOfferButtonValidate from "./InternshipOfferButtonValidate";
 import InternshipOfferButtonApply from "./InternshipOfferButtonApply";
 import "../../styles/Form.css";
-import { GET_ARCHITECTURE_DEPT, GET_COMPUTER_SCIENCE_DEPT, GET_NURSING_DEPT } from "../../Utils/DEPARTMENTS";
+import { ARCHITECTURE_DEPT, COMPUTER_SCIENCE_DEPT, NURSING_DEPT } from "../../Utils/DEPARTMENTS";
+import { DAY_SCHEDULE, FLEXIBLE_SCHEDULE, NIGHT_SCHEDULE } from "../../Utils/SCHEDULES";
 
 const InternshipOfferForm = () => {
   let user = auth.user;
@@ -40,8 +41,8 @@ const InternshipOfferForm = () => {
           address: "",
           city: "",
           postalCode: "",
-          workShift: "DAY",
-          workField: GET_COMPUTER_SCIENCE_DEPT,
+          workShift: DAY_SCHEDULE,
+          workField: COMPUTER_SCIENCE_DEPT,
           monitor: {},
         }
   );
@@ -509,9 +510,9 @@ const InternshipOfferForm = () => {
                       className="select_form d_block "
                       required
                     >
-                      <option value="DAY">Jour</option>
-                      <option value="NIGHT">Nuit</option>
-                      <option value="FLEXIBLE">Flexible</option>
+                      <option value={DAY_SCHEDULE}>Jour</option>
+                      <option value={NIGHT_SCHEDULE}>Nuit</option>
+                      <option value={FLEXIBLE_SCHEDULE}>Flexible</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group controlId="workField">
@@ -525,9 +526,9 @@ const InternshipOfferForm = () => {
                       className="select_form d_block"
                       required
                     >
-                      <option value={GET_ARCHITECTURE_DEPT}>Architecture</option>
-                      <option value={GET_COMPUTER_SCIENCE_DEPT}>Informatique</option>
-                      <option value={GET_NURSING_DEPT}>Infirmier</option>
+                      <option value={ARCHITECTURE_DEPT}>Architecture</option>
+                      <option value={COMPUTER_SCIENCE_DEPT}>Informatique</option>
+                      <option value={NURSING_DEPT}>Infirmier</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group
