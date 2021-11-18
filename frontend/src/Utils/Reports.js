@@ -35,7 +35,7 @@ import {
   URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
 } from "./URL";
 
-let reports = [
+export const REPORTS = [
   {
     id: "1",
     title: TITLE_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
@@ -103,7 +103,3 @@ let reports = [
     icon: faIdBadge,
   },
 ];
-
-export function ReportsList() {
-  return reports;
-}

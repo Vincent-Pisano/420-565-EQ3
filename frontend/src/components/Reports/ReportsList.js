@@ -1,17 +1,16 @@
 import { Container } from "react-bootstrap";
 import Report from "./Report";
-import { ReportsList } from "../../Utils/Reports";
+import { REPORTS } from "../../Utils/Reports";
+import { TITLE_REPORT } from "../../Utils/TITLE";
 
-const ReportsHome = () => {
-  let reportsList = ReportsList();
-
+const ReportsList = () => {
   return (
     <Container className="cont_principal mt-5">
       <Container className="cont_list_centrar">
-        <h2 className="cont_title_form">Liste des rapports disponibles</h2>
+        <h2 className="cont_title_form">{TITLE_REPORT}</h2>
         <Container className="cont_list">
           <ul>
-            {reportsList.map((report) => (
+            {REPORTS.map((report) => (
               <Report key={report.id} report={report} />
             ))}
           </ul>
@@ -20,4 +19,4 @@ const ReportsHome = () => {
     </Container>
   );
 };
-export default ReportsHome;
+export default ReportsList;

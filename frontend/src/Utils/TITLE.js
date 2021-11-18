@@ -32,6 +32,8 @@ export const TITLE_SUPERVISOR_LIST_OF_SESSION =
 export const TITLE_CV_LIST = "Liste de vos CVs";
 
 //REPORTS
+export const TITLE_REPORT = "Liste des rapports disponibles"
+
 export const TITLE_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION = "Offres en attente de validation";
 export const TITLE_INTERNSHIP_OFFER_LIST_VALIDATED = "Offres validées";
 export const TITLE_STUDENT_LIST_SUBSCRIBED = "Étudiants enregistrés";
