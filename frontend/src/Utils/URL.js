@@ -33,7 +33,8 @@ export const URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER = reportLink + "/studentL
 export const URL_STUDENT_LIST_WITH_INTERNSHIP = reportLink + "/studentList/with/internship";
 export const URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION = reportLink + "/studentList/without/supervisor/evaluation";
 export const URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION = reportLink + "/studentList/without/monitor/evaluation";
-
+export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT = reportLink + "/internshipApplicationList/waiting/student/";
+export const URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT = reportLink + "/internshipApplicationList/completed/student/";
 
 
 

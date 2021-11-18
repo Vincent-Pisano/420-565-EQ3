@@ -26,7 +26,9 @@ import {
   URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT,
   URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
   URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER,
-  URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED
+  URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED,
+  URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT,
+  URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT
 } from './Utils/URL'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from "./services/ProtectedRoute";
@@ -36,7 +38,6 @@ import InternshipOfferForm from './components/InternshipOffer/InternshipOfferFor
 import InternshipOfferList from './components/IntershipOfferList/InternshipOfferList';
 import InternshipOfferReportList from './components/Reports/InternshipOfferReportList/InternshipOfferReportList';
 import InternshipApplicationList from './components/InternshipApplicationList/InternshipApplicationList';
-import InternshipApplicationReportList from './components/Reports/InternshipApplicationReportList/InternshipApplicationReportList';
 import NavigationBar from "../src/components/Navbar/NavigationBar";
 import ReportsHome from './components/Reports/ReportsHome';
 
@@ -58,6 +59,8 @@ import InternshipApplicationListAccepted from './components/InternshipApplicatio
 import InternshipApplicationListSignatureInternshipManager from './components/InternshipApplicationList/List/InternshipApplicationListSignatureInternshipManager';
 import InternshipApplicationListOfInternshipOffer from './components/InternshipApplicationList/List/InternshipApplicationListOfInternshipOffer';
 import InternshipApplicationListOfStudentAssigned from './components/InternshipApplicationList/List/InternshipApplicationListOfStudentAssigned';
+import InternshipApplicationListReportWaiting from './components/InternshipApplicationList/List/InternshipApplicationListReportWaiting';
+import InternshipApplicationListReportCompleted from './components/InternshipApplicationList/List/InternshipApplicationListReportCompleted';
 
 import InternshipOfferListUnvalidated from './components/IntershipOfferList/List/InternshipOfferListUnvalidated';
 import InternshipOfferListValidated from './components/IntershipOfferList/List/InternshipOfferListValidated';
@@ -79,7 +82,7 @@ function App () {
           <ProtectedRoute path="/formInternshipOffer" exact component={InternshipOfferForm}/>
           <ProtectedRoute path="/reports" exact component={ReportsHome}/>
           <ProtectedRoute path="/reports/studentList" exact component={StudentReportList}/>
-          <ProtectedRoute path="/reports/listInternshipApplication/:username" exact component={InternshipApplicationReportList}/>
+          <ProtectedRoute path="/reports/listInternshipApplication/:username" exact component={InternshipApplicationListReportWaiting}/>
           <ProtectedRoute path="/reports/listInternshipOffer" exact component={InternshipOfferReportList}/>
           <ProtectedRoute path="/listInternshipOffer" exact component={InternshipOfferList}/>
           <ProtectedRoute path="/listInternshipApplication" exact component={InternshipApplicationList}/>
@@ -116,6 +119,8 @@ function App () {
           <ProtectedRoute path={URL_STUDENT_LIST_WITH_INTERNSHIP} exact component={StudentListReportWithInternship}/>
           <ProtectedRoute path={URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION} exact component={StudentListReportWithoutSupervisorEvaluation}/>
           <ProtectedRoute path={URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION} exact component={StudentListReportWithoutMonitorEvaluation}/>
+          <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT + ":username"} exact component={InternshipApplicationListReportWaiting}/>
+          <ProtectedRoute path={URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + ":username"} exact component={InternshipApplicationListReportCompleted}/>
           <Route path="*" exact component={Login}/>
         </Switch>           
       </div>

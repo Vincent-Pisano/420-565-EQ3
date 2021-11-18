@@ -1,21 +1,16 @@
 import StudentList from "../StudentListTemplate";
 import { useHistory } from "react-router";
-import StudentInfoModal from "../Modal/StudentInfoModal";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
 import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_STUDENT_WAITING_INTERVIEW } from "../../../Utils/ERRORS";
 import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENTS_WAITING_INTERVIEW } from "../../../Utils/API";
+import { URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT } from "../../../Utils/URL";
 
 function StudentListReportWaitingInterview() {
   let history = useHistory();
   let state = history.location.state;
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const [students, setStudents] = useState([]);
-  const [currentStudent, setCurrentStudent] = useState(undefined);
   const [sessions, setSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,9 +42,14 @@ function StudentListReportWaitingInterview() {
     }
   }, [currentSession, sessions.length]);
 
-  function showModal(student) {
-    setCurrentStudent(student);
-    handleShow();
+  function showInternshipApplications(student) {
+    history.push({
+      pathname: URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT + student.username,
+      state: {
+        title: `Applications de ${student.firstName} ${student.lastName} pour la session ${currentSession}`,
+        session: currentSession,
+      },
+    });
   }
 
   return (
@@ -58,15 +58,10 @@ function StudentListReportWaitingInterview() {
         title={title}
         students={students}
         errorMessage={errorMessage}
-        onClick={showModal}
+        onClick={showInternshipApplications}
         sessions={sessions}
         currentSession={currentSession}
         setCurrentSession={setCurrentSession}
-      />
-      <StudentInfoModal
-        show={show}
-        handleClose={handleClose}
-        currentStudent={currentStudent}
       />
     </>
   );

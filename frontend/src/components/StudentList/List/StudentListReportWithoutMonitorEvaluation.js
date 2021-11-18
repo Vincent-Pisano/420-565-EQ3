@@ -1,21 +1,17 @@
 import StudentList from "../StudentListTemplate";
 import { useHistory } from "react-router";
-import StudentInfoModal from "../Modal/StudentInfoModal";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
 import { ERROR_NO_STUDENT_SUBSCRIBED, ERROR_NO_STUDENTS_FOR_MONITOR_EVALUATION } from "../../../Utils/ERRORS";
 import { GET_ALL_SESSIONS_OF_STUDENTS, GET_ALL_STUDENTS_WITHOUT_MONITOR_EVALUATION } from "../../../Utils/API";
+import { URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT } from "../../../Utils/URL";
 
 function StudentListReportWithoutMonitorEvaluation() {
   let history = useHistory();
   let state = history.location.state;
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const [students, setStudents] = useState([]);
-  const [currentStudent, setCurrentStudent] = useState(undefined);
   const [sessions, setSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,9 +43,14 @@ function StudentListReportWithoutMonitorEvaluation() {
     }
   }, [currentSession, sessions.length]);
 
-  function showModal(student) {
-    setCurrentStudent(student);
-    handleShow();
+  function showInternshipApplications(student) {
+    history.push({
+      pathname: URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + student.username,
+      state: {
+        title: `Applications complétées de ${student.firstName} ${student.lastName} pour la session ${currentSession}`,
+        session: currentSession,
+      },
+    });
   }
 
   return (
@@ -58,15 +59,10 @@ function StudentListReportWithoutMonitorEvaluation() {
         title={title}
         students={students}
         errorMessage={errorMessage}
-        onClick={showModal}
+        onClick={showInternshipApplications}
         sessions={sessions}
         currentSession={currentSession}
         setCurrentSession={setCurrentSession}
-      />
-      <StudentInfoModal
-        show={show}
-        handleClose={handleClose}
-        currentStudent={currentStudent}
       />
     </>
   );
