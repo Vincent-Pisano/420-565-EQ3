@@ -57,7 +57,7 @@ function NavigationBar() {
             <li className="nav-links-header">Inscriptions</li>
           </Nav.Link>
 
-          <Nav.Link as={Link} to="/connexion">
+          <Nav.Link as={Link} to="/">
             <li className="nav-links-header">Connexion</li>
           </Nav.Link>
         </>

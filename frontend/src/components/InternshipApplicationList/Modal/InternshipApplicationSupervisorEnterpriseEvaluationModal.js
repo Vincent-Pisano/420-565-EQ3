@@ -1,5 +1,16 @@
 import { React, useState, useEffect } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
+import {
+  GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
+  DEPOSIT_ENTERPRISE_EVALUATION,
+  GET_ENTERPRISE_EVALUATION_OF_INTERNSHIP,
+} from "../../../Utils/API";
+import {
+  ERROR_RETRIEVING_INTERNSHIP_INFOS,
+  ERROR_INVALID_FORMAT_PDF,
+  CONFIRM_DEPOSIT,
+  ERROR_DEPOSIT,
+} from "../../../Utils/Errors_Utils";
 import axios from "axios";
 import "../../../styles/Form.css";
 
@@ -15,16 +26,15 @@ const InternshipApplicationSupervisorEnterpriseEvaluationModal = ({
   useEffect(() => {
     axios
       .get(
-        `http://localhost:9090/get/internship/${currentInternshipApplication.id}`
+        GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION +
+          currentInternshipApplication.id
       )
       .then((response) => {
         setInternship(response.data);
       })
       .catch((err) => {
         setInternship(undefined);
-        setErrorMessageModal(
-          "Erreur lors de la récupération des informations du stage"
-        );
+        setErrorMessageModal(ERROR_RETRIEVING_INTERNSHIP_INFOS);
       });
   }, [currentInternshipApplication.id]);
 
@@ -34,7 +44,7 @@ const InternshipApplicationSupervisorEnterpriseEvaluationModal = ({
       if (document !== undefined && document.type === "application/pdf") {
         depositEvaluation();
       } else {
-        setErrorMessageModal("Erreur, Veuillez déposer un fichier.pdf !");
+        setErrorMessageModal(ERROR_INVALID_FORMAT_PDF);
         setTimeout(() => {
           setErrorMessageModal("");
         }, 2000);
@@ -46,20 +56,17 @@ const InternshipApplicationSupervisorEnterpriseEvaluationModal = ({
     let formData = new FormData();
     formData.append("document", document);
     axios
-      .post(
-        `http://localhost:9090/deposit/evaluation/enterprise/${internship.id}`,
-        formData
-      )
+      .post(DEPOSIT_ENTERPRISE_EVALUATION + internship.id, formData)
       .then((response) => {
         setInternship(response.data);
         setTimeout(() => {
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal("Confirmation du dépôt");
+        setErrorMessageModal(CONFIRM_DEPOSIT);
       })
       .catch((error) => {
-        setErrorMessageModal("Erreur lors du dépôt");
+        setErrorMessageModal(ERROR_DEPOSIT);
       });
   }
 
@@ -85,7 +92,7 @@ const InternshipApplicationSupervisorEnterpriseEvaluationModal = ({
         <>
           <a
             className="btn btn_submit btn-lg mb-3"
-            href={`http://localhost:9090/get/internship/enterprise/evaluation/document/${internship.id}`}
+            href={GET_ENTERPRISE_EVALUATION_OF_INTERNSHIP + internship.id}
             target="_blank"
             rel="noreferrer"
           >

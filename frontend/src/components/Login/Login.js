@@ -21,20 +21,6 @@ const Login = () => {
   function onCreatePost(e) {
     e.preventDefault();
 
-    if (
-      !(
-        fields.username.startsWith("E") ||
-        fields.username.startsWith("S") ||
-        fields.username.startsWith("M") ||
-        fields.username.startsWith("G")
-      )
-    ) {
-      setErrorMessage(
-        "Les noms d'utilisateurs commencent par 'E', 'S', 'M' ou 'G'"
-      );
-      return;
-    }
-
     switch (fields.username.charAt(0)) {
       case "E":
         type = "student";
@@ -49,7 +35,9 @@ const Login = () => {
         type = "internshipManager";
         break;
       default:
-        type = "error";
+        setErrorMessage(
+          "Les noms d'utilisateurs commencent par 'E', 'S', 'M' ou 'G'"
+        );
     }
 
     axios

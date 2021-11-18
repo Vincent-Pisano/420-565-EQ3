@@ -1,6 +1,7 @@
 package com.eq3.backend.utils;
 
 import com.eq3.backend.model.Monitor;
+import com.eq3.backend.model.CV;
 import com.eq3.backend.model.PDFDocument;
 import com.eq3.backend.model.Student;
 import com.eq3.backend.model.Supervisor;
@@ -29,6 +30,9 @@ public class Utils {
     public final static String COLLEGE_ENGAGEMENT_KEY = "College";
     public final static String COLLEGE_ENGAGEMENT_VALUES
             = "Le collège s'engage à ...";
+
+    public final static String EMAIL_SUBJECT_ACTIVE_CV
+            = "Un étudiant vient de déposer un CV";
 
     public final static String QUERY_CRITERIA_MONITOR_ID = "monitor.$id";
     public final static String COLLECTION_NAME_INTERNSHIP_OFFER = "internshipOffer";
@@ -114,5 +118,11 @@ public class Utils {
         return month > SESSION_WINTER_MONTH && month < SESSION_SUMMER_MONTH
                 ? year + " " +SUMMER_SESSION
                 : (year + 1) + " " +WINTER_SESSION;
+    }
+
+    public static String getEmailTextActiveCV(Student student, CV cvActive){
+        PDFDocument pdfFromCv = cvActive.getPDFDocument();
+        return "L'étudiant " + student.getFirstName() + " " + student.getLastName() +
+                " vient de déposer son CV: " + pdfFromCv.getName();
     }
 }

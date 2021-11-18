@@ -40,14 +40,21 @@ public class BackendController {
     @GetMapping("/getAll/students/{department}/{session}")
     public ResponseEntity<List<Student>> getAllStudents(@PathVariable Department department, @PathVariable String session) {
         return service.getAllStudents(department, session)
-                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students")
-    public ResponseEntity<List<Student>> getAllStudents() {
-        return service.getAllStudents()
-                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+    @GetMapping("/getAll/sessions/students")
+    public ResponseEntity<TreeSet<String>> getAllSessionOfStudents() {
+        return service.getAllSessionOfStudents()
+                .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/students/{session}")
+    public ResponseEntity<List<Student>> getAllStudents(@PathVariable String session) {
+        return service.getAllStudents(session)
+                .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
@@ -69,51 +76,51 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/without/CV")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutCV() {
-        return service.getAllStudentsWithoutCV()
+    @GetMapping("/getAll/students/without/CV/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutCV(@PathVariable String session) {
+        return service.getAllStudentsWithoutCV(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/without/interviewDate")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutInterviewDate() {
-        return service.getAllStudentsWithoutInterviewDate()
+    @GetMapping("/getAll/students/without/interviewDate/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutInterviewDate(@PathVariable String session) {
+        return service.getAllStudentsWithoutInterviewDate(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today")
-    public ResponseEntity<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() {
-        return service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed()
+    @GetMapping("/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(@PathVariable String session) {
+        return service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/with/Internship")
-    public ResponseEntity<List<Student>> getAllStudentsWithInternship() {
-        return service.getAllStudentsWithInternship()
+    @GetMapping("/getAll/students/with/Internship/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithInternship(@PathVariable String session) {
+        return service.getAllStudentsWithInternship(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/waiting/interview")
-    public ResponseEntity<List<Student>> getAllStudentsWaitingInterview() {
-        return service.getAllStudentsWaitingInterview()
+    @GetMapping("/getAll/students/waiting/interview/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWaitingInterview(@PathVariable String session) {
+        return service.getAllStudentsWaitingInterview(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/student/studentEvaluation/unevaluated")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutStudentEvaluation(){
-        return service.getAllStudentsWithoutStudentEvaluation()
+    @GetMapping("/getAll/student/studentEvaluation/unevaluated/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutStudentEvaluation(@PathVariable String session){
+        return service.getAllStudentsWithoutStudentEvaluation(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/student/enterpriseEvaluation/unevaluated")
-    public ResponseEntity<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(){
-        return service.getAllStudentsWithoutEnterpriseEvaluation()
+    @GetMapping("/getAll/student/enterpriseEvaluation/unevaluated/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithoutEnterpriseEvaluation(@PathVariable String session){
+        return service.getAllStudentsWithoutEnterpriseEvaluation(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
@@ -134,7 +141,28 @@ public class BackendController {
 
     @GetMapping("/getAll/next/sessions/internshipOffer")
     public ResponseEntity<TreeSet<String>> getAllNextSessionsOfInternshipOffers(){
-        return service.getAllNextSessionsOfInternshipOffers()
+        return service.getAllNextSessionsOfInternshipOffersValidated()
+                .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/next/sessions/internshipOffer/unvalidated")
+    public ResponseEntity<TreeSet<String>> getAllNextSessionsOfInternshipOffersUnvalidated(){
+        return service.getAllNextSessionsOfInternshipOffersUnvalidated()
+                .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/sessions/invalid/internshipOffer")
+    public ResponseEntity<TreeSet<String>> getAllSessionsOfInvalidInternshipOffers(){
+        return service.getAllSessionsOfInvalidInternshipOffers()
+                .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @GetMapping("/getAll/sessions/valid/internshipOffer")
+    public ResponseEntity<TreeSet<String>> getAllSessionsOfValidInternshipOffers(){
+        return service.getAllSessionsOfValidInternshipOffers()
                 .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
@@ -150,13 +178,6 @@ public class BackendController {
     public ResponseEntity<Student> assignSupervisorToStudent(@PathVariable String idStudent, @PathVariable String idSupervisor) {
         return service.assignSupervisorToStudent(idStudent, idSupervisor)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping(value="/getAll/internshipApplications/in/current/and/next/sessions")
-    public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationsInCurrentAndNextSessions(){
-        return service.getAllInternshipApplicationsInCurrentAndNextSessions()
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
