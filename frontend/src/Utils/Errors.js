@@ -25,3 +25,9 @@ export const ERROR_CV_INVALID_FORMAT = "Erreur! veuillez soumettre un fichier so
 export const CONFIRM_ACTIVE_CV = "Le CV est maintenant actif";
 export const CONFIRM_DELETE_CV = "Le fichier a été supprimé";
 export const CONFIRM_SAVE_CV = "Le fichier a été déposé";
+
+//REPORTS
+export const ERROR_NO_STUDENT_SUBSCRIBED_THIS_SESSION = "Erreur! Aucun étudiant n'est enregistré cette session";
+export const ERROR_NO_STUDENT_WITHOUT_CV = "Erreur! Aucun étudiant n'a pas de CV";
+export const ERROR_NO_STUDENT_WITHOUT_INTERVIEW_DATE = "Erreur! Aucun étudiant n'a pas de convocation à une entrevue cette session";
+export const ERROR_NO_STUDENT_WAITING_INTERVIEW = "Erreur! Aucun étudiant en attente d'entrevue cette session";

@@ -2,7 +2,7 @@ import StudentList from "../StudentListTemplate";
 import { session } from "../../../Utils/Store";
 import { useHistory } from "react-router";
 import AssignSupervisorModal from "../Modal/AssignSupervisorModal";
-import { TITLE_STUDENT_SUPERVISOR_TO_ASSIGN } from "../../../Utils/TITLE";
+import { TITLE_STUDENT_LIST_SUPERVISOR_TO_ASSIGN } from "../../../Utils/TITLE";
 import { GET_ALL_STUDENTS_WITHOUT_SUPERVISOR } from "../../../Utils/API";
 import { React, useState, useEffect } from "react";
 import axios from "axios";
@@ -25,7 +25,7 @@ function StudentListAssignSupervisor() {
 
   const [currentStudent, setCurrentStudent] = useState(undefined);
 
-  const title = TITLE_STUDENT_SUPERVISOR_TO_ASSIGN;
+  const title = TITLE_STUDENT_LIST_SUPERVISOR_TO_ASSIGN;
 
   useEffect(() => {
     axios

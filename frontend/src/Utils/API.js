@@ -17,3 +17,9 @@ export const GET_ALL_SUPERVISORS = URL_BACKEND + "getAll/supervisors/";
 export const UPDATE_ACTIVE_CV = URL_BACKEND + "update/ActiveCV/";
 export const DELETE_CV = URL_BACKEND + "delete/CV/";
 export const SAVE_CV = URL_BACKEND + "save/CV/";
+
+//REPORTS
+export const GET_ALL_STUDENTS = URL_BACKEND + "getAll/students/";
+export const GET_ALL_STUDENTS_WITHOUT_CV = URL_BACKEND + "getAll/students/without/CV/";
+export const GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE = URL_BACKEND + "getAll/students/without/interviewDate/";
+export const GET_ALL_STUDENTS_WAITING_INTERVIEW = URL_BACKEND + "getAll/students/waiting/interview/";

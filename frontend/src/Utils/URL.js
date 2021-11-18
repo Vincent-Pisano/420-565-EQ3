@@ -1,7 +1,30 @@
+//STUDENT LIST
 export const URL_STUDENT_LIST_CV_TO_VALIDATE = "/studentList/validate/cv";
 export const URL_STUDENT_LIST_FROM_DEPARTMENT = "/studentList/from/department";
-export const URL_STUDENT_LIST_ASSIGN_SUPERVISOR = "/listStudents/assign";
-export const URL_STUDENT_LIST_ASSIGNED_SUPERVISOR = "/listStudents/assigned";
+export const URL_STUDENT_LIST_ASSIGN_SUPERVISOR = "/studentList/assign";
+export const URL_STUDENT_LIST_ASSIGNED_SUPERVISOR = "/studentList/assigned";
+
+//SUPERVISOR LIST
+export const URL_SUPERVISOR_LIST = "/supervisorList";
+
+//REPORTS
+const reportLink = "/reports";
+
+export const URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION = reportLink + "/listInternshipOffer";
+export const URL_INTERNSHIP_OFFER_LIST_VALIDATED = reportLink + "/listInternshipOffer";
+export const URL_STUDENT_LIST_SUBSCRIBED = reportLink + "/studentList/subscribed";
+export const URL_STUDENT_LIST_WITHOUT_CV = reportLink + "/studentList/without/cv";
+export const URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION = reportLink + "/studentList/with/cv/waiting/validation";
+export const URL_STUDENT_LIST_WITHOUT_INTERVIEW = reportLink + "/studentList/without/interview";
+export const URL_STUDENT_LIST_WAITING_INTERVIEW = reportLink + "/studentList/wating/interview";
+export const URL_STUDENT_LIST_WAITING_INTERVIEW_RESPONSE = reportLink + "/studentList";
+export const URL_STUDENT_LIST_WITH_INTERNSHIP = reportLink + "/studentList";
+export const URL_STUDENT_LIST_WAITING_SUPERVISOR_EVALUATION = reportLink + "/studentList";
+export const URL_STUDENT_LIST_WAITING_MONITOR_EVALUATION = reportLink + "/studentList";
+
+
+
+
 
 /*const HOME_PAGE_URL = [
   {
