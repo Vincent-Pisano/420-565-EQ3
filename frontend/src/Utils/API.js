@@ -25,7 +25,9 @@ export function GET_ALL_WAITING_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) {
 }
 export const GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION = URL_BACKEND + "get/internship/";
 export const DEPOSIT_MONITOR_EVALUATION = URL_BACKEND + "deposit/evaluation/student/";
+export const DEPOSIT_ENTERPRISE_EVALUATION = URL_BACKEND + "deposit/evaluation/enterprise/";
 export const GET_MONITOR_EVALUATION_OF_INTERNSHIP = URL_BACKEND + "get/internship/student/evaluation/document/";
+export const GET_ENTERPRISE_EVALUATION_OF_INTERNSHIP = URL_BACKEND + "get/internship/enterprise/evaluation/document/";
 export const GET_MONITOR_CONTRACT_OF_INTERNSHIP = URL_BACKEND + "get/internship/document/";
 export const SIGN_CONTRACT_OF_INTERNSHIP_MONITOR = URL_BACKEND + "sign/internshipContract/monitor/";
 export const SIGN_CONTRACT_OF_INTERNSHIP_STUDENT = URL_BACKEND + "sign/internshipContract/student/";
@@ -52,6 +54,10 @@ export const UPDATE_ACTIVE_CV = URL_BACKEND + "update/ActiveCV/";
 export const DELETE_CV = URL_BACKEND + "delete/CV/";
 export const SAVE_CV = URL_BACKEND + "save/CV/";
 export const GET_CV = URL_BACKEND + "get/CV/document/";
+
+//READMISSION
+export const READMISSION_SUPERVISOR = URL_BACKEND + "readmission/supervisor/";
+export const READMISSION_STUDENT = URL_BACKEND + "readmission/student/";
 
 //REPORTS
 export const GET_ALL_STUDENTS = URL_BACKEND + "getAll/students/";

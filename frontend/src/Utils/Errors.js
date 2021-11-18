@@ -39,6 +39,14 @@ export const ERROR_NO_INTERNSHIP_OFFER_DEPOSITED_FOR_THIS_SESSION = "Vous n'avez
 //SUPERVISOR LIST
 export const ERROR_NO_SUPERVISOR_SUBSCRIBED_TO_THIS_SESSION = "Aucun Superviseur enregistré pour cette session";
 
+//READMISSION
+export const ERROR_READMISSION = "Erreur lors de la réinscription !";
+export const ERROR_INVALID_PASSWORD = "Erreur ! Les mots de passes ne sont pas corrects";
+export const ERROR_PASSWORD_NOT_IDENTICAL = "Erreur ! Les mots de passes ne sont pas identiques";
+export function CONFIRM_READMISSION(session) {
+    return `Confirmation de la réinscription pour la session ${session}`;
+  }
+
 //CV LIST
 export const ERROR_ACTIVE_CV = "Erreur de traitement de CV!";
 export const ERROR_DELETE_CV = "Erreur! Le fichier n'a pas été supprimé";
