@@ -31,3 +31,8 @@ export const ERROR_NO_STUDENT_SUBSCRIBED_THIS_SESSION = "Erreur! Aucun étudiant
 export const ERROR_NO_STUDENT_WITHOUT_CV = "Erreur! Aucun étudiant n'a pas de CV";
 export const ERROR_NO_STUDENT_WITHOUT_INTERVIEW_DATE = "Erreur! Aucun étudiant n'a pas de convocation à une entrevue cette session";
 export const ERROR_NO_STUDENT_WAITING_INTERVIEW = "Erreur! Aucun étudiant en attente d'entrevue cette session";
+export const ERROR_NO_STUDENTS_WAITING_INTERVIEW_ANSWER = "Erreur! Tous les étudiants ont eu une réponse d'entrevue";
+export const ERROR_NO_STUDENTS_WITH_INTERNSHIP = "Erreur! Aucuns étudiants n'a trouvé de stage ctte session.";
+export const ERROR_NO_STUDENTS_FOR_MONITOR_EVALUATION = "Erreur! Tous les étudiants ont été évalués par leur moniteur cette session";
+export const ERROR_NO_STUDENTS_FOR_SUPERVISOR_EVALUATION = "Erreur! Tous les étudiants ont leur entreprise évaluée par leurs superviseurs";
+

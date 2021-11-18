@@ -16,11 +16,11 @@ export const URL_STUDENT_LIST_SUBSCRIBED = reportLink + "/studentList/subscribed
 export const URL_STUDENT_LIST_WITHOUT_CV = reportLink + "/studentList/without/cv";
 export const URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION = reportLink + "/studentList/with/cv/waiting/validation";
 export const URL_STUDENT_LIST_WITHOUT_INTERVIEW = reportLink + "/studentList/without/interview";
-export const URL_STUDENT_LIST_WAITING_INTERVIEW = reportLink + "/studentList/wating/interview";
-export const URL_STUDENT_LIST_WAITING_INTERVIEW_RESPONSE = reportLink + "/studentList";
-export const URL_STUDENT_LIST_WITH_INTERNSHIP = reportLink + "/studentList";
-export const URL_STUDENT_LIST_WAITING_SUPERVISOR_EVALUATION = reportLink + "/studentList";
-export const URL_STUDENT_LIST_WAITING_MONITOR_EVALUATION = reportLink + "/studentList";
+export const URL_STUDENT_LIST_WAITING_INTERVIEW = reportLink + "/studentList/waiting/interview";
+export const URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER = reportLink + "/studentList/waiting/interview/answer";
+export const URL_STUDENT_LIST_WITH_INTERNSHIP = reportLink + "/studentList/with/internship";
+export const URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION = reportLink + "/studentList/without/supervisor/evaluation";
+export const URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION = reportLink + "/studentList/without/monitor/evaluation";
 
 
 

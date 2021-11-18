@@ -25,8 +25,8 @@ export const TITLE_STUDENT_LIST_WITHOUT_CV = "Étudiants avec aucun CV";
 export const TITLE_STUDENT_LIST_WITH_CV_WAITING_VALIDATION = "Étudiants avec un CV à valider";
 export const TITLE_STUDENT_LIST_WITHOUT_INTERVIEW = "Étudiants n'ayant aucune convocation à une entrevue";
 export const TITLE_STUDENT_LIST_WAITING_INTERVIEW = "Étudiants en attente d’entrevue";
-export const TITLE_STUDENT_LIST_WAITING_INTERVIEW_RESPONSE = "Étudiants en attente d'une réponse d'entrevue";
+export const TITLE_STUDENT_LIST_WAITING_INTERVIEW_ANSWER = "Étudiants en attente d'une réponse d'entrevue";
 export const TITLE_STUDENT_LIST_WITH_INTERNSHIP = "Étudiants ayant trouvé un stage";
-export const TITLE_STUDENT_LIST_WAITING_SUPERVISOR_EVALUATION = "Étudiants n’ayant pas encore été évalués par leur moniteur";
-export const TITLE_STUDENT_LIST_WAITING_MONITOR_EVALUATION = "Étudiants dont le superviseur n’a pas encore évalué l’entreprise";
+export const TITLE_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION = "Étudiants n’ayant pas encore été évalués par leur moniteur";
+export const TITLE_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION = "Étudiants dont le superviseur n’a pas encore évalué l’entreprise";
 
