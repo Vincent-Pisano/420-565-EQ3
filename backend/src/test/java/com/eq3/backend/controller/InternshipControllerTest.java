@@ -290,6 +290,51 @@ public class InternshipControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
     }
+
+    @Test
+    //@Disabled
+    public void testGetAllCompletedInternshipApplicationOfStudent() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedStudent = getStudentWithId();
+
+        when(service.getAllCompletedInternshipApplicationOfStudent(getSession(), expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedInternshipApplicationList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_COMPLETED_INTERNSHIP_APPLICATIONS + getSession()
+                + URL_STUDENT + expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipApplications = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllWaitingInternshipApplicationOfStudent() throws Exception {
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedStudent = getStudentWithId();
+
+        when(service.getAllWaitingInternshipApplicationOfStudent(getSession(), expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedInternshipApplicationList));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_WAITING_INTERNSHIP_APPLICATIONS + getSession()
+                + URL_STUDENT + expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipApplications = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
     @Test
     //@Disabled
     public void testGetAllInternshipApplicationOfInternshipOffer() throws Exception {

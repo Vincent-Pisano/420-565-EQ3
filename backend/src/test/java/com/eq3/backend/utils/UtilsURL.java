@@ -61,6 +61,8 @@ public class UtilsURL {
     public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/validated/";
     public final static String URL_MONITOR = "/monitor/";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/";
+    public final static String URL_GET_ALL_COMPLETED_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/completed/";
+    public final static String URL_GET_ALL_WAITING_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/waiting/";
     public final static String URL_STUDENT = "/student/";
     public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_CURRENT_FUTURE_SESSIONS = "/getAll/accepted/internshipApplications/current/and/next/sessions";
