@@ -17,6 +17,17 @@ export const ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION = "Aucune A
 export const ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION = "Aucune Application d'offre de stage acceptée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION = "Aucune Application validée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_YET = "Aucune Application enregistrée pour le moment"
+export const ERROR_RETRIEVING_INTERNSHIP_INFOS = "Erreur lors de la récupération des informations du stage"
+export const ERROR_INVALID_FORMAT_PDF = "Erreur, Veuillez déposer un fichier.pdf !"
+export const ERROR_DEPOSIT = "Erreur lors du dépôt"
+export const ERROR_WAITING_MONITOR_SIGNATURE = "Erreur ! En attente de la signature du Moniteur"
+export const ERROR_WAITING_STUDENT_SIGNATURE = "Erreur ! En attente de la signature de l'Étudiant"
+export const ERROR_NO_SIGNATURE = "Erreur ! La signature n'a pas été déposé!"
+export const ERROR_UPDATE = "Erreur lors de la mise à jour"
+
+export const CONFIRM_DEPOSIT = "Confirmation du dépôt";
+export const CONFIRM_SIGNATURE = "Confirmation de la signature";
+export const CONFIRM_MODIFICATIONS = "Confirmation des changements";
 
 //INTERNSHIP OFFER LIST
 export const ERROR_NO_INTERNSHIP_OFFER_FOUND = "Aucune offre de stage déposée...";

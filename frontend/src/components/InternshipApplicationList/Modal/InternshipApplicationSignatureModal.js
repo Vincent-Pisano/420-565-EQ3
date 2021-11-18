@@ -4,6 +4,25 @@ import { React, useState, useEffect } from "react";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import "../../../styles/Form.css";
 import { useHistory } from "react-router";
+import {
+  TITLE_INTERNSHIP_SIGNATURE,
+  TITLE_INTERNSHIP_APPLICATION_INFOS
+} from "../../../Utils/TITLE";
+import {
+  GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
+  GET_MONITOR_CONTRACT_OF_INTERNSHIP,
+  SIGN_CONTRACT_OF_INTERNSHIP_MONITOR,
+  SIGN_CONTRACT_OF_INTERNSHIP_STUDENT,
+  SIGN_CONTRACT_OF_INTERNSHIP_INTERNSHIP_MANAGER,
+  GET_CV
+} from "../../../Utils/API";
+import {
+  CONFIRM_SIGNATURE,
+  ERROR_WAITING_MONITOR_SIGNATURE,
+  ERROR_WAITING_STUDENT_SIGNATURE,
+  ERROR_NO_MORE_STUDENT_TO_ASSIGN,
+  ERROR_NO_SIGNATURE
+} from "../../../Utils/ERRORS";
 
 const InternshipApplicationSignatureModal = ({
   show,
@@ -15,8 +34,8 @@ const InternshipApplicationSignatureModal = ({
 }) => {
   let title =
     currentInternshipApplication.status === "VALIDATED"
-      ? "Signature du stage"
-      : "Informations sur l'application de stage";
+      ? TITLE_INTERNSHIP_SIGNATURE
+      : TITLE_INTERNSHIP_APPLICATION_INFOS;
   let student = currentInternshipApplication.student;
   let history = useHistory();
 
@@ -28,7 +47,7 @@ const InternshipApplicationSignatureModal = ({
   useEffect(() => {
     axios
       .get(
-        `http://localhost:9090/get/internship/${currentInternshipApplication.id}`
+        GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION + currentInternshipApplication.id
       )
       .then((response) => {
         setInternship(response.data);
@@ -49,7 +68,7 @@ const InternshipApplicationSignatureModal = ({
         if (internship !== undefined && !internship.signedByMonitor) {
           axios
             .post(
-              `http://localhost:9090/sign/internshipContract/monitor/${internship.id}`
+              SIGN_CONTRACT_OF_INTERNSHIP_MONITOR + internship.id
             )
             .then((response) => {
               setInternship(response.data);
@@ -57,7 +76,7 @@ const InternshipApplicationSignatureModal = ({
                 setErrorMessageModal("");
                 handleClose();
               }, 1000);
-              setErrorMessageModal("Confirmation de la signature");
+              setErrorMessageModal(CONFIRM_SIGNATURE);
             })
             .catch((err) => {
               setInternship(undefined);
@@ -68,7 +87,7 @@ const InternshipApplicationSignatureModal = ({
           if (!internship.signedByStudent) {
             axios
               .post(
-                `http://localhost:9090/sign/internshipContract/student/${internship.id}`
+                SIGN_CONTRACT_OF_INTERNSHIP_STUDENT + internship.id
               )
               .then((response) => {
                 setInternship(response.data);
@@ -76,7 +95,7 @@ const InternshipApplicationSignatureModal = ({
                   setErrorMessageModal("");
                   handleClose();
                 }, 1000);
-                setErrorMessageModal("Confirmation de la signature");
+                setErrorMessageModal(CONFIRM_SIGNATURE);
               })
               .catch((err) => {
                 setInternship(undefined);
@@ -88,7 +107,7 @@ const InternshipApplicationSignatureModal = ({
             handleClose();
           }, 1000);
           setErrorMessageModal(
-            "Erreur ! En attente de la signature du Moniteur"
+            ERROR_WAITING_MONITOR_SIGNATURE
           );
         }
       } else if (auth.isInternshipManager()) {
@@ -97,7 +116,7 @@ const InternshipApplicationSignatureModal = ({
             if (!internship.signedByInternshipManager) {
               axios
                 .post(
-                  `http://localhost:9090/sign/internshipContract/internshipManager/${internship.id}`
+                  SIGN_CONTRACT_OF_INTERNSHIP_INTERNSHIP_MANAGER + internship.id
                 )
                 .then((response) => {
                   setInternship(response.data);
@@ -121,10 +140,10 @@ const InternshipApplicationSignatureModal = ({
                       });
                     }, 3000);
                     setErrorMessage(
-                      "Plus aucun étudiant à assigner, vous allez être redirigé"
+                      ERROR_NO_MORE_STUDENT_TO_ASSIGN
                     );
                   }
-                  setErrorMessageModal("Confirmation de la signature");
+                  setErrorMessageModal(CONFIRM_SIGNATURE);
                 })
                 .catch((err) => {
                   setInternship(undefined);
@@ -136,7 +155,7 @@ const InternshipApplicationSignatureModal = ({
               handleClose();
             }, 1000);
             setErrorMessageModal(
-              "Erreur ! En attente de la signature de l'Étudiant"
+              ERROR_WAITING_STUDENT_SIGNATURE
             );
           }
         } else {
@@ -145,7 +164,7 @@ const InternshipApplicationSignatureModal = ({
             handleClose();
           }, 1000);
           setErrorMessageModal(
-            "Erreur ! En attente de la signature du Moniteur"
+            ERROR_WAITING_MONITOR_SIGNATURE
           );
         }
       }
@@ -154,7 +173,7 @@ const InternshipApplicationSignatureModal = ({
         setErrorMessageModal("");
         handleClose();
       }, 1000);
-      setErrorMessageModal("Erreur ! La signature n'a pas été déposé!");
+      setErrorMessageModal(ERROR_NO_SIGNATURE);
     }
   }
 
@@ -164,7 +183,7 @@ const InternshipApplicationSignatureModal = ({
         <Col md={4}>
           <a
             className="btn btn-lg btn-warning mt-3"
-            href={`http://localhost:9090/get/internship/document/${internship.id}`}
+            href={GET_MONITOR_CONTRACT_OF_INTERNSHIP + internship.id}
             target="_blank"
             rel="noreferrer"
           >
@@ -185,7 +204,7 @@ const InternshipApplicationSignatureModal = ({
             <Col md={4}>
               <a
                 className="btn btn-lg btn-warning mt-3"
-                href={`http://localhost:9090/get/CV/document/${student.id}/${idCVActiveValid}`}
+                href={GET_CV + student.id + "/" + idCVActiveValid}
                 target="_blank"
                 rel="noreferrer"
               >

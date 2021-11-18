@@ -7,8 +7,6 @@ import { ROUTES } from "./Utils/ROUTES";
 import NavigationBar from "../src/components/Navbar/NavigationBar";
 
 function App() {
-  console.log(ROUTES);
-
   return (
     <Router>
       <div className="App">

@@ -1,6 +1,8 @@
 import { React, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import { useFormFields } from "../../../lib/hooksLib";
+import { UPDATE_INTERNSHIP_APPLICATION } from "../../../Utils/API";
+import { ERROR_UPDATE, CONFIRM_MODIFICATIONS } from "../../../Utils/ERRORS";
 import axios from "axios";
 import "../../../styles/Form.css";
 
@@ -54,7 +56,7 @@ const InternshipApplicationStudentModal = ({
     setInternshipApplication();
     axios
       .post(
-        `http://localhost:9090/update/internshipApplication`,
+        UPDATE_INTERNSHIP_APPLICATION,
         currentInternshipApplication
       )
       .then((response) => {
@@ -62,10 +64,10 @@ const InternshipApplicationStudentModal = ({
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal("Confirmation des changements");
+        setErrorMessageModal(CONFIRM_MODIFICATIONS);
       })
       .catch((err) => {
-        setErrorMessageModal("Erreur lors de la mise à jour");
+        setErrorMessageModal(ERROR_UPDATE);
       });
   }
 

@@ -15,6 +15,10 @@ export const TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER =
 "Liste de vos applications de stage";
 export const TITLE_INTERNSHIP_APPLICATION_LIST_ACCEPTED =
 "Liste des applications de stages acceptées";
+export const TITLE_INTERNSHIP_SIGNATURE =
+"Signature du stage";
+export const TITLE_INTERNSHIP_APPLICATION_INFOS =
+"Informations sur l'application de stage";
 
 //INTERNSHIP OFFER LIST
 export const TITLE_INTERNSHIP_OFFER_LIST_UNVALIDATED =
