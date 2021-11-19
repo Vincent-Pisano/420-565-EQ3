@@ -375,7 +375,7 @@ public class InternshipService {
         }
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 8 * * *")
     void sendMails(){
         Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
         if (optionalManager.isPresent()) {
