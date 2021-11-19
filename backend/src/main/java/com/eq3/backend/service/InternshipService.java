@@ -337,7 +337,7 @@ public class InternshipService {
         }
     }
 
-    @Scheduled(cron = "* * * * * *")
+    @Scheduled(cron = "0 0 8 * * *")
     void sendMails(){
         Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
         if (optionalManager.isPresent()) {
@@ -350,7 +350,7 @@ public class InternshipService {
     }
 
     private void sendEmailToGSWhenStudentGetsInterviewed(InternshipManager manager) {
-        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE)).minusMinutes(1);
         ZonedDateTime tomorrow = today.plusDays(1);
         List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByInterviewDateBetweenAndIsDisabledFalse(Date.from(today.toInstant()), Date.from(tomorrow.toInstant()));
         internshipApplications.forEach(internshipApplication -> {
@@ -406,20 +406,15 @@ public class InternshipService {
     }
 
     private void sendEmailToStudentAboutInterviewOneWeekBefore() {
-        ZonedDateTime todayDate = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
-
-        List<Internship> internships = internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
-        internships.forEach(internship -> {
-            InternshipApplication internshipApplication = internship.getInternshipApplication();
+        ZonedDateTime today = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE)).plusDays(7).minusMinutes(1);
+        ZonedDateTime tomorrow = today.plusDays(1);
+        List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByInterviewDateBetweenAndIsDisabledFalse(Date.from(today.toInstant()), Date.from(tomorrow.toInstant()));
+        internshipApplications.forEach(internshipApplication -> {
             Student currentStudent = internshipApplication.getStudent();
-            ZonedDateTime currentInterviewDate = ZonedDateTime.ofInstant(internshipApplication.getInterviewDate().toInstant(), ZoneId.of(UTC_TIME_ZONE));
-            ZonedDateTime interviewDateMinus7days = ZonedDateTime.ofInstant(currentInterviewDate.toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(7);
-            if (interviewDateMinus7days.equals(todayDate)) {
-                try {
-                    generateEmailToStudentAboutInterviewOneWeekBefore(currentStudent);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+            try {
+                generateEmailToStudentAboutInterviewOneWeekBefore(currentStudent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -430,7 +425,7 @@ public class InternshipService {
 
         helper.addTo(manager.getEmail());
         helper.setSubject("Un étudiant vient d'appliquer à une offre");
-        helper.setText("L'étudiant " + student.getFirstName() + " " + student.getFirstName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
+        helper.setText("L'étudiant " + student.getFirstName() + " " + student.getLastName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
 
         mailSender.send(message);
     }

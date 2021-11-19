@@ -53,26 +53,26 @@ public class Utils {
     public final static String UTC_TIME_ZONE = "UTC";
 
     public static String getEmailTextForSupervisorAboutEvaluation(Supervisor supervisor, Monitor monitor){
-        return "Bonjour " + supervisor.getFirstName() + " " + supervisor.getFirstName() + "\n" +
+        return "Bonjour " + supervisor.getFirstName() + " " + supervisor.getLastName() + "\n" +
                 "vous devez remettre l'évaluation de l'entreprise : " +
                 monitor.getEnterpriseName() + "\n" +
                 "d'ici deux semaines.";
     }
 
     public static String getEmailTextForMonitorAboutEvaluation(Student student, Monitor monitor){
-        return "Bonjour " + monitor.getFirstName() + " " + monitor.getFirstName() + "\n" +
+        return "Bonjour " + monitor.getFirstName() + " " + monitor.getLastName() + "\n" +
                 "vous devez remettre l'évaluation de l'étudiant : " +
-                student.getFirstName() + " " + student.getFirstName() + "\n" +
+                student.getFirstName() + " " + student.getLastName() + "\n" +
                 "d'ici deux semaines.";
     }
 
     public static String getEmailTextWhenStudentsGetsInterviewed(Student student){
-        return "L'étudiant " + student.getFirstName() + " " + student.getFirstName() +
+        return "L'étudiant " + student.getFirstName() + " " + student.getLastName() +
                 " va être convoqué a une entrevue de stage aujourd'hui!";
     }
 
     public static String getEmailTextStudentAboutInterviewOneWeekBefore(Student student){
-        return "L'étudiant " + student.getFirstName() + " " + student.getFirstName() +
+        return "L'étudiant " + student.getFirstName() + " " + student.getLastName() +
                 " va être convoqué a une entrevue de dans 1 semaine.";
     }
 
