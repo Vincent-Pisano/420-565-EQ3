@@ -132,13 +132,15 @@ public class InternshipService {
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
+    public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer(String session) {
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalseAndSession(session);
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
-    public Optional<List<InternshipOffer>> getAllValidatedInternshipOffer() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
+    public Optional<List<InternshipOffer>> getAllValidatedInternshipOffer(String session) {
+        List<InternshipOffer> internshipOffers =
+                internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(session);
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
@@ -157,6 +159,42 @@ public class InternshipService {
         });
 
         return internshipApplicationsOfStudent.isEmpty() ? Optional.empty() : Optional.of(internshipApplicationsOfStudent);
+    }
+
+    public Optional<List<InternshipApplication>> getAllCompletedInternshipApplicationOfStudent(String session, String studentUsername) {
+        Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
+        List<InternshipApplication> internshipApplicationsOfStudentCompleted =
+                optionalStudent
+                        .map(student ->
+                                getAllInternshipApplicationBySessionAndStatus(student, session, InternshipApplication.ApplicationStatus.COMPLETED))
+                        .orElseGet(ArrayList::new);
+
+        return internshipApplicationsOfStudentCompleted.isEmpty() ? Optional.empty() : Optional.of(internshipApplicationsOfStudentCompleted);
+    }
+
+    public Optional<List<InternshipApplication>> getAllWaitingInternshipApplicationOfStudent(String session, String studentUsername) {
+        Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
+        List<InternshipApplication> internshipApplicationsOfStudentWaiting =
+                optionalStudent
+                    .map(student ->
+                        getAllInternshipApplicationBySessionAndStatus(student, session, InternshipApplication.ApplicationStatus.WAITING))
+                    .orElseGet(ArrayList::new);
+
+        return internshipApplicationsOfStudentWaiting.isEmpty() ? Optional.empty() : Optional.of(internshipApplicationsOfStudentWaiting);
+    }
+
+    private List<InternshipApplication> getAllInternshipApplicationBySessionAndStatus(Student student, String session, InternshipApplication.ApplicationStatus status) {
+        List<InternshipApplication> internshipApplicationsOfStudent = new ArrayList<>();
+
+        List<InternshipApplication> internshipApplications =
+                internshipApplicationRepository.findAllByStudentAndIsDisabledFalseAndStatus(student, status);
+        internshipApplications.forEach(internshipApplication -> {
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            if (session.equals(internshipOffer.getSession())) {
+                internshipApplicationsOfStudent.add(internshipApplication);
+            }
+        });
+        return internshipApplicationsOfStudent;
     }
 
     public Optional<List<InternshipApplication>> getAllInternshipApplicationOfInternshipOffer(String id) {

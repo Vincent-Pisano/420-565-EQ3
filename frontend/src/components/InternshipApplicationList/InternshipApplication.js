@@ -8,12 +8,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 import auth from "../../services/Auth";
+import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_NOT_ACCEPTED, STATUS_VALIDATED } from "../../Utils/APPLICATION_STATUSES";
 
-const InternshipApplication = ({
-  internshipApplication,
-  onClick,
-  isInternshipManagerSignature,
-}) => {
+const InternshipApplication = ({ internshipApplication, onClick }) => {
   let internshipOffer = internshipApplication.internshipOffer;
   let student = internshipApplication.student;
 
@@ -23,17 +20,13 @@ const InternshipApplication = ({
         <FontAwesomeIcon
           className="fa-3x"
           icon={
-            auth.isInternshipManager()
-              ? isInternshipManagerSignature
-                ? faSignature
-                : faSyncAlt
-              : internshipApplication.status === "ACCEPTED"
+            internshipApplication.status === STATUS_ACCEPTED
               ? faCheck
-              : internshipApplication.status === "NOT_ACCEPTED"
+              : internshipApplication.status === STATUS_NOT_ACCEPTED
               ? faTimes
-              : internshipApplication.status === "VALIDATED"
+              : internshipApplication.status === STATUS_VALIDATED
               ? faSignature
-              : internshipApplication.status === "COMPLETED"
+              : internshipApplication.status === STATUS_COMPLETED
               ? faAward
               : faSyncAlt
           }

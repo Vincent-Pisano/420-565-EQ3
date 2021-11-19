@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import {
+  URL_STUDENT_LIST_CV_TO_VALIDATE,
+  URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED,
+  URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE,
+  URL_INTERNSHIP_OFFER_LIST_UNVALIDATED,
+  URL_SUPERVISOR_LIST,
+  URL_INTERNSHIP_OFFER_FORM,
+  REPORT_LINK,
+} from "../../Utils/URL";
 
 const NavUserGs = () => {
   return (
@@ -11,42 +20,46 @@ const NavUserGs = () => {
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/formInternshipOffer"
+        to={URL_INTERNSHIP_OFFER_FORM}
       >
         Dépôt Offre
       </NavDropdown.Item>
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/listInternshipOffer"
+        to={URL_INTERNSHIP_OFFER_LIST_UNVALIDATED}
       >
         Liste Offres
       </NavDropdown.Item>
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/listInternshipApplication"
+        to={URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED}
       >
         Liste Applications
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} className="nav-item-cust" to="/listStudents">
+      <NavDropdown.Item
+        as={Link}
+        className="nav-item-cust"
+        to={URL_STUDENT_LIST_CV_TO_VALIDATE}
+      >
         Liste CV
       </NavDropdown.Item>
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/listSupervisors"
+        to={URL_SUPERVISOR_LIST}
       >
         Assignation
       </NavDropdown.Item>
       <NavDropdown.Item
         as={Link}
         className="nav-item-cust"
-        to="/listInternshipApplication/signature"
+        to={URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE}
       >
         Signature d'applications
       </NavDropdown.Item>
-      <NavDropdown.Item as={Link} className="nav-item-cust" to="/reports">
+      <NavDropdown.Item as={Link} className="nav-item-cust" to={REPORT_LINK}>
         Voir les Rapports
       </NavDropdown.Item>
     </NavDropdown>

@@ -16,11 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
 import static com.eq3.backend.utils.UtilsURL.*;
@@ -50,8 +46,8 @@ class BackendControllerTest {
     private InternshipOffer expectedInternshipOffer;
     private Internship expectedInternship;
     private CV expectedCV;
-    List<InternshipApplication> expectedInternshipApplicationList;
     private List<String> expectedSessionList;
+    private TreeSet<String> expectedSessionTreeSet;
     private PDFDocument expectedPDFDocument;
     private String expectedDocumentName;
     private Binary expectedImage;
@@ -205,10 +201,10 @@ class BackendControllerTest {
     public void testGetAllStudents() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudents())
+        when(service.getAllStudents(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -217,6 +213,26 @@ class BackendControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualStudentList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionOfStudents() throws Exception {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+
+        when(service.getAllSessionOfStudents())
+                .thenReturn(Optional.of(expectedSessionTreeSet));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_STUDENTS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
     }
 
     @Test
@@ -244,10 +260,10 @@ class BackendControllerTest {
     public void testGetAllStudentsWithInternship() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithInternship())
+        when(service.getAllStudentsWithInternship(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_INTERNSHIP)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_INTERNSHIP + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -284,10 +300,10 @@ class BackendControllerTest {
     public void testGetAllStudentsWithoutCV() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutCV())
+        when(service.getAllStudentsWithoutCV(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_CV)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_CV + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -303,10 +319,10 @@ class BackendControllerTest {
     public void testGetAllStudentsWithoutInterviewDate() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutInterviewDate())
+        when(service.getAllStudentsWithoutInterviewDate(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -322,10 +338,10 @@ class BackendControllerTest {
     public void testGetAllStudentsWaitingInterview() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWaitingInterview())
+        when(service.getAllStudentsWaitingInterview(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WAITING_INTERVIEW)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WAITING_INTERVIEW + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -341,10 +357,10 @@ class BackendControllerTest {
     public void testGetAllStudentsWithoutStudentEvaluation() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutStudentEvaluation())
+        when(service.getAllStudentsWithoutStudentEvaluation(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -360,10 +376,12 @@ class BackendControllerTest {
     public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed())
+        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY)
+        MvcResult result = mockMvc.perform(get(
+                URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY + SESSION
+        )
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -379,7 +397,7 @@ class BackendControllerTest {
     public void testGetAllSessionsOfInternshipOffers() throws Exception {
         //Arrange
         expectedSessionList = getListOfSessions();
-        when(service.getAllNextSessionsOfInternshipOffers())
+        when(service.getAllNextSessionsOfInternshipOffersValidated())
                 .thenReturn(Optional.of(new TreeSet<>(expectedSessionList)));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS)
@@ -394,13 +412,71 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
+    public void testGetAllSessionsOfInternshipOffersUnvalidated() throws Exception {
+        //Arrange
+        expectedSessionList = getListOfSessions();
+        when(service.getAllNextSessionsOfInternshipOffersUnvalidated())
+                .thenReturn(Optional.of(new TreeSet<>(expectedSessionList)));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS_UNVALIDATED)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfInvalidInternshipOffers() throws Exception {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+
+        when(service.getAllSessionsOfInvalidInternshipOffers())
+                .thenReturn(Optional.of(expectedSessionTreeSet));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_INVALID_INTERNSHIP_OFFERS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfValidInternshipOffers() throws Exception {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+
+        when(service.getAllSessionsOfValidInternshipOffers())
+                .thenReturn(Optional.of(expectedSessionTreeSet));
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_VALID_INTERNSHIP_OFFERS)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualSessionList).isNotNull();
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithoutEnterpriseEvaluation() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutEnterpriseEvaluation())
+        when(service.getAllStudentsWithoutEnterpriseEvaluation(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_ENTERPRISE_EVALUATION)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_ENTERPRISE_EVALUATION + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

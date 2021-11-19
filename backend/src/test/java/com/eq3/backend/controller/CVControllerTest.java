@@ -140,11 +140,11 @@ public class CVControllerTest {
         //Arrange
         expectedStudentList = getListOfStudents();
 
-        when(service.getAllStudentWithCVActiveWaitingValidation())
+        when(service.getAllStudentWithCVActiveWaitingValidation(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
 
         //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_CV_ACTIVE_NOT_VALID)
+        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_CV_ACTIVE_NOT_VALID + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert

@@ -1,6 +1,7 @@
 import { React } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import "../../../styles/Form.css";
+import { STATUS_ACCEPTED, STATUS_NOT_ACCEPTED, STATUS_VALIDATED, STATUS_WAITING } from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationSupervisorModal = ({
   show,
@@ -45,10 +46,10 @@ const InternshipApplicationSupervisorModal = ({
                     className="select_form d_block"
                     disabled
                   >
-                    <option value="ACCEPTED">Acceptée</option>
-                    <option value="NOT_ACCEPTED">Refusée</option>
-                    <option value="WAITING">En attente</option>
-                    <option disabled value="VALIDATED">
+                    <option value={STATUS_ACCEPTED}>Acceptée</option>
+                    <option value={STATUS_NOT_ACCEPTED}>Refusée</option>
+                    <option value={STATUS_WAITING}>En attente</option>
+                    <option disabled value={STATUS_VALIDATED}>
                       Validée
                     </option>
                   </Form.Select>

@@ -5,6 +5,9 @@ import { useState } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
+import { ARCHITECTURE_DEPT, COMPUTER_SCIENCE_DEPT, NURSING_DEPT } from "../../Utils/DEPARTMENTS";
+import { ERROR_INVALID_SUPERVISOR_USERNAME, ERROR_USERNAME_EMAIL_ALREADY_EXISTS } from "../../Utils/Errors_Utils";
+import { SIGN_UP_SUPERVISOR } from "../../Utils/API";
 
 const SignUpSupervisor = () => {
   let history = useHistory();
@@ -12,7 +15,7 @@ const SignUpSupervisor = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [fields, handleFieldChange] = useFormFields({
-    department: "COMPUTER_SCIENCE",
+    department: COMPUTER_SCIENCE_DEPT,
     username: "",
     password: "",
     email: "",
@@ -24,12 +27,12 @@ const SignUpSupervisor = () => {
     e.preventDefault();
 
     if (!fields.username.startsWith("S")) {
-      setErrorMessage("Le nom d'utilisateur doit commencer par 'S'.");
+      setErrorMessage(ERROR_INVALID_SUPERVISOR_USERNAME);
       return;
     }
 
     axios
-      .post("http://localhost:9090/signUp/supervisor", fields)
+      .post(SIGN_UP_SUPERVISOR , fields)
       .then((response) => {
         if (response.data === "") {
         } else {
@@ -42,7 +45,7 @@ const SignUpSupervisor = () => {
         }
       })
       .catch((error) => {
-        setErrorMessage("Le nom d'utilisateur ou le courriel existe déjà.");
+        setErrorMessage(ERROR_USERNAME_EMAIL_ALREADY_EXISTS);
       });
   }
 
@@ -110,9 +113,9 @@ const SignUpSupervisor = () => {
             className="select_form active_select "
             required
           >
-            <option value="COMPUTER_SCIENCE">Informatique</option>
-            <option value="ARCHITECTURE">Architecture</option>
-            <option value="NURSING">Infirmier</option>
+            <option value={COMPUTER_SCIENCE_DEPT}>Informatique</option>
+            <option value={ARCHITECTURE_DEPT}>Architecture</option>
+            <option value={NURSING_DEPT}>Infirmier</option>
           </Form.Control>
         </Form.Group>
         <Container className="cont_btn">
