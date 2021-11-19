@@ -43,9 +43,9 @@ public class CVController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/student/CVActiveNotValid")
-    public ResponseEntity<List<Student>> getAllStudentsWithActiveAndNotValidCV() {
-        return service.getAllStudentWithCVActiveWaitingValidation()
+    @GetMapping("/getAll/student/CVActiveNotValid/{session}")
+    public ResponseEntity<List<Student>> getAllStudentsWithActiveAndNotValidCV(@PathVariable String session) {
+        return service.getAllStudentWithCVActiveWaitingValidation(session)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

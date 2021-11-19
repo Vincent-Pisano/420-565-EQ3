@@ -1,76 +1,105 @@
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserCircle,
+  faCheck,
+  faUserTimes,
+  faSyncAlt,
+  faUserEdit,
+  faUserTag,
+  faUserClock,
+  faIdBadge,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  TITLE_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
+  TITLE_INTERNSHIP_OFFER_LIST_VALIDATED,
+  TITLE_STUDENT_LIST_SUBSCRIBED,
+  TITLE_STUDENT_LIST_WITHOUT_CV,
+  TITLE_STUDENT_LIST_WITH_CV_WAITING_VALIDATION,
+  TITLE_STUDENT_LIST_WITHOUT_INTERVIEW,
+  TITLE_STUDENT_LIST_WAITING_INTERVIEW,
+  TITLE_STUDENT_LIST_WAITING_INTERVIEW_ANSWER,
+  TITLE_STUDENT_LIST_WITH_INTERNSHIP,
+  TITLE_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION,
+  TITLE_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
+} from "./TITLE";
+import {
+  URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
+  URL_INTERNSHIP_OFFER_LIST_VALIDATED,
+  URL_STUDENT_LIST_SUBSCRIBED,
+  URL_STUDENT_LIST_WITHOUT_CV,
+  URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION,
+  URL_STUDENT_LIST_WITHOUT_INTERVIEW,
+  URL_STUDENT_LIST_WAITING_INTERVIEW,
+  URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER,
+  URL_STUDENT_LIST_WITH_INTERNSHIP,
+  URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION,
+  URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
+} from "./URL";
 
-const reportLink = "reports/";
-
-let reports = [
+export const REPORTS = [
   {
     id: "1",
-    title: "Offres non-validées",
-    link: reportLink + "listInternshipOffer",
-    icon: faUserCircle,
+    title: TITLE_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
+    link: URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
+    icon: faSyncAlt,
   },
   {
     id: "2",
-    title: "Offres validées",
-    link: reportLink + "listInternshipOffer",
-    icon: faUserCircle,
+    title: TITLE_INTERNSHIP_OFFER_LIST_VALIDATED,
+    link: URL_INTERNSHIP_OFFER_LIST_VALIDATED,
+    icon: faCheck,
   },
   {
     id: "3",
-    title: "Étudiants enregistrés",
-    link: reportLink + "listStudents",
+    title: TITLE_STUDENT_LIST_SUBSCRIBED,
+    link: URL_STUDENT_LIST_SUBSCRIBED,
     icon: faUserCircle,
   },
   {
     id: "4",
-    title: "Étudiants avec aucun CV",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WITHOUT_CV,
+    link: URL_STUDENT_LIST_WITHOUT_CV,
+    icon: faUserTimes,
   },
   {
     id: "5",
-    title: "Étudiants avec un CV à validé",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WITH_CV_WAITING_VALIDATION,
+    link: URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION,
+    icon: faUserEdit,
   },
   {
     id: "6",
-    title: "Étudiants n'ayant aucune convocation à une entrevue",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WITHOUT_INTERVIEW,
+    link: URL_STUDENT_LIST_WITHOUT_INTERVIEW,
+    icon: faUserTimes,
   },
   {
     id: "7",
-    title: "Étudiants en attente d’entrevue",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WAITING_INTERVIEW,
+    link: URL_STUDENT_LIST_WAITING_INTERVIEW,
+    icon: faUserClock,
   },
   {
     id: "8",
-    title: "Étudiants n’ayant pas encore été évalués par leur moniteur",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WAITING_INTERVIEW_ANSWER,
+    link: URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER,
+    icon: faUserClock,
   },
   {
     id: "9",
-    title: "Étudiants ayant trouvé un stage",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WITH_INTERNSHIP,
+    link: URL_STUDENT_LIST_WITH_INTERNSHIP,
+    icon: faUserTag,
   },
   {
     id: "10",
-    title: "Étudiants dont le superviseur n’a pas encore évalué l’entreprise",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION,
+    link: URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION,
+    icon: faIdBadge,
   },
   {
     id: "11",
-    title: "Étudiants en attente d'une réponse d'entrevue",
-    link: reportLink + "listStudents",
-    icon: faUserCircle,
+    title: TITLE_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
+    link: URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
+    icon: faIdBadge,
   },
 ];
-
-export function ReportsList() {
-  return reports;
-}

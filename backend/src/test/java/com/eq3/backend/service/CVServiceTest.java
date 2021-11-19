@@ -8,8 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +31,16 @@ public class CVServiceTest {
     private CVService service;
 
     @Mock
+    private JavaMailSender mailSender;
+
+    @Mock
     private StudentRepository studentRepository;
+    @Mock
+    private InternshipManagerRepository internshipManagerRepository;
 
     //global variables
     private Student expectedStudent;
+    private InternshipManager expectedInternshipManager;
     private List<Student> expectedStudentList;
     private CV expectedCV;
     private List<CV> expectedCVList;
@@ -104,6 +113,7 @@ public class CVServiceTest {
         final int OLD_ACTIVE_CV_INDEX = 1;
 
         expectedStudent = getStudentWithId();
+        expectedInternshipManager = getInternshipManagerWithId();
         List<CV> expectedListCV = getCVList();
         CV newActiveCV = expectedListCV.get(NEW_ACTIVE_CV_INDEX);
         newActiveCV.setIsActive(true);
@@ -119,7 +129,9 @@ public class CVServiceTest {
         when(studentRepository.save(any(Student.class))).thenReturn(expectedStudent);
         when(studentRepository.findById(givenStudent.getId()))
                 .thenReturn(Optional.of(givenStudent));
-
+        when(internshipManagerRepository.findByIsDisabledFalse()).thenReturn(Optional.ofNullable(expectedInternshipManager));
+        //MimeMessage mimeMessage = new MimeMessage((Session)null);
+        //when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
         //Act
         final Optional<Student> optionalStudent =
                 service.updateActiveCV(givenStudent.getId(), givenCV.getId());
@@ -140,12 +152,12 @@ public class CVServiceTest {
         //Arrange
         expectedStudentList = getListOfStudents();
 
-        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidation())
+        when(studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidationAndSessionsContains(SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentWithCVActiveWaitingValidation();
+                service.getAllStudentWithCVActiveWaitingValidation(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);

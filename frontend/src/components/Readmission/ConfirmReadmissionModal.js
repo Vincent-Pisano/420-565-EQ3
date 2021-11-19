@@ -4,6 +4,13 @@ import auth from "../../services/Auth";
 import axios from "axios";
 import "../../styles/Form.css";
 import { useFormFields } from "../../lib/hooksLib";
+import { READMISSION_SUPERVISOR, READMISSION_STUDENT } from "../../Utils/API";
+import {
+  ERROR_READMISSION,
+  ERROR_INVALID_PASSWORD,
+  ERROR_PASSWORD_NOT_IDENTICAL,
+  CONFIRM_READMISSION,
+} from "../../Utils/Errors_Utils";
 
 const ConfirmReadmissionModal = ({ show, handleClose, session }) => {
   const [errorMessageModal, setErrorMessageModal] = useState("");
@@ -13,9 +20,9 @@ const ConfirmReadmissionModal = ({ show, handleClose, session }) => {
   });
 
   let url = auth.isSupervisor()
-    ? "http://localhost:9090/readmission/supervisor/"
+    ? READMISSION_SUPERVISOR
     : auth.isStudent()
-    ? "http://localhost:9090/readmission/student/"
+    ? READMISSION_STUDENT
     : "";
 
   let user = auth.user;
@@ -31,29 +38,23 @@ const ConfirmReadmissionModal = ({ show, handleClose, session }) => {
           .post(`${url + user.id}`)
           .then((response) => {
             auth.updateUser(response.data);
-            setErrorMessageModal(
-              `Confirmation de la réinscription pour la session ${session}`
-            );
+            setErrorMessageModal(CONFIRM_READMISSION(session));
             setTimeout(() => {
               setErrorMessageModal("");
               handleClose();
             }, 2000);
           })
           .catch((error) => {
-            setErrorMessageModal("Erreur lors de la réinscription !");
+            setErrorMessageModal(ERROR_READMISSION);
             setTimeout(() => {
               setErrorMessageModal("");
             }, 2000);
           });
       } else {
-        setErrorMessageModal(
-          "Erreur ! Les mots de passes ne sont pas corrects"
-        );
+        setErrorMessageModal(ERROR_INVALID_PASSWORD);
       }
     } else {
-      setErrorMessageModal(
-        "Erreur ! Les mots de passes ne sont pas identiques"
-      );
+      setErrorMessageModal(ERROR_PASSWORD_NOT_IDENTICAL);
     }
   }
 

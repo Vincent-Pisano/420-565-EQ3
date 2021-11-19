@@ -223,12 +223,12 @@ public class InternshipServiceTest {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalseAndSession(SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
         final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllUnvalidatedInternshipOffer();
+                service.getAllUnvalidatedInternshipOffer(SESSION);
 
         // Assert
         List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
@@ -243,12 +243,12 @@ public class InternshipServiceTest {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
         final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllValidatedInternshipOffer();
+                service.getAllValidatedInternshipOffer(SESSION);
 
         // Assert
         List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
@@ -293,6 +293,48 @@ public class InternshipServiceTest {
         //Act
         final Optional<List<InternshipApplication>> optionalInternshipApplications =
                 service.getAllInternshipApplicationOfStudent(getSession(new Date()), expectedStudent.getUsername());
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllCompletedInternshipApplicationOfStudent(){
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedStudent = getStudentWithId();
+
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedStudent));
+        when(internshipApplicationRepository.findAllByStudentAndIsDisabledFalseAndStatus(expectedStudent, InternshipApplication.ApplicationStatus.COMPLETED))
+                .thenReturn(expectedInternshipApplicationList);
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllCompletedInternshipApplicationOfStudent(getSession(new Date()), expectedStudent.getUsername());
+
+        //Assert
+        List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllWaitingInternshipApplicationOfStudent(){
+        //Arrange
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedStudent = getStudentWithId();
+
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedStudent));
+        when(internshipApplicationRepository.findAllByStudentAndIsDisabledFalseAndStatus(expectedStudent, InternshipApplication.ApplicationStatus.WAITING))
+                .thenReturn(expectedInternshipApplicationList);
+        //Act
+        final Optional<List<InternshipApplication>> optionalInternshipApplications =
+                service.getAllWaitingInternshipApplicationOfStudent(getSession(new Date()), expectedStudent.getUsername());
 
         //Assert
         List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);

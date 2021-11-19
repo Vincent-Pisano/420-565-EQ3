@@ -8,11 +8,24 @@ import InternshipOfferButtonDownload from "./InternshipOfferButtonDownload";
 import InternshipOfferButtonValidate from "./InternshipOfferButtonValidate";
 import InternshipOfferButtonApply from "./InternshipOfferButtonApply";
 import "../../styles/Form.css";
+import {
+  ARCHITECTURE_DEPT,
+  COMPUTER_SCIENCE_DEPT,
+  NURSING_DEPT,
+} from "../../Utils/DEPARTMENTS";
+import {
+  DAY_SCHEDULE,
+  FLEXIBLE_SCHEDULE,
+  NIGHT_SCHEDULE,
+} from "../../Utils/SCHEDULES";
+import { GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT, GET_MONITOR, POST_APPLY_INTERNSHIP_OFFER, SAVE_INTERNSHIP_OFFER } from "../../Utils/API";
+import { CONFIRM_SAVE_INTERNSHIP_OFFER, ERROR_INTERNSHIP_OFFER_FORM, ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED, ERROR_INVALID_DURATION, ERROR_INVALID_INTERNSHIP_OFFER, ERROR_MONITOR_NOT_FOUND, ERROR_NO_PDF_FOUND, ERROR_NO_WORK_DAYS } from "../../Utils/Errors_Utils";
 
 const InternshipOfferForm = () => {
   let user = auth.user;
   let history = useHistory();
-  let internshipOffer = history.location.state;
+  let state = history.location.state;
+  let internshipOffer = state !== undefined ? state.internshipOffer : undefined;
   let isLoading = false;
   let title =
     internshipOffer === undefined
@@ -38,8 +51,8 @@ const InternshipOfferForm = () => {
           address: "",
           city: "",
           postalCode: "",
-          workShift: "DAY",
-          workField: "COMPUTER_SCIENCE",
+          workShift: DAY_SCHEDULE,
+          workField: COMPUTER_SCIENCE_DEPT,
           monitor: {},
         }
   );
@@ -50,7 +63,7 @@ const InternshipOfferForm = () => {
     if (auth.isStudent() && internshipOffer !== undefined) {
       axios
         .get(
-          `http://localhost:9090/getAll/internshipApplication/${internshipOffer.session}/student/${user.username}`
+          GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(internshipOffer.session) + user.username
         )
         .then((response) => {
           setInternshipApplications(response.data);
@@ -67,7 +80,7 @@ const InternshipOfferForm = () => {
     fields.monitor.signature = undefined;
     axios
       .post(
-        `http://localhost:9090/apply/internshipOffer/${user.username}`,
+        POST_APPLY_INTERNSHIP_OFFER + user.username,
         fields
       )
       .then((response) => {
@@ -76,11 +89,11 @@ const InternshipOfferForm = () => {
           redirect();
         }, 3000);
         setErrorMessage(
-          "Votre demande a été acceptée, vous allez être redirigé"
+          ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED
         );
       })
       .catch((error) => {
-        setErrorMessage("Erreur lors de l'application à l'ofre de stage stage");
+        setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM);
       });
   }
 
@@ -93,13 +106,13 @@ const InternshipOfferForm = () => {
             isLoading = true;
             if (auth.isInternshipManager()) {
               axios
-                .get(`http://localhost:9090/get/monitor/${monitor.name}/`)
+                .get(GET_MONITOR + monitor.name)
                 .then((response) => {
                   fields.monitor = response.data;
                   saveInternshipOffer();
                 })
                 .catch((error) => {
-                  setErrorMessage("Erreur! Le moniteur est inexistant");
+                  setErrorMessage(ERROR_MONITOR_NOT_FOUND);
                   isLoading = false;
                 });
             } else {
@@ -107,13 +120,13 @@ const InternshipOfferForm = () => {
               saveInternshipOffer();
             }
           } else {
-            setErrorMessage("Erreur! Veuillez soumettre un document .pdf");
+            setErrorMessage(ERROR_NO_PDF_FOUND);
           }
         } else {
-          setErrorMessage("Erreur! Durée de stage invalide !");
+          setErrorMessage(ERROR_INVALID_DURATION);
         }
       } else {
-        setErrorMessage("Erreur! Choisissez au moins une journée de travail !");
+        setErrorMessage(ERROR_NO_WORK_DAYS);
       }
     }
   }
@@ -124,7 +137,7 @@ const InternshipOfferForm = () => {
     formData.append("internshipOffer", JSON.stringify(fields));
     formData.append("document", document);
     axios
-      .post("http://localhost:9090/save/internshipOffer", formData)
+      .post(SAVE_INTERNSHIP_OFFER, formData)
       .then((response) => {
         setTimeout(() => {
           history.push({
@@ -132,12 +145,12 @@ const InternshipOfferForm = () => {
           });
         }, 3000);
         setErrorMessage(
-          "L'offre de stage a été sauvegardé, vous allez être redirigé"
+          CONFIRM_SAVE_INTERNSHIP_OFFER
         );
       })
       .catch((error) => {
         isLoading = false;
-        setErrorMessage("Erreur! L'offre de stage est invalide");
+        setErrorMessage(ERROR_INVALID_INTERNSHIP_OFFER);
       });
   }
 
@@ -507,9 +520,9 @@ const InternshipOfferForm = () => {
                       className="select_form d_block "
                       required
                     >
-                      <option value="DAY">Jour</option>
-                      <option value="NIGHT">Nuit</option>
-                      <option value="FLEXIBLE">Flexible</option>
+                      <option value={DAY_SCHEDULE}>Jour</option>
+                      <option value={NIGHT_SCHEDULE}>Nuit</option>
+                      <option value={FLEXIBLE_SCHEDULE}>Flexible</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group controlId="workField">
@@ -523,9 +536,11 @@ const InternshipOfferForm = () => {
                       className="select_form d_block"
                       required
                     >
-                      <option value="ARCHITECTURE">Architecture</option>
-                      <option value="COMPUTER_SCIENCE">Informatique</option>
-                      <option value="NURSING">Infirmier</option>
+                      <option value={ARCHITECTURE_DEPT}>Architecture</option>
+                      <option value={COMPUTER_SCIENCE_DEPT}>
+                        Informatique
+                      </option>
+                      <option value={NURSING_DEPT}>Infirmier</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group

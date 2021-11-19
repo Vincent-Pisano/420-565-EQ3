@@ -1,8 +1,14 @@
 import { React, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import { useFormFields } from "../../../lib/hooksLib";
+import { UPDATE_INTERNSHIP_APPLICATION } from "../../../Utils/API";
+import {
+  ERROR_UPDATE,
+  CONFIRM_MODIFICATIONS,
+} from "../../../Utils/Errors_Utils";
 import axios from "axios";
 import "../../../styles/Form.css";
+import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_NOT_ACCEPTED, STATUS_VALIDATED, STATUS_WAITING } from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationStudentModal = ({
   show,
@@ -51,26 +57,23 @@ const InternshipApplicationStudentModal = ({
   function ChangeStatus() {
     setInternshipApplication();
     axios
-      .post(
-        `http://localhost:9090/update/internshipApplication`,
-        currentInternshipApplication
-      )
+      .post(UPDATE_INTERNSHIP_APPLICATION, currentInternshipApplication)
       .then((response) => {
         setTimeout(() => {
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal("Confirmation des changements");
+        setErrorMessageModal(CONFIRM_MODIFICATIONS);
       })
       .catch((err) => {
-        setErrorMessageModal("Erreur lors de la mise à jour");
+        setErrorMessageModal(ERROR_UPDATE);
       });
   }
 
   function isValidatedOrCompleted() {
     return (
-      currentInternshipApplication.status === "VALIDATED" ||
-      currentInternshipApplication.status === "COMPLETED"
+      currentInternshipApplication.status === STATUS_VALIDATED ||
+      currentInternshipApplication.status === STATUS_COMPLETED
     );
   }
 
@@ -98,13 +101,13 @@ const InternshipApplicationStudentModal = ({
                     required
                     disabled={isValidatedOrCompleted()}
                   >
-                    <option value="ACCEPTED">Acceptée</option>
-                    <option value="NOT_ACCEPTED">Refusée</option>
-                    <option value="WAITING">En attente</option>
-                    <option disabled value="VALIDATED">
+                    <option value={STATUS_ACCEPTED}>Acceptée</option>
+                    <option value={STATUS_NOT_ACCEPTED}>Refusée</option>
+                    <option value={STATUS_WAITING}>En attente</option>
+                    <option disabled value={STATUS_VALIDATED}>
                       Validée
                     </option>
-                    <option disabled value="COMPLETED">
+                    <option disabled value={STATUS_COMPLETED}>
                       Complétée
                     </option>
                   </Form.Select>

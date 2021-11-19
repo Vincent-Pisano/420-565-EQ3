@@ -10,6 +10,8 @@ import Readmission from "./Readmission/Readmission";
 import "./../styles/Home.css";
 import "./../styles/Form.css";
 import "../App.css";
+import { SAVE_SIGNATURE } from "../Utils/API";
+import { ERROR_SAVE_SIGNATURE, ERROR_SELECT_PNG } from "../Utils/Errors_Utils";
 
 function Home() {
   let user = auth.user;
@@ -75,54 +77,56 @@ function Home() {
       let formData = new FormData();
       formData.append("signature", signature);
       axios
-        .post(`http://localhost:9090/save/signature/${user.username}`, formData)
+        .post(SAVE_SIGNATURE + user.username, formData) 
         .then((response) => {
           user.signature = response.data;
           auth.user = user;
           setHasASignature(true);
         })
         .catch((error) => {
-          setErrorMessage("Erreur lors de la sauvegarde de la signature");
+          setErrorMessage(ERROR_SAVE_SIGNATURE);
         });
     } else {
-      setErrorMessage("Sélectionnez une image PNG");
+      setErrorMessage(ERROR_SELECT_PNG);
     }
   }
 
   function checkSignature() {
-    if (hasASignature) {
-      return (
-        <Container className="cont_btn_file">
-          <p className="btn_submit" disabled>
-            Signature déposée
-          </p>
-        </Container>
-      );
-    } else {
-      return (
-        <>
-          <Form className="mb-5 mt-2">
-            <Form.Group controlId="document" className="cont_file_form">
-              <Form.Label className="labelFields">Signature</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => {
-                  saveSignature(e.target.files[0]);
-                }}
-                className="input_file_form"
-                accept="image/png"
-              />
-            </Form.Group>
-          </Form>
-          <p
-            style={{
-              color: "red",
-            }}
-          >
-            {errorMessage}
-          </p>
-        </>
-      );
+    if (!auth.isSupervisor()) {
+      if (hasASignature) {
+        return (
+          <Container className="cont_btn_file">
+            <p className="btn_submit" disabled>
+              Signature déposée
+            </p>
+          </Container>
+        );
+      } else {
+        return (
+          <>
+            <Form className="mb-5 mt-2">
+              <Form.Group controlId="document" className="cont_file_form">
+                <Form.Label className="labelFields">Signature</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => {
+                    saveSignature(e.target.files[0]);
+                  }}
+                  className="input_file_form"
+                  accept="image/png"
+                />
+              </Form.Group>
+            </Form>
+            <p
+              style={{
+                color: "red",
+              }}
+            >
+              {errorMessage}
+            </p>
+          </>
+        );
+      }
     }
   }
 

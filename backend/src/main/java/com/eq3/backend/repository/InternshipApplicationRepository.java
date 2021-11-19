@@ -18,6 +18,8 @@ public interface InternshipApplicationRepository extends MongoRepository<Interns
 
     List<InternshipApplication> findAllByStudentAndIsDisabledFalse(Student student);
 
+    List<InternshipApplication> findAllByStudentAndIsDisabledFalseAndStatus(Student student, InternshipApplication.ApplicationStatus status);
+
     @Query(value = "{ 'isDisabled':false, 'internshipOffer.id': ?0, 'status' : { $ne: 'NOT_ACCEPTED' }}")
     List<InternshipApplication> findAllByInternshipOffer_IdAndStatusIsNotAcceptedAndIsDisabledFalse(String id);
 
@@ -26,10 +28,9 @@ public interface InternshipApplicationRepository extends MongoRepository<Interns
 
     List<InternshipApplication> findAllByInterviewDateIsNotNull();
 
+    List<InternshipApplication> findByInterviewDateBetweenAndIsDisabledFalse(Date from, Date to);
+
     List<InternshipApplication> findAllByIsDisabledFalseAndInternshipOfferInAndStatus(
             List<InternshipOffer> internshipOffers, InternshipApplication.ApplicationStatus status
     );
-
-    List<InternshipApplication> findByInterviewDateBetweenAndIsDisabledFalse(Date from, Date to);
-
 }

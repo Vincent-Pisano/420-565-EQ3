@@ -71,6 +71,7 @@ class BackendServiceTest {
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipApplication> expectedInternshipApplicationList;
     private List<String> expectedSessionList;
+    private TreeSet<String> expectedSessionTreeSet;
     private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
@@ -204,6 +205,47 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
+    public void testGetAllSessionOfStudents() {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+        expectedStudentList = getListOfStudents();
+        expectedStudentList.forEach(student -> student.setSessions(Collections.singletonList(SESSION)));
+
+        when(studentRepository.findAllByIsDisabledFalse())
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllSessionOfStudents();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllStudents() {
+        //Arrange
+        expectedStudentList = getListOfStudents();
+        when(studentRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
+                .thenReturn(expectedStudentList);
+
+        //Act
+        final Optional<List<Student>> optionalStudents =
+                service.getAllStudents(SESSION);
+
+        //Assert
+        List<Student> actualStudents = optionalStudents.orElse(null);
+
+        assertThat(optionalStudents.isPresent()).isTrue();
+        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllStudentsWithoutSupervisor() {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -244,34 +286,15 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudents() {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalse())
-                .thenReturn(expectedStudentList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudents();
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
     public void testGetAllStudentsWithoutCV() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalseAndCVListIsEmpty())
+        when(studentRepository.findAllByIsDisabledFalseAndCVListIsEmptyAndSessionsContains(SESSION))
                 .thenReturn(expectedStudentList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutCV();
+                service.getAllStudentsWithoutCV(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -285,14 +308,14 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutInterviewDate() {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalse())
+        when(studentRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
                 .thenReturn(expectedStudentList);
         when(internshipApplicationRepository.findAllByInterviewDateIsNotNull())
                 .thenReturn(new ArrayList<>());
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutInterviewDate();
+                service.getAllStudentsWithoutInterviewDate(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -305,14 +328,20 @@ class BackendServiceTest {
     //@Disabled
     public void testGetAllStudentsWaitingInterview() {
         //Arrange
-        expectedStudentList = getListOfStudents();
         expectedInternshipApplicationList = getListOfInternshipApplicationWithDifferentStudent();
+        expectedInternshipApplicationList.forEach(internshipApplication -> {
+            Student student = internshipApplication.getStudent();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            student.setSessions(Collections.singletonList(SESSION));
+            internshipOffer.setSession(SESSION);
+        });
+        expectedStudentList = getListOfStudentsWithSessions();
         when(internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse())
                 .thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWaitingInterview();
+                service.getAllStudentsWaitingInterview(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -327,12 +356,16 @@ class BackendServiceTest {
         //Arrange
         expectedStudentList = getListOfStudents();
         expectedInternshipApplicationList = getListOfCompletedInternshipApplication();
+        expectedInternshipApplicationList.forEach(internshipApplication -> {
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+        });
         when(internshipApplicationRepository.findAllByIsDisabledFalse())
                 .thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithInternship();
+                service.getAllStudentsWithInternship(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -346,13 +379,19 @@ class BackendServiceTest {
     public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws ParseException {
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplicationWithInterviewDate();
-        expectedStudentList = Collections.singletonList(getStudentWithId());
+        expectedInternshipApplicationList.forEach(internshipApplication -> {
+            Student student = internshipApplication.getStudent();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+            student.setSessions(Collections.singletonList(SESSION));
+        });
+        expectedStudentList = Collections.singletonList(getStudentWithIdAndSession());
         when( internshipApplicationRepository.findAllByInterviewDateIsNotNull()
         ).thenReturn(expectedInternshipApplicationList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed();
+                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -366,13 +405,19 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutStudentEvaluation() throws IOException {
         //Arrange
         expectedInternshipList = getInternshipListCompleted();
+        expectedInternshipList.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+        });
         expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
+
         when(internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse()
         ).thenReturn(expectedInternshipList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutStudentEvaluation();
+                service.getAllStudentsWithoutStudentEvaluation(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -386,13 +431,19 @@ class BackendServiceTest {
     public void testGetAllStudentsWithoutEnterpriseEvaluation() throws IOException {
         //Arrange
         expectedInternshipList = getInternshipListCompleted();
+        expectedInternshipList.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            internshipOffer.setSession(SESSION);
+        });
         expectedStudentList = getListOfStudentsWithoutEnterpriseEvaluation();
+
         when(internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse()
         ).thenReturn(expectedInternshipList);
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutEnterpriseEvaluation();
+                service.getAllStudentsWithoutEnterpriseEvaluation(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -452,21 +503,89 @@ class BackendServiceTest {
     public void testGetAllNextSessionsOfInternshipOffers() {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOfferWithDifferentSession();
-        TreeSet<String> expectedSessionTree = new TreeSet<>();
+        expectedSessionTreeSet = new TreeSet<>();
         expectedInternshipOfferList.forEach(internshipOffer ->
-                expectedSessionTree.add(internshipOffer.getSession()));
+                expectedSessionTreeSet.add(internshipOffer.getSession()));
         when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
         //Act
         final Optional<TreeSet<String>> optionalSessions =
-                service.getAllNextSessionsOfInternshipOffers();
+                service.getAllNextSessionsOfInternshipOffersValidated();
 
         //Assert
         TreeSet<String> actualSessions = optionalSessions.orElse(null);
 
         assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions.size()).isEqualTo(expectedSessionTree.size());
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionTreeSet.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllNextSessionsOfInternshipOffersUnvalidated() {
+        //Arrange
+        expectedInternshipOfferList = getListOfInternshipOfferWithDifferentSession();
+        expectedSessionTreeSet = new TreeSet<>();
+        expectedInternshipOfferList.forEach(internshipOffer ->
+                expectedSessionTreeSet.add(internshipOffer.getSession()));
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllNextSessionsOfInternshipOffersUnvalidated();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions.size()).isEqualTo(expectedSessionTreeSet.size());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfInvalidInternshipOffers() {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+        expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedInternshipOfferList.forEach(internshipOffer ->
+                internshipOffer.setSession(SESSION));
+
+        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllSessionsOfInvalidInternshipOffers();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetAllSessionsOfValidInternshipOffers() {
+        //Arrange
+        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
+        expectedInternshipOfferList = getListOfInternshipOffer();
+        expectedInternshipOfferList.forEach(internshipOffer ->
+                internshipOffer.setSession(SESSION));
+
+        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+                .thenReturn(expectedInternshipOfferList);
+
+        //Act
+        final Optional<TreeSet<String>> optionalSessions =
+                service.getAllSessionsOfValidInternshipOffers();
+
+        //Assert
+        TreeSet<String> actualSessions = optionalSessions.orElse(null);
+
+        assertThat(optionalSessions.isPresent()).isTrue();
+        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
     }
 
     @Test
