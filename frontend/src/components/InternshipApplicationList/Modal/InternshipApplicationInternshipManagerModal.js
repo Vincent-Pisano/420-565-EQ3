@@ -52,9 +52,9 @@ const InternshipApplicationInternshipManagerModal = ({
       currentInternshipApplication.student.cvlist = [];
       currentInternshipApplication.student.signature = undefined;
 
-      if (currentInternshipApplication.student.supervisor !== null && 
-        currentInternshipApplication.student.supervisor !== undefined)
-        currentInternshipApplication.student.supervisor.signature = undefined;
+      if (currentInternshipApplication.student.supervisorMap !== null && 
+        currentInternshipApplication.student.supervisorMap !== undefined)
+        currentInternshipApplication.student.supervisorMap = undefined;
 
       currentInternshipApplication.internshipOffer.pdfdocument = undefined;
       currentInternshipApplication.internshipOffer.monitor.signature =

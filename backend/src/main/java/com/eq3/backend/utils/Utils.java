@@ -1,10 +1,6 @@
 package com.eq3.backend.utils;
 
-import com.eq3.backend.model.Monitor;
-import com.eq3.backend.model.CV;
-import com.eq3.backend.model.PDFDocument;
-import com.eq3.backend.model.Student;
-import com.eq3.backend.model.Supervisor;
+import com.eq3.backend.model.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,9 +71,10 @@ public class Utils {
                 " va être convoqué a une entrevue de stage aujourd'hui!";
     }
 
-    public static String getEmailTextStudentAboutInterviewOneWeekBefore(Student student){
-        return "L'étudiant " + student.getFirstName() + " " + student.getLastName() +
-                " va être convoqué a une entrevue de dans 1 semaine.";
+    public static String getEmailTextStudentAboutInterviewOneWeekBefore(InternshipOffer internshipOffer){
+        return "Vous allez être convoqué à votre entrevue de stage dans 1 semaine." + "\n" + "Détails : " + "\n"
+                + "Titre de l'emploi : " + internshipOffer.getJobName() + "\n"
+                + "Description : " + internshipOffer.getDescription();
     }
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {

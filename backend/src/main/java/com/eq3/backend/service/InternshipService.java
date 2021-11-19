@@ -449,8 +449,9 @@ public class InternshipService {
         List<InternshipApplication> internshipApplications = internshipApplicationRepository.findByInterviewDateBetweenAndIsDisabledFalse(Date.from(today.toInstant()), Date.from(tomorrow.toInstant()));
         internshipApplications.forEach(internshipApplication -> {
             Student currentStudent = internshipApplication.getStudent();
+            InternshipOffer currentInternshipOffer = internshipApplication.getInternshipOffer();
             try {
-                generateEmailToStudentAboutInterviewOneWeekBefore(currentStudent);
+                generateEmailToStudentAboutInterviewOneWeekBefore(currentInternshipOffer, currentStudent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -468,12 +469,12 @@ public class InternshipService {
         mailSender.send(message);
     }
 
-    private void generateEmailToStudentAboutInterviewOneWeekBefore(Student student) throws MessagingException {
+    private void generateEmailToStudentAboutInterviewOneWeekBefore(InternshipOffer internshipOffer, Student student) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.addTo(student.getEmail());
         helper.setSubject(EMAIL_SUBJECT_INTERVIEW_ONE_WEEK_BEFORE_STUDENT);
-        helper.setText(getEmailTextStudentAboutInterviewOneWeekBefore(student));
+        helper.setText(getEmailTextStudentAboutInterviewOneWeekBefore(internshipOffer));
         mailSender.send(message);
     }
 
