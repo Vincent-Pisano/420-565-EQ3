@@ -52,6 +52,8 @@ public class Utils {
     public final static String EMAIL_SUBJECT_MONITOR_ABOUT_EVALUATION = "Remise de l'évaluation de l'étudiant";
     public final static String EMAIL_SUBJECT_INTERVIEW_STUDENT = "Convocation à une entrevue d'un étudiant";
 
+    public final static String EMAIL_SUBJECT_INTERVIEW_ONE_WEEK_BEFORE_STUDENT = "Convocation a votre entrevue dans une semaine";
+
     public final static String UTC_TIME_ZONE = "UTC";
 
     public static String getEmailTextForSupervisorAboutEvaluation(Supervisor supervisor, Monitor monitor){
@@ -71,6 +73,11 @@ public class Utils {
     public static String getEmailTextWhenStudentsGetsInterviewed(Student student){
         return "L'étudiant " + student.getFirstName() + " " + student.getFirstName() +
                 " va être convoqué a une entrevue de stage aujourd'hui!";
+    }
+
+    public static String getEmailTextStudentAboutInterviewOneWeekBefore(Student student){
+        return "L'étudiant " + student.getFirstName() + " " + student.getFirstName() +
+                " va être convoqué a une entrevue de dans 1 semaine.";
     }
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {

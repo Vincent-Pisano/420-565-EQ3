@@ -375,7 +375,7 @@ public class InternshipService {
         }
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "* * * * * *")
     void sendMails(){
         Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
         if (optionalManager.isPresent()) {
@@ -383,6 +383,7 @@ public class InternshipService {
             sendEmailToGSWhenStudentGetsInterviewed(manager);
             sendEmailToMonitorAboutEvaluation();
             sendEmailToSupervisorAboutEvaluation();
+            sendEmailToStudentAboutInterviewOneWeekBefore();
         }
     }
 
@@ -442,6 +443,25 @@ public class InternshipService {
         });
     }
 
+    private void sendEmailToStudentAboutInterviewOneWeekBefore() {
+        ZonedDateTime todayDate = ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.of(UTC_TIME_ZONE));
+
+        List<Internship> internships = internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse();
+        internships.forEach(internship -> {
+            InternshipApplication internshipApplication = internship.getInternshipApplication();
+            Student currentStudent = internshipApplication.getStudent();
+            ZonedDateTime currentInterviewDate = ZonedDateTime.ofInstant(internshipApplication.getInterviewDate().toInstant(), ZoneId.of(UTC_TIME_ZONE));
+            ZonedDateTime interviewDateMinus7days = ZonedDateTime.ofInstant(currentInterviewDate.toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(7);
+            if (interviewDateMinus7days.equals(todayDate)) {
+                try {
+                    generateEmailToStudentAboutInterviewOneWeekBefore(currentStudent);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void generateEmailWhenStudentAppliesToNewInternshipOffer(Student student, InternshipOffer offer, InternshipManager manager) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -453,6 +473,15 @@ public class InternshipService {
         mailSender.send(message);
     }
 
+    private void generateEmailToStudentAboutInterviewOneWeekBefore(Student student) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.addTo(student.getEmail());
+        helper.setSubject(EMAIL_SUBJECT_INTERVIEW_ONE_WEEK_BEFORE_STUDENT);
+        helper.setText(getEmailTextStudentAboutInterviewOneWeekBefore(student));
+        mailSender.send(message);
+    }
+
     private void generateEmailForSupervisorAboutEvaluation(Supervisor currentSupervisor, Monitor currentMonitor) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -461,6 +490,7 @@ public class InternshipService {
         helper.setText(getEmailTextForSupervisorAboutEvaluation(currentSupervisor, currentMonitor));
         mailSender.send(message);
     }
+
 
     private void generateEmailForMonitorAboutEvaluation(Student currentStudent, Monitor currentMonitor) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
