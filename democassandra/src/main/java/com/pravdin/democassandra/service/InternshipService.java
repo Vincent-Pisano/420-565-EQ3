@@ -6,22 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class InternshipService {
-
-    @Autowired
-    private StudentRepository studentRepository;
-
-    @Autowired
-    private MonitorRepository monitorRepository;
-
-    @Autowired
-    private SupervisorRepository supervisorRepository;
-
-    @Autowired
-    private InternshipManagerRepository internshipManagerRepository;
 
     @Autowired
     private InternshipOfferRepository internshipOfferRepository;
@@ -40,5 +29,11 @@ public class InternshipService {
             exception.printStackTrace();
         }
         return optionalInternshipOffer;
+    }
+
+    public Optional<List<InternshipOffer>> getUnvalidatedInternshipOffers(){
+        Optional<List<InternshipOffer>> optionalInternshipOfferList;
+        optionalInternshipOfferList = internshipOfferRepository.getInternshipOffersByIsValidFalse();
+        return optionalInternshipOfferList;
     }
 }

@@ -4,10 +4,9 @@ import com.pravdin.democassandra.model.InternshipOffer;
 import com.pravdin.democassandra.service.InternshipService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:8080")
@@ -26,4 +25,10 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping("/get/unvalidated/internshipOffer")
+    public ResponseEntity<List<InternshipOffer>> getUnvalidatedInternshipOffers() {
+        return service.getUnvalidatedInternshipOffers()
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 }

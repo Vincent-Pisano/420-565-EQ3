@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -46,6 +47,7 @@ public class InternshipOffer{
     private Department workField;
 
     @Builder.Default
+    @Indexed
     protected Boolean isValid = false;
 
     public InternshipOffer() {
