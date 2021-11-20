@@ -22,15 +22,10 @@ public class InternshipService {
     public Optional<InternshipOffer> postInternshipOffer(InternshipOffer internshipOffer) {
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try{
-            if(!optionalInternshipOffer.isPresent()) {
-                Optional<Monitor> optionalMonitor = monitorRepository.findByUsername(internshipOffer.getMonitor());
-                if(optionalMonitor.isPresent()){
-                    optionalInternshipOffer = Optional.of(internshipOfferRepository.save(internshipOffer));
-                } else {
-                    return Optional.empty();
-                }
-            }
-            else {
+            Optional<Monitor> optionalMonitor = monitorRepository.findByUsername(internshipOffer.getMonitor());
+            if(optionalMonitor.isPresent()){
+                optionalInternshipOffer = Optional.of(internshipOfferRepository.save(internshipOffer));
+            } else {
                 return Optional.empty();
             }
         } catch (DuplicateKeyException exception) {
@@ -43,5 +38,17 @@ public class InternshipService {
         Optional<List<InternshipOffer>> optionalInternshipOfferList;
         optionalInternshipOfferList = internshipOfferRepository.getInternshipOffersByIsValidFalse();
         return optionalInternshipOfferList;
+    }
+
+    public Optional<InternshipOffer> validateInternshipOffer(String id){
+        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
+        if(optionalInternshipOffer.isPresent()){
+            InternshipOffer internshipOffer = optionalInternshipOffer.get();
+            internshipOffer.setIsValid(true);
+            optionalInternshipOffer = Optional.of(internshipOfferRepository.save(internshipOffer));
+            return optionalInternshipOffer;
+        }
+
+        return Optional.empty();
     }
 }

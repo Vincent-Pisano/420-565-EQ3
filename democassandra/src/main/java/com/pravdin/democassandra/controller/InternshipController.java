@@ -31,4 +31,11 @@ public class InternshipController {
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @PostMapping("/validate/internshipOffer/{id}")
+    public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String id) {
+        return service.validateInternshipOffer(id)
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 }

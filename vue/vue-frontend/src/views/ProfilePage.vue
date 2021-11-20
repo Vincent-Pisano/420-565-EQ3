@@ -26,7 +26,14 @@
           "
         >
           <ButtonToInternshipOfferForm />
+
+          <br />
         </div>
+
+        <div v-if="this.user.username.startsWith('G')">
+          <ButtonToInternshipOfferListToValidate />
+        </div>
+
         <br />
         <p><button @click="logOut()">Se déconnecter</button></p>
       </div>
@@ -37,11 +44,13 @@
 <script>
 import router from "./../router/index";
 import ButtonToInternshipOfferForm from "./../components/ButtonToInternshipOfferForm.vue";
+import ButtonToInternshipOfferListToValidate from "./../components/ButtonToInternshipOfferListToValidate.vue";
 
 export default {
   name: "ProfilePage",
   components: {
     ButtonToInternshipOfferForm,
+    ButtonToInternshipOfferListToValidate,
   },
   inheritAttrs: false,
   methods: {
