@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface SupervisorRepository extends CassandraRepository<Supervisor, String>{
 
+    @AllowFiltering
     Optional<Supervisor> findByUsernameAndPassword(String username, String password);
 
     Optional<Supervisor> findByEmail(String email);
