@@ -1,6 +1,7 @@
 package com.pravdin.democassandra.service;
 
 import com.pravdin.democassandra.model.InternshipOffer;
+import com.pravdin.democassandra.model.Monitor;
 import com.pravdin.democassandra.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -15,12 +16,19 @@ public class InternshipService {
     @Autowired
     private InternshipOfferRepository internshipOfferRepository;
 
+    @Autowired
+    private MonitorRepository monitorRepository;
+
     public Optional<InternshipOffer> postInternshipOffer(InternshipOffer internshipOffer) {
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
         try{
-
             if(!optionalInternshipOffer.isPresent()) {
-                optionalInternshipOffer = Optional.of(internshipOfferRepository.save(internshipOffer));
+                Optional<Monitor> optionalMonitor = monitorRepository.findByUsername(internshipOffer.getMonitor());
+                if(optionalMonitor.isPresent()){
+                    optionalInternshipOffer = Optional.of(internshipOfferRepository.save(internshipOffer));
+                } else {
+                    return Optional.empty();
+                }
             }
             else {
                 return Optional.empty();

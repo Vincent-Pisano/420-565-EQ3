@@ -13,5 +13,7 @@ public interface MonitorRepository extends CassandraRepository<Monitor, String>{
     @AllowFiltering
     Optional<Monitor> findByUsernameAndPassword(String username, String password);
 
+    Optional<Monitor> findByUsername(String username);
+
     Optional<Monitor> findByEmail(String email);
 }
