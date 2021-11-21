@@ -7,6 +7,7 @@ import SignupSupervisor from "../views/SignupSupervisor";
 import ProfilePage from "../views/ProfilePage";
 import InternshipOfferForm from "../views/InternshipOfferForm";
 import InternshipOfferListToValidate from "../views/InternshipOfferListToValidate";
+import InternshipOfferFormValidation from "../views/InternshipOfferFormValidation";
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: "/internshipOfferListToValidate",
     name: "InternshipOfferListToValidate",
     component: InternshipOfferListToValidate,
+  },
+  {
+    path: "/internshipOfferValidation",
+    name: "InternshipOfferFormValidation",
+    component: InternshipOfferFormValidation,
   },
 ];
 

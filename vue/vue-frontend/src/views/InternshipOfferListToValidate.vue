@@ -13,9 +13,6 @@
 </template>
 
 <script>
-/*
-<p>{{this.unvalidatedInternshipOfferList}}</p>
-*/
 import axios from "axios";
 import router from "./../router/index";
 import ButtonGoBackToProfile from "../components/ButtonGoBackToProfile.vue";
@@ -52,26 +49,14 @@ export default {
     getUnvalidatedInternshipOfferList: function () {},
   },
   created() {
-    //this.getUnvalidatedInternshipOfferList();
     axios
       .get("http://localhost:9090/get/unvalidated/internshipOffer")
       .then((response) => {
-        /*for (const property in response.data) {
-                console.log(`${property}: ${response.data[property]}`);
-                this.unvalidatedInternshipOfferList.push(response.data[property]);
-            }*/
-        console.log(response.data);
-        console.log(JSON.stringify(response.data));
-        //this.unvalidatedInternshipOfferList = response.data;
-
         this.unvalidatedInternshipOfferList = response.data;
-        //return response.data;
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log(this.user);
-    console.log(this.unvalidatedInternshipOfferList);
   },
 };
 </script>

@@ -1,25 +1,33 @@
 <template>
   <div>
-    <button class="btn btn1">
+    <button @click="goValidate()" class="btn btn1">
       {{ internshipOffer.jobName }}, {{ internshipOffer.description }}:
       {{ internshipOffer.city }}
     </button>
   </div>
-  <br>
+  <br />
 </template>
 
 <script>
+import router from "./../router/index";
+
 export default {
   name: "InternshipOffer",
   props: {
     internshipOffer: Object,
   },
+  methods: {
+    goValidate() {
+      sessionStorage.setItem("offer", JSON.stringify(this.internshipOffer));
+      router.push("/internshipOfferValidation");
+    },
+  },
 };
 </script>
 
-<style scope>
+<style scoped>
 .btn {
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 8px 16px;
@@ -32,12 +40,12 @@ export default {
   cursor: pointer;
 }
 
-.btn1:hover  {
-  background-color: white; 
-  color: black; 
+.btn1:hover {
+  background-color: white;
+  color: black;
 }
 
-.btn1{
+.btn1 {
   background-color: #f44336;
   color: white;
   border: 2px solid #f44336;
