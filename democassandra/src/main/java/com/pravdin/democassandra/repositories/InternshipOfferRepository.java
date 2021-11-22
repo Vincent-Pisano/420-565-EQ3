@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface InternshipOfferRepository extends CassandraRepository<InternshipOffer, String> {
 
     Optional<List<InternshipOffer>> getInternshipOffersByIsValidFalse();
+
+    Optional<List<InternshipOffer>> getInternshipOffersByIsValidTrue();
 }

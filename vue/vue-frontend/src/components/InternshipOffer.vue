@@ -15,11 +15,17 @@ export default {
   name: "InternshipOffer",
   props: {
     internshipOffer: Object,
+    username: String,
   },
   methods: {
     goValidate() {
       sessionStorage.setItem("offer", JSON.stringify(this.internshipOffer));
-      router.push("/internshipOfferValidation");
+      if(this.username.startsWith("G")){
+        router.push("/internshipOfferValidation");
+      }
+      else if(this.username.startsWith("E")){
+        router.push("/internshipOfferValidation");
+      }
     },
   },
 };

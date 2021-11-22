@@ -30,6 +30,12 @@
           <br />
         </div>
 
+        <div v-if="this.user.username.startsWith('E')">
+          <ButtonToApplyToInternshipOffer />
+
+          <br />
+        </div>
+
         <div v-if="this.user.username.startsWith('G')">
           <ButtonToInternshipOfferListToValidate />
         </div>
@@ -45,12 +51,14 @@
 import router from "./../router/index";
 import ButtonToInternshipOfferForm from "./../components/ButtonToInternshipOfferForm.vue";
 import ButtonToInternshipOfferListToValidate from "./../components/ButtonToInternshipOfferListToValidate.vue";
+import ButtonToApplyToInternshipOffer from "./../components/ButtonToApplyToInternshipOffer.vue";
 
 export default {
   name: "ProfilePage",
   components: {
     ButtonToInternshipOfferForm,
     ButtonToInternshipOfferListToValidate,
+    ButtonToApplyToInternshipOffer,
   },
   inheritAttrs: false,
   methods: {

@@ -80,4 +80,10 @@ public class InternshipService {
         }
         return optionalInternshipApplication;
     }
+
+    public Optional<List<InternshipOffer>> getValidatedInternshipOffers(){
+        Optional<List<InternshipOffer>> optionalInternshipOfferList;
+        optionalInternshipOfferList = internshipOfferRepository.getInternshipOffersByIsValidTrue();
+        return optionalInternshipOfferList;
+    }
 }

@@ -3,7 +3,7 @@
     <div class="container">
       <h1 class="title">Validation de l'offre de stage</h1>
       <form @submit="onSubmit" class="add-form">
-        <div v-if="this.user.username.startsWith('G')">
+        <div v-if="this.user.username.startsWith('G') || this.user.username.startsWith('E')">
           <div class="form-control">
             <label>Moniteur</label>
             <input
@@ -232,19 +232,38 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      axios
-        .post(
-          "http://localhost:9090/validate/internshipOffer/" +
-            this.internshipOffer.id
-        )
-        .then(function (response) {
-          console.log(response.data);
-          router.push("/profile");
-        })
-        .catch((error) => {
-          console.log(error);
-          this.errorMessage = "Erreur de validation!";
-        });
+      if (this.user.username.startsWith("G")) {
+        axios
+          .post(
+            "http://localhost:9090/validate/internshipOffer/" +
+              this.internshipOffer.id
+          )
+          .then(function (response) {
+            console.log(response.data);
+            router.push("/profile");
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errorMessage = "Erreur de validation!";
+          });
+      } else if (this.user.username.startsWith("E")) {
+        console.log(this.user)
+        axios
+          .post(
+            "http://localhost:9090/add/internshipApplication/" +
+              this.user.id +
+              "/" +
+              this.internshipOffer.id
+          )
+          .then(function (response) {
+            console.log(response.data);
+            router.push("/profile");
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errorMessage = "Erreur d'application!";
+          });
+      }
     },
     logOut() {
       router.push("/");
@@ -254,7 +273,12 @@ export default {
       if (sessionStorage.getItem("user") !== null) {
         var user = sessionStorage.getItem("user");
         var viewName = JSON.parse(user);
-        if (!viewName.username.startsWith("G")) {
+        if (
+          !(
+            viewName.username.startsWith("G") ||
+            viewName.username.startsWith("E")
+          )
+        ) {
           this.logOut();
         } else {
           return viewName;

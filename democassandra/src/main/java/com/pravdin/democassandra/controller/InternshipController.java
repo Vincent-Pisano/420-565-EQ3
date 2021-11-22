@@ -46,4 +46,11 @@ public class InternshipController {
                 .map(_internshipApplication -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipApplication))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @GetMapping("/get/validated/internshipOffer")
+    public ResponseEntity<List<InternshipOffer>> getValidatedInternshipOffers() {
+        return service.getValidatedInternshipOffers()
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 }
