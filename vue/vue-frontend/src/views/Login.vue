@@ -84,6 +84,7 @@ export default {
     },
     deleteUserFromStorage: function () {
       sessionStorage.removeItem("user");
+      sessionStorage.removeItem("offer");
     },
   },
   created: function () {

@@ -1,5 +1,6 @@
 package com.pravdin.democassandra.controller;
 
+import com.pravdin.democassandra.model.InternshipApplication;
 import com.pravdin.democassandra.model.InternshipOffer;
 import com.pravdin.democassandra.service.InternshipService;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,13 @@ public class InternshipController {
     public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String id) {
         return service.validateInternshipOffer(id)
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/add/internshipApplication/{student_id}/{offer_id}")
+    public ResponseEntity<InternshipApplication> postInternshipApplication(@PathVariable String student_id, @PathVariable String offer_id) {
+        return service.postInternshipApplication(student_id, offer_id)
+                .map(_internshipApplication -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipApplication))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 }
