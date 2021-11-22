@@ -40,6 +40,7 @@ export default{
             <div v-if="this.user.username.charAt(0) === 'G'">
                 <router-link to="/internshipOffer" class="nav-links-header">Dépôt d'offres</router-link>
                 <router-link to="/listInternshipOffer" class="nav-links-header">Validation d'offres</router-link>
+                <router-link to="/listSupervisors" class="nav-links-header">Assignations</router-link>
             </div>
             <router-link to="/" class="nav-links-header" v-on:click="logout()">Déconnexion</router-link>
         </ul>

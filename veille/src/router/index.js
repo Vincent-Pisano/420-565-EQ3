@@ -5,6 +5,8 @@ import Login from '../components/Login/Login.vue'
 import InternshipOfferForm from '../components/InternshipOffer/InternshipOfferForm.vue'
 import InternshipOfferList from '../components/InternshipOffer/InternshipOfferList.vue'
 import ValidateOffer from '../components/InternshipOffer/ValidateOffer.vue'
+import SupervisorList from '../components/Assignation/SupervisorList.vue'
+import AssignStudents from '../components/Assignation/AssignStudents.vue'
 import CV from '../components/CV/CV.vue'
 
 const routes = [
@@ -43,7 +45,18 @@ const routes = [
     path: '/cv',
     name: 'CV',
     component: CV
-  }
+  },
+  {
+    path: '/listSupervisors',
+    name: 'SupervisorList',
+    component: SupervisorList
+  },
+  {
+    path: '/assignStudents',
+    name: 'AssignStudents',
+    component: AssignStudents,
+    props:true
+  },
 ]
 
 const router = createRouter({
