@@ -194,7 +194,7 @@ class BackendServiceTest {
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudents(Department.COMPUTER_SCIENCE, SESSION);
+                service.getAllStudentsByDepartment(Department.COMPUTER_SCIENCE, SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -235,7 +235,7 @@ class BackendServiceTest {
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudents(SESSION);
+                service.getAllStudentsByDepartment(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);

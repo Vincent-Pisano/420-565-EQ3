@@ -39,7 +39,7 @@ public class BackendController {
 
     @GetMapping("/getAll/students/{department}/{session}")
     public ResponseEntity<List<Student>> getAllStudents(@PathVariable Department department, @PathVariable String session) {
-        return service.getAllStudents(department, session)
+        return service.getAllStudentsByDepartment(department, session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
@@ -53,7 +53,7 @@ public class BackendController {
 
     @GetMapping("/getAll/students/{session}")
     public ResponseEntity<List<Student>> getAllStudents(@PathVariable String session) {
-        return service.getAllStudents(session)
+        return service.getAllStudentsByDepartment(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
