@@ -71,38 +71,27 @@ public class UtilsController {
     }
 
     public static class InternshipApplicationControllerUrl {
-
+        public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/{username}";
+        public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT_BY_SESSION = "/getAll/internshipApplication/{session}/student/{username}";
+        public final static String URL_GET_ALL_COMPLETED_INTERNSHIP_APPLICATIONS_OF_STUDENT_BY_SESSION = "/getAll/internshipApplication/completed/{session}/student/{username}";
+        public final static String URL_GET_ALL_WAITING_INTERNSHIP_APPLICATIONS_OF_STUDENT_BY_SESSION = "/getAll/internshipApplication/waiting/{session}/student/{username}";
+        public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_OF_INTERNSHIP_OFFER = "/getAll/internshipApplication/internshipOffer/{id}";
+        public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
+        public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS_CURRENT_AND_NEXT_SESSIONS = "/getAll/accepted/internshipApplications/current/and/next/sessions";
+        public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_APPLICATIONS = "/getAll/validated/internshipApplication";
+        public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";
     }
 
     public static class InternshipControllerUrl {
-
+        public final static String URL_SAVE_INTERNSHIP = "/save/internship";
+        public final static String URL_GET_DEFAULT_ENGAGEMENTS = "/get/default/engagements";
+        public final static String URL_GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION = "/get/internship/{idApplication}";
+        public final static String URL_SIGN_INTERNSHIP_CONTRACT_MONITOR = "/sign/internshipContract/monitor/{idInternship}";
+        public final static String URL_SIGN_INTERNSHIP_CONTRACT_STUDENT = "/sign/internshipContract/student/{idInternship}";
+        public final static String URL_SIGN_INTERNSHIP_CONTRACT_INTERNSHIP_MANAGER = "/sign/internshipContract/internshipManager/{idInternship}";
+        public final static String URL_DEPOSIT_INTERNSHIP_STUDENT_EVALUATION = "/deposit/evaluation/student/{idInternship}";
+        public final static String URL_DEPOSIT_INTERNSHIP_ENTERPRISE_EVALUATION = "/deposit/evaluation/enterprise/{idInternship}";
     }
-
-    // InternshipController
-    public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
-    public final static String URL_SAVE_INTERNSHIP = "/save/internship";
-    public final static String URL_GET_ENGAGEMENTS = "/get/default/engagements";
-    public final static String URL_GET_INTERNSHIP_FROM_INTERNSHIP_APPLICATION = "/get/internship/";
-    public final static String URL_GET_ALL_INTERNSHIP_OFFERS = "/getAll/internshipOffer/";
-    public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/unvalidated/";
-    public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS = "/getAll/internshipOffer/validated/";
-    public final static String URL_MONITOR = "/monitor/";
-    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/";
-    public final static String URL_GET_ALL_COMPLETED_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/completed/";
-    public final static String URL_GET_ALL_WAITING_INTERNSHIP_APPLICATIONS = "/getAll/internshipApplication/waiting/";
-    public final static String URL_STUDENT = "/student/";
-    public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
-    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_CURRENT_FUTURE_SESSIONS = "/getAll/accepted/internshipApplications/current/and/next/sessions";
-    public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_APPLICATIONS = "/getAll/validated/internshipApplication";
-    public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_BY_INTERNSHIP_OFFER = "/getAll/internshipApplication/internshipOffer/";
-    public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/";
-    public final static String URL_VALIDATE_INTERNSHIP_OFFER = "/validate/internshipOffer/";
-    public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";
-    public final static String URL_SIGN_INTERNSHIP_CONTRACT_MONITOR = "/sign/internshipContract/monitor/";
-    public final static String URL_SIGN_INTERNSHIP_CONTRACT_STUDENT = "/sign/internshipContract/student/";
-    public final static String URL_SIGN_INTERNSHIP_CONTRACT_INTERNSHIP_MANAGER = "/sign/internshipContract/internshipManager/";
-    public final static String URL_DEPOSIT_INTERNSHIP_STUDENT_EVALUATION = "/deposit/evaluation/student/";
-    public final static String URL_DEPOSIT_INTERNSHIP_ENTERPRISE_EVALUATION = "/deposit/evaluation/enterprise/";
 
 
 }
