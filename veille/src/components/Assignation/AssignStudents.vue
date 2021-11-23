@@ -29,18 +29,23 @@ export default{
             },
             handleClick(currentStudent){
                 this.currentStudent = currentStudent
-                axios
-                .post(
-                    `http://localhost:9090/assign/supervisor/${this.currentStudent.id}/${this.currentSupervisor.id}`
-                )
-                .then((response) =>{
-                    this.currentStudent = response.data
-                    this.getStudents()
-                })
-                .catch((err) => {
-                    console.log(err)
-                    this.errorMessage = "Erreur lors de l'assignation"
-                });
+                    axios
+                    .post(
+                        `http://localhost:9090/assign/supervisor/${this.currentStudent.id}/${this.currentSupervisor.id}`
+                    )
+                    .then((response) =>{
+                        this.currentStudent = response.data
+                        if (this.students.length <= 1) {
+                            this.students = []
+                            this.errorMessage = "Aucun Étudiant à assigner pour le moment"
+                        } else {
+                            this.getStudents()
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        this.errorMessage = "Erreur lors de l'assignation"
+                    });
             }
         },
         mounted: function(){
@@ -56,13 +61,14 @@ export default{
 <template>
     <NavBar/>
     <div id="assignStudents" class="cont_principal">
-      <div class="cont_central">
+      <div class="cont_centrar">
         <h2 class="cont_title_form">Liste des étudiants à assigner</h2>
           <ul>
             <li v-for="(student, x) in students" :key="x" class="list_node" v-on:click="handleClick(student)">
                 {{student.firstName}} {{student.lastName}}
             </li>
           </ul>
+          <p>{{this.errorMessage}}</p>
         </div>
     </div>
 </template>

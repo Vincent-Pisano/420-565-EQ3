@@ -44,13 +44,14 @@ export default{
 <template>
     <NavBar/>
     <div id="supervisorList" class="cont_principal">
-      <div class="cont_central">
+      <div class="cont_centrar">
         <h2 class="cont_title_form">Liste des superviseurs de stages</h2>
           <ul>
             <li v-for="(supervisor, x) in supervisors" :key="x" class="list_node" v-on:click="handleClick(supervisor)">
                 {{supervisor.firstName}} {{supervisor.lastName}}
             </li>
           </ul>
+            <p>{{errorMessage}}</p>
         </div>
     </div>
 </template>
