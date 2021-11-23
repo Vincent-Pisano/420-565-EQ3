@@ -24,16 +24,6 @@ public class InternshipController {
         this.service = service;
     }
 
-    @PostMapping(value = "/save/internshipOffer",
-            produces = "application/json;charset=utf8",
-            consumes = { "multipart/form-data" })
-    public ResponseEntity<InternshipOffer> saveInternshipOffer(@RequestPart(name = "internshipOffer") String internshipOfferJson,
-                                                               @RequestPart(name = "document", required=false) MultipartFile multipartFile) {
-        return service.saveInternshipOffer(internshipOfferJson, multipartFile)
-                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
     @PostMapping("/save/internship")
     public ResponseEntity<Internship> saveInternship(@RequestBody Internship internship) {
         return service.saveInternship(internship)
@@ -53,106 +43,6 @@ public class InternshipController {
     public ResponseEntity<Internship> getInternshipFromInternshipApplication(@PathVariable String idApplication) {
         return service.getInternshipFromInternshipApplication(idApplication)
                 .map(_mapDefaultEngagements -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_mapDefaultEngagements))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipOffer/{session}/{workField}")
-    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferByWorkField(@PathVariable Department workField, @PathVariable String session) {
-        return service.getAllInternshipOfferByWorkField(workField, session)
-                .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipOffer/unvalidated/{session}")
-    public ResponseEntity<List<InternshipOffer>> getAllUnvalidatedInternshipOffer(@PathVariable String session) {
-        return service.getAllUnvalidatedInternshipOffer(session)
-                .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipOffer/validated/{session}")
-    public ResponseEntity<List<InternshipOffer>> getAllValidatedInternshipOffer(@PathVariable String session) {
-        return service.getAllValidatedInternshipOffer(session)
-                .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipOffer/{session}/monitor/{id}")
-    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferOfMonitor(@PathVariable String session, @PathVariable String id) {
-        return service.getAllInternshipOfferOfMonitor(session, id)
-                .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipApplication/{session}/student/{username}")
-    public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationOfStudent(@PathVariable String session, @PathVariable String username) {
-        return service.getAllInternshipApplicationOfStudent(session, username)
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipApplication/completed/{session}/student/{username}")
-    public ResponseEntity<List<InternshipApplication>> getAllCompletedInternshipApplicationOfStudent(@PathVariable String session, @PathVariable String username) {
-        return service.getAllCompletedInternshipApplicationOfStudent(session, username)
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipApplication/waiting/{session}/student/{username}")
-    public ResponseEntity<List<InternshipApplication>> getAllWaitingInternshipApplicationOfStudent(@PathVariable String session, @PathVariable String username) {
-        return service.getAllWaitingInternshipApplicationOfStudent(session, username)
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/internshipApplication/internshipOffer/{id}")
-    public ResponseEntity<List<InternshipApplication>> getAllInternshipApplicationOfInternshipOffer(@PathVariable String id) {
-        return service.getAllInternshipApplicationOfInternshipOffer(id)
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/accepted/internshipApplication")
-    public ResponseEntity<List<InternshipApplication>> getAllAcceptedInternshipApplications() {
-        return service.getAllAcceptedInternshipApplications()
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping(value="/getAll/accepted/internshipApplications/current/and/next/sessions")
-    public ResponseEntity<List<InternshipApplication>> getAllAcceptedInternshipApplicationsNextSessions(){
-        return service.getAllAcceptedInternshipApplicationsNextSessions()
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @GetMapping("/getAll/validated/internshipApplication")
-    public ResponseEntity<List<InternshipApplication>> getAllValidatedInternshipApplications() {
-        return service.getAllValidatedInternshipApplications()
-                .map(_internshipApplications -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplications))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-
-    @PostMapping("/apply/internshipOffer/{username}")
-    public ResponseEntity<InternshipApplication> applyInternshipOffer(@PathVariable String username,
-                                                                      @RequestBody InternshipOffer internshipOffer) {
-        return service.applyInternshipOffer(username, internshipOffer)
-                .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @PostMapping("/validate/internshipOffer/{idOffer}")
-    public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String idOffer) {
-        return service.validateInternshipOffer(idOffer)
-                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    @PostMapping("/update/internshipApplication")
-    public ResponseEntity<InternshipApplication> updateInternshipApplication(@RequestBody InternshipApplication internshipApplication) {
-        return service.updateInternshipApplication(internshipApplication)
-                .map(_internshipApplication -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipApplication))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
