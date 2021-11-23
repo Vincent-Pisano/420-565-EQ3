@@ -16,8 +16,11 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.TreeSet;
 
+import static com.eq3.backend.utils.UtilsController.BackendControllerUrl.*;
+import static com.eq3.backend.utils.UtilsController.CROSS_ORIGIN_ALLOWED;
+
 @RestController
-@CrossOrigin("http://localhost:3006")
+@CrossOrigin(CROSS_ORIGIN_ALLOWED)
 public class BackendController {
 
     private final BackendService service;
@@ -27,7 +30,7 @@ public class BackendController {
         this.service = service;
     }
 
-    @PostMapping(value = "/save/signature/{username}",
+    @PostMapping(value = URL_SAVE_SIGNATURE,
             produces = "application/json;charset=utf8",
             consumes = { "multipart/form-data" })
     public ResponseEntity<Binary> saveSignature(@PathVariable String username,
@@ -37,28 +40,28 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/{department}/{session}")
+    @GetMapping(URL_GET_ALL_STUDENTS_FROM_DEPARTMENT_BY_SESSION)
     public ResponseEntity<List<Student>> getAllStudents(@PathVariable Department department, @PathVariable String session) {
         return service.getAllStudentsByDepartment(department, session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/sessions/students")
+    @GetMapping(URL_GET_ALL_SESSIONS_OF_STUDENTS)
     public ResponseEntity<TreeSet<String>> getAllSessionOfStudents() {
         return service.getAllSessionOfStudents()
                 .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/{session}")
+    @GetMapping(URL_GET_ALL_STUDENTS_BY_SESSION)
     public ResponseEntity<List<Student>> getAllStudents(@PathVariable String session) {
         return service.getAllStudentsByDepartment(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/noSupervisor/{department}/{session}")
+    @GetMapping(URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR_FROM_DEPARTMENT_BY_SESSION)
     public ResponseEntity<List<Student>> getAllStudentsWithoutSupervisor(@PathVariable Department department, @PathVariable String session) {
         return service.getAllStudentsWithoutSupervisor(department, session)
                 .map(_students ->
@@ -67,7 +70,7 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/supervisor/{idSupervisor}/{session}")
+    @GetMapping(URL_GET_ALL_STUDENTS_WITH_SUPERVISOR_BY_SESSION)
     public ResponseEntity<List<Student>> getAllStudentsWithSupervisor(@PathVariable String idSupervisor, @PathVariable String session) {
         return service.getAllStudentsWithSupervisor(idSupervisor, session)
                 .map(_students ->
@@ -76,42 +79,42 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/students/without/CV/{session}")
+    @GetMapping(URL_GET_ALL_STUDENTS_WITHOUT_CV_BY_SESSION)
     public ResponseEntity<List<Student>> getAllStudentsWithoutCV(@PathVariable String session) {
         return service.getAllStudentsWithoutCV(session)
                 .map(_students -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_students))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/supervisors/{session}")
+    @GetMapping(URL_GET_ALL_SUPERVISORS_BY_SESSION)
     public ResponseEntity<List<Supervisor>> getAllSupervisorsOfSession(@PathVariable String session){
         return service.getAllSupervisorsOfSession(session)
                 .map(_supervisors -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_supervisors))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/sessions/internshipOffer/monitor/{idMonitor}")
+    @GetMapping(URL_GET_ALL_SESSIONS_INTERNSHIP_OFFER_MONITOR)
     public ResponseEntity<List<String>> getAllSessionsOfMonitor(@PathVariable String idMonitor){
         return service.getAllSessionsOfMonitor(idMonitor)
                 .map(_sessions -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_sessions))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/get/monitor/{username}")
+    @GetMapping(URL_GET_MONITOR)
     public ResponseEntity<Monitor> getMonitorByUsername(@PathVariable String username) {
         return service.getMonitorByUsername(username)
                 .map(_monitor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_monitor))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping("/assign/supervisor/{idStudent}/{idSupervisor}")
+    @PostMapping(URL_ASSIGN_SUPERVISOR)
     public ResponseEntity<Student> assignSupervisorToStudent(@PathVariable String idStudent, @PathVariable String idSupervisor) {
         return service.assignSupervisorToStudent(idStudent, idSupervisor)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value = "/get/CV/document/{idStudent}/{idCV}", produces = "application/pdf")
+    @GetMapping(value = URL_DOWNLOAD_CV_DOCUMENT, produces = "application/pdf")
     public ResponseEntity<InputStreamResource> downloadStudentCVDocument(@PathVariable String idStudent, @PathVariable String idCV){
         return service.downloadStudentCVDocument(idStudent, idCV)
                 .map(this::getDownloadingDocument)

@@ -21,33 +21,36 @@ public class UtilsController {
     }
 
     public static class BackendControllerUrl {
-        public final static String URL_SAVE_SIGNATURE = "/save/signature/";
-        public final static String URL_GET_ALL_STUDENTS_FROM_DEPARTMENT = "/getAll/students/";
-        public final static String URL_GET_ALL_STUDENTS = "/getAll/students/";
-        public final static String URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = "/getAll/students/noSupervisor/";
-        public final static String URL_GET_ALL_STUDENTS_WITH_SUPERVISOR = "/getAll/students/supervisor/";
-        public final static String URL_GET_ALL_STUDENTS_WITHOUT_CV = "/getAll/students/without/CV/";
-        public final static String URL_GET_ALL_STUDENTS_WITH_INTERNSHIP = "/getAll/students/with/Internship/";
-        public final static String URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE = "/getAll/students/without/interviewDate/";
-        public final static String URL_GET_ALL_STUDENTS_WAITING_INTERVIEW = "/getAll/students/waiting/interview/";
-        public final static String URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION = "/getAll/student/studentEvaluation/unevaluated/";
-        public final static String URL_GET_ALL_STUDENTS_WITHOUT_ENTERPRISE_EVALUATION = "/getAll/student/enterpriseEvaluation/unevaluated/";
-        public final static String URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY = "/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today/";
-        public final static String URL_GET_ALL_SUPERVISORS = "/getAll/supervisors/";
-        public final static String URL_GET_ALL_SESSIONS_INTERNSHIP_OFFER_MONITOR = "/getAll/sessions/internshipOffer/monitor/";
-        public final static String URL_GET_ALL_SESSION_OF_STUDENTS = "/getAll/sessions/students";
-        public final static String URL_GET_ALL_SESSION_OF_INVALID_INTERNSHIP_OFFERS = "/getAll/sessions/invalid/internshipOffer";
-        public final static String URL_GET_ALL_SESSION_OF_VALID_INTERNSHIP_OFFERS = "/getAll/sessions/valid/internshipOffer";
-        public final static String URL_GET_MONITOR = "/get/monitor/";
-        public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/";
-        public final static String URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT = "/get/internshipOffer/document/";
-        public final static String URL_DOWNLOAD_CV_DOCUMENT = "/get/CV/document/";
-        public final static String URL_DOWNLOAD_EVALUATION_DOCUMENT = "/get/{holé-hola}/evaluation/document";
-        public final static String URL_DOWNLOAD_INTERNSHIP_CONTRACT = "/get/internship/document/";
-        public final static String URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION = "/get/internship/student/evaluation/document/";
-        public final static String URL_DOWNLOAD_INTERNSHIP_ENTERPRISE_EVALUATION = "/get/internship/enterprise/evaluation/document/";
+        public final static String URL_SAVE_SIGNATURE = "/save/signature/{username}";
+        public final static String URL_GET_ALL_STUDENTS_FROM_DEPARTMENT_BY_SESSION = "/getAll/students/{department}/{session}";
+        public final static String URL_GET_ALL_SESSIONS_OF_STUDENTS = "/getAll/sessions/students";
+        public final static String URL_GET_ALL_STUDENTS_BY_SESSION = "/getAll/students/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WITHOUT_SUPERVISOR_FROM_DEPARTMENT_BY_SESSION = "/getAll/students/noSupervisor/{department}/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WITH_SUPERVISOR_BY_SESSION = "/getAll/students/supervisor/{idSupervisor}/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WITHOUT_CV_BY_SESSION = "/getAll/students/without/CV/{session}";
+        public final static String URL_GET_ALL_SUPERVISORS_BY_SESSION = "/getAll/supervisors/{session}";
+        public final static String URL_GET_ALL_SESSIONS_INTERNSHIP_OFFER_MONITOR = "/getAll/sessions/internshipOffer/monitor/{idMonitor}";
+        public final static String URL_GET_MONITOR = "/get/monitor/{username}";
+        public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/{idStudent}/{idSupervisor}";
+        public final static String URL_DOWNLOAD_CV_DOCUMENT = "/get/CV/document/{idStudent}/{idCV}";
+    }
+
+    public static class BackendInternshipControllerUrl {
+        public final static String URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE_BY_SESSION = "/getAll/students/without/interviewDate/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY_BY_SESSION = "/getAll/students/with/applicationStatus/waiting/and/interviewDate/passed/today/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WITH_INTERNSHIP_BY_SESSION = "/getAll/students/with/Internship/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WAITING_INTERVIEW_BY_SESSION = "/getAll/students/waiting/interview/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION_BY_SESSION = "/getAll/student/studentEvaluation/unevaluated/{session}";
+        public final static String URL_GET_ALL_STUDENTS_WITHOUT_ENTERPRISE_EVALUATION_BY_SESSION = "/getAll/student/enterpriseEvaluation/unevaluated/{session}";
         public final static String URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS = "/getAll/next/sessions/internshipOffer";
         public final static String URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS_UNVALIDATED = "/getAll/next/sessions/internshipOffer/unvalidated";
+        public final static String URL_GET_ALL_SESSION_OF_INVALID_INTERNSHIP_OFFERS = "/getAll/sessions/invalid/internshipOffer";
+        public final static String URL_GET_ALL_SESSION_OF_VALID_INTERNSHIP_OFFERS = "/getAll/sessions/valid/internshipOffer";
+        public final static String URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT = "/get/internshipOffer/document/{id}";
+        public final static String URL_DOWNLOAD_EVALUATION_DOCUMENT = "/get/{typeEvaluation}/evaluation/document";
+        public final static String URL_DOWNLOAD_INTERNSHIP_CONTRACT = "/get/internship/document/{id}";
+        public final static String URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION = "/get/internship/student/evaluation/document/{idInternship}";
+        public final static String URL_DOWNLOAD_INTERNSHIP_ENTERPRISE_EVALUATION = "/get/internship/enterprise/evaluation/document/{idInternship}";
     }
 
     public static class CVControllerUrl {
