@@ -6,8 +6,6 @@ import com.eq3.backend.model.Student;
 import com.eq3.backend.repository.InternshipApplicationRepository;
 import com.eq3.backend.repository.InternshipOfferRepository;
 import com.eq3.backend.repository.StudentRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,6 +31,19 @@ public class InternshipApplicationService {
         this.internshipOfferRepository = internshipOfferRepository;
         this.studentRepository = studentRepository;
         this.emailService = emailService;
+    }
+
+    public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
+        Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
+        return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
+    }
+
+    private InternshipApplication createInternshipApplication(Student student, InternshipOffer internshipOffer){
+        InternshipApplication internshipApplication = new InternshipApplication();
+        internshipApplication.setInternshipOffer(internshipOffer);
+        internshipApplication.setStudent(student);
+        emailService.sendEmailWhenStudentAppliesToNewInternshipOffer(student, internshipOffer);
+        return internshipApplicationRepository.save(internshipApplication);
     }
 
     public Optional<List<InternshipApplication>> getAllInternshipApplicationOfStudent(String session, String studentUsername) {
@@ -115,19 +126,6 @@ public class InternshipApplicationService {
         List<InternshipApplication> internshipApplications =
                 internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.VALIDATED);
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
-    }
-
-    public Optional<InternshipApplication> applyInternshipOffer(String studentUsername, InternshipOffer internshipOffer) {
-        Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(studentUsername);
-        return optionalStudent.map(student -> createInternshipApplication(student, internshipOffer));
-    }
-
-    private InternshipApplication createInternshipApplication(Student student, InternshipOffer internshipOffer){
-        InternshipApplication internshipApplication = new InternshipApplication();
-        internshipApplication.setInternshipOffer(internshipOffer);
-        internshipApplication.setStudent(student);
-        emailService.sendEmailWhenStudentAppliesToNewInternshipOffer(student, internshipOffer);
-        return internshipApplicationRepository.save(internshipApplication);
     }
 
     public Optional<InternshipApplication> updateInternshipApplication(InternshipApplication internshipApplication) {
