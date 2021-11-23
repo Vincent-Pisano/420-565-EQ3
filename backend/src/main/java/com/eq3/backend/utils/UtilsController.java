@@ -6,7 +6,7 @@ public class UtilsController {
     public final static String APPLICATION_JSON_AND_CHARSET_UTF8 = "application/json;charset=utf8";
     public final static String MULTI_PART_FROM_DATA = "multipart/form-data";
     public final static String REQUEST_PART_DOCUMENT = "document";
-    public final static String REQUEST_PART_INTERNSHIP_OFFER = "document";
+    public final static String REQUEST_PART_INTERNSHIP_OFFER = "internshipOffer";
 
     public static class AuthControllerUrl {
         public final static String URL_SIGN_UP_STUDENT = "/signUp/student";
