@@ -9,8 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.eq3.backend.utils.UtilsController.CVControllerUrl.*;
+import static com.eq3.backend.utils.UtilsController.CROSS_ORIGIN_ALLOWED;
+import static com.eq3.backend.utils.UtilsController.APPLICATION_JSON_AND_CHARSET_UTF8;
+import static com.eq3.backend.utils.UtilsController.MULTI_PART_FROM_DATA;
+import static com.eq3.backend.utils.UtilsController.REQUEST_PART_DOCUMENT;
+
 @RestController
-@CrossOrigin("http://localhost:3006")
+@CrossOrigin(CROSS_ORIGIN_ALLOWED)
 public class CVController {
 
     private final CVService service;
@@ -19,38 +25,38 @@ public class CVController {
         this.service = service;
     }
 
-    @PostMapping(value = "/save/CV/{idStudent}",
-            produces = "application/json;charset=utf8",
-            consumes = { "multipart/form-data" })
-    public ResponseEntity<Student> saveCV(@RequestPart(name = "document") MultipartFile multipartFile,
-                                          @PathVariable(name = "idStudent") String id) {
+    @PostMapping(value = URL_SAVE_CV,
+            produces = APPLICATION_JSON_AND_CHARSET_UTF8,
+            consumes = { MULTI_PART_FROM_DATA })
+    public ResponseEntity<Student> saveCV(@RequestPart(name = REQUEST_PART_DOCUMENT) MultipartFile multipartFile,
+                                          @PathVariable String id) {
         return service.saveCV(id, multipartFile)
                 .map(_student -> ResponseEntity.status(HttpStatus.CREATED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @DeleteMapping("/delete/CV/{idStudent}/{idCV}")
+    @DeleteMapping(URL_DELETE_CV)
     public ResponseEntity<Student> deleteCV(@PathVariable String idStudent, @PathVariable String idCV) {
         return service.deleteCV(idStudent, idCV)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping("/update/ActiveCV/{idStudent}/{idCV}")
+    @PostMapping(URL_UPDATE_ACTIVE_CV)
     public ResponseEntity<Student> updateActiveCV(@PathVariable String idStudent, @PathVariable String idCV) {
         return service.updateActiveCV(idStudent, idCV)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/getAll/student/CVActiveNotValid/{session}")
+    @GetMapping(URL_GET_ALL_STUDENTS_CV_ACTIVE_NOT_VALID)
     public ResponseEntity<List<Student>> getAllStudentsWithActiveAndNotValidCV(@PathVariable String session) {
         return service.getAllStudentWithCVActiveWaitingValidation(session)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping("/validate/CV/{idStudent}")
+    @PostMapping(URL_VALIDATE_CV)
     public ResponseEntity<Student> validateCVOfStudent(@PathVariable String idStudent) {
         return service.validateCVOfStudent(idStudent)
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))

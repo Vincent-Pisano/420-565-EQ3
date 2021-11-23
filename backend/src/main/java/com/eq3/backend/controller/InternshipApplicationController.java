@@ -9,8 +9,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.eq3.backend.utils.UtilsController.InternshipOfferControllerUrl.*;
+import static com.eq3.backend.utils.UtilsController.CROSS_ORIGIN_ALLOWED;
+import static com.eq3.backend.utils.UtilsController.APPLICATION_JSON_AND_CHARSET_UTF8;
+import static com.eq3.backend.utils.UtilsController.MULTI_PART_FROM_DATA;
+import static com.eq3.backend.utils.UtilsController.REQUEST_PART_DOCUMENT;
+import static com.eq3.backend.utils.UtilsController.REQUEST_PART_INTERNSHIP_OFFER;
+
 @RestController
-@CrossOrigin("http://localhost:3006")
+@CrossOrigin(CROSS_ORIGIN_ALLOWED)
 public class InternshipApplicationController {
 
     private final InternshipApplicationService service;
