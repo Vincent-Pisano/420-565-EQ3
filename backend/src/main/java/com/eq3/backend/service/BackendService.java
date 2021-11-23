@@ -61,50 +61,70 @@ public class BackendService {
         if (image != null) {
             switch (username.charAt(0)) {
                 case 'G' :
-                    Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
-                    if (optionalInternshipManager.isPresent()) {
-                        InternshipManager internshipManager = optionalInternshipManager.get();
-                        internshipManager.setSignature(image);
-                        internshipManagerRepository.save(internshipManager);
-                        optionalBinary = Optional.of(image);
-                    }
+                    optionalBinary = getInternshipManagerSignature(username, optionalBinary, image);
                     break;
 
                 case 'S' :
-                    Optional<Supervisor> optionalSupervisor = supervisorRepository.findByUsernameAndIsDisabledFalse(username);
-                    if (optionalSupervisor.isPresent()) {
-                        Supervisor supervisor = optionalSupervisor.get();
-                        supervisor.setSignature(image);
-                        supervisorRepository.save(supervisor);
-                        optionalBinary = Optional.of(image);
-                    }
+                    optionalBinary = getSupervisorSignature(username, optionalBinary, image);
                     break;
 
                 case 'M' :
-                    Optional<Monitor> optionalMonitor = monitorRepository.findByUsernameAndIsDisabledFalse(username);
-                    if (optionalMonitor.isPresent()) {
-                        Monitor monitor = optionalMonitor.get();
-                        monitor.setSignature(image);
-                        monitorRepository.save(monitor);
-                        optionalBinary = Optional.of(image);
-                    }
+                    optionalBinary = getMonitorSignature(username, optionalBinary, image);
                     break;
 
                 case 'E' :
-                    Optional<Student> optionalStudent = studentRepository.findByUsernameAndIsDisabledFalse(username);
-                    if (optionalStudent.isPresent()) {
-                        Student student = optionalStudent.get();
-                        student.setSignature(image);
-                        studentRepository.save(student);
-                        optionalBinary = Optional.of(image);
-                    }
+                    optionalBinary = getStudentSignature(username, optionalBinary, image);
                     break;
             }
         }
         return optionalBinary;
     }
 
-    public Optional<List<Student>> getAllStudents(Department department, String session) {
+    private Optional<Binary> getStudentSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+        Optional<Student> optionalStudent = studentRepository.findByUsernameAndIsDisabledFalse(username);
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setSignature(image);
+            studentRepository.save(student);
+            optionalBinary = Optional.of(image);
+        }
+        return optionalBinary;
+    }
+
+    private Optional<Binary> getMonitorSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+        Optional<Monitor> optionalMonitor = monitorRepository.findByUsernameAndIsDisabledFalse(username);
+        if (optionalMonitor.isPresent()) {
+            Monitor monitor = optionalMonitor.get();
+            monitor.setSignature(image);
+            monitorRepository.save(monitor);
+            optionalBinary = Optional.of(image);
+        }
+        return optionalBinary;
+    }
+
+    private Optional<Binary> getSupervisorSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+        Optional<Supervisor> optionalSupervisor = supervisorRepository.findByUsernameAndIsDisabledFalse(username);
+        if (optionalSupervisor.isPresent()) {
+            Supervisor supervisor = optionalSupervisor.get();
+            supervisor.setSignature(image);
+            supervisorRepository.save(supervisor);
+            optionalBinary = Optional.of(image);
+        }
+        return optionalBinary;
+    }
+
+    private Optional<Binary> getInternshipManagerSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+        Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
+        if (optionalInternshipManager.isPresent()) {
+            InternshipManager internshipManager = optionalInternshipManager.get();
+            internshipManager.setSignature(image);
+            internshipManagerRepository.save(internshipManager);
+            optionalBinary = Optional.of(image);
+        }
+        return optionalBinary;
+    }
+
+    public Optional<List<Student>> getAllStudentsByDepartment(Department department, String session) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndDepartmentAndSessionsContains(department, session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
@@ -117,7 +137,7 @@ public class BackendService {
         return sessions.isEmpty() ? Optional.empty() : Optional.of((TreeSet<String>) sessions.descendingSet());
     }
 
-    public Optional<List<Student>> getAllStudents(String session) {
+    public Optional<List<Student>> getAllStudentsByDepartment(String session) {
         List<Student> students = studentRepository.findAllByIsDisabledFalseAndSessionsContains(session);
         students.forEach(student -> cleanUpStudentCVList(Optional.of(student)));
         return students.isEmpty() ? Optional.empty() : Optional.of(students);
@@ -155,13 +175,16 @@ public class BackendService {
     private void setStudentListWithApplicationStatusWaitingAndInterviewDatePassed(List<Student> students, InternshipApplication internshipApplication, String session) {
         Student student = internshipApplication.getStudent();
         InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-        if (internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.WAITING &&
-            internshipApplication.getInterviewDate().before(new Date()) &&
-            !students.contains(internshipApplication.getStudent()) &&
-                student.getSessions().contains(session) &&
-                session.equals(internshipOffer.getSession())) {
+        if (isStudentValidWithInterviewPassed(students, internshipApplication, session, student, internshipOffer))
             students.add(internshipApplication.getStudent());
-        }
+    }
+
+    private boolean isStudentValidWithInterviewPassed(List<Student> students, InternshipApplication internshipApplication, String session, Student student, InternshipOffer internshipOffer) {
+        return internshipApplication.getStatus() == InternshipApplication.ApplicationStatus.WAITING &&
+                internshipApplication.getInterviewDate().before(new Date()) &&
+                !students.contains(internshipApplication.getStudent()) &&
+                student.getSessions().contains(session) &&
+                session.equals(internshipOffer.getSession());
     }
 
     public Optional<List<Student>> getAllStudentsWithoutInterviewDate(String session) {
@@ -171,8 +194,10 @@ public class BackendService {
 
         internshipApplicationsWithInterviewDate.forEach(internshipApplication -> {
             InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-            if (session.equals(internshipOffer.getSession()))
-                studentsWithoutInterviewDate.remove(internshipApplication.getStudent());
+            String internshipOfferSession = internshipOffer.getSession();
+            Student student = internshipApplication.getStudent();
+            if (session.equals(internshipOfferSession))
+                studentsWithoutInterviewDate.remove(student);
         });
         return studentsWithoutInterviewDate.isEmpty() ? Optional.empty() : Optional.of(studentsWithoutInterviewDate);
     }
@@ -183,10 +208,10 @@ public class BackendService {
         completedInternshipApplications.forEach(internshipApplication -> {
             if (internshipApplication.statusIsCompleted()){
                 InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-                if (!studentsWithInternship.contains(internshipApplication.getStudent()) &&
-                session.equals(internshipOffer.getSession())){
-                    studentsWithInternship.add(internshipApplication.getStudent());
-                }
+                Student student = internshipApplication.getStudent();
+                String internshipOfferSession = internshipOffer.getSession();
+                if (!studentsWithInternship.contains(student) && session.equals(internshipOfferSession))
+                    studentsWithInternship.add(student);
             }
         });
         return studentsWithInternship.isEmpty() ? Optional.empty() : Optional.of(studentsWithInternship);
@@ -198,14 +223,12 @@ public class BackendService {
                 internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse();
 
         internshipApplicationsWithoutInterviewDate.forEach(internshipApplication -> {
-                    Student student = internshipApplication.getStudent();
-                    InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-                    if (student.getSessions().contains(session) && session.equals(internshipOffer.getSession())){
-                        studentsWaitingInterview.add(student);
-                    }
-                }
-        );
-
+            Student student = internshipApplication.getStudent();
+            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
+            String internshipOfferSession = internshipOffer.getSession();
+            if (student.getSessions().contains(session) && session.equals(internshipOfferSession))
+                studentsWaitingInterview.add(student);
+        });
         return studentsWaitingInterview.isEmpty() ? Optional.empty() :
                 Optional.of(studentsWaitingInterview.stream().distinct().collect(Collectors.toList()));
     }
@@ -229,8 +252,10 @@ public class BackendService {
         internshipListWithoutStudentEvaluation .forEach(internship -> {
             InternshipApplication internshipApplication = internship.getInternshipApplication();
             InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-            if(internshipApplication.statusIsCompleted() && session.equals(internshipOffer.getSession()))
-                studentList.add(internshipApplication.getStudent());
+            String internshipOfferSession = internshipOffer.getSession();
+            Student student = internshipApplication.getStudent();
+            if(internshipApplication.statusIsCompleted() && session.equals(internshipOfferSession))
+                studentList.add(student);
         });
         return studentList.stream().distinct().collect(Collectors.toList());
     }
@@ -283,16 +308,14 @@ public class BackendService {
             String internshipOfferSession = internshipOffer.getSession();
             int internshipOfferYear = Integer.parseInt(internshipOfferSession.split(" ")[POSITION_YEAR_IN_SESSION]);
 
-            if (internshipOfferYear > year || (WINTER_SESSION.equals(session) && internshipOfferYear == year)) {
+            if (internshipOfferYear > year || (WINTER_SESSION.equals(session) && internshipOfferYear == year))
                 sessions.add(internshipOffer.getSession());
-            }
         });
         return sessions;
     }
 
     public Optional<TreeSet<String>> getAllSessionsOfInvalidInternshipOffers() {
         List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
-        System.out.println(internshipOffers.size());
         TreeSet<String> sessions = setSessionsOfInternshipOffers(internshipOffers);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
@@ -306,7 +329,6 @@ public class BackendService {
     private TreeSet<String> setSessionsOfInternshipOffers(List<InternshipOffer> internshipOffers) {
         TreeSet<String> sessions = new TreeSet<>();
         internshipOffers.forEach(internshipOffer -> sessions.add(internshipOffer.getSession()));
-
         return (TreeSet<String>) sessions.descendingSet();
     }
 
@@ -323,7 +345,6 @@ public class BackendService {
             optionalSupervisor.ifPresent(supervisor -> supervisorMap.put(getNextSessionFromDate(new Date()), supervisor));
             studentRepository.save(student);
         });
-
         return cleanUpStudentCVList(optionalStudent);
     }
 
@@ -346,9 +367,11 @@ public class BackendService {
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
         Optional<PDFDocument> optionalDocument = Optional.empty();
 
-        if (optionalInternshipOffer.isPresent() && optionalInternshipOffer.get().getPDFDocument() != null)
-            optionalDocument = Optional.of(optionalInternshipOffer.get().getPDFDocument());
-
+        if(optionalInternshipOffer.isPresent()){
+            PDFDocument pdfDocument = optionalInternshipOffer.get().getPDFDocument();
+            if (pdfDocument != null)
+                optionalDocument = Optional.of(optionalInternshipOffer.get().getPDFDocument());
+        }
         return optionalDocument;
     }
 

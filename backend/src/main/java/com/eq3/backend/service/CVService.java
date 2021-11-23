@@ -126,6 +126,7 @@ public class CVService {
         if (cvActive != null) {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
             helper.addTo(internshipManager.getEmail());
             helper.setSubject(EMAIL_SUBJECT_ACTIVE_CV);
             helper.setText(getEmailTextActiveCV(student, cvActive));
