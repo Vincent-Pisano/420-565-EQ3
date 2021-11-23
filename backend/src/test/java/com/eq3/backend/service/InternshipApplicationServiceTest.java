@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
@@ -18,12 +19,16 @@ import static com.eq3.backend.utils.UtilsTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class InternshipApplicationServiceTest {
 
     @InjectMocks
     private InternshipApplicationService service;
+
+    @Mock
+    private EmailService emailService;
 
     @Mock
     private StudentRepository studentRepository;
@@ -198,6 +203,7 @@ public class InternshipApplicationServiceTest {
 
         when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername())).thenReturn(Optional.of(expectedStudent));
         when(internshipApplicationRepository.save(any(InternshipApplication.class))).thenReturn(expectedInternshipApplication);
+        doNothing().when(emailService).sendEmailWhenStudentAppliesToNewInternshipOffer(any(), any());
 
         //Act
         final Optional<InternshipApplication> optionalInternshipApplication =
