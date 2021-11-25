@@ -37,6 +37,7 @@
 
 .cont_form {
   min-width: 100%;
+  color: #000;
 }
 
 .cont_tabs_login {
@@ -54,7 +55,7 @@
 }
 
 .cont_text_inputs label {
-  color: #999;
+  color: black;
   font-size: small;
   position: relative;
   float: left;
@@ -108,14 +109,14 @@
   width: 100%;
   box-shadow: none !important;
   font-family: "Lucida Console", "Courier New", monospace;
-  color: #e6e6e6;
+  color: black;
 }
 
 .cont_title_form h2 {
   font-weight: bold;
   font-size: 2.5rem;
   font-family: "Lucida Console", "Courier New", monospace;
-  color : #e6e6e6;
+  color: black;
 }
 
 .discret {
@@ -129,14 +130,10 @@
 
 .input_form {
   width: 90%;
-  border: none;
-  border-bottom: 1px solid white;
-  background-color: transparent;
   font-size: 20px;
-  outline: none;
   transition: all 0.5s;
-  border-radius: 0%;
-  color: white;
+  color: black;
+  background-color: transparent;
   
   margin: 5% 5%;
   padding: 4% 2%;
@@ -153,7 +150,7 @@
 .input_form:focus {
   box-shadow: none;
   background-color: transparent;
-  color: white;
+  color: black;
 }
 
 .select_form {
@@ -171,7 +168,7 @@
   height: 50px;
   font-size: 20px;
   display: block;
-  color: white;
+  color: black;
 }
 
 .cont_file_form {
@@ -238,13 +235,12 @@
   height: fit-content;
   padding: 20px;
   margin: 5px;
-  box-shadow: 0px 2px 20px 2px #868686;
   font-size: 18px;
   border-radius: 20px;
-  background-color: #fbfcf8;
   transition-duration: 3s;
   transition: 1.5s;
   position: relative;
+  color: black;
 }
 
 .btn_submit:hover {
@@ -292,7 +288,7 @@
 
 .labelFields {
   font-size: 1rem;
-  color: #999;
+  color: black;
   margin-bottom: -2%;
 }
 
