@@ -8,18 +8,24 @@ import InternshipOfferButtonDownload from "./InternshipOfferButtonDownload";
 import InternshipOfferButtonValidate from "./InternshipOfferButtonValidate";
 import InternshipOfferButtonApply from "./InternshipOfferButtonApply";
 import "../../styles/Form.css";
+import { DEPARTMENTS } from "../../Utils/DEPARTMENTS";
+import { SCHEDULES } from "../../Utils/SCHEDULES";
 import {
-  ARCHITECTURE_DEPT,
-  COMPUTER_SCIENCE_DEPT,
-  NURSING_DEPT,
-} from "../../Utils/DEPARTMENTS";
+  GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT,
+  GET_MONITOR,
+  POST_APPLY_INTERNSHIP_OFFER,
+  SAVE_INTERNSHIP_OFFER,
+} from "../../Utils/API";
 import {
-  DAY_SCHEDULE,
-  FLEXIBLE_SCHEDULE,
-  NIGHT_SCHEDULE,
-} from "../../Utils/SCHEDULES";
-import { GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT, GET_MONITOR, POST_APPLY_INTERNSHIP_OFFER, SAVE_INTERNSHIP_OFFER } from "../../Utils/API";
-import { CONFIRM_SAVE_INTERNSHIP_OFFER, ERROR_INTERNSHIP_OFFER_FORM, ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED, ERROR_INVALID_DURATION, ERROR_INVALID_INTERNSHIP_OFFER, ERROR_MONITOR_NOT_FOUND, ERROR_NO_PDF_FOUND, ERROR_NO_WORK_DAYS } from "../../Utils/Errors_Utils";
+  CONFIRM_SAVE_INTERNSHIP_OFFER,
+  ERROR_INTERNSHIP_OFFER_FORM,
+  ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED,
+  ERROR_INVALID_DURATION,
+  ERROR_INVALID_INTERNSHIP_OFFER,
+  ERROR_MONITOR_NOT_FOUND,
+  ERROR_NO_PDF_FOUND,
+  ERROR_NO_WORK_DAYS,
+} from "../../Utils/Errors_Utils";
 
 const InternshipOfferForm = () => {
   let user = auth.user;
@@ -51,8 +57,9 @@ const InternshipOfferForm = () => {
           address: "",
           city: "",
           postalCode: "",
-          workShift: DAY_SCHEDULE,
-          workField: COMPUTER_SCIENCE_DEPT,
+          workShift: SCHEDULES[0] !== undefined ? SCHEDULES[0].key : undefined,
+          workField:
+            DEPARTMENTS[0] !== undefined ? DEPARTMENTS[0].key : undefined,
           monitor: {},
         }
   );
@@ -63,7 +70,8 @@ const InternshipOfferForm = () => {
     if (auth.isStudent() && internshipOffer !== undefined) {
       axios
         .get(
-          GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(internshipOffer.session) + user.username
+          GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(internshipOffer.session) +
+            user.username
         )
         .then((response) => {
           setInternshipApplications(response.data);
@@ -79,18 +87,13 @@ const InternshipOfferForm = () => {
   function applyInternshipOffer() {
     fields.monitor.signature = undefined;
     axios
-      .post(
-        POST_APPLY_INTERNSHIP_OFFER + user.username,
-        fields
-      )
+      .post(POST_APPLY_INTERNSHIP_OFFER + user.username, fields)
       .then((response) => {
         setHasApplied(true);
         setTimeout(() => {
           redirect();
         }, 3000);
-        setErrorMessage(
-          ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED
-        );
+        setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED);
       })
       .catch((error) => {
         setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM);
@@ -144,9 +147,7 @@ const InternshipOfferForm = () => {
             pathname: `/home/${user.username}`,
           });
         }, 3000);
-        setErrorMessage(
-          CONFIRM_SAVE_INTERNSHIP_OFFER
-        );
+        setErrorMessage(CONFIRM_SAVE_INTERNSHIP_OFFER);
       })
       .catch((error) => {
         isLoading = false;
@@ -520,9 +521,13 @@ const InternshipOfferForm = () => {
                       className="select_form d_block "
                       required
                     >
-                      <option value={DAY_SCHEDULE}>Jour</option>
-                      <option value={NIGHT_SCHEDULE}>Nuit</option>
-                      <option value={FLEXIBLE_SCHEDULE}>Flexible</option>
+                      {SCHEDULES.map((schedule) => {
+                        return (
+                          <option key={schedule.key} value={schedule.key}>
+                            {schedule.name}
+                          </option>
+                        );
+                      })}
                     </Form.Select>
                   </Form.Group>
                   <Form.Group controlId="workField">
@@ -536,11 +541,13 @@ const InternshipOfferForm = () => {
                       className="select_form d_block"
                       required
                     >
-                      <option value={ARCHITECTURE_DEPT}>Architecture</option>
-                      <option value={COMPUTER_SCIENCE_DEPT}>
-                        Informatique
-                      </option>
-                      <option value={NURSING_DEPT}>Infirmier</option>
+                      {DEPARTMENTS.map((department) => {
+                        return (
+                          <option key={department.key} value={department.key}>
+                            {department.name}
+                          </option>
+                        );
+                      })}
                     </Form.Select>
                   </Form.Group>
                   <Form.Group
