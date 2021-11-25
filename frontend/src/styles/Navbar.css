@@ -1,5 +1,7 @@
 #main-navbar {
-  background: linear-gradient(-87deg, #fdaeae 40%, rgb(194, 206, 207) 70%);
+  background: linear-gradient(-87deg,  #2e578c 40%, rgb(255, 255, 255) 70%);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .title-navbar {
@@ -18,7 +20,7 @@
 }
 
 .nav-link:hover {
-  background: linear-gradient(-87deg, #aeb4b4 40%, #9bacb3 100%);
+  background: #1b243a;
   box-shadow: 0px 2px 20px 2px rgba(192, 220, 223, 0.5);
 }
 
@@ -28,7 +30,7 @@
 
 .nav-links-header {
   text-decoration: none;
-  color: rgb(0, 0, 0);
+  color: black;
   white-space: nowrap;
   padding-left: 5px;
   padding-right: 5px;

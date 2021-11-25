@@ -4,20 +4,22 @@
   align-items: center;
   text-align: center;
   min-height: 100vh;
+  width: 100%;
 }
 
 .cont_central {
   padding: 2%;
+  margin: 2%;
   background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
   border-radius: 8px;
   transition: all 0.5s;
-  width: 95%;
-  margin: 5% auto;
+  width: 100%;
+  height: 100%;
 }
 
 .cont_central_auth {
   padding: 2%;
-  background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
+  background-color : #2e578c;
   border-radius: 8px;
   transition: all 0.5s;
   width: 30%;
@@ -105,16 +107,19 @@
 .cont_title_form {
   width: 100%;
   box-shadow: none !important;
-  color: rgba(255, 64, 88, 0.74);
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: #e6e6e6;
 }
 
 .cont_title_form h2 {
   font-weight: bold;
   font-size: 2.5rem;
+  font-family: "Lucida Console", "Courier New", monospace;
+  color : #e6e6e6;
 }
 
 .discret {
-  color: #9bacb3;
+  color: #e6e6e6;
 }
 
 .cont_inputs {
@@ -125,13 +130,14 @@
 .input_form {
   width: 90%;
   border: none;
-  border-bottom: 1px solid #b0bec5;
+  border-bottom: 1px solid white;
   background-color: transparent;
   font-size: 20px;
   outline: none;
   transition: all 0.5s;
   border-radius: 0%;
-
+  color: white;
+  
   margin: 5% 5%;
   padding: 4% 2%;
   opacity: 1;
@@ -147,6 +153,7 @@
 .input_form:focus {
   box-shadow: none;
   background-color: transparent;
+  color: white;
 }
 
 .select_form {
@@ -164,6 +171,7 @@
   height: 50px;
   font-size: 20px;
   display: block;
+  color: white;
 }
 
 .cont_file_form {
@@ -227,14 +235,21 @@
 }
 
 .btn_submit {
-  background: rgba(255, 64, 88, 0.74);
-  box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5);
-  border-radius: 8px;
-  padding: 15px 30px;
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
+  height: fit-content;
+  padding: 20px;
+  margin: 5px;
+  box-shadow: 0px 2px 20px 2px #868686;
+  font-size: 18px;
+  border-radius: 20px;
+  background-color: #fbfcf8;
+  transition-duration: 3s;
+  transition: 1.5s;
+  position: relative;
+}
+
+.btn_submit:hover {
+  color: white;
+  background-color: #272538;
 }
 
 .checkboxes {
@@ -312,7 +327,7 @@
   display: block;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1500px) {
   .cont_central_auth {
     width: 98%;
   }
