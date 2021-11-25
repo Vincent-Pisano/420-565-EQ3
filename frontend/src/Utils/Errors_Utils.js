@@ -72,6 +72,8 @@ export const ERROR_SAVE_CV = "Erreur d'envoi de fichier";
 export const ERROR_CV_LIST_MAX_SIZE = "Erreur! Taille maximale de fichiers atteinte(10)";
 export const ERROR_CV_INVALID_FORMAT = "Erreur! veuillez soumettre un fichier sous format .pdf";
 
+export const WAIT_SENDING_EMAIL_ACTIVE_CV = "Envoie de l'email d'activation de CV en cours, veuillez patientez";
+
 export const CONFIRM_ACTIVE_CV = "Le CV est maintenant actif";
 export const CONFIRM_DELETE_CV = "Le fichier a été supprimé";
 export const CONFIRM_SAVE_CV = "Le fichier a été déposé";
