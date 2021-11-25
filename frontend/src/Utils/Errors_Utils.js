@@ -41,6 +41,7 @@ export const ERROR_NO_WORK_DAYS = "Erreur! Choisissez au moins une journée de t
 export const ERROR_INVALID_INTERNSHIP_OFFER = "Erreur! L'offre de stage est invalide";
 export const ERROR_VALIDATION_INTERNSHIP_OFFER = "Erreur lors de la validation";
 export const ERROR_REFUSING_INTERNSHIP_OFFER = "Erreur lors du refus ";
+export const ERROR_NO_ACTIVE_CV_VALID = "Erreur ! aucun CV actif n'est valide";
 
 export const CONFIRM_SAVE_INTERNSHIP_OFFER = "L'offre de stage a été sauvegardé, vous allez être redirigé";
 export const CONFIRM_VALIDATION_INTERNSHIP_OFFER = "L'offre de stage a été validée, vous allez être redirigé";

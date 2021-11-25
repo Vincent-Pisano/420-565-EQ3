@@ -25,6 +25,7 @@ import {
   ERROR_MONITOR_NOT_FOUND,
   ERROR_NO_PDF_FOUND,
   ERROR_NO_WORK_DAYS,
+  ERROR_NO_ACTIVE_CV_VALID
 } from "../../Utils/Errors_Utils";
 
 const InternshipOfferForm = () => {
@@ -85,19 +86,26 @@ const InternshipOfferForm = () => {
   }
 
   function applyInternshipOffer() {
-    fields.monitor.signature = undefined;
-    axios
-      .post(POST_APPLY_INTERNSHIP_OFFER + user.username, fields)
-      .then((response) => {
-        setHasApplied(true);
-        setTimeout(() => {
-          redirect();
-        }, 3000);
-        setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED);
-      })
-      .catch((error) => {
-        setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM);
-      });
+    let isStudentActiveCVValid = user.cvlist.some(
+      (cv) => cv.isActive && cv.status === "VALID"
+    );
+    if (isStudentActiveCVValid) {
+      fields.monitor.signature = undefined;
+      axios
+        .post(POST_APPLY_INTERNSHIP_OFFER + user.username, fields)
+        .then((response) => {
+          setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED);
+          setHasApplied(true);
+          setTimeout(() => {
+            redirect();
+          }, 3000);
+        })
+        .catch((error) => {
+          setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM);
+        });
+    } else {
+      setErrorMessage(ERROR_NO_ACTIVE_CV_VALID);
+    }
   }
 
   function onCreatePost(e) {
