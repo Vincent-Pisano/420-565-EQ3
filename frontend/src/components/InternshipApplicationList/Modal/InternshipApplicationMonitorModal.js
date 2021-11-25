@@ -5,7 +5,7 @@ import {
   GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
   DEPOSIT_MONITOR_EVALUATION,
   GET_MONITOR_EVALUATION_OF_INTERNSHIP,
-  GET_MONITOR_CONTRACT_OF_INTERNSHIP,
+  GET_CONTRACT_OF_INTERNSHIP,
 } from "../../../Utils/API";
 import {
   ERROR_RETRIEVING_INTERNSHIP_INFOS,
@@ -92,7 +92,7 @@ const InternshipApplicationMonitorModal = ({
       return (
         <>
           <a
-            className="btn btn_submit btn-lg mb-3"
+            className="btn btn_submit noHover btn-lg mb-3"
             href={GET_MONITOR_EVALUATION_OF_INTERNSHIP + internship.id}
             target="_blank"
             rel="noreferrer"
@@ -110,7 +110,7 @@ const InternshipApplicationMonitorModal = ({
         <Col md={4}>
           <a
             className="btn btn-lg btn-warning mt-3"
-            href={GET_MONITOR_CONTRACT_OF_INTERNSHIP + internship.id}
+            href={GET_CONTRACT_OF_INTERNSHIP + internship.id}
             target="_blank"
             rel="noreferrer"
           >

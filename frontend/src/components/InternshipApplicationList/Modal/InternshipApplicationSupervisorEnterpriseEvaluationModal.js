@@ -91,7 +91,7 @@ const InternshipApplicationSupervisorEnterpriseEvaluationModal = ({
       return (
         <>
           <a
-            className="btn btn_submit btn-lg mb-3"
+            className="btn btn_submit noHover btn-lg mb-3"
             href={GET_ENTERPRISE_EVALUATION_OF_INTERNSHIP + internship.id}
             target="_blank"
             rel="noreferrer"

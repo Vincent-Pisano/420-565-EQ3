@@ -8,6 +8,7 @@ export const GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = URL_BACKEND + "getAll/student
 export const GET_ALL_STUDENTS_OF_SUPERVISOR = URL_BACKEND + "getAll/students/supervisor/";
 export const ASSIGN_SUPERVISOR_TO_STUDENT = URL_BACKEND + "assign/supervisor/";
 export const VALIDATE_CV = URL_BACKEND + "validate/CV/";
+export const REFUSE_CV = URL_BACKEND + "refuse/CV/";
 export const VIEW_CV = URL_BACKEND + "get/CV/document/";
 
 //INTERNSHIP APPLICATION LIST
@@ -28,7 +29,7 @@ export const DEPOSIT_MONITOR_EVALUATION = URL_BACKEND + "deposit/evaluation/stud
 export const DEPOSIT_ENTERPRISE_EVALUATION = URL_BACKEND + "deposit/evaluation/enterprise/";
 export const GET_MONITOR_EVALUATION_OF_INTERNSHIP = URL_BACKEND + "get/internship/student/evaluation/document/";
 export const GET_ENTERPRISE_EVALUATION_OF_INTERNSHIP = URL_BACKEND + "get/internship/enterprise/evaluation/document/";
-export const GET_MONITOR_CONTRACT_OF_INTERNSHIP = URL_BACKEND + "get/internship/document/";
+export const GET_CONTRACT_OF_INTERNSHIP = URL_BACKEND + "get/internship/document/";
 export const SIGN_CONTRACT_OF_INTERNSHIP_MONITOR = URL_BACKEND + "sign/internshipContract/monitor/";
 export const SIGN_CONTRACT_OF_INTERNSHIP_STUDENT = URL_BACKEND + "sign/internshipContract/student/";
 export const SIGN_CONTRACT_OF_INTERNSHIP_INTERNSHIP_MANAGER = URL_BACKEND + "sign/internshipContract/internshipManager/";
@@ -42,6 +43,8 @@ export const SAVE_SIGNATURE = URL_BACKEND + "save/signature/";
 export const POST_APPLY_INTERNSHIP_OFFER = URL_BACKEND + "apply/internshipOffer/";
 export const GET_MONITOR = URL_BACKEND + "get/monitor/";
 export const SAVE_INTERNSHIP_OFFER = URL_BACKEND + "save/internshipOffer";
+export const VALIDATE_INTERNSHIP_OFFER = URL_BACKEND + "validate/internshipOffer/";
+export const REFUSE_INTERNSHIP_OFFER = URL_BACKEND + "refuse/internshipOffer/";
 
 //INTERNSHIP OFFER LIST
 export const GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/next/sessions/internshipOffer/unvalidated";

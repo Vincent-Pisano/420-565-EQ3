@@ -10,7 +10,7 @@ import {
 } from "../../../Utils/TITLE";
 import {
   GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
-  GET_MONITOR_CONTRACT_OF_INTERNSHIP,
+  GET_CONTRACT_OF_INTERNSHIP,
   SIGN_CONTRACT_OF_INTERNSHIP_MONITOR,
   SIGN_CONTRACT_OF_INTERNSHIP_STUDENT,
   SIGN_CONTRACT_OF_INTERNSHIP_INTERNSHIP_MANAGER,
@@ -172,11 +172,11 @@ const InternshipApplicationSignatureModal = ({
         <Col md={4}>
           <a
             className="btn btn-lg btn-warning mt-3"
-            href={GET_MONITOR_CONTRACT_OF_INTERNSHIP + internship.id}
+            href={GET_CONTRACT_OF_INTERNSHIP + internship.id}
             target="_blank"
             rel="noreferrer"
           >
-            Contrat
+            Contrat de stage
           </a>
         </Col>
       );

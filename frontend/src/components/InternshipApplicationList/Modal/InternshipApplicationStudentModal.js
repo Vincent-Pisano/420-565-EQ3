@@ -1,7 +1,7 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import { useFormFields } from "../../../lib/hooksLib";
-import { UPDATE_INTERNSHIP_APPLICATION } from "../../../Utils/API";
+import { UPDATE_INTERNSHIP_APPLICATION, GET_CONTRACT_OF_INTERNSHIP, GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION } from "../../../Utils/API";
 import {
   ERROR_UPDATE,
   CONFIRM_MODIFICATIONS,
@@ -18,11 +18,26 @@ const InternshipApplicationStudentModal = ({
 }) => {
   let currentInternshipOffer = currentInternshipApplication.internshipOffer;
 
+  const [internship, setInternship] = useState(undefined);
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [fields, handleFieldChange] = useFormFields({
     status: currentInternshipApplication.status,
     interviewDate: currentInternshipApplication.interviewDate,
   });
+
+  useEffect(() => {
+    axios
+      .get(
+        GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION +
+          currentInternshipApplication.id
+      )
+      .then((response) => {
+        setInternship(response.data);
+      })
+      .catch((err) => {
+        setInternship(undefined);
+      });
+  }, [currentInternshipApplication.id]);
 
   function onConfirmModal(e) {
     e.preventDefault();
@@ -75,6 +90,36 @@ const InternshipApplicationStudentModal = ({
       currentInternshipApplication.status === STATUS_VALIDATED ||
       currentInternshipApplication.status === STATUS_COMPLETED
     );
+  }
+
+  function checkIfCompleted() {
+    if (currentInternshipApplication.status === STATUS_COMPLETED && internship !== undefined) {
+      return (
+        <Col md={4}>
+          <a
+            className="btn btn-lg btn-success mt-3"
+            href={GET_CONTRACT_OF_INTERNSHIP + internship.id}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Contrat de stage
+          </a>
+        </Col>
+      )
+    } else {
+      return (
+        <Col md={4}>
+            <Button
+              variant="success"
+              size="lg"
+              className="mt-3"
+              onClick={(e) => onConfirmModal(e)}
+            >
+              Confirmer
+            </Button>
+          </Col>
+      )
+    }
   }
 
   return (
@@ -137,16 +182,7 @@ const InternshipApplicationStudentModal = ({
           <hr className="modal_separator mx-auto" />
         </Row>
         <Row style={{ textAlign: "center" }}>
-          <Col md={4}>
-            <Button
-              variant="success"
-              size="lg"
-              className="btn_sub"
-              onClick={(e) => onConfirmModal(e)}
-            >
-              Confirmer
-            </Button>
-          </Col>
+          {checkIfCompleted()}
           <Col md={4}>
             <Button
               variant="warning"

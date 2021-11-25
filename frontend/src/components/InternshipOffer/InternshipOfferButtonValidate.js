@@ -1,5 +1,15 @@
 import axios from "axios";
 import { Container } from "react-bootstrap";
+import {
+  VALIDATE_INTERNSHIP_OFFER,
+  REFUSE_INTERNSHIP_OFFER,
+} from "../../Utils/API";
+import {
+  ERROR_VALIDATION_INTERNSHIP_OFFER,
+  ERROR_REFUSING_INTERNSHIP_OFFER,
+  CONFIRM_VALIDATION_INTERNSHIP_OFFER,
+  CONFIRM_REFUSING_INTERNSHIP_OFFER,
+} from "../../Utils/Errors_Utils";
 
 const InternshipOfferButtonValidate = ({
   internshipOfferID,
@@ -9,19 +19,33 @@ const InternshipOfferButtonValidate = ({
 }) => {
   function validateInternshipOffer() {
     axios
-      .post(
-        `http://localhost:9090/validate/internshipOffer/${internshipOfferID}`
-      )
+      .post(VALIDATE_INTERNSHIP_OFFER + internshipOfferID)
       .then((response) => {
         setErrorMessage(
-          "L'offre de stage a été validée, vous allez être redirigé"
+          CONFIRM_VALIDATION_INTERNSHIP_OFFER
         );
         setTimeout(() => {
           redirect();
         }, 2000);
       })
       .catch((error) => {
-        setErrorMessage("Erreur lors de la validation");
+        setErrorMessage(ERROR_VALIDATION_INTERNSHIP_OFFER);
+      });
+  }
+
+  function refuseInternshipOffer() {
+    axios
+      .post(REFUSE_INTERNSHIP_OFFER + internshipOfferID)
+      .then((response) => {
+        setErrorMessage(
+          CONFIRM_REFUSING_INTERNSHIP_OFFER
+        );
+        setTimeout(() => {
+          redirect();
+        }, 2000);
+      })
+      .catch((error) => {
+        setErrorMessage(ERROR_REFUSING_INTERNSHIP_OFFER);
       });
   }
 
@@ -34,8 +58,17 @@ const InternshipOfferButtonValidate = ({
       >
         {errorMessage}
       </p>
-      <button className="btn_submit" onClick={() => validateInternshipOffer()}>
+      <button
+        className="btn btn-lg btn-success mx-3 mb-3"
+        onClick={() => validateInternshipOffer()}
+      >
         Valider
+      </button>
+      <button
+        className="btn btn-lg btn-danger mx-3 mb-3"
+        onClick={() => refuseInternshipOffer()}
+      >
+        Refuser
       </button>
     </Container>
   );
