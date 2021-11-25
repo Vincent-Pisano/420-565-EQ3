@@ -312,6 +312,11 @@
   display: block;
 }
 
+.noHover{
+  cursor: pointer;
+  color: #fff !important;
+}
+
 @media only screen and (max-width: 600px) {
   .cont_central_auth {
     width: 98%;
