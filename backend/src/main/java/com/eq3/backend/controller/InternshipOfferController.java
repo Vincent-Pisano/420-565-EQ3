@@ -75,7 +75,7 @@ public class InternshipOfferController {
 
     @PostMapping(value = URL_REFUSE_INTERNSHIP_OFFER, consumes = { APPLICATION_JSON_AND_CHARSET_UTF8 })
     public ResponseEntity<InternshipOffer> refuseInternshipOffer(@PathVariable String idOffer, @RequestBody(required = false) ObjectNode json) {
-        return service.refuseInternshipOffer(idOffer, json.get(JSON_NODE_REFUSAL_NODE).asText())
+        return service.refuseInternshipOffer(idOffer, getRefusalNote(json))
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

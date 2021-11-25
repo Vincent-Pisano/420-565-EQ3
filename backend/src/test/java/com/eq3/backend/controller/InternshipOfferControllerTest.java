@@ -4,6 +4,7 @@ import com.eq3.backend.model.*;
 import com.eq3.backend.service.InternshipApplicationService;
 import com.eq3.backend.service.InternshipOfferService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

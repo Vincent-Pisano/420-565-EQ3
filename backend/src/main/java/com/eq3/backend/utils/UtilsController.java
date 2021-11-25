@@ -1,5 +1,7 @@
 package com.eq3.backend.utils;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 public class UtilsController {
 
     public final static String CROSS_ORIGIN_ALLOWED = "http://localhost:3006";
@@ -63,7 +65,11 @@ public class UtilsController {
     }
 
     public static class InternshipOfferControllerUrl {
-        public final static String JSON_NODE_REFUSAL_NODE = "refusalNote";
+        private final static String JSON_NODE_REFUSAL_NODE = "refusalNote";
+
+        public static String getRefusalNote(ObjectNode json) {
+            return json != null && json.get(JSON_NODE_REFUSAL_NODE) != null ? json.get(JSON_NODE_REFUSAL_NODE).asText() : "";
+        }
 
         public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
         public final static String URL_GET_ALL_INTERNSHIP_OFFERS_BY_SESSION_AND_WORK_FIELD = "/getAll/internshipOffer/{session}/{workField}";
