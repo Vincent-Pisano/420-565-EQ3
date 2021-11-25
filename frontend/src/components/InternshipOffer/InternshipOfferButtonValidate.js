@@ -1,25 +1,29 @@
 import axios from "axios";
+import { useState } from "react";
 import { Container } from "react-bootstrap";
 import {
   VALIDATE_INTERNSHIP_OFFER,
-  REFUSE_INTERNSHIP_OFFER,
 } from "../../Utils/API";
 import {
   ERROR_VALIDATION_INTERNSHIP_OFFER,
-  ERROR_REFUSING_INTERNSHIP_OFFER,
   CONFIRM_VALIDATION_INTERNSHIP_OFFER,
-  CONFIRM_REFUSING_INTERNSHIP_OFFER,
 } from "../../Utils/Errors_Utils";
+import InternshipOfferModalConfirmRefusal from "./Modal/InternshipOfferModalConfirmRefusal"
 
 const InternshipOfferButtonValidate = ({
-  internshipOfferID,
+  internshipOffer,
   errorMessage,
   setErrorMessage,
   redirect,
 }) => {
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   function validateInternshipOffer() {
     axios
-      .post(VALIDATE_INTERNSHIP_OFFER + internshipOfferID)
+      .post(VALIDATE_INTERNSHIP_OFFER + internshipOffer.id)
       .then((response) => {
         setErrorMessage(
           CONFIRM_VALIDATION_INTERNSHIP_OFFER
@@ -33,23 +37,8 @@ const InternshipOfferButtonValidate = ({
       });
   }
 
-  function refuseInternshipOffer() {
-    axios
-      .post(REFUSE_INTERNSHIP_OFFER + internshipOfferID)
-      .then((response) => {
-        setErrorMessage(
-          CONFIRM_REFUSING_INTERNSHIP_OFFER
-        );
-        setTimeout(() => {
-          redirect();
-        }, 2000);
-      })
-      .catch((error) => {
-        setErrorMessage(ERROR_REFUSING_INTERNSHIP_OFFER);
-      });
-  }
-
   return (
+    <>
     <Container className="cont_btn">
       <p
         style={{
@@ -66,11 +55,19 @@ const InternshipOfferButtonValidate = ({
       </button>
       <button
         className="btn btn-lg btn-danger mx-3 mb-3"
-        onClick={() => refuseInternshipOffer()}
+        onClick={() => handleShow()}
       >
         Refuser
       </button>
     </Container>
+    <InternshipOfferModalConfirmRefusal
+    show={show}
+    handleClose={handleClose}
+    redirect={redirect}
+    internshipOffer={internshipOffer}
+    setErrorMessage={setErrorMessage}
+  />
+  </>
   );
 };
 export default InternshipOfferButtonValidate;

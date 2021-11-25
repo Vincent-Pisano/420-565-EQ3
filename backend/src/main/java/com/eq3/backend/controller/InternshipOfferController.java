@@ -3,6 +3,7 @@ package com.eq3.backend.controller;
 import com.eq3.backend.model.Department;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.service.InternshipOfferService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,9 +73,9 @@ public class InternshipOfferController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PostMapping(URL_REFUSE_INTERNSHIP_OFFER)
-    public ResponseEntity<InternshipOffer> refuseInternshipOffer(@PathVariable String idOffer) {
-        return service.refuseInternshipOffer(idOffer)
+    @PostMapping(value = URL_REFUSE_INTERNSHIP_OFFER, consumes = { APPLICATION_JSON_AND_CHARSET_UTF8 })
+    public ResponseEntity<InternshipOffer> refuseInternshipOffer(@PathVariable String idOffer, @RequestBody(required = false) ObjectNode json) {
+        return service.refuseInternshipOffer(idOffer, json.get(JSON_NODE_REFUSAL_NODE).asText())
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

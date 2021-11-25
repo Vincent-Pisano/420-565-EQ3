@@ -37,14 +37,9 @@ class InternshipOfferControllerTest {
     private InternshipOfferService service;
 
     //global variables
-    private Student expectedStudent;
     private Monitor expectedMonitor;
     private InternshipOffer expectedInternshipOffer;
     private List<InternshipOffer> expectedInternshipOfferList;
-    private InternshipApplication expectedInternshipApplication;
-    private Internship expectedInternship;
-    private List<InternshipApplication> expectedInternshipApplicationList;
-    private Map<String, String> expectedEngagements;
 
     @Test
     //Disabled
@@ -229,7 +224,7 @@ class InternshipOfferControllerTest {
         expectedInternshipOffer = getInternshipOfferWithId();
         expectedInternshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED);
 
-        when(service.refuseInternshipOffer(expectedInternshipOffer.getId()))
+        when(service.refuseInternshipOffer(eq(expectedInternshipOffer.getId()), any()))
                 .thenReturn(Optional.of(expectedInternshipOffer));
 
         //Act

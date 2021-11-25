@@ -93,9 +93,12 @@ public class InternshipOfferService {
         return optionalInternshipOffer.map(internshipOfferRepository::save);
     }
 
-    public Optional<InternshipOffer> refuseInternshipOffer(String idOffer) {
+    public Optional<InternshipOffer> refuseInternshipOffer(String idOffer, String refusalNote) {
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
-        optionalInternshipOffer.ifPresent(internshipOffer -> internshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED));
+        optionalInternshipOffer.ifPresent(internshipOffer -> {
+            internshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED);
+            internshipOffer.setRefusalNote(refusalNote);
+        });
         return optionalInternshipOffer.map(internshipOfferRepository::save);
     }
 

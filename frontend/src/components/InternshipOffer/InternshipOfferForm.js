@@ -188,7 +188,7 @@ const InternshipOfferForm = () => {
     ) {
       return (
         <InternshipOfferButtonValidate
-          internshipOfferID={internshipOffer.id}
+          internshipOffer={internshipOffer}
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
           redirect={redirect}

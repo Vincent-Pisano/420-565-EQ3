@@ -63,6 +63,8 @@ public class UtilsController {
     }
 
     public static class InternshipOfferControllerUrl {
+        public final static String JSON_NODE_REFUSAL_NODE = "refusalNote";
+
         public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
         public final static String URL_GET_ALL_INTERNSHIP_OFFERS_BY_SESSION_AND_WORK_FIELD = "/getAll/internshipOffer/{session}/{workField}";
         public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS_BY_SESSION = "/getAll/internshipOffer/unvalidated/{session}";

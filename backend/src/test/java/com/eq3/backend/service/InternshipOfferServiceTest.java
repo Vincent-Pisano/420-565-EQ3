@@ -247,7 +247,7 @@ public class InternshipOfferServiceTest {
 
         //Act
         final Optional<InternshipOffer> optionalInternshipOffer =
-                service.refuseInternshipOffer(expectedInternshipOffer.getId());
+                service.refuseInternshipOffer(expectedInternshipOffer.getId(), "");
 
         //Assert
         InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);

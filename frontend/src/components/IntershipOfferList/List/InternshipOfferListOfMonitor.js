@@ -13,12 +13,18 @@ import {
   ERROR_NO_INTERNSHIP_OFFER_DEPOSITED,
   ERROR_NO_INTERNSHIP_OFFER_DEPOSITED_FOR_THIS_SESSION,
 } from "../../../Utils/Errors_Utils";
+import InternshipOfferModalMonitorRefusal from "../Modal/InternshipOfferModalMonitorRefusal"
 
 function InternshipOfferListOfMonitor() {
   let history = useHistory();
   let user = auth.user;
 
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [internshipOffers, setInternshipOffers] = useState([]);
+  const [currentInternshipOffer, setCurrentInternshipOffer] = useState(undefined);
   const [sessions, setSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(sessions[0]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,6 +53,15 @@ function InternshipOfferListOfMonitor() {
     }
   }, [currentSession, sessions.length, user.id]);
 
+  function onInternshipOfferClicked(internshipOffer) {
+    if (internshipOffer.status === "REFUSED") {
+      setCurrentInternshipOffer(internshipOffer)
+      handleShow()
+    } else {
+      showInternshipOffer(internshipOffer)
+    }
+  }
+
   function showInternshipOffer(internshipOffer) {
     history.push({
       pathname: URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER,
@@ -57,6 +72,7 @@ function InternshipOfferListOfMonitor() {
   }
 
   return (
+    <>
     <InternshipOfferListTemplate
       internshipOffers={internshipOffers}
       sessions={sessions}
@@ -64,8 +80,16 @@ function InternshipOfferListOfMonitor() {
       setCurrentSession={setCurrentSession}
       title={title}
       errorMessage={errorMessage}
-      onClick={showInternshipOffer}
+      onClick={onInternshipOfferClicked}
     />
+<InternshipOfferModalMonitorRefusal
+    show={show}
+    handleClose={handleClose}
+    currentInternshipOffer={currentInternshipOffer}
+    showInternshipOffer={showInternshipOffer}
+  />
+    </>
+
   );
 }
 

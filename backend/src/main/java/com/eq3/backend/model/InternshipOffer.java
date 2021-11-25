@@ -27,50 +27,38 @@ public class InternshipOffer extends Entity{
         REFUSED
     }
 
-    @Field
     private String jobName;
 
-    @Field
     private String description;
 
-    @Field
     private Date startDate;
 
-    @Field
     private Date endDate;
 
-    @Field
     private Double weeklyWorkTime;
 
-    @Field
     private Double hourlySalary;
 
-    @Field
     private List<String> workDays;
 
-    @Field
     private WorkShift workShift;
 
-    @Field
     private String address;
 
-    @Field
     private String city;
 
-    @Field
     private String postalCode;
 
-    @Field
     private Department workField;
 
-    @Field
     private String session;
 
     @DBRef
     private Monitor monitor;
 
-    @Field
     private PDFDocument PDFDocument;
+
+    private String refusalNote;
 
     @Field
     @Builder.Default
