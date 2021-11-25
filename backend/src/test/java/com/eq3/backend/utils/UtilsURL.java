@@ -50,6 +50,7 @@ public class UtilsURL {
     public final static String URL_UPDATE_ACTIVE_CV = "/update/ActiveCV/";
     public final static String URL_GET_ALL_STUDENTS_CV_ACTIVE_NOT_VALID = "/getAll/student/CVActiveNotValid/";
     public final static String URL_VALIDATE_CV = "/validate/CV/";
+    public final static String URL_REFUSE_CV = "/refuse/CV/";
 
     // InternshipController
     public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
@@ -70,6 +71,7 @@ public class UtilsURL {
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_BY_INTERNSHIP_OFFER = "/getAll/internshipApplication/internshipOffer/";
     public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/";
     public final static String URL_VALIDATE_INTERNSHIP_OFFER = "/validate/internshipOffer/";
+    public final static String URL_REFUSE_INTERNSHIP_OFFER = "/refuse/internshipOffer/";
     public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_MONITOR = "/sign/internshipContract/monitor/";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_STUDENT = "/sign/internshipContract/student/";

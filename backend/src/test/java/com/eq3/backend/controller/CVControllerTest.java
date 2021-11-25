@@ -187,4 +187,35 @@ public class CVControllerTest {
         assertThat(cv).isNotNull();
         assertThat(cv.getIsActive()).isTrue();
     }
+
+    @Test
+    //@Disabled
+    public void testRefuseCVOfStudent() throws Exception {
+        //Arrange
+        expectedStudent = getStudentWithId();
+        CV expectedCV = getCV();
+        expectedCV.getPDFDocument().setContent(null);
+        expectedStudent.getCVList().add(expectedCV);
+        expectedCV.setIsActive(true);
+
+        when(service.refuseCVOfStudent(expectedStudent.getId()))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_REFUSE_CV + expectedStudent.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(expectedStudent))).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualStudent = new ObjectMapper().readValue(response.getContentAsString(), Student.class);
+        List<CV> cvList = actualStudent != null ? actualStudent.getCVList() : null;
+        CV cv = cvList != null ? cvList.get(0) : null;
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualStudent).isNotNull();
+        assertThat(cvList).isNotNull();
+        assertThat(cv).isNotNull();
+        assertThat(cv.getIsActive()).isTrue();
+    }
 }

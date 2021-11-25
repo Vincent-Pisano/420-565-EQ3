@@ -232,4 +232,29 @@ public class InternshipOfferServiceTest {
         assertThat(actualInternshipOffer).isEqualTo(expectedInternshipOffer);
         assertThat(status).isEqualTo(InternshipOffer.OfferStatus.ACCEPTED);
     }
+
+    @Test
+    //@Disabled
+    public void testRefuseInternshipOffer() {
+        //Arrange
+        expectedInternshipOffer = getInternshipOfferWithId();
+        expectedInternshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED);
+
+        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
+        when(internshipOfferRepository.save(expectedInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
+
+        //Act
+        final Optional<InternshipOffer> optionalInternshipOffer =
+                service.refuseInternshipOffer(expectedInternshipOffer.getId());
+
+        //Assert
+        InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
+        InternshipOffer.OfferStatus status = actualInternshipOffer != null ? actualInternshipOffer.getStatus() : InternshipOffer.OfferStatus.ACCEPTED;
+
+        assertThat(optionalInternshipOffer.isPresent()).isTrue();
+        assertThat(actualInternshipOffer).isEqualTo(expectedInternshipOffer);
+        assertThat(status).isEqualTo(InternshipOffer.OfferStatus.REFUSED);
+    }
 }

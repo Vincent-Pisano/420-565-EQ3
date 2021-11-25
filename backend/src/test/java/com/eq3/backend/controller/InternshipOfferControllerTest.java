@@ -221,4 +221,29 @@ class InternshipOfferControllerTest {
         assertThat(actualInternshipOffer).isNotNull();
         assertThat(actualInternshipOffer.getStatus()).isEqualTo(InternshipOffer.OfferStatus.ACCEPTED);
     }
+
+    @Test
+    //@Disabled
+    public void testRefuseInternshipOffer() throws Exception {
+        //Arrange
+        expectedInternshipOffer = getInternshipOfferWithId();
+        expectedInternshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED);
+
+        when(service.refuseInternshipOffer(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.of(expectedInternshipOffer));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_REFUSE_INTERNSHIP_OFFER +
+                expectedInternshipOffer.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+        var actualInternshipOffer
+                = new ObjectMapper().readValue(response.getContentAsString(), InternshipOffer.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+        assertThat(actualInternshipOffer).isNotNull();
+        assertThat(actualInternshipOffer.getStatus()).isEqualTo(InternshipOffer.OfferStatus.REFUSED);
+    }
 }

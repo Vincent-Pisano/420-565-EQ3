@@ -20,10 +20,10 @@ public interface InternshipOfferRepository extends MongoRepository<InternshipOff
     @Query(value = "{'status' : 'ACCEPTED', 'isDisabled':false}")
     List<InternshipOffer> findAllByStatusAcceptedAndIsDisabledFalse();
 
-    @Query(value = "{'status' : 'WAITING', 'isDisabled':false, 'session': ?0}}")
+    @Query(value = "{'status' : 'WAITING', 'isDisabled':false, 'session': ?0}")
     List<InternshipOffer> findAllByStatusWaitingAndIsDisabledFalseAndSession(String session);
 
-    @Query(value = "{'status' : 'ACCEPTED', 'isDisabled':false, 'session': ?0}}")
+    @Query(value = "{'status' : 'ACCEPTED', 'isDisabled':false, 'session': ?0}")
     List<InternshipOffer> findAllByStatusAcceptedAndIsDisabledFalseAndSession(String session);
 
     List<InternshipOffer> findAllBySessionAndMonitor_IdAndIsDisabledFalse(String session, String id);
