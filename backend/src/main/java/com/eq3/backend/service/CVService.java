@@ -164,6 +164,22 @@ public class CVService {
         return cleanUpStudentCVList(optionalStudent);
     }
 
+    public Optional<Student> refuseCVOfStudent(String idStudent) {
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+
+        optionalStudent.ifPresent(student -> {
+            List<CV> CVList = student.getCVList();
+            CVList.forEach(cv -> {
+                if (cv.getIsActive()) {
+                    cv.setStatus(CV.CVStatus.REFUSED);
+                }
+            });
+            studentRepository.save(student);
+        });
+
+        return cleanUpStudentCVList(optionalStudent);
+    }
+
     public Optional<List<Student>> getAllStudentWithCVActiveWaitingValidation(String session) {
         List<Student> studentList =
                 studentRepository.findAllByIsDisabledFalseAndActiveCVWaitingValidationAndSessionsContains(session);

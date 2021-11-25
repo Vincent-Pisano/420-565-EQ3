@@ -71,4 +71,11 @@ public class InternshipOfferController {
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @PostMapping(URL_REFUSE_INTERNSHIP_OFFER)
+    public ResponseEntity<InternshipOffer> refuseInternshipOffer(@PathVariable String idOffer) {
+        return service.refuseInternshipOffer(idOffer)
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 }

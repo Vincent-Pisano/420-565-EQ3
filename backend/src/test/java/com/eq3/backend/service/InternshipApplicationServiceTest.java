@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
@@ -155,7 +154,7 @@ public class InternshipApplicationServiceTest {
         expectedInternshipApplicationList = getListOfAcceptedInternshipApplication();
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(any()))
+        when(internshipOfferRepository.findAllByStatusAcceptedAndIsDisabledFalseAndSession(any()))
                 .thenReturn(expectedInternshipOfferList);
         when(internshipApplicationRepository.findAllByIsDisabledFalseAndInternshipOfferInAndStatus(
                 any(), any()

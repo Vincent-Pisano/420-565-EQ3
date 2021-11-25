@@ -132,7 +132,7 @@ public class InternshipOfferServiceTest {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByWorkFieldAndSessionAndIsValidTrueAndIsDisabledFalse(Department.COMPUTER_SCIENCE, SESSION))
+        when(internshipOfferRepository.findAllByWorkFieldAndSessionAndStatusAcceptedAndIsDisabledFalse(Department.COMPUTER_SCIENCE, SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         //Act
@@ -152,7 +152,7 @@ public class InternshipOfferServiceTest {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalseAndSession(SESSION))
+        when(internshipOfferRepository.findAllByStatusWaitingAndIsDisabledFalseAndSession(SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
@@ -172,7 +172,7 @@ public class InternshipOfferServiceTest {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();
 
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(SESSION))
+        when(internshipOfferRepository.findAllByStatusAcceptedAndIsDisabledFalseAndSession(SESSION))
                 .thenReturn(expectedInternshipOfferList);
 
         // Act
@@ -213,7 +213,7 @@ public class InternshipOfferServiceTest {
     public void testValidateInternshipOffer() {
         //Arrange
         expectedInternshipOffer = getInternshipOfferWithId();
-        expectedInternshipOffer.setIsValid(true);
+        expectedInternshipOffer.setStatus(InternshipOffer.OfferStatus.ACCEPTED);
 
         when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
                 .thenReturn(Optional.ofNullable(expectedInternshipOffer));
@@ -226,10 +226,35 @@ public class InternshipOfferServiceTest {
 
         //Assert
         InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
-        Boolean actualIsValid = actualInternshipOffer != null ? actualInternshipOffer.getIsValid() : false;
+        InternshipOffer.OfferStatus status = actualInternshipOffer != null ? actualInternshipOffer.getStatus() : InternshipOffer.OfferStatus.REFUSED;
 
         assertThat(optionalInternshipOffer.isPresent()).isTrue();
         assertThat(actualInternshipOffer).isEqualTo(expectedInternshipOffer);
-        assertThat(actualIsValid).isTrue();
+        assertThat(status).isEqualTo(InternshipOffer.OfferStatus.ACCEPTED);
+    }
+
+    @Test
+    //@Disabled
+    public void testRefuseInternshipOffer() {
+        //Arrange
+        expectedInternshipOffer = getInternshipOfferWithId();
+        expectedInternshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED);
+
+        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
+                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
+        when(internshipOfferRepository.save(expectedInternshipOffer))
+                .thenReturn(expectedInternshipOffer);
+
+        //Act
+        final Optional<InternshipOffer> optionalInternshipOffer =
+                service.refuseInternshipOffer(expectedInternshipOffer.getId());
+
+        //Assert
+        InternshipOffer actualInternshipOffer = optionalInternshipOffer.orElse(null);
+        InternshipOffer.OfferStatus status = actualInternshipOffer != null ? actualInternshipOffer.getStatus() : InternshipOffer.OfferStatus.ACCEPTED;
+
+        assertThat(optionalInternshipOffer.isPresent()).isTrue();
+        assertThat(actualInternshipOffer).isEqualTo(expectedInternshipOffer);
+        assertThat(status).isEqualTo(InternshipOffer.OfferStatus.REFUSED);
     }
 }

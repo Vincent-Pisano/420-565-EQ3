@@ -113,7 +113,7 @@ public class InternshipApplicationService {
 
     public Optional<List<InternshipApplication>> getAllAcceptedInternshipApplicationsNextSessions() {
         List<InternshipOffer> internshipOffers =
-                internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalseAndSession(getNextSessionFromDate(new Date()));
+                internshipOfferRepository.findAllByStatusAcceptedAndIsDisabledFalseAndSession(getNextSessionFromDate(new Date()));
         List<InternshipApplication> internshipApplications =
                 internshipApplicationRepository.findAllByIsDisabledFalseAndInternshipOfferInAndStatus(
                         internshipOffers, InternshipApplication.ApplicationStatus.ACCEPTED

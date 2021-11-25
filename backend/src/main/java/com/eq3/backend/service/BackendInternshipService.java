@@ -131,13 +131,13 @@ public class BackendInternshipService {
     }
 
     public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffersValidated() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByStatusAcceptedAndIsDisabledFalse();
         TreeSet<String> sessions = setNextSessionsOfInternshipOffers(internshipOffers);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
 
     public Optional<TreeSet<String>> getAllNextSessionsOfInternshipOffersUnvalidated() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByStatusWaitingAndIsDisabledFalse();
         TreeSet<String> sessions = setNextSessionsOfInternshipOffers(internshipOffers);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
@@ -161,13 +161,13 @@ public class BackendInternshipService {
     }
 
     public Optional<TreeSet<String>> getAllSessionsOfInvalidInternshipOffers() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByStatusWaitingAndIsDisabledFalse();
         TreeSet<String> sessions = setSessionsOfInternshipOffers(internshipOffers);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
 
     public Optional<TreeSet<String>> getAllSessionsOfValidInternshipOffers() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse();
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByStatusAcceptedAndIsDisabledFalse();
         TreeSet<String> sessions = setSessionsOfInternshipOffers(internshipOffers);
         return sessions.isEmpty() ? Optional.empty() : Optional.of(sessions);
     }
