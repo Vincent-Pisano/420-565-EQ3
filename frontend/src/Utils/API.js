@@ -8,6 +8,7 @@ export const GET_ALL_STUDENTS_WITHOUT_SUPERVISOR = URL_BACKEND + "getAll/student
 export const GET_ALL_STUDENTS_OF_SUPERVISOR = URL_BACKEND + "getAll/students/supervisor/";
 export const ASSIGN_SUPERVISOR_TO_STUDENT = URL_BACKEND + "assign/supervisor/";
 export const VALIDATE_CV = URL_BACKEND + "validate/CV/";
+export const REFUSE_CV = URL_BACKEND + "refuse/CV/";
 export const VIEW_CV = URL_BACKEND + "get/CV/document/";
 
 //INTERNSHIP APPLICATION LIST
@@ -42,6 +43,8 @@ export const SAVE_SIGNATURE = URL_BACKEND + "save/signature/";
 export const POST_APPLY_INTERNSHIP_OFFER = URL_BACKEND + "apply/internshipOffer/";
 export const GET_MONITOR = URL_BACKEND + "get/monitor/";
 export const SAVE_INTERNSHIP_OFFER = URL_BACKEND + "save/internshipOffer";
+export const VALIDATE_INTERNSHIP_OFFER = URL_BACKEND + "validate/internshipOffer/";
+export const REFUSE_INTERNSHIP_OFFER = URL_BACKEND + "refuse/internshipOffer/";
 
 //INTERNSHIP OFFER LIST
 export const GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/next/sessions/internshipOffer/unvalidated";

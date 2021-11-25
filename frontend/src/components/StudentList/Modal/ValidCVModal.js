@@ -3,11 +3,13 @@ import { Button, Modal, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import axios from "axios";
 import auth from "../../../services/Auth";
-import { VALIDATE_CV, VIEW_CV } from "../../../Utils/API";
+import { VALIDATE_CV, VIEW_CV, REFUSE_CV } from "../../../Utils/API";
 import {
   ERROR_NO_MORE_CV_TO_VALID,
   ERROR_VALID_CV,
   CONFIRM_VALID_CV,
+  CONFIRM_REFUSE_CV,
+  ERROR_REFUSE_CV
 } from "../../../Utils/Errors_Utils";
 
 const ValidCVModal = ({
@@ -21,11 +23,6 @@ const ValidCVModal = ({
   const [errorMessageModal, setErrorMessageModal] = useState("");
 
   let history = useHistory();
-
-  function onConfirmModal(e) {
-    e.preventDefault();
-    ValidCV();
-  }
 
   function ValidCV() {
     axios
@@ -44,16 +41,46 @@ const ValidCVModal = ({
               pathname: `/home/${auth.user.username}`,
             });
           }, 3000);
-          setErrorMessage(CONFIRM_VALID_CV);
+          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID); 
         }
         setTimeout(() => {
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal(ERROR_VALID_CV);
+        setErrorMessageModal(CONFIRM_VALID_CV);
       })
       .catch((err) => {
-        setErrorMessageModal(ERROR_NO_MORE_CV_TO_VALID);
+        setErrorMessageModal(ERROR_VALID_CV);
+      });
+  }
+
+  function RefuseCV() {
+    axios
+      .post(REFUSE_CV + currentStudent.id)
+      .then((response) => {
+        let refusedStudent = response.data;
+        setStudents(
+          students.filter((student) => {
+            return student.id !== refusedStudent.id;
+          })
+        );
+        if (students.length === 1) {
+          setTimeout(() => {
+            handleClose();
+            history.push({
+              pathname: `/home/${auth.user.username}`,
+            });
+          }, 3000);
+          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID); 
+        }
+        setTimeout(() => {
+          setErrorMessageModal("");
+          handleClose();
+        }, 1000);
+        setErrorMessageModal(CONFIRM_REFUSE_CV); 
+      })
+      .catch((err) => {
+        setErrorMessageModal(ERROR_REFUSE_CV);
       });
   }
 
@@ -61,7 +88,11 @@ const ValidCVModal = ({
     <Modal show={show} onHide={handleClose}>
       <Modal.Header>
         <Modal.Title style={{ textAlign: "center" }}>
-          Voulez-vous confirmer le cv de l'étudiant choisi ?
+          Voulez-vous valider le cv de{" "}
+          {currentStudent !== undefined
+            ? currentStudent.firstName + " " + currentStudent.lastName
+            : "l'étudiant choisi"}{" "}
+          ?
         </Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ margin: "0%" }}>
@@ -71,9 +102,9 @@ const ValidCVModal = ({
               variant="success"
               size="lg"
               className="btn_sub"
-              onClick={(e) => onConfirmModal(e)}
+              onClick={ValidCV}
             >
-              Oui
+              Valider
             </Button>
           </Col>
           <Col md={6}>
@@ -100,9 +131,9 @@ const ValidCVModal = ({
               variant="danger"
               size="lg"
               className="btn_sub"
-              onClick={handleClose}
+              onClick={RefuseCV}
             >
-              Non
+              Refuser
             </Button>
           </Col>
         </Row>

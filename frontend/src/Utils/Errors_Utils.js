@@ -8,9 +8,11 @@ export const ERROR_NO_MORE_STUDENT_TO_ASSIGN = "Plus aucun étudiant à assigner
 export const ERROR_NO_MORE_CV_TO_VALID = "Plus aucun CV à valider, vous allez être redirigé";
 export const ERROR_ASSIGN_SUPERVISOR = "Erreur durant l'assignation du Superviseur";
 export const ERROR_VALID_CV = "Erreur durant la validation du CV";
+export const ERROR_REFUSE_CV = "Erreur durant le refus du CV";
 
 export const CONFIRM_ASSIGN_SUPERVISOR = "Confirmation de l'assignation";
-export const CONFIRM_VALID_CV = "Confirmation de la validation";
+export const CONFIRM_VALID_CV = "Confirmation de la validation du CV";
+export const CONFIRM_REFUSE_CV = "Confirmation du refus du CV";
 
 //INTERNSHIP APPLICATION LIST
 export const ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION = "Aucune Application enregistrée pour cette session"
@@ -37,8 +39,12 @@ export const ERROR_NO_PDF_FOUND = "Erreur! Veuillez soumettre un document .pdf";
 export const ERROR_INVALID_DURATION = "Erreur! Durée de stage invalide !";
 export const ERROR_NO_WORK_DAYS = "Erreur! Choisissez au moins une journée de travail !";
 export const ERROR_INVALID_INTERNSHIP_OFFER = "Erreur! L'offre de stage est invalide";
+export const ERROR_VALIDATION_INTERNSHIP_OFFER = "Erreur lors de la validation";
+export const ERROR_REFUSING_INTERNSHIP_OFFER = "Erreur lors du refus ";
 
 export const CONFIRM_SAVE_INTERNSHIP_OFFER = "L'offre de stage a été sauvegardé, vous allez être redirigé";
+export const CONFIRM_VALIDATION_INTERNSHIP_OFFER = "L'offre de stage a été validée, vous allez être redirigé";
+export const CONFIRM_REFUSING_INTERNSHIP_OFFER = "L'offre de stage a été refusée, vous allez être redirigé";
 
 //INTERNSHIP OFFER LIST
 export const ERROR_NO_INTERNSHIP_OFFER_FOUND = "Aucune offre de stage déposée...";

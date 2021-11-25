@@ -112,6 +112,7 @@ const InternshipApplicationStudentModal = ({
             <Button
               variant="success"
               size="lg"
+              className="mt-3"
               onClick={(e) => onConfirmModal(e)}
             >
               Confirmer
