@@ -62,4 +62,11 @@ public class CVController {
                 .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
+
+    @PostMapping(URL_REFUSE_CV)
+    public ResponseEntity<Student> refuseCVOfStudent(@PathVariable String idStudent) {
+        return service.refuseCVOfStudent(idStudent)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 }

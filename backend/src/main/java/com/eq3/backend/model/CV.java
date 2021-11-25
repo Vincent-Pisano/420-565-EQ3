@@ -15,7 +15,10 @@ import java.util.Date;
 public class CV {
 
     public enum CVStatus {
-        INVALID, WAITING, VALID
+        INVALID,
+        WAITING,
+        VALID,
+        REFUSED
     }
 
     @Id

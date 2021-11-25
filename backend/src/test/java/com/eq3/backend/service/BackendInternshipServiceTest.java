@@ -203,7 +203,7 @@ class BackendInternshipServiceTest {
         expectedSessionTreeSet = new TreeSet<>();
         expectedInternshipOfferList.forEach(internshipOffer ->
                 expectedSessionTreeSet.add(internshipOffer.getSession()));
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByStatusAcceptedAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
         //Act
@@ -225,7 +225,7 @@ class BackendInternshipServiceTest {
         expectedSessionTreeSet = new TreeSet<>();
         expectedInternshipOfferList.forEach(internshipOffer ->
                 expectedSessionTreeSet.add(internshipOffer.getSession()));
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByStatusWaitingAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
         //Act
@@ -248,7 +248,7 @@ class BackendInternshipServiceTest {
         expectedInternshipOfferList.forEach(internshipOffer ->
                 internshipOffer.setSession(SESSION));
 
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByStatusWaitingAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
         //Act
@@ -271,7 +271,7 @@ class BackendInternshipServiceTest {
         expectedInternshipOfferList.forEach(internshipOffer ->
                 internshipOffer.setSession(SESSION));
 
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
+        when(internshipOfferRepository.findAllByStatusAcceptedAndIsDisabledFalse())
                 .thenReturn(expectedInternshipOfferList);
 
         //Act

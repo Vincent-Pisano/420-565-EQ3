@@ -21,6 +21,12 @@ public class InternshipOffer extends Entity{
         FLEXIBLE
     }
 
+    public enum OfferStatus {
+        WAITING,
+        ACCEPTED,
+        REFUSED
+    }
+
     @Field
     private String jobName;
 
@@ -68,10 +74,10 @@ public class InternshipOffer extends Entity{
 
     @Field
     @Builder.Default
-    protected Boolean isValid = false;
+    protected OfferStatus status = OfferStatus.WAITING;
 
     public InternshipOffer() {
         super();
-        this.isValid = false;
+        this.status = OfferStatus.WAITING;
     }
 }
