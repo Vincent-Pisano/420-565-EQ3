@@ -80,7 +80,6 @@ public class CVService {
     public Optional<Student> updateActiveCV(String idStudent, String idCV) {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
         updateActiveCVFromListCV(optionalStudent, idCV).ifPresent(student -> {
-            System.out.println("test");
             sendEmailForActiveCV(student);
             studentRepository.save(student);
         });
