@@ -29,7 +29,7 @@ const SignUp = () => {
 
   return (
     <Container fluid className="cont_principal">
-      <Row className="cont_central_auth">
+      <Row className="cont_central_signUp">
         <Col md="auto">
           <Container className="cont_title_form">
             <h2>Inscription</h2>

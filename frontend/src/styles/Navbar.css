@@ -1,7 +1,7 @@
 #main-navbar {
-  background: linear-gradient(-87deg,  #2e578c 40%, rgb(255, 255, 255) 70%);
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  background: linear-gradient(-87deg, #4281d4 40%, #dfe8ed 70%);
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
 }
 
 .title-navbar {

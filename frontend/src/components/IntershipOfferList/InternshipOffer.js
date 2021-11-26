@@ -2,6 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
+
+
+
 const InternshipOffer = ({ internshipOffer, onClick }) => {
   return (
     <Row
@@ -13,10 +16,12 @@ const InternshipOffer = ({ internshipOffer, onClick }) => {
       </Col>
 
       <Col xs={9} className="list_node_text_internship">
+        <div>
         <li>
           {" "}
           {internshipOffer.jobName}, {internshipOffer.city}{" "}
         </li>
+        </div>
       </Col>
     </Row>
   );
