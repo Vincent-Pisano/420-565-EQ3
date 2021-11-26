@@ -410,7 +410,7 @@ public class InternshipService {
             InternshipOffer currentOffer = internshipApplication.getInternshipOffer();
             Monitor currentMonitor = currentOffer.getMonitor();
             ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
-            if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
+            if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow) && currentMonitor != null) {
                 try {
                     generateEmailForMonitorAboutEvaluation(currentStudent, currentMonitor);
                 } catch (Exception e) {
@@ -433,7 +433,7 @@ public class InternshipService {
             Supervisor currentSupervisor = currentStudent.getSupervisorMap().get(currentOffer.getSession());
             ZonedDateTime endDateIn2Weeks = ZonedDateTime.ofInstant(currentOffer.getEndDate().toInstant(), ZoneId.of(UTC_TIME_ZONE)).minusDays(14).plusMinutes(1);
 
-            if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow)) {
+            if (endDateIn2Weeks.isAfter(today) && endDateIn2Weeks.isBefore(tomorrow) && currentSupervisor != null) {
                 try {
                     generateEmailForSupervisorAboutEvaluation(currentSupervisor, currentMonitor);
                 } catch(Exception e) {
