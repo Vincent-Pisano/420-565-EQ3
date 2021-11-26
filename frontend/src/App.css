@@ -9,7 +9,7 @@
   min-height: 100vh;
   height: 100%;
   /* Rectangle 3: */
-  background-image: url('/src/assets/img/background.jpg');
+  background-image: linear-gradient(rgba(217, 217, 217), rgba(64, 64, 64));
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
