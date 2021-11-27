@@ -394,29 +394,19 @@
 
 @media only screen and (min-width: 1100px) {
   .cont_central_auth {
-    width: 50%;
-  }
-
-  .cont_central_internship_offer {
-    width: 98%;
-  }
-
-  .input_form {
-    padding: 15px;
+    width: 55%;
   }
 }
 
 
 @media only screen and (min-width: 1400px) {
   .cont_central_auth {
+    width: 40%;
+  }
+}
+
+@media only screen and (min-width: 2000px) {
+  .cont_central_auth {
     width: 30%;
-  }
-
-  .cont_central_internship_offer {
-    width: 98%;
-  }
-
-  .input_form {
-    padding: 15px;
   }
 }
