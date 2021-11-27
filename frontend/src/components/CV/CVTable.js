@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import CV from "./CV";
+import "../../styles/CV.css";
 import auth from "../../services/Auth";
 
 const CVTable = ({ cvlist }) => {
@@ -23,7 +24,7 @@ const CVTable = ({ cvlist }) => {
   }
 
   return (
-    <Table responsive="md" striped bordered hover variant="dark">
+    <Table className="cv-table">
       <thead>
         <tr>
           <th>Nom de fichier</th>
