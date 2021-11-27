@@ -20,26 +20,3 @@
   display: flex;
   justify-content: center;
 }
-
-.cv-table {
-  background-image: repeating-linear-gradient(120deg, #360202, #360202 0.23px, transparent 1px, transparent 7.9px, #360202 31px), repeating-linear-gradient(210deg, #360202, #360202 0.23px, transparent 1px, transparent 7.9px, #360202 31px), repeating-linear-gradient(-60deg, #360202, #360202 0.23px, transparent 1px, transparent 7.9px, #360202 31px), repeating-linear-gradient(30deg, #360202, #360202 0.23px, transparent 1px, transparent 7.9px, #360202 31px);
-  background-size: 2px calc(100% + 62px), calc(100% + 62px) 2px, 2px calc(100% + 62px) , calc(100% + 62px) 2px;
-  background-position: 0 0, 0 0, 100% 0, 0 100%;
-  background-repeat: no-repeat;
-  animation: borderAnimation 0.9s infinite linear reverse;
-  border-radius: 10px;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-  
-@keyframes borderAnimation {
-  from { background-position: 0 0, -62px 0, 100% -62px, 0 100%; }
-  to { background-position: 0 -62px, 0 0, 100% 0, -62px 100%; }
-}
-
-@media only screen and (max-width: 766px) {
-  .cv-table {
-    max-width: 50px !important;
-  }
-}

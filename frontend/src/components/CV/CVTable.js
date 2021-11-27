@@ -24,7 +24,7 @@ const CVTable = ({ cvlist }) => {
   }
 
   return (
-    <Table className="cv-table">
+    <Table className="table table-striped">
       <thead>
         <tr>
           <th>Nom de fichier</th>
