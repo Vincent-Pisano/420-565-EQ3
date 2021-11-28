@@ -26,6 +26,8 @@ export const ERROR_WAITING_MONITOR_SIGNATURE = "Erreur ! En attente de la signat
 export const ERROR_WAITING_STUDENT_SIGNATURE = "Erreur ! En attente de la signature de l'Étudiant"
 export const ERROR_NO_SIGNATURE = "Erreur ! La signature n'a pas été déposé!"
 export const ERROR_UPDATE = "Erreur lors de la mise à jour"
+export const ERROR_NO_UPDATE = "Aucune modification effectuée"
+export const ERROR_ENGAGEMENTS = "Erreur lors de la requête des engagements"
 
 export const CONFIRM_DEPOSIT = "Confirmation du dépôt";
 export const CONFIRM_SIGNATURE = "Confirmation de la signature";

@@ -13,11 +13,9 @@ import {
 import axios from "axios";
 import "../../../styles/Form.css";
 import {
-  STATUS_ACCEPTED,
   STATUS_COMPLETED,
-  STATUS_NOT_ACCEPTED,
   STATUS_VALIDATED,
-  STATUS_WAITING,
+  APPLICATION_STATUSES,
 } from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationStudentModal = ({
@@ -161,15 +159,13 @@ const InternshipApplicationStudentModal = ({
                     required
                     disabled={isValidatedOrCompleted()}
                   >
-                    <option value={STATUS_ACCEPTED}>Acceptée</option>
-                    <option value={STATUS_NOT_ACCEPTED}>Refusée</option>
-                    <option value={STATUS_WAITING}>En attente</option>
-                    <option disabled value={STATUS_VALIDATED}>
-                      Validée
-                    </option>
-                    <option disabled value={STATUS_COMPLETED}>
-                      Complétée
-                    </option>
+                    {APPLICATION_STATUSES.map((status) => {
+                      return (
+                        <option key={status.key} value={status.key}>
+                          {status.name}
+                        </option>
+                      );
+                    })}
                   </Form.Select>
                 </Form.Group>
                 <Form.Group controlId="interviewDate">

@@ -12,6 +12,7 @@ export const REFUSE_CV = URL_BACKEND + "refuse/CV/";
 export const VIEW_CV = URL_BACKEND + "get/CV/document/";
 
 //INTERNSHIP APPLICATION LIST
+export const SAVE_INTERNSHIP = URL_BACKEND + "save/internship";
 export function GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT(session) {
     return URL_BACKEND + "getAll/internshipApplication/" + session + "/student/";
 }
@@ -34,6 +35,7 @@ export const SIGN_CONTRACT_OF_INTERNSHIP_MONITOR = URL_BACKEND + "sign/internshi
 export const SIGN_CONTRACT_OF_INTERNSHIP_STUDENT = URL_BACKEND + "sign/internshipContract/student/";
 export const SIGN_CONTRACT_OF_INTERNSHIP_INTERNSHIP_MANAGER = URL_BACKEND + "sign/internshipContract/internshipManager/";
 export const UPDATE_INTERNSHIP_APPLICATION = URL_BACKEND + "update/internshipApplication";
+export const GET_DEFAULT_ENGAGEMENTS = URL_BACKEND + "get/default/engagements"
 
 //HOME
 export const GET_SIGNATURE = URL_BACKEND + "get/signature/";
@@ -45,6 +47,7 @@ export const GET_MONITOR = URL_BACKEND + "get/monitor/";
 export const SAVE_INTERNSHIP_OFFER = URL_BACKEND + "save/internshipOffer";
 export const VALIDATE_INTERNSHIP_OFFER = URL_BACKEND + "validate/internshipOffer/";
 export const REFUSE_INTERNSHIP_OFFER = URL_BACKEND + "refuse/internshipOffer/";
+export const DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT = URL_BACKEND + "get/internshipOffer/document/";
 
 //INTERNSHIP OFFER LIST
 export const GET_ALL_SESSIONS_OF_UNVALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/next/sessions/internshipOffer/unvalidated";
@@ -85,4 +88,8 @@ export const GET_ALL_STUDENTS_WITHOUT_MONITOR_EVALUATION = URL_BACKEND + "getAll
 export const SIGN_UP_MONITOR = URL_BACKEND + "signUp/monitor";
 export const SIGN_UP_STUDENT = URL_BACKEND + "signUp/student";
 export const SIGN_UP_SUPERVISOR = URL_BACKEND + "signUp/supervisor";
+
+//NAVBAR
+export const DOWNLOAD_STUDENT_EVALUATION_DOCUMENT = URL_BACKEND + "get/student/evaluation/document";
+export const DOWNLOAD_ENTERPRISE_EVALUATION_DOCUMENT = URL_BACKEND + "get/enterprise/evaluation/document";
 

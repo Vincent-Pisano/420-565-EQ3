@@ -4,6 +4,14 @@ import { useHistory } from "react-router";
 import auth from "../../../services/Auth";
 import axios from "axios";
 import "../../../styles/Form.css";
+import { GET_DEFAULT_ENGAGEMENTS, SAVE_INTERNSHIP } from "../../../Utils/API";
+import {
+  ERROR_ENGAGEMENTS,
+  ERROR_NO_STUDENT_TO_ASSIGN,
+  ERROR_UPDATE,
+  ERROR_NO_UPDATE,
+  CONFIRM_MODIFICATIONS,
+} from "../../../Utils/Errors_Utils";
 
 const InternshipApplicationInternshipManagerModal = ({
   show,
@@ -26,12 +34,12 @@ const InternshipApplicationInternshipManagerModal = ({
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9090/get/default/engagements`)
+      .get(GET_DEFAULT_ENGAGEMENTS)
       .then((response) => {
         setEngagements(response.data);
       })
       .catch((err) => {
-        setErrorMessageModal("Erreur lors de la requête des engagements");
+        setErrorMessageModal(ERROR_ENGAGEMENTS);
       });
   }, []);
 
@@ -66,7 +74,7 @@ const InternshipApplicationInternshipManagerModal = ({
         engagements: engagements,
       };
       axios
-        .post(`http://localhost:9090/save/internship`, internship)
+        .post(SAVE_INTERNSHIP, internship)
         .then((response) => {
           setInternshipApplications(
             internshipApplications.filter(
@@ -81,25 +89,23 @@ const InternshipApplicationInternshipManagerModal = ({
                 pathname: `/home/${auth.user.username}`,
               });
             }, 3000);
-            setErrorMessage(
-              "Plus aucun étudiant à assigner, vous allez être redirigé"
-            );
+            setErrorMessage(ERROR_NO_STUDENT_TO_ASSIGN);
           }
           setTimeout(() => {
             setErrorMessageModal("");
             handleClose();
           }, 1000);
-          setErrorMessageModal("Confirmation des changements");
+          setErrorMessageModal(CONFIRM_MODIFICATIONS);
         })
         .catch((err) => {
-          setErrorMessageModal("Erreur lors de la mise à jour");
+          setErrorMessageModal(ERROR_UPDATE);
         });
     } else {
       setTimeout(() => {
         setErrorMessageModal("");
         handleClose();
       }, 1000);
-      setErrorMessageModal("Aucune modification effectuée");
+      setErrorMessageModal(ERROR_NO_UPDATE);
     }
   }
 
