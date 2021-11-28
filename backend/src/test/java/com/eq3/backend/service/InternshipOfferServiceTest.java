@@ -128,26 +128,6 @@ public class InternshipOfferServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllInternshipOfferByWorkField() {
-        //Arrange
-        expectedInternshipOfferList = getListOfInternshipOffer();
-
-        when(internshipOfferRepository.findAllByWorkFieldAndSessionAndStatusAcceptedAndIsDisabledFalse(Department.COMPUTER_SCIENCE, SESSION))
-                .thenReturn(expectedInternshipOfferList);
-
-        //Act
-        final Optional<List<InternshipOffer>> optionalInternshipOffers =
-                service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE, SESSION);
-
-        //Assert
-        List<InternshipOffer> actualInternshipOffers = optionalInternshipOffers.orElse(null);
-
-        assertThat(optionalInternshipOffers.isPresent()).isTrue();
-        assertThat(actualInternshipOffers.size()).isEqualTo(expectedInternshipOfferList.size());
-    }
-
-    @Test
-    //@Disabled
     public void testGetAllUnvalidatedInternshipOffer() {
         // Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();

@@ -52,7 +52,6 @@ export const GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/inter
 export const GET_ALL_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/sessions/valid/internshipOffer";
 export const GET_ALL_VALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/internshipOffer/validated/";
 export const GET_ALL_NEXT_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS = URL_BACKEND + "getAll/next/sessions/internshipOffer";
-export const GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT = URL_BACKEND + "getAll/internshipOffer/";
 export const GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT_NOT_APPLIED = URL_BACKEND + "getAll/internshipOffer/not/applied/";
 export const GET_ALL_SESSIONS_OF_INTERNSHIP_OFFERS_OF_MONITOR = URL_BACKEND + "getAll/sessions/internshipOffer/monitor/";
 export function GET_ALL_INTERNSHIP_OFFER_OF_MONITOR(session) {

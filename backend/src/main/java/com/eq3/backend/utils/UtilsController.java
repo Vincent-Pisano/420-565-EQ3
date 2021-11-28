@@ -72,7 +72,6 @@ public class UtilsController {
         }
 
         public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
-        public final static String URL_GET_ALL_INTERNSHIP_OFFERS_BY_SESSION_AND_WORK_FIELD = "/getAll/internshipOffer/{session}/{workField}";
         public final static String URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS_BY_SESSION = "/getAll/internshipOffer/unvalidated/{session}";
         public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_OFFERS_BY_SESSION = "/getAll/internshipOffer/validated/{session}";
         public final static String URL_GET_ALL_INTERNSHIP_OFFERS_OF_MONITOR_BY_SESSION = "/getAll/internshipOffer/{session}/monitor/{id}";

@@ -16,7 +16,6 @@ export const URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED = "/internshipA
 
 //INTERNSHIP OFFER LIST
 export const URL_INTERNSHIP_OFFER_LIST_UNVALIDATED = "/internshipOfferList/unvalidated";
-export const URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT = "/internshipOfferList/department";
 export const URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED = "/internshipOfferList/department/not/applied";
 export const URL_INTERNSHIP_OFFER_LIST_OF_MONITOR = "/internshipOfferList/monitor";
 

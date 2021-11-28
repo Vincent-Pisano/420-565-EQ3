@@ -20,7 +20,6 @@ import {
   URL_INTERNSHIP_OFFER_LIST_UNVALIDATED,
   URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
   URL_INTERNSHIP_OFFER_LIST_VALIDATED,
-  URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT,
   URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
   URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER,
   URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED,
@@ -61,138 +60,167 @@ import InternshipApplicationListReportWithoutStudentEvaluation from '../componen
 import InternshipOfferListUnvalidated from '../components/IntershipOfferList/List/InternshipOfferListUnvalidated';
 import InternshipOfferListValidated from '../components/IntershipOfferList/List/InternshipOfferListValidated';
 import InternshipOfferListOfDepartmentNotApplied from '../components/IntershipOfferList/List/InternshipOfferListOfDepartmentNotApplied';
-import InternshipOfferListOfDepartment from '../components/IntershipOfferList/List/InternshipOfferListOfDepartment';
 import InternshipOfferListOfMonitor from '../components/IntershipOfferList/List/InternshipOfferListOfMonitor';
 
 import SupervisorList from '../components/SupervisorList/List/SupervisorList';
 
+import auth from '../services/Auth';
+
+
 export const ROUTES = [
     {
         link : "/home/:username",
-        component: Home
+        component: Home,
+        accessValid: () => auth.isStudent() || auth.isInternshipManager() || auth.isSupervisor() || auth.isMonitor()
     },
     {
         link : URL_STUDENT_LIST_CV_TO_VALIDATE,
-        component: StudentListCVToValidate
+        component: StudentListCVToValidate,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_OF_DEPARTMENT,
-        component: StudentListOfDepartment
+        component: StudentListOfDepartment,
+        accessValid: () => auth.isSupervisor()
     },
     {
         link : URL_STUDENT_LIST_ASSIGN_SUPERVISOR,
-        component: StudentListAssignSupervisor
+        component: StudentListAssignSupervisor,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_ASSIGNED_SUPERVISOR,
-        component: StudentListAssignedSupervisor
+        component: StudentListAssignedSupervisor,
+        accessValid: () => auth.isSupervisor()
     },
     {
         link : URL_SUPERVISOR_LIST,
-        component: SupervisorList
+        component: SupervisorList,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT,
-        component: InternshipApplicationListOfStudent
+        component: InternshipApplicationListOfStudent,
+        accessValid: () => auth.isStudent()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED,
-        component: InternshipApplicationListAccepted
+        component: InternshipApplicationListAccepted,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE,
-        component: InternshipApplicationListSignatureInternshipManager
+        component: InternshipApplicationListSignatureInternshipManager,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_OF_INTERNSHIP_OFFER,
-        component: InternshipApplicationListOfInternshipOffer
+        component: InternshipApplicationListOfInternshipOffer,
+        accessValid: () => auth.isMonitor()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED  + ":username",
-        component: InternshipApplicationListOfStudentAssigned
+        component: InternshipApplicationListOfStudentAssigned,
+        accessValid: () => auth.isSupervisor()
     },
     {
         link : URL_INTERNSHIP_OFFER_LIST_UNVALIDATED,
-        component: InternshipOfferListUnvalidated
-    },
-    {
-        link : URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT,
-        component: InternshipOfferListOfDepartment
-    },
-    {
-        link : URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
-        component: InternshipOfferListOfMonitor
-    },
-    {
-        link : URL_INTERNSHIP_OFFER_FORM,
-        component: InternshipOfferForm
-    },
-    {
-        link : REPORT_LINK,
-        component: ReportsList
-    },
-    {
-        link : URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
-        component: InternshipOfferListUnvalidated
-    },
-    {
-        link : URL_INTERNSHIP_OFFER_LIST_VALIDATED,
-        component: InternshipOfferListValidated
+        component: InternshipOfferListUnvalidated,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED,
-        component: InternshipOfferListOfDepartmentNotApplied
+        component: InternshipOfferListOfDepartmentNotApplied,
+        accessValid: () => auth.isStudent()
+    },
+    {
+        link : URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
+        component: InternshipOfferListOfMonitor,
+        accessValid: () => auth.isMonitor()
+    },
+    {
+        link : URL_INTERNSHIP_OFFER_FORM,
+        component: InternshipOfferForm,
+        accessValid: () => auth.isStudent() || auth.isInternshipManager() || auth.isSupervisor() || auth.isMonitor()
+    },
+    {
+        link : REPORT_LINK,
+        component: ReportsList,
+        accessValid: () => auth.isInternshipManager()
+    },
+    {
+        link : URL_INTERNSHIP_OFFER_LIST_WAITING_VALIDATION,
+        component: InternshipOfferListUnvalidated,
+        accessValid: () => auth.isInternshipManager()
+    },
+    {
+        link : URL_INTERNSHIP_OFFER_LIST_VALIDATED,
+        component: InternshipOfferListValidated,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_SUBSCRIBED,
-        component: StudentListReportSubscribed
+        component: StudentListReportSubscribed,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WITHOUT_CV,
-        component: StudentListReportWithoutCV
+        component: StudentListReportWithoutCV,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WITH_CV_WAITING_VALIDATION,
-        component: StudentListCVToValidate
+        component: StudentListCVToValidate,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WITHOUT_INTERVIEW,
-        component: StudentListReportWithoutInterview
+        component: StudentListReportWithoutInterview,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WAITING_INTERVIEW,
-        component: StudentListReportWaitingInterview
+        component: StudentListReportWaitingInterview,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WAITING_INTERVIEW_ANSWER,
-        component: StudentListReportWaitingInterviewAnswer
+        component: StudentListReportWaitingInterviewAnswer,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WITH_INTERNSHIP,
-        component: StudentListReportWithInternship
+        component: StudentListReportWithInternship,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION,
-        component: StudentListReportWithoutSupervisorEvaluation
+        component: StudentListReportWithoutSupervisorEvaluation,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION,
-        component: StudentListReportWithoutMonitorEvaluation
+        component: StudentListReportWithoutMonitorEvaluation,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT + ":username",
-        component: InternshipApplicationListReportWaiting
+        component: InternshipApplicationListReportWaiting,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + ":username",
-        component: InternshipApplicationListReportCompleted
+        component: InternshipApplicationListReportCompleted,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_WAITING_ENTERPRISE_EVALUATION_REPORT + ":username",
-        component: InternshipApplicationListReportWithoutEnterpriseEvaluation
+        component: InternshipApplicationListReportWithoutEnterpriseEvaluation,
+        accessValid: () => auth.isInternshipManager()
     },
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT + ":username",
-        component: InternshipApplicationListReportWithoutStudentEvaluation
+        component: InternshipApplicationListReportWithoutStudentEvaluation,
+        accessValid: () => auth.isInternshipManager()
     }
 ]

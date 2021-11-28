@@ -112,26 +112,6 @@ class InternshipOfferControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllInternshipOfferByWorkField() throws Exception {
-        //Arrange
-        expectedInternshipOfferList = getListOfInternshipOffer();
-
-        when(service.getAllInternshipOfferByWorkField(Department.COMPUTER_SCIENCE, SESSION))
-                .thenReturn(Optional.of(expectedInternshipOfferList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_INTERNSHIP_OFFERS + SESSION + "/" +
-                Department.COMPUTER_SCIENCE.name()).contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualInternshipOffers = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualInternshipOffers).isNotNull();
-    }
-
-    @Test
-    //@Disabled
     public void getAllInternshipOfferOfMonitor() throws Exception {
         //Arrange
         expectedInternshipOfferList = getListOfInternshipOffer();

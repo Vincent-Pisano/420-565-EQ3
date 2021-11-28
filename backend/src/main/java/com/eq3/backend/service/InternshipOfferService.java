@@ -61,15 +61,6 @@ public class InternshipOfferService {
         return new ObjectMapper().readValue(internshipOfferJson, InternshipOffer.class);
     }
 
-    public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField, String session) {
-        List<InternshipOffer> internshipOffers =
-                internshipOfferRepository.findAllByWorkFieldAndSessionAndStatusAcceptedAndIsDisabledFalse(workField, session);
-        internshipOffers.forEach(internshipOffer -> internshipOffer.setPDFDocument(
-                internshipOffer.getPDFDocument() != null ? new PDFDocument() : null)
-        );
-        return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
-    }
-
     public Optional<List<InternshipOffer>> getAllInternshipOfferOfMonitor(String session, String idMonitor) {
         List<InternshipOffer> internshipOffers =
                 internshipOfferRepository.findAllBySessionAndMonitor_IdAndIsDisabledFalse(session, idMonitor);

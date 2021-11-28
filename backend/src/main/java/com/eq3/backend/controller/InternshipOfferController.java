@@ -38,13 +38,6 @@ public class InternshipOfferController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(URL_GET_ALL_INTERNSHIP_OFFERS_BY_SESSION_AND_WORK_FIELD)
-    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferByWorkField(@PathVariable Department workField, @PathVariable String session) {
-        return service.getAllInternshipOfferByWorkField(workField, session)
-                .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
-                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
     @GetMapping(URL_GET_ALL_UNVALIDATED_INTERNSHIP_OFFERS_BY_SESSION)
     public ResponseEntity<List<InternshipOffer>> getAllUnvalidatedInternshipOffer(@PathVariable String session) {
         return service.getAllUnvalidatedInternshipOffer(session)

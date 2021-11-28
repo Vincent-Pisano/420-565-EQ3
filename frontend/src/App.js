@@ -21,6 +21,7 @@ function App() {
               path={route.link}
               exact
               component={route.component}
+              accessValid={route.accessValid}
             />
           ))}
 
