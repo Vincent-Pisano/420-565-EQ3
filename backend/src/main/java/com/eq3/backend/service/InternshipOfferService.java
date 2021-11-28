@@ -20,13 +20,10 @@ public class InternshipOfferService {
 
     private final Logger logger;
     private final InternshipOfferRepository internshipOfferRepository;
-    private final StudentRepository studentRepository;
 
-    InternshipOfferService(InternshipOfferRepository internshipOfferRepository,
-                           StudentRepository studentRepository) {
+    InternshipOfferService(InternshipOfferRepository internshipOfferRepository) {
         this.logger = LoggerFactory.getLogger(InternshipOfferService.class);
         this.internshipOfferRepository = internshipOfferRepository;
-        this.studentRepository = studentRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {
@@ -35,7 +32,7 @@ public class InternshipOfferService {
             internshipOffer = getInternshipOffer(internshipOfferJson, multipartFile);
         } catch (IOException e) {
             logger.error("Couldn't map the string internshipOffer to InternshipOffer.class at " +
-                    "saveInternshipOffer in InternshipService : " + e.getMessage());
+                    "saveInternshipOffer in InternshipService.saveInternshipOffer : " + e.getMessage());
         }
         return internshipOffer == null ? Optional.empty() :
                 Optional.of(internshipOfferRepository.save(internshipOffer));
@@ -50,7 +47,7 @@ public class InternshipOfferService {
                 internshipOffer.setPDFDocument(extractDocument(multipartFile));
             } catch (IOException e) {
                 logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
-                        + " at extractDocument in InternshipService : " + e.getMessage());
+                        + " at extractDocument in InternshipService.getInternshipOffer : " + e.getMessage());
             }
         }
         return internshipOffer;

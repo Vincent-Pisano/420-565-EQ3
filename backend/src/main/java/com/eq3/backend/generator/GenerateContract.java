@@ -16,14 +16,23 @@ import static com.eq3.backend.utils.UtilsGenerator.*;
 
 public class GenerateContract {
     public static ByteArrayOutputStream generatePdfContract(Internship internship, Optional<InternshipManager> optionalInternshipManager) throws Exception{
-        InternshipManager internshipManager = optionalInternshipManager.get();
-        InternshipApplication internshipApplication = internship.getInternshipApplication();
-        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-
         Document document = new Document();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
+
+        generateDocument(document, internship, optionalInternshipManager);
+
+        document.close();
+        writer.close();
+
+        return baos;
+    }
+
+    private static void generateDocument(Document document, Internship internship, Optional<InternshipManager> optionalInternshipManager) throws DocumentException {
+        InternshipManager internshipManager = optionalInternshipManager.orElseGet(InternshipManager::new);
+        InternshipApplication internshipApplication = internship.getInternshipApplication();
+        InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
 
         generateTitlePage(document);
         document.newPage();
@@ -37,11 +46,6 @@ public class GenerateContract {
         document.newPage();
 
         generateSignaturesTitle(document);
-
-        document.close();
-        writer.close();
-
-        return baos;
     }
 
     private static void generateAgreements(InternshipApplication internshipApplication,

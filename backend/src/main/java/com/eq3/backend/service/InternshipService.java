@@ -150,7 +150,7 @@ public class InternshipService {
                 internship.setStudentEvaluation(extractDocument(multipartFile));
             } catch (IOException e) {
                 logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
-                        + " at extractDocument in InternshipService : " + e.getMessage());
+                        + " at extractDocument in InternshipService.depositStudentEvaluation : " + e.getMessage());
             }
         });
         return optionalInternship.map(internshipRepository::save);
@@ -163,7 +163,7 @@ public class InternshipService {
                 internship.setEnterpriseEvaluation(extractDocument(multipartFile));
             } catch (IOException e) {
                 logger.error("Couldn't extract the document" + multipartFile.getOriginalFilename()
-                        + " at extractDocument in InternshipService : " + e.getMessage());
+                        + " at extractDocument in InternshipService.depositEnterpriseEvaluation : " + e.getMessage());
             }
         });
         return optionalInternship.map(internshipRepository::save);
