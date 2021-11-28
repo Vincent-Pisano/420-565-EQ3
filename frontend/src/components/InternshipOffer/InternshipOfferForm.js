@@ -11,6 +11,9 @@ import "../../styles/Form.css";
 import { DEPARTMENTS } from "../../Utils/DEPARTMENTS";
 import { SCHEDULES } from "../../Utils/SCHEDULES";
 import {
+  URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT,
+} from "../../Utils/URL";
+import {
   GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT,
   GET_MONITOR,
   POST_APPLY_INTERNSHIP_OFFER,
@@ -97,7 +100,7 @@ const InternshipOfferForm = () => {
           setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED);
           setHasApplied(true);
           setTimeout(() => {
-            redirect();
+            history.push(URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT)
           }, 3000);
         })
         .catch((error) => {

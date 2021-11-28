@@ -1,12 +1,36 @@
 import { Button, Modal, Row, Col, Form, Container } from "react-bootstrap";
 import "../../../styles/Form.css";
 
-const CVModalActive = ({
+const InternshipOfferModalMonitorRefusal = ({
   handleClose,
   show,
   currentInternshipOffer,
   showInternshipOffer,
 }) => {
+
+  function checkIfRefusalNote() {
+    if (currentInternshipOffer !== undefined &&
+      currentInternshipOffer.status === "REFUSED" &&
+      currentInternshipOffer.refusalNote !== "") {
+      return (
+      <Form.Group controlId="note">
+      <Form.Control
+        value={
+          currentInternshipOffer.refusalNote
+        }
+        disabled
+        type="text"
+        className="input_form"
+        required
+      />
+    </Form.Group>)
+    } else {
+      return (
+        <p style={{color:"red"}}>Aucune note de refus !</p>
+      )
+    }
+  }
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header>
@@ -19,20 +43,7 @@ const CVModalActive = ({
           <Col md={12}>
             <Form>
               <Container className="cont_inputs">
-                <Form.Group controlId="note">
-                  <Form.Control
-                    value={
-                      currentInternshipOffer !== undefined &&
-                      currentInternshipOffer.status === "REFUSED"
-                        ? currentInternshipOffer.refusalNote
-                        : ""
-                    }
-                    disabled
-                    type="text"
-                    className="input_form"
-                    required
-                  />
-                </Form.Group>
+                {checkIfRefusalNote()}
               </Container>
             </Form>
           </Col>
@@ -47,7 +58,7 @@ const CVModalActive = ({
               className="btn_sub"
               onClick={() => showInternshipOffer(currentInternshipOffer)}
             >
-              Oui
+              Offre de stage
             </Button>
           </Col>
           <Col xs={6}>
@@ -65,4 +76,4 @@ const CVModalActive = ({
     </Modal>
   );
 };
-export default CVModalActive;
+export default InternshipOfferModalMonitorRefusal;

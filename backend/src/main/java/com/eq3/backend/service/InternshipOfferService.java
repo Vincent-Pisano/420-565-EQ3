@@ -1,8 +1,6 @@
 package com.eq3.backend.service;
 
-import com.eq3.backend.model.Department;
-import com.eq3.backend.model.InternshipOffer;
-import com.eq3.backend.model.PDFDocument;
+import com.eq3.backend.model.*;
 import com.eq3.backend.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +21,13 @@ public class InternshipOfferService {
 
     private final Logger logger;
     private final InternshipOfferRepository internshipOfferRepository;
+    private final StudentRepository studentRepository;
 
-    InternshipOfferService(InternshipOfferRepository internshipOfferRepository) {
+    InternshipOfferService(InternshipOfferRepository internshipOfferRepository,
+                           StudentRepository studentRepository) {
         this.logger = LoggerFactory.getLogger(InternshipOfferService.class);
         this.internshipOfferRepository = internshipOfferRepository;
+        this.studentRepository = studentRepository;
     }
 
     public Optional<InternshipOffer> saveInternshipOffer(String internshipOfferJson, MultipartFile multipartFile) {

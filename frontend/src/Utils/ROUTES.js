@@ -26,7 +26,10 @@ import {
   URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED,
   URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT,
   URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT,
-  URL_INTERNSHIP_OFFER_FORM
+  URL_INTERNSHIP_OFFER_FORM,
+  URL_INTERNSHIP_APPLICATION_LIST_WAITING_ENTERPRISE_EVALUATION_REPORT,
+  URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT,
+  URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED
 } from './URL'
 import Home from '../components/Home';
 import InternshipOfferForm from '../components/InternshipOffer/InternshipOfferForm'
@@ -52,9 +55,12 @@ import InternshipApplicationListOfInternshipOffer from '../components/Internship
 import InternshipApplicationListOfStudentAssigned from '../components/InternshipApplicationList/List/InternshipApplicationListOfStudentAssigned';
 import InternshipApplicationListReportWaiting from '../components/InternshipApplicationList/List/InternshipApplicationListReportWaiting';
 import InternshipApplicationListReportCompleted from '../components/InternshipApplicationList/List/InternshipApplicationListReportCompleted';
+import InternshipApplicationListReportWithoutEnterpriseEvaluation from '../components/InternshipApplicationList/List/InternshipApplicationListReportWithoutEnterpriseEvaluation';
+import InternshipApplicationListReportWithoutStudentEvaluation from '../components/InternshipApplicationList/List/InternshipApplicationListReportWithoutStudentEvaluation';
 
 import InternshipOfferListUnvalidated from '../components/IntershipOfferList/List/InternshipOfferListUnvalidated';
 import InternshipOfferListValidated from '../components/IntershipOfferList/List/InternshipOfferListValidated';
+import InternshipOfferListOfDepartmentNotApplied from '../components/IntershipOfferList/List/InternshipOfferListOfDepartmentNotApplied';
 import InternshipOfferListOfDepartment from '../components/IntershipOfferList/List/InternshipOfferListOfDepartment';
 import InternshipOfferListOfMonitor from '../components/IntershipOfferList/List/InternshipOfferListOfMonitor';
 
@@ -134,6 +140,10 @@ export const ROUTES = [
         component: InternshipOfferListValidated
     },
     {
+        link : URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED,
+        component: InternshipOfferListOfDepartmentNotApplied
+    },
+    {
         link : URL_STUDENT_LIST_SUBSCRIBED,
         component: StudentListReportSubscribed
     },
@@ -176,5 +186,13 @@ export const ROUTES = [
     {
         link : URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + ":username",
         component: InternshipApplicationListReportCompleted
+    },
+    {
+        link : URL_INTERNSHIP_APPLICATION_LIST_WAITING_ENTERPRISE_EVALUATION_REPORT + ":username",
+        component: InternshipApplicationListReportWithoutEnterpriseEvaluation
+    },
+    {
+        link : URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT + ":username",
+        component: InternshipApplicationListReportWithoutStudentEvaluation
     }
 ]

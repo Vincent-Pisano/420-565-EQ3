@@ -47,6 +47,32 @@ public class InternshipApplicationServiceTest {
 
     @Test
     //@Disabled
+    public void testApplyInternshipOffer() {
+        //Arrange
+        expectedStudent = getStudentWithId();
+        expectedInternshipOffer = getInternshipOfferWithId();
+        expectedInternshipApplication = getInternshipApplication();
+
+        expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
+        expectedInternshipApplication.setStudent(expectedStudent);
+
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername())).thenReturn(Optional.of(expectedStudent));
+        when(internshipApplicationRepository.save(any(InternshipApplication.class))).thenReturn(expectedInternshipApplication);
+        doNothing().when(emailService).sendEmailWhenStudentAppliesToNewInternshipOffer(any(), any());
+
+        //Act
+        final Optional<InternshipApplication> optionalInternshipApplication =
+                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
+
+        //Assert
+        InternshipApplication actualInternshipApplication = optionalInternshipApplication.orElse(null);
+
+        assertThat(optionalInternshipApplication.isPresent()).isTrue();
+        assertThat(actualInternshipApplication).isEqualTo(expectedInternshipApplication);
+    }
+
+    @Test
+    //@Disabled
     public void testGetAllInternshipApplicationOfStudent(){
         //Arrange
         expectedInternshipApplicationList = getListOfInternshipApplication();
@@ -186,33 +212,31 @@ public class InternshipApplicationServiceTest {
         List<InternshipApplication> actualInternshipApplications = optionalInternshipApplications.orElse(null);
         assertThat(optionalInternshipApplications.isPresent()).isTrue();
         assertThat(actualInternshipApplications.size()).isEqualTo(expectedInternshipApplicationList.size());
-
     }
 
     @Test
     //@Disabled
-    public void testApplyInternshipOffer() {
+    public void testGetAllInternshipOfferNotAppliedOfStudentBySession() {
         //Arrange
         expectedStudent = getStudentWithId();
-        expectedInternshipOffer = getInternshipOfferWithId();
-        expectedInternshipApplication = getInternshipApplication();
+        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedInternshipOfferList = getListOfInternshipOffer();
 
-        expectedInternshipApplication.setInternshipOffer(expectedInternshipOffer);
-        expectedInternshipApplication.setStudent(expectedStudent);
-
-        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername())).thenReturn(Optional.of(expectedStudent));
-        when(internshipApplicationRepository.save(any(InternshipApplication.class))).thenReturn(expectedInternshipApplication);
-        doNothing().when(emailService).sendEmailWhenStudentAppliesToNewInternshipOffer(any(), any());
+        when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername()))
+                .thenReturn(Optional.ofNullable(expectedStudent));
+        when(internshipOfferRepository.findAllByWorkFieldAndSessionAndStatusAcceptedAndIsDisabledFalse(expectedStudent.getDepartment(), SESSION))
+                .thenReturn(expectedInternshipOfferList);
+        when(internshipApplicationRepository.findAllByStudentAndIsDisabledFalseAndInternshipOfferIn(expectedStudent, expectedInternshipOfferList))
+                .thenReturn(expectedInternshipApplicationList);
 
         //Act
-        final Optional<InternshipApplication> optionalInternshipApplication =
-                service.applyInternshipOffer(expectedStudent.getUsername(), expectedInternshipOffer);
+        final Optional<List<InternshipOffer>> optionalInternshipApplications =
+                service.getAllInternshipOfferNotAppliedOfStudentBySession(expectedStudent.getUsername(), SESSION);
 
         //Assert
-        InternshipApplication actualInternshipApplication = optionalInternshipApplication.orElse(null);
-
-        assertThat(optionalInternshipApplication.isPresent()).isTrue();
-        assertThat(actualInternshipApplication).isEqualTo(expectedInternshipApplication);
+        List<InternshipOffer> actualInternshipOffers = optionalInternshipApplications.orElse(null);
+        assertThat(optionalInternshipApplications.isPresent()).isTrue();
+        assertThat(actualInternshipOffers.size()).isEqualTo(expectedInternshipOfferList.size());
     }
 
     @Test

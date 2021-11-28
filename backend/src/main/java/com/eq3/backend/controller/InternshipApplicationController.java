@@ -79,6 +79,13 @@ public class InternshipApplicationController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @GetMapping(URL_GET_ALL_INTERNSHIP_OFFERS_NOT_APPLIED_BY_SESSION_AND_USER)
+    public ResponseEntity<List<InternshipOffer>> getAllInternshipOfferNotAppliedOfStudentBySession(@PathVariable String username, @PathVariable String session) {
+        return service.getAllInternshipOfferNotAppliedOfStudentBySession(username, session)
+                .map(_internshipOffers -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffers))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @PostMapping(URL_UPDATE_INTERNSHIP_APPLICATION)
     public ResponseEntity<InternshipApplication> updateInternshipApplication(@RequestBody InternshipApplication internshipApplication) {
         return service.updateInternshipApplication(internshipApplication)

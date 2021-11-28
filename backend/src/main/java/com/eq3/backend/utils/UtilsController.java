@@ -89,6 +89,7 @@ public class UtilsController {
         public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS = "/getAll/accepted/internshipApplication";
         public final static String URL_GET_ALL_ACCEPTED_INTERNSHIP_APPLICATIONS_CURRENT_AND_NEXT_SESSIONS = "/getAll/accepted/internshipApplications/current/and/next/sessions";
         public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_APPLICATIONS = "/getAll/validated/internshipApplication";
+        public final static String URL_GET_ALL_INTERNSHIP_OFFERS_NOT_APPLIED_BY_SESSION_AND_USER = "/getAll/internshipOffer/not/applied/{session}/{username}";
         public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";
     }
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.eq3.backend.utils.Utils.getNextSessionFromDate;
 
@@ -126,6 +127,23 @@ public class InternshipApplicationService {
         List<InternshipApplication> internshipApplications =
                 internshipApplicationRepository.findAllByStatusAndIsDisabledFalse(InternshipApplication.ApplicationStatus.VALIDATED);
         return internshipApplications.isEmpty() ? Optional.empty() : Optional.of(internshipApplications);
+    }
+
+    public Optional<List<InternshipOffer>> getAllInternshipOfferNotAppliedOfStudentBySession(String username, String session) {
+        Optional<Student> optionalStudent = studentRepository.findStudentByUsernameAndIsDisabledFalse(username);
+
+        List<InternshipOffer> internshipOffers = optionalStudent
+                .map(student -> internshipOfferRepository
+                        .findAllByWorkFieldAndSessionAndStatusAcceptedAndIsDisabledFalse(student.getDepartment(), session))
+                .orElseGet(ArrayList::new);
+
+        List<InternshipApplication> internshipApplications = optionalStudent
+                .map(student -> internshipApplicationRepository.findAllByStudentAndIsDisabledFalseAndInternshipOfferIn(student, internshipOffers))
+                .orElseGet(ArrayList::new);
+
+        internshipApplications.stream().map(InternshipApplication::getInternshipOffer).forEach(internshipOffers::remove);
+
+        return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
     public Optional<InternshipApplication> updateInternshipApplication(InternshipApplication internshipApplication) {

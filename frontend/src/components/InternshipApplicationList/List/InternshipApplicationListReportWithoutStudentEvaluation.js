@@ -3,12 +3,12 @@ import { useHistory, useParams } from "react-router";
 import axios from "axios";
 import "../../../styles/List.css";
 import InternshipApplicationListTemplate from "../InternshipApplicationListTemplate";
-import InternshipApplicationCompletedDetailsModal from "../Modal/InternshipApplicationCompletedDetailsModal";
+import InternshipApplicationCompletedMonitorInfo from "../Modal/InternshipApplicationCompletedMonitorInfo";
 import { GET_ALL_COMPLETED_INTERNSHIP_APPLICATIONS_OF_STUDENT } from "../../../Utils/API";
 import { ERROR_NO_INTERNSHIP_APPLICATION_YET } from "../../../Utils/Errors_Utils";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
-function InternshipApplicationListReportCompleted() {
+function InternshipApplicationListReportWithoutStudentEvaluation() {
   let history = useHistory();
   let params = useParams();
   let username = params.username;
@@ -63,7 +63,7 @@ function InternshipApplicationListReportCompleted() {
         errorMessage={errorMessage}
         onClick={showModal}
       />
-      <InternshipApplicationCompletedDetailsModal
+      <InternshipApplicationCompletedMonitorInfo
         show={show}
         handleClose={handleClose}
         currentInternshipApplication={currentInternshipApplication}
@@ -73,4 +73,4 @@ function InternshipApplicationListReportCompleted() {
   );
 }
 
-export default InternshipApplicationListReportCompleted;
+export default InternshipApplicationListReportWithoutStudentEvaluation;

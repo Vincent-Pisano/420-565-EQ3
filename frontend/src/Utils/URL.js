@@ -17,6 +17,7 @@ export const URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT_ASSIGNED = "/internshipA
 //INTERNSHIP OFFER LIST
 export const URL_INTERNSHIP_OFFER_LIST_UNVALIDATED = "/internshipOfferList/unvalidated";
 export const URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT = "/internshipOfferList/department";
+export const URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED = "/internshipOfferList/department/not/applied";
 export const URL_INTERNSHIP_OFFER_LIST_OF_MONITOR = "/internshipOfferList/monitor";
 
 //INTERNSHIP OFFER FORM
@@ -38,6 +39,8 @@ export const URL_STUDENT_LIST_WITHOUT_SUPERVISOR_EVALUATION = REPORT_LINK + "/st
 export const URL_STUDENT_LIST_WITHOUT_MONITOR_EVALUATION = REPORT_LINK + "/studentList/without/monitor/evaluation";
 export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/student/";
 export const URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT = REPORT_LINK + "/internshipApplicationList/completed/student/";
+export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_ENTERPRISE_EVALUATION_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/enterprise/evaluation/";
+export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/student/evaluation/";
 
 
 
