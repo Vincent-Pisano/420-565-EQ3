@@ -9,7 +9,7 @@ export const ProtectedRoute = ({ component: Component, accessValid, ...rest }) =
       {...rest}
       render={(props) => {
         if (auth.isAuthenticated()) {
-          if (accessValid()) {
+          if (accessValid !== undefined ? accessValid() : false) {
             return <Component {...props} />;
           } else {
             return (<Redirect

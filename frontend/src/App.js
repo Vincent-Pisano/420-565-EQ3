@@ -25,7 +25,7 @@ function App() {
             />
           ))}
 
-          <Route path="*" exact component={Login} />
+          <ProtectedRoute path="*" exact component={Login} />
         </Switch>
       </div>
     </Router>
