@@ -10,7 +10,7 @@ const ImgViewer = ({ username }) => {
 
   useEffect(() => {
     axios
-      .get(GET_SIGNATURE + username) 
+      .get(GET_SIGNATURE + username)
       .then((response) => {
         let blob = new Blob([response.data], { type: "image/png" });
         let uri = URL.createObjectURL(blob);

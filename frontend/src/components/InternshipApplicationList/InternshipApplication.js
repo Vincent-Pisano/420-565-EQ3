@@ -8,7 +8,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 import auth from "../../services/Auth";
-import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_NOT_ACCEPTED, STATUS_VALIDATED } from "../../Utils/APPLICATION_STATUSES";
+import {
+  STATUS_ACCEPTED,
+  STATUS_COMPLETED,
+  STATUS_NOT_ACCEPTED,
+  STATUS_VALIDATED,
+} from "../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplication = ({ internshipApplication, onClick }) => {
   let internshipOffer = internshipApplication.internshipOffer;

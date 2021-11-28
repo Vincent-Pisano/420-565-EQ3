@@ -9,7 +9,7 @@ import {
   ERROR_VALID_CV,
   CONFIRM_VALID_CV,
   CONFIRM_REFUSE_CV,
-  ERROR_REFUSE_CV
+  ERROR_REFUSE_CV,
 } from "../../../Utils/Errors_Utils";
 
 const ValidCVModal = ({
@@ -41,7 +41,7 @@ const ValidCVModal = ({
               pathname: `/home/${auth.user.username}`,
             });
           }, 3000);
-          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID); 
+          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID);
         }
         setTimeout(() => {
           setErrorMessageModal("");
@@ -71,13 +71,13 @@ const ValidCVModal = ({
               pathname: `/home/${auth.user.username}`,
             });
           }, 3000);
-          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID); 
+          setErrorMessage(ERROR_NO_MORE_CV_TO_VALID);
         }
         setTimeout(() => {
           setErrorMessageModal("");
           handleClose();
         }, 1000);
-        setErrorMessageModal(CONFIRM_REFUSE_CV); 
+        setErrorMessageModal(CONFIRM_REFUSE_CV);
       })
       .catch((err) => {
         setErrorMessageModal(ERROR_REFUSE_CV);

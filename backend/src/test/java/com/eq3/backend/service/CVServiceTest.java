@@ -11,8 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;

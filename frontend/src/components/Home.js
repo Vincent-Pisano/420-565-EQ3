@@ -77,7 +77,7 @@ function Home() {
       let formData = new FormData();
       formData.append("signature", signature);
       axios
-        .post(SAVE_SIGNATURE + user.username, formData) 
+        .post(SAVE_SIGNATURE + user.username, formData)
         .then((response) => {
           user.signature = response.data;
           auth.user = user;

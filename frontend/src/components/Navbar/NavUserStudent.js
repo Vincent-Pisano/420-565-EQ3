@@ -12,7 +12,10 @@ const NavUserStudent = () => {
       title={<span className="nav-links-header">Options Étudiant</span>}
       menuVariant="dark"
     >
-      <NavDropdown.Item as={Link} to={URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED}>
+      <NavDropdown.Item
+        as={Link}
+        to={URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED}
+      >
         Liste d'offres de stage
       </NavDropdown.Item>
       <NavDropdown.Item

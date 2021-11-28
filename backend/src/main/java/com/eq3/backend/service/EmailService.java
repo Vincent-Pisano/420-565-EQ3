@@ -3,7 +3,6 @@ package com.eq3.backend.service;
 import com.eq3.backend.model.*;
 import com.eq3.backend.repository.InternshipApplicationRepository;
 import com.eq3.backend.repository.InternshipManagerRepository;
-import com.eq3.backend.repository.InternshipOfferRepository;
 import com.eq3.backend.repository.InternshipRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -56,8 +55,8 @@ public class EmailService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
-    void sendMails(){
+    @Scheduled(cron = "0 * * * * *")
+    private void sendMails(){
         Optional<InternshipManager> optionalManager = internshipManagerRepository.findByIsDisabledFalse();
         if (optionalManager.isPresent()) {
             InternshipManager manager = optionalManager.get();
@@ -144,8 +143,8 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.addTo(manager.getEmail());
-        helper.setSubject("Un étudiant vient d'appliquer à une offre");
-        helper.setText("L'étudiant " + student.getFirstName() + " " + student.getLastName() + " vient d'appliquer à l'offre : " + "\n" + offer.getJobName() + "\n" + offer.getDescription());
+        helper.setSubject(MAIL_SUBJECT);
+        helper.setText(getEmailTextWhenStudentAppliesToNewInternshipOffer(student, offer));
 
         mailSender.send(message);
     }
@@ -168,7 +167,6 @@ public class EmailService {
         mailSender.send(message);
     }
 
-
     private void generateEmailForMonitorAboutEvaluation(Student currentStudent, Monitor currentMonitor) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -188,12 +186,10 @@ public class EmailService {
         mailSender.send(message);
     }
 
-
     @Configuration
     @EnableScheduling
     @ConditionalOnProperty(name = "scheduling.enabled", matchIfMissing = true)
-    static
-    class SchedulingConfiguration {
+    static class SchedulingConfiguration {
 
     }
 }

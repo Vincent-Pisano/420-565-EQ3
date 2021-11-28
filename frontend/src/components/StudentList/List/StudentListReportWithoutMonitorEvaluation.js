@@ -52,7 +52,8 @@ function StudentListReportWithoutMonitorEvaluation() {
   function showInternshipApplications(student) {
     history.push({
       pathname:
-      URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT + student.username,
+        URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT +
+        student.username,
       state: {
         title: TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED(
           student,

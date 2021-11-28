@@ -1,14 +1,24 @@
 import { React, useEffect, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import { useFormFields } from "../../../lib/hooksLib";
-import { UPDATE_INTERNSHIP_APPLICATION, GET_CONTRACT_OF_INTERNSHIP, GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION } from "../../../Utils/API";
+import {
+  UPDATE_INTERNSHIP_APPLICATION,
+  GET_CONTRACT_OF_INTERNSHIP,
+  GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
+} from "../../../Utils/API";
 import {
   ERROR_UPDATE,
   CONFIRM_MODIFICATIONS,
 } from "../../../Utils/Errors_Utils";
 import axios from "axios";
 import "../../../styles/Form.css";
-import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_NOT_ACCEPTED, STATUS_VALIDATED, STATUS_WAITING } from "../../../Utils/APPLICATION_STATUSES";
+import {
+  STATUS_ACCEPTED,
+  STATUS_COMPLETED,
+  STATUS_NOT_ACCEPTED,
+  STATUS_VALIDATED,
+  STATUS_WAITING,
+} from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationStudentModal = ({
   show,
@@ -56,8 +66,10 @@ const InternshipApplicationStudentModal = ({
         : currentInternshipApplication.interviewDate;
     currentInternshipApplication.student.cvlist = [];
     currentInternshipApplication.student.signature = undefined;
-    if (currentInternshipApplication.student.supervisorMap !== null && 
-      currentInternshipApplication.student.supervisorMap !== undefined)
+    if (
+      currentInternshipApplication.student.supervisorMap !== null &&
+      currentInternshipApplication.student.supervisorMap !== undefined
+    )
       currentInternshipApplication.student.supervisorMap = undefined;
     currentInternshipApplication.internshipOffer.pdfdocument = undefined;
     currentInternshipApplication.internshipOffer.monitor.signature = undefined;
@@ -93,7 +105,10 @@ const InternshipApplicationStudentModal = ({
   }
 
   function checkIfCompleted() {
-    if (currentInternshipApplication.status === STATUS_COMPLETED && internship !== undefined) {
+    if (
+      currentInternshipApplication.status === STATUS_COMPLETED &&
+      internship !== undefined
+    ) {
       return (
         <Col md={4}>
           <a
@@ -105,20 +120,20 @@ const InternshipApplicationStudentModal = ({
             Contrat de stage
           </a>
         </Col>
-      )
+      );
     } else {
       return (
         <Col md={4}>
-            <Button
-              variant="success"
-              size="lg"
-              className="mt-3"
-              onClick={(e) => onConfirmModal(e)}
-            >
-              Confirmer
-            </Button>
-          </Col>
-      )
+          <Button
+            variant="success"
+            size="lg"
+            className="mt-3"
+            onClick={(e) => onConfirmModal(e)}
+          >
+            Confirmer
+          </Button>
+        </Col>
+      );
     }
   }
 
@@ -168,7 +183,7 @@ const InternshipApplicationStudentModal = ({
                     className="select_form d_block"
                     defaultValue={
                       currentInternshipApplication.interviewDate !== null &&
-                        currentInternshipApplication.interviewDate !== undefined
+                      currentInternshipApplication.interviewDate !== undefined
                         ? formatDate(currentInternshipApplication.interviewDate)
                         : ""
                     }

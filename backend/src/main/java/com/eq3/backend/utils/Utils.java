@@ -52,6 +52,8 @@ public class Utils {
 
     public final static String UTC_TIME_ZONE = "UTC";
 
+    public final static String MAIL_SUBJECT = "Un étudiant vient d'appliquer à une offre";
+
     public static String getEmailTextForSupervisorAboutEvaluation(Supervisor supervisor, Monitor monitor){
         return "Bonjour " + supervisor.getFirstName() + " " + supervisor.getLastName() + "\n" +
                 "vous devez remettre l'évaluation de l'entreprise : " +
@@ -75,6 +77,11 @@ public class Utils {
         return "Vous allez être convoqué à votre entrevue de stage dans 1 semaine." + "\n" + "Détails : " + "\n"
                 + "Titre de l'emploi : " + internshipOffer.getJobName() + "\n"
                 + "Description : " + internshipOffer.getDescription();
+    }
+
+    public static String getEmailTextWhenStudentAppliesToNewInternshipOffer(Student student, InternshipOffer offer){
+        return "L'étudiant " + student.getFirstName() + " " + student.getLastName() + " vient d'appliquer à l'offre : "
+                + "\n" + offer.getJobName() + "\n" + offer.getDescription();
     }
 
     public static PDFDocument extractDocument(MultipartFile multipartFile) throws IOException {

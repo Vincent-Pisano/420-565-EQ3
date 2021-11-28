@@ -114,7 +114,11 @@ const SignUpStudent = () => {
             required
           >
             {DEPARTMENTS.map((department) => {
-              return <option key={department.key} value={department.key}>{department.name}</option>;
+              return (
+                <option key={department.key} value={department.key}>
+                  {department.name}
+                </option>
+              );
             })}
           </Form.Control>
         </Form.Group>

@@ -1,6 +1,5 @@
 package com.eq3.backend.controller;
 
-import com.eq3.backend.model.Department;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.service.InternshipOfferService;
 import com.fasterxml.jackson.databind.node.ObjectNode;

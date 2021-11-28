@@ -1,12 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faTimes, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faTimes,
+  faSyncAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
 const InternshipOffer = ({ internshipOffer, onClick }) => {
-
-  let icon = internshipOffer.status === "WAITING"
-  ? faSyncAlt : internshipOffer.status === "REFUSED"
-  ? faTimes : faEnvelope;
+  let icon =
+    internshipOffer.status === "WAITING"
+      ? faSyncAlt
+      : internshipOffer.status === "REFUSED"
+      ? faTimes
+      : faEnvelope;
 
   return (
     <Row

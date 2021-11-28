@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import {
   GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
-  GET_CONTRACT_OF_INTERNSHIP
+  GET_CONTRACT_OF_INTERNSHIP,
 } from "../../../Utils/API";
 import axios from "axios";
 import "../../../styles/Form.css";

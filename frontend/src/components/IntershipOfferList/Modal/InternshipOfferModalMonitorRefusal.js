@@ -7,27 +7,25 @@ const InternshipOfferModalMonitorRefusal = ({
   currentInternshipOffer,
   showInternshipOffer,
 }) => {
-
   function checkIfRefusalNote() {
-    if (currentInternshipOffer !== undefined &&
+    if (
+      currentInternshipOffer !== undefined &&
       currentInternshipOffer.status === "REFUSED" &&
-      currentInternshipOffer.refusalNote !== "") {
+      currentInternshipOffer.refusalNote !== ""
+    ) {
       return (
-      <Form.Group controlId="note">
-      <Form.Control
-        value={
-          currentInternshipOffer.refusalNote
-        }
-        disabled
-        type="text"
-        className="input_form"
-        required
-      />
-    </Form.Group>)
+        <Form.Group controlId="note">
+          <Form.Control
+            value={currentInternshipOffer.refusalNote}
+            disabled
+            type="text"
+            className="input_form"
+            required
+          />
+        </Form.Group>
+      );
     } else {
-      return (
-        <p style={{color:"red"}}>Aucune note de refus !</p>
-      )
+      return <p style={{ color: "red" }}>Aucune note de refus !</p>;
     }
   }
 

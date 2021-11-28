@@ -18,14 +18,14 @@ const CVButtonActive = ({ cv }) => {
         onClick={reset}
         disabled={cv.isActive || cv.status === "REFUSED"}
       >
-        {cv.status === "REFUSED" ? "Refusé" : cv.isActive ? "Déjà Actif" : "Mettre Actif"}
+        {cv.status === "REFUSED"
+          ? "Refusé"
+          : cv.isActive
+          ? "Déjà Actif"
+          : "Mettre Actif"}
       </button>
 
-      <CVModalActive
-        handleClose={handleClose}
-        show={show}
-        documentId={cv.id}
-      />
+      <CVModalActive handleClose={handleClose} show={show} documentId={cv.id} />
     </>
   );
 };

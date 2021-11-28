@@ -1,7 +1,12 @@
 import { React } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import "../../../styles/Form.css";
-import { STATUS_ACCEPTED, STATUS_NOT_ACCEPTED, STATUS_VALIDATED, STATUS_WAITING } from "../../../Utils/APPLICATION_STATUSES";
+import {
+  STATUS_ACCEPTED,
+  STATUS_NOT_ACCEPTED,
+  STATUS_VALIDATED,
+  STATUS_WAITING,
+} from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationSupervisorModal = ({
   show,
