@@ -398,4 +398,85 @@ class BackendControllerTest {
         assertThat(response.getContentLength()).isGreaterThan(0);
     }
 
+    @Test
+    //@Disabled
+    public void testGetSignature() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        expectedStudent = getStudentWithId();
+
+        when(service.getSignature(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedImage.getData()));
+
+        //Act
+        MvcResult result = mockMvc.perform(get(URL_GET_SIGNATURE +
+                expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureStudent() throws Exception {
+        //Arrange
+        expectedStudent = getStudentWithId();
+
+        when(service.deleteSignatureStudent(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedStudent));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_DELETE_SIGNATURE_STUDENT +
+                expectedStudent.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureMonitor() throws Exception {
+        //Arrange
+        expectedMonitor = getMonitorWithId();
+
+        when(service.deleteSignatureMonitor(expectedMonitor.getUsername()))
+                .thenReturn(Optional.of(expectedMonitor));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_DELETE_SIGNATURE_MONITOR +
+                expectedMonitor.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureInternshipManager() throws Exception {
+        //Arrange
+        expectedInternshipManager = getInternshipManagerWithId();
+
+        when(service.deleteSignatureInternshipManager(expectedInternshipManager.getUsername()))
+                .thenReturn(Optional.of(expectedInternshipManager));
+
+        //Act
+        MvcResult result = mockMvc.perform(post(URL_DELETE_SIGNATURE_INTERNSHIP_MANAGER +
+                expectedInternshipManager.getUsername())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        //Assert
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
+    }
+
 }

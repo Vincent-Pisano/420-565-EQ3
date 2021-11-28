@@ -14,15 +14,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
+import static com.eq3.backend.utils.UtilsURL.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(MockitoExtension.class)
 class BackendServiceTest {
@@ -401,5 +407,143 @@ class BackendServiceTest {
 
         assertThat(optionalDocument.isPresent()).isTrue();
         assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+    }
+
+    @Test
+    //@Disabled
+    public void testGetSignatureStudent() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        Student givenStudent = getStudentWithId();
+        givenStudent.setSignature(expectedImage);
+
+        when(studentRepository.findByUsernameAndIsDisabledFalse(givenStudent.getUsername()))
+                .thenReturn(Optional.of(givenStudent));
+
+        //Act
+        final Optional<byte[]> optionalSignature =
+                service.getSignature(givenStudent.getUsername());
+
+        //Assert
+        byte[] actualSignature = optionalSignature.orElse(null);
+
+        assertThat(actualSignature).isNotNull();
+        assertThat(actualSignature).isEqualTo(expectedImage.getData());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetSignatureMonitor() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        Monitor givenMonitor = getMonitorWithId();
+        givenMonitor.setSignature(expectedImage);
+
+        when(monitorRepository.findByUsernameAndIsDisabledFalse(givenMonitor.getUsername()))
+                .thenReturn(Optional.of(givenMonitor));
+
+        //Act
+        final Optional<byte[]> optionalSignature =
+                service.getSignature(givenMonitor.getUsername());
+
+        //Assert
+        byte[] actualSignature = optionalSignature.orElse(null);
+
+        assertThat(actualSignature).isNotNull();
+        assertThat(actualSignature).isEqualTo(expectedImage.getData());
+    }
+
+    @Test
+    //@Disabled
+    public void testGetSignatureInternshipManager() throws Exception {
+        //Arrange
+        expectedImage = getImage();
+        InternshipManager givenInternshipManager = getInternshipManagerWithId();
+        givenInternshipManager.setSignature(expectedImage);
+
+        when(internshipManagerRepository.findByUsernameAndIsDisabledFalse(givenInternshipManager.getUsername()))
+                .thenReturn(Optional.of(givenInternshipManager));
+
+        //Act
+        final Optional<byte[]> optionalSignature =
+                service.getSignature(givenInternshipManager.getUsername());
+
+        //Assert
+        byte[] actualSignature = optionalSignature.orElse(null);
+
+        assertThat(actualSignature).isNotNull();
+        assertThat(actualSignature).isEqualTo(expectedImage.getData());
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureStudent() throws Exception {
+        //Arrange
+        expectedStudent = getStudentWithId();
+        Student givenStudent = getStudentWithId();
+        givenStudent.setSignature(getImage());
+
+        when(studentRepository.findByUsernameAndIsDisabledFalse(givenStudent.getUsername()))
+                .thenReturn(Optional.of(givenStudent));
+        when(studentRepository.save(any()))
+                .thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.deleteSignatureStudent(givenStudent.getUsername());
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualStudent.getSignature()).isNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureMonitor() throws Exception {
+        //Arrange
+        expectedMonitor = getMonitorWithId();
+        Monitor givenMonitor = getMonitorWithId();
+        givenMonitor.setSignature(getImage());
+
+        when(monitorRepository.findByUsernameAndIsDisabledFalse(givenMonitor.getUsername()))
+                .thenReturn(Optional.of(givenMonitor));
+        when(monitorRepository.save(any()))
+                .thenReturn(expectedMonitor);
+
+        //Act
+        final Optional<Monitor> optionalMonitor =
+                service.deleteSignatureMonitor(givenMonitor.getUsername());
+
+        //Assert
+        Monitor actualMonitor = optionalMonitor.orElse(null);
+
+        assertThat(actualMonitor).isNotNull();
+        assertThat(actualMonitor.getSignature()).isNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureInternshipManager() throws Exception {
+        //Arrange
+        expectedInternshipManager = getInternshipManagerWithId();
+        InternshipManager givenInternshipManager = getInternshipManagerWithId();
+        givenInternshipManager.setSignature(getImage());
+
+        when(internshipManagerRepository.findByUsernameAndIsDisabledFalse(givenInternshipManager.getUsername()))
+                .thenReturn(Optional.of(givenInternshipManager));
+        when(internshipManagerRepository.save(any()))
+                .thenReturn(expectedInternshipManager);
+
+        //Act
+        final Optional<InternshipManager> optionalInternshipManager =
+                service.deleteSignatureInternshipManager(givenInternshipManager.getUsername());
+
+        //Assert
+        InternshipManager actualInternshipManager= optionalInternshipManager.orElse(null);
+
+        assertThat(actualInternshipManager).isNotNull();
+        assertThat(actualInternshipManager.getSignature()).isNull();
     }
 }

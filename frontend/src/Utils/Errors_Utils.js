@@ -100,4 +100,8 @@ export const ERROR_USERNAME_EMAIL_ALREADY_EXISTS = "Le nom d'utilisateur ou le c
 //HOME
 export const ERROR_SAVE_SIGNATURE = "Erreur lors de la sauvegarde de la signature";
 export const ERROR_SELECT_PNG = "Sélectionnez une image PNG";
+export const ERROR_DELETE_SIGNATURE = "Erreur durant la suppression de la signature...";
+
+export const CONFIRM_DELETE_SIGNATURE = "Confirmation de la suppression de la signature";
+export const CONFIRM_SAVE_SIGNATURE = "Confirmation du dépôt de la signature";
 

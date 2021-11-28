@@ -1,3 +1,5 @@
+import auth from "../services/Auth";
+
 const URL_BACKEND = "http://localhost:9090/";
 
 //STUDENT LIST
@@ -40,6 +42,14 @@ export const GET_DEFAULT_ENGAGEMENTS = URL_BACKEND + "get/default/engagements"
 //HOME
 export const GET_SIGNATURE = URL_BACKEND + "get/signature/";
 export const SAVE_SIGNATURE = URL_BACKEND + "save/signature/";
+
+export function DELETE_SIGNATURE(username) {
+    let user = auth.isStudent() ? "student" 
+    : auth.isMonitor() ? "monitor"
+    : auth.isInternshipManager() ? "internshipManager"
+    : "none";
+    return URL_BACKEND + "delete/signature/" + user + "/" + username
+}
 
 //INTERNSHIP OFFER FORM
 export const POST_APPLY_INTERNSHIP_OFFER = URL_BACKEND + "apply/internshipOffer/";

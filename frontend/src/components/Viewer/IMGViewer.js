@@ -1,43 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Viewer from "react-viewer";
-import { Container, Button } from "react-bootstrap";
-import axios from "axios";
+import { Container, Button, Row, Col } from "react-bootstrap";
 import { GET_SIGNATURE } from "../../Utils/API";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import ModalConfirmDeleteSignature from "./Modal/ModalConfirmDeleteSignature";
 
-const ImgViewer = ({ username }) => {
+const ImgViewer = ({ username, setHasASignature }) => {
   const [visible, setVisible] = useState(false);
-  const [url, setUrl] = useState("");
 
-  useEffect(() => {
-    axios
-      .get(GET_SIGNATURE + username)
-      .then((response) => {
-        let blob = new Blob([response.data], { type: "image/png" });
-        let uri = URL.createObjectURL(blob);
-        setUrl(response.data);
-      })
-      .catch((error) => {});
-  }, [username]);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div>
       <Container className="cont_btn_file">
-        <Button
-          className="btn_submit"
-          onClick={() => {
-            setVisible(true);
-          }}
-        >
-          Visualiser la signature
-        </Button>
-        <img src={url} alt="" width="600px" height="600px" />
+        <Row>
+          <Col md={9}>
+            <Button
+              className="btn_submit mb-3"
+              onClick={() => {
+                setVisible(true);
+              }}
+            >
+              Visualiser la signature
+            </Button>
+          </Col>
+          <Col md={3}>
+            <FontAwesomeIcon
+              className="fa-3x text-danger"
+              icon={faTrashAlt}
+              onClick={handleShow}
+            />
+          </Col>
+        </Row>
       </Container>{" "}
       <Viewer
         visible={visible}
         onClose={() => {
           setVisible(false);
         }}
-        images={[{ src: url, alt: "" }]}
+        images={[{ src: GET_SIGNATURE + username, alt: "" }]}
+      />
+      <ModalConfirmDeleteSignature
+        show={show}
+        handleClose={handleClose}
+        username={username}
+        setHasASignature={setHasASignature}
       />
     </div>
   );

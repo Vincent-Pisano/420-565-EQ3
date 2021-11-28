@@ -48,26 +48,27 @@ public class BackendService {
         if (image != null) {
             switch (username.charAt(0)) {
                 case 'G' :
-                    optionalBinary = getInternshipManagerSignature(username, optionalBinary, image);
+                    optionalBinary = getInternshipManagerSignature(username, image);
                     break;
 
                 case 'S' :
-                    optionalBinary = getSupervisorSignature(username, optionalBinary, image);
+                    optionalBinary = getSupervisorSignature(username, image);
                     break;
 
                 case 'M' :
-                    optionalBinary = getMonitorSignature(username, optionalBinary, image);
+                    optionalBinary = getMonitorSignature(username, image);
                     break;
 
                 case 'E' :
-                    optionalBinary = getStudentSignature(username, optionalBinary, image);
+                    optionalBinary = getStudentSignature(username, image);
                     break;
             }
         }
         return optionalBinary;
     }
 
-    private Optional<Binary> getStudentSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+    private Optional<Binary> getStudentSignature(String username, Binary image) {
+        Optional<Binary> optionalBinary = Optional.empty();
         Optional<Student> optionalStudent = studentRepository.findByUsernameAndIsDisabledFalse(username);
         if (optionalStudent.isPresent()) {
             Student student = optionalStudent.get();
@@ -78,7 +79,8 @@ public class BackendService {
         return optionalBinary;
     }
 
-    private Optional<Binary> getMonitorSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+    private Optional<Binary> getMonitorSignature(String username, Binary image) {
+        Optional<Binary> optionalBinary = Optional.empty();
         Optional<Monitor> optionalMonitor = monitorRepository.findByUsernameAndIsDisabledFalse(username);
         if (optionalMonitor.isPresent()) {
             Monitor monitor = optionalMonitor.get();
@@ -89,7 +91,8 @@ public class BackendService {
         return optionalBinary;
     }
 
-    private Optional<Binary> getSupervisorSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+    private Optional<Binary> getSupervisorSignature(String username, Binary image) {
+        Optional<Binary> optionalBinary = Optional.empty();
         Optional<Supervisor> optionalSupervisor = supervisorRepository.findByUsernameAndIsDisabledFalse(username);
         if (optionalSupervisor.isPresent()) {
             Supervisor supervisor = optionalSupervisor.get();
@@ -100,7 +103,8 @@ public class BackendService {
         return optionalBinary;
     }
 
-    private Optional<Binary> getInternshipManagerSignature(String username, Optional<Binary> optionalBinary, Binary image) {
+    private Optional<Binary> getInternshipManagerSignature(String username, Binary image) {
+        Optional<Binary> optionalBinary = Optional.empty();
         Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
         if (optionalInternshipManager.isPresent()) {
             InternshipManager internshipManager = optionalInternshipManager.get();
@@ -208,4 +212,52 @@ public class BackendService {
         Optional<Student> optionalStudent = studentRepository.findById(idStudent);
         return getCVFromStudent(idCV, optionalStudent);
     }
+
+    public Optional<byte[]> getSignature(String username) {
+        Optional<byte[]> signature = Optional.empty();
+        switch (username.charAt(0)) {
+            case 'G' :
+                Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
+                signature = optionalInternshipManager.map(internshipManager -> internshipManager.getSignature().getData());
+                break;
+
+            case 'M' :
+                Optional<Monitor> optionalMonitor = monitorRepository.findByUsernameAndIsDisabledFalse(username);
+                signature = optionalMonitor.map(monitor -> monitor.getSignature().getData());
+                break;
+
+            case 'E' :
+                Optional<Student> optionalStudent = studentRepository.findByUsernameAndIsDisabledFalse(username);
+                signature = optionalStudent.map(student -> student.getSignature().getData());
+                break;
+        }
+        return signature;
+    }
+
+    public Optional<Student> deleteSignatureStudent(String username) {
+        Optional<Student> optionalStudent = studentRepository.findByUsernameAndIsDisabledFalse(username);
+        optionalStudent.ifPresent(student -> {
+            student.setSignature(null);
+            studentRepository.save(student);
+        });
+        return optionalStudent;
+    }
+
+    public Optional<Monitor> deleteSignatureMonitor(String username) {
+        Optional<Monitor> optionalMonitor = monitorRepository.findByUsernameAndIsDisabledFalse(username);
+        optionalMonitor.ifPresent(monitor -> {
+            monitor.setSignature(null);
+            monitorRepository.save(monitor);
+        });
+        return optionalMonitor;
+    }
+    public Optional<InternshipManager> deleteSignatureInternshipManager(String username) {
+        Optional<InternshipManager> optionalInternshipManager = internshipManagerRepository.findByUsernameAndIsDisabledFalse(username);
+        optionalInternshipManager.ifPresent(internshipManager -> {
+            internshipManager.setSignature(null);
+            internshipManagerRepository.save(internshipManager);
+        });
+        return optionalInternshipManager;
+    }
+
 }

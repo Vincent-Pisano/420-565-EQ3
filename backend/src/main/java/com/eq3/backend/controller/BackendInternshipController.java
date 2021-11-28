@@ -1,24 +1,22 @@
 package com.eq3.backend.controller;
 
-import com.eq3.backend.model.PDFDocument;
 import com.eq3.backend.model.Student;
 import com.eq3.backend.service.BackendInternshipService;
+import com.eq3.backend.utils.UtilsController;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.TreeSet;
 
 import static com.eq3.backend.utils.UtilsController.BackendInternshipControllerUrl.*;
 import static com.eq3.backend.utils.UtilsController.CROSS_ORIGIN_ALLOWED;
+import static com.eq3.backend.utils.UtilsController.APPLICATION_PDF;
 
 @RestController
 @CrossOrigin(CROSS_ORIGIN_ALLOWED)
@@ -101,55 +99,38 @@ public class BackendInternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value = URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT, produces = "application/pdf")
+    @GetMapping(value = URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT, produces = APPLICATION_PDF)
     public ResponseEntity<InputStreamResource> downloadInternshipOfferDocument(@PathVariable(name = "id") String id){
         return service.downloadInternshipOfferDocument(id)
-                .map(this::getDownloadingDocument)
+                .map(UtilsController::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value=URL_DOWNLOAD_EVALUATION_DOCUMENT, produces = "application/pdf")
+    @GetMapping(value=URL_DOWNLOAD_EVALUATION_DOCUMENT, produces = APPLICATION_PDF)
     public ResponseEntity<InputStreamResource> downloadEvaluationDocument(@PathVariable String typeEvaluation){
         return service.downloadEvaluationDocument(typeEvaluation)
-                .map(this::getDownloadingDocument)
+                .map(UtilsController::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value=URL_DOWNLOAD_INTERNSHIP_CONTRACT, produces = "application/pdf")
+    @GetMapping(value=URL_DOWNLOAD_INTERNSHIP_CONTRACT, produces = APPLICATION_PDF)
     public ResponseEntity<InputStreamResource> downloadInternshipContractDocument(@PathVariable String id){
         return service.downloadInternshipContractDocument(id)
-                .map(this::getDownloadingDocument)
+                .map(UtilsController::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value=URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION, produces = "application/pdf")
+    @GetMapping(value=URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION, produces = APPLICATION_PDF)
     public ResponseEntity<InputStreamResource> downloadInternshipStudentEvaluationDocument(@PathVariable String idInternship){
         return service.downloadInternshipStudentEvaluationDocument(idInternship)
-                .map(this::getDownloadingDocument)
+                .map(UtilsController::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value=URL_DOWNLOAD_INTERNSHIP_ENTERPRISE_EVALUATION, produces = "application/pdf")
+    @GetMapping(value=URL_DOWNLOAD_INTERNSHIP_ENTERPRISE_EVALUATION, produces = APPLICATION_PDF)
     public ResponseEntity<InputStreamResource> downloadInternshipEnterpriseEvaluationDocument(@PathVariable String idInternship){
         return service.downloadInternshipEnterpriseEvaluationDocument(idInternship)
-                .map(this::getDownloadingDocument)
+                .map(UtilsController::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
-    }
-
-    private ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        headers.add("Content-Disposition", "inline; filename=" + PDFDocument.getName());
-
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .headers(headers)
-                .contentLength(PDFDocument.getContent().length())
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(
-                        new ByteArrayInputStream(PDFDocument.getContent().getData()))
-                );
     }
 }

@@ -3,6 +3,7 @@ package com.eq3.backend.controller;
 import com.eq3.backend.model.*;
 import com.eq3.backend.service.BackendService;
 
+import com.eq3.backend.utils.UtilsController;
 import org.bson.types.Binary;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
@@ -18,6 +19,9 @@ import java.util.TreeSet;
 
 import static com.eq3.backend.utils.UtilsController.BackendControllerUrl.*;
 import static com.eq3.backend.utils.UtilsController.CROSS_ORIGIN_ALLOWED;
+import static com.eq3.backend.utils.UtilsController.APPLICATION_JSON_AND_CHARSET_UTF8;
+import static com.eq3.backend.utils.UtilsController.APPLICATION_PDF;
+import static com.eq3.backend.utils.UtilsController.MULTI_PART_FROM_DATA;
 
 @RestController
 @CrossOrigin(CROSS_ORIGIN_ALLOWED)
@@ -31,8 +35,8 @@ public class BackendController {
     }
 
     @PostMapping(value = URL_SAVE_SIGNATURE,
-            produces = "application/json;charset=utf8",
-            consumes = { "multipart/form-data" })
+            produces = APPLICATION_JSON_AND_CHARSET_UTF8,
+            consumes = { MULTI_PART_FROM_DATA })
     public ResponseEntity<Binary> saveSignature(@PathVariable String username,
                                                 @RequestPart(name = "signature") MultipartFile multipartFile) {
         return service.saveSignature(username, multipartFile)
@@ -114,27 +118,43 @@ public class BackendController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping(value = URL_DOWNLOAD_CV_DOCUMENT, produces = "application/pdf")
+    @GetMapping(value = URL_DOWNLOAD_CV_DOCUMENT, produces = APPLICATION_PDF)
     public ResponseEntity<InputStreamResource> downloadStudentCVDocument(@PathVariable String idStudent, @PathVariable String idCV){
         return service.downloadStudentCVDocument(idStudent, idCV)
-                .map(this::getDownloadingDocument)
+                .map(UtilsController::getDownloadingDocument)
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    private ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        headers.add("Content-Disposition", "inline; filename=" + PDFDocument.getName());
+    @GetMapping(value = URL_GET_SIGNATURE, produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<InputStreamResource> getSignature(@PathVariable String username){
+        return service.getSignature(username)
+                .map(signature -> ResponseEntity
+                        .status(HttpStatus.ACCEPTED)
+                        .contentType(MediaType.IMAGE_PNG)
+                        .body(new InputStreamResource(
+                                new ByteArrayInputStream(signature))
+                        ))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .headers(headers)
-                .contentLength(PDFDocument.getContent().length())
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(
-                        new ByteArrayInputStream(PDFDocument.getContent().getData()))
-                );
+    @PostMapping(URL_DELETE_SIGNATURE_STUDENT)
+    public ResponseEntity<Student> deleteSignatureStudent(@PathVariable String username) {
+        return service.deleteSignatureStudent(username)
+                .map(_student -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_student))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping(URL_DELETE_SIGNATURE_MONITOR)
+    public ResponseEntity<Monitor> deleteSignatureMonitor(@PathVariable String username) {
+        return service.deleteSignatureMonitor(username)
+                .map(_monitor -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_monitor))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping(URL_DELETE_SIGNATURE_INTERNSHIP_MANAGER)
+    public ResponseEntity<InternshipManager> deleteSignatureInternshipManager(@PathVariable String username) {
+        return service.deleteSignatureInternshipManager(username)
+                .map(_internshipManager -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipManager))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 }

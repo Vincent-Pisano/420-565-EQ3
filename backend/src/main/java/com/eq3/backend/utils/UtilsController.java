@@ -1,11 +1,20 @@
 package com.eq3.backend.utils;
 
+import com.eq3.backend.model.PDFDocument;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import java.io.ByteArrayInputStream;
 
 public class UtilsController {
 
     public final static String CROSS_ORIGIN_ALLOWED = "http://localhost:3006";
     public final static String APPLICATION_JSON_AND_CHARSET_UTF8 = "application/json;charset=utf8";
+    public final static String APPLICATION_PDF = "application/pdf";
     public final static String MULTI_PART_FROM_DATA = "multipart/form-data";
     public final static String REQUEST_PART_DOCUMENT = "document";
     public final static String REQUEST_PART_INTERNSHIP_OFFER = "internshipOffer";
@@ -35,6 +44,10 @@ public class UtilsController {
         public final static String URL_GET_MONITOR = "/get/monitor/{username}";
         public final static String URL_ASSIGN_SUPERVISOR = "/assign/supervisor/{idStudent}/{idSupervisor}";
         public final static String URL_DOWNLOAD_CV_DOCUMENT = "/get/CV/document/{idStudent}/{idCV}";
+        public final static String URL_GET_SIGNATURE = "/get/signature/{username}";
+        public final static String URL_DELETE_SIGNATURE_STUDENT = "/delete/signature/student/{username}";
+        public final static String URL_DELETE_SIGNATURE_MONITOR = "/delete/signature/monitor/{username}";
+        public final static String URL_DELETE_SIGNATURE_INTERNSHIP_MANAGER = "/delete/signature/internshipManager/{username}";
     }
 
     public static class BackendInternshipControllerUrl {
@@ -103,5 +116,20 @@ public class UtilsController {
         public final static String URL_DEPOSIT_INTERNSHIP_ENTERPRISE_EVALUATION = "/deposit/evaluation/enterprise/{idInternship}";
     }
 
+    public static ResponseEntity<InputStreamResource> getDownloadingDocument(PDFDocument PDFDocument) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        headers.add("Content-Disposition", "inline; filename=" + PDFDocument.getName());
 
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .headers(headers)
+                .contentLength(PDFDocument.getContent().length())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(
+                        new ByteArrayInputStream(PDFDocument.getContent().getData()))
+                );
+    }
 }
