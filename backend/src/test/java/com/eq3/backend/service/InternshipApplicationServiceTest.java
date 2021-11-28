@@ -10,6 +10,7 @@ import org.mockito.Mock;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -219,7 +220,7 @@ public class InternshipApplicationServiceTest {
     public void testGetAllInternshipOfferNotAppliedOfStudentBySession() {
         //Arrange
         expectedStudent = getStudentWithId();
-        expectedInternshipApplicationList = getListOfInternshipApplication();
+        expectedInternshipApplicationList = new ArrayList<>();
         expectedInternshipOfferList = getListOfInternshipOffer();
 
         when(studentRepository.findStudentByUsernameAndIsDisabledFalse(expectedStudent.getUsername()))
