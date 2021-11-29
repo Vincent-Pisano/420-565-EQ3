@@ -10,8 +10,6 @@ import "./../styles/Home.css";
 import "./../styles/Form.css";
 import "../App.css";
 import IMGViewer from "./Viewer/IMGViewer";
-import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ModalDepositSignature from "./Viewer/Modal/ModalDepositSignature";
 
 function Home() {
@@ -86,17 +84,10 @@ function Home() {
           <>
             <Container className="cont_btn_file">
               <Row>
-                <Col md={9}>
-                  <Button className="btn_submit mb-3" onClick={handleShow}>
+                <Col md={12}>
+                  <Button className="btn_link mb-3" onClick={handleShow}>
                     Déposer la signature
                   </Button>
-                </Col>
-                <Col md={3}>
-                  <FontAwesomeIcon
-                    className="fa-3x text-warning"
-                    icon={faSyncAlt}
-                    onClick={handleShow}
-                  />
                 </Col>
               </Row>
             </Container>
