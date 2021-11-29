@@ -36,7 +36,15 @@ function InternshipApplicationListTemplate({
         <h2 className="cont_title_form">{title}</h2>
         {showSessionsList()}
         <Container className="cont_list">
-          <p>{errorMessage}</p>
+          <p
+            style={{
+              color: errorMessage.startsWith("Erreur")
+                ? "red"
+                : "green",
+            }}
+          >
+            {errorMessage}
+          </p>
           <ul>
             {internshipApplications.map((internshipApplication) => (
               <InternshipApplication

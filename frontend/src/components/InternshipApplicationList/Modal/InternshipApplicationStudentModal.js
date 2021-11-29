@@ -15,7 +15,7 @@ import "../../../styles/Form.css";
 import {
   STATUS_COMPLETED,
   STATUS_VALIDATED,
-  APPLICATION_STATUSES,
+  APPLICATION_STATUSES
 } from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationStudentModal = ({
@@ -161,7 +161,7 @@ const InternshipApplicationStudentModal = ({
                   >
                     {APPLICATION_STATUSES.map((status) => {
                       return (
-                        <option key={status.key} value={status.key}>
+                        <option key={status.key} value={status.key} disabled={status.disabled}>
                           {status.name}
                         </option>
                       );

@@ -94,6 +94,7 @@ const InternshipOfferForm = () => {
     );
     if (isStudentActiveCVValid) {
       fields.monitor.signature = undefined;
+      fields.pdfdocument = undefined;
       axios
         .post(POST_APPLY_INTERNSHIP_OFFER + user.username, fields)
         .then((response) => {

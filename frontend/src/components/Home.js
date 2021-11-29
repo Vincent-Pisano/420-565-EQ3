@@ -57,7 +57,7 @@ function Home() {
   }
 
   function checkForModal() {
-    if (auth.isSupervisor() || auth.isStudent()) {
+    if ((auth.isSupervisor() || auth.isStudent()) && !user.sessions.includes(session)) {
       return (
         <>
           <ConfirmSubscribeModal

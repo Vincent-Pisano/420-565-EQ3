@@ -7,10 +7,10 @@ import "../../../styles/Form.css";
 import { GET_DEFAULT_ENGAGEMENTS, SAVE_INTERNSHIP } from "../../../Utils/API";
 import {
   ERROR_ENGAGEMENTS,
-  ERROR_NO_STUDENT_TO_ASSIGN,
   ERROR_UPDATE,
   ERROR_NO_UPDATE,
   CONFIRM_MODIFICATIONS,
+  ERROR_NO_MORE_INTERNSHIP_APPLICATION_TO_VALIDATE
 } from "../../../Utils/Errors_Utils";
 
 const InternshipApplicationInternshipManagerModal = ({
@@ -89,7 +89,7 @@ const InternshipApplicationInternshipManagerModal = ({
                 pathname: `/home/${auth.user.username}`,
               });
             }, 3000);
-            setErrorMessage(ERROR_NO_STUDENT_TO_ASSIGN);
+            setErrorMessage(ERROR_NO_MORE_INTERNSHIP_APPLICATION_TO_VALIDATE);
           }
           setTimeout(() => {
             setErrorMessageModal("");

@@ -15,6 +15,7 @@ export const CONFIRM_VALID_CV = "Confirmation de la validation du CV";
 export const CONFIRM_REFUSE_CV = "Confirmation du refus du CV";
 
 //INTERNSHIP APPLICATION LIST
+export const ERROR_NO_MORE_INTERNSHIP_APPLICATION_TO_VALIDATE = "Plus aucune application à valider, vous allez être redirigé";
 export const ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION = "Aucune Application enregistrée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION = "Aucune Application d'offre de stage acceptée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION = "Aucune Application validée pour cette session"
