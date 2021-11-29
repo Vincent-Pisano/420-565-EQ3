@@ -362,6 +362,9 @@
   .input_form {
     padding: 15px;
   }
+  .cont_central_signUp {
+    width: 98%;
+  }
 }
 
 @media only screen and (min-width: 767px) {
@@ -375,6 +378,10 @@
 
   .input_form {
     padding: 15px;
+  }
+
+  .cont_central_signUp {
+    width: 70%;
   }
 }
 
@@ -396,6 +403,10 @@
   .cont_central_auth {
     width: 55%;
   }
+
+  .cont_central_signUp {
+    width: 55%;
+  }
 }
 
 
@@ -403,10 +414,18 @@
   .cont_central_auth {
     width: 40%;
   }
+
+  .cont_central_signUp {
+    width: 40%;
+  }
 }
 
 @media only screen and (min-width: 2000px) {
   .cont_central_auth {
-    width: 30%;
+    width: 10%;
+  }
+
+  .cont_central_signUp {
+    width: 10%;
   }
 }

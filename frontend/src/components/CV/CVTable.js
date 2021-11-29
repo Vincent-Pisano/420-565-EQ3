@@ -24,6 +24,7 @@ const CVTable = ({ cvlist }) => {
   }
 
   return (
+    <div className="cvTable" >
     <Table className="table table-striped">
       <thead>
         <tr>
@@ -36,6 +37,7 @@ const CVTable = ({ cvlist }) => {
       </thead>
       <tbody>{checkIfEmpty()}</tbody>
     </Table>
+    </div>
   );
 };
 

@@ -159,9 +159,10 @@
 .user-item h3 {
   display: inline-block;
 }
-
 .jumbotron .btn .user-item h3 a {
   color: #5bc0de;
   padding: 5px !important;
   font-size: 12px !important;
 }
+
+

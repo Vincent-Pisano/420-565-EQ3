@@ -33,7 +33,7 @@ function InternshipOfferListTemplate({
   return (
     <Container className="cont_principal">
       <Container className="cont_list_centrar">
-        <h2 className="cont_title_form">{title}</h2>
+        <h2 className="cont_title_form mb-3 mt-3">{title}</h2>
         {showSessionsList()}
         <Container className="cont_list">
           <p className="cont_title_form">{errorMessage}</p>
