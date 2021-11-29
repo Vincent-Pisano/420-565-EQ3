@@ -1,20 +1,36 @@
 <template>
   <div class="container">
-    <h1 class="title">Page d'inscirption</h1>
+    <h1 class="title">Page de connection</h1>
     <form @submit="onSubmit" class="add-form">
       <div class="form-control">
-        <button class="lol">Étudiant</button>
-
-        <button class="lol">Superviseur</button>
-
-        <button class="lol" onClick="lol">Moniteur</button>
+        <label>Nom d'utilisateur</label>
+        <input
+          type="text"
+          v-model="username"
+          name="username"
+          placeholder="Entrez votre nom d'utilisateur"
+        />
       </div>
+      <div class="form-control">
+        <label>Mot de passe</label>
+        <input
+          type="password"
+          v-model="pw"
+          name="pw"
+          placeholder="Entrez votre mot de passe"
+        />
+      </div>
+      <div class="form-control">
+        <p>{{ errorMessage }}</p>
+      </div>
+      <input type="submit" value="Se connecter" class="btn btn-block" />
     </form>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import router from "../../router/index";
 
 function getUserType(username) {
   if (username.startsWith("E")) {
@@ -29,7 +45,7 @@ function getUserType(username) {
 }
 
 export default {
-  name: "Signup",
+  name: "Login",
   inheritAttrs: false,
   data() {
     return {
@@ -56,7 +72,8 @@ export default {
               this.pw
           )
           .then(function (response) {
-            console.log(response.data);
+            sessionStorage.setItem("user", JSON.stringify(response.data));
+            router.push("/profile");
           })
           .catch((error) => {
             console.log(error);
@@ -65,11 +82,18 @@ export default {
           });
       }
     },
+    deleteUserFromStorage: function () {
+      sessionStorage.removeItem("user");
+      sessionStorage.removeItem("offer");
+    },
+  },
+  created: function () {
+    this.deleteUserFromStorage();
   },
 };
 </script>
 
 <style>
-@import "./../styles/FormStyles.css";
-@import "./../styles/GeneralStyles.css";
+@import "./../../styles/FormStyles.css";
+@import "./../../styles/GeneralStyles.css";
 </style>

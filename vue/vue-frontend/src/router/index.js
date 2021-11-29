@@ -1,14 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "../views/Login";
-//import About from '../views/About'
-import SignupStudent from "../views/SignupStudent";
-import SignupMonitor from "../views/SignupMonitor";
-import SignupSupervisor from "../views/SignupSupervisor";
+import Login from "../views/SignUpLogin/Login";
+import SignupStudent from "../views/SignUpLogin/SignupStudent";
+import SignupMonitor from "../views/SignUpLogin/SignupMonitor";
+import SignupSupervisor from "../views/SignUpLogin/SignupSupervisor";
 import ProfilePage from "../views/ProfilePage";
-import InternshipOfferForm from "../views/InternshipOfferForm";
-import InternshipOfferListToValidate from "../views/InternshipOfferListToValidate";
-import InternshipOfferFormValidation from "../views/InternshipOfferFormValidation";
-import InternshipOfferListValidated from "../views/InternshipOfferListValidated";
+import InternshipOfferForm from "../views/InternshipOfferForm/InternshipOfferForm";
+import InternshipOfferListToValidate from "../views/InternshipOfferList/InternshipOfferListToValidate";
+import InternshipOfferFormValidation from "../views/InternshipOfferForm/InternshipOfferFormValidation";
+import InternshipOfferListValidated from "../views/InternshipOfferList/InternshipOfferListValidated";
 
 const routes = [
   {
@@ -16,11 +15,6 @@ const routes = [
     name: "Login",
     component: Login,
   },
-  /*{
-    path: '/about',
-    name: 'About',
-    component: About,
-  },*/
   {
     path: "/signUpStudent",
     name: "SignUpStudent",

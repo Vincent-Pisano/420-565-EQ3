@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import router from "./../router/index";
-
 export default {
   name: "InternshipOffer",
   props: {
@@ -20,11 +18,8 @@ export default {
   methods: {
     goValidate() {
       sessionStorage.setItem("offer", JSON.stringify(this.internshipOffer));
-      if(this.username.startsWith("G")){
-        router.push("/internshipOfferValidation");
-      }
-      else if(this.username.startsWith("E")){
-        router.push("/internshipOfferValidation");
+      if (this.username.startsWith("G") || this.username.startsWith("E")) {
+        this.$router.push("/internshipOfferValidation");
       }
     },
   },

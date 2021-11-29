@@ -1,24 +1,24 @@
 <template>
-    <button @click="goToList()" class="btn btn1">Valider une offre</button>
-    <br />
+  <button @click="goToList()" class="btn btn1">Valider une offre</button>
+  <br />
 </template>
 
 <script>
 import router from "./../router/index";
 
 export default {
-    name: 'ButtonToInternshipOfferListToValidate',
-    methods: {
-        goToList() {
-            router.push("/internshipOfferListToValidate")
-        },
-    }
-}
+  name: "ButtonToInternshipOfferListToValidate",
+  methods: {
+    goToList() {
+      router.push("/internshipOfferListToValidate");
+    },
+  },
+};
 </script>
 
 <style scoped>
 .btn {
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 8px 16px;
@@ -31,14 +31,14 @@ export default {
   cursor: pointer;
 }
 
-.btn1:hover  {
-  background-color: white; 
-  color: black; 
+.btn1:hover {
+  background-color: white;
+  color: black;
 }
 
-.btn1{
-  background-color: #008CBA;
+.btn1 {
+  background-color: #008cba;
   color: white;
-  border: 2px solid #008CBA;
+  border: 2px solid #008cba;
 }
 </style>

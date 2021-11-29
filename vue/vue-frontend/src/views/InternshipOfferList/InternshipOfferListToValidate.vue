@@ -3,8 +3,13 @@
     <div class="container">
       <h1 class="title">Liste des offres de stages à valider</h1>
 
-      <div :key="offer.id" v-for="offer in unvalidatedInternshipOfferList">
-        <InternshipOffer :internshipOffer="offer" />
+      <div v-if="this.unvalidatedInternshipOfferList.length > 0">
+        <div :key="offer.id" v-for="offer in unvalidatedInternshipOfferList">
+          <InternshipOffer :internshipOffer="offer" :username="user.username" />
+        </div>
+      </div>
+      <div v-else>
+        <p>Aucune offre de stage à valider pour le moment</p>
       </div>
 
       <ButtonGoBackToProfile />
@@ -14,9 +19,8 @@
 
 <script>
 import axios from "axios";
-import router from "./../router/index";
-import ButtonGoBackToProfile from "../components/ButtonGoBackToProfile.vue";
-import InternshipOffer from "../components/InternshipOffer.vue";
+import ButtonGoBackToProfile from "../../components/ButtonGoBackToProfile.vue";
+import InternshipOffer from "../../components/InternshipOffer.vue";
 
 export default {
   components: { ButtonGoBackToProfile, InternshipOffer },
@@ -31,7 +35,7 @@ export default {
   },
   methods: {
     logOut() {
-      router.push("/");
+      this.$router.push("/");
     },
     getUserInfo: function () {
       if (sessionStorage.getItem("user") !== null) {
@@ -62,6 +66,6 @@ export default {
 </script>
 
 <style>
-@import "./../styles/FormStyles.css";
-@import "./../styles/GeneralStyles.css";
+@import "./../../styles/FormStyles.css";
+@import "./../../styles/GeneralStyles.css";
 </style>

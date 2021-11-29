@@ -3,7 +3,12 @@
     <div class="container">
       <h1 class="title">Validation de l'offre de stage</h1>
       <form @submit="onSubmit" class="add-form">
-        <div v-if="this.user.username.startsWith('G') || this.user.username.startsWith('E')">
+        <div
+          v-if="
+            this.user.username.startsWith('G') ||
+            this.user.username.startsWith('E')
+          "
+        >
           <div class="form-control">
             <label>Moniteur</label>
             <input
@@ -196,7 +201,14 @@
             </select>
           </div>
 
-          <input type="submit" value="Valider" class="btn btn-block" />
+          <div class="form-control">
+            <p>{{ errorMessage }}</p>
+          </div>
+
+          <input type="submit" value="Confirmer" class="btn btn-block" />
+          <div v-if="this.user.username.startsWith('G')">
+            <button @click="refuse()" class="btn btn-block">Refuser</button>
+          </div>
         </div>
       </form>
       <ButtonGoBackToProfile />
@@ -206,8 +218,7 @@
 
 <script>
 import axios from "axios";
-import router from "./../router/index";
-import ButtonGoBackToProfile from "../components/ButtonGoBackToProfile.vue";
+import ButtonGoBackToProfile from "../../components/ButtonGoBackToProfile.vue";
 
 export default {
   components: { ButtonGoBackToProfile },
@@ -238,16 +249,21 @@ export default {
             "http://localhost:9090/validate/internshipOffer/" +
               this.internshipOffer.id
           )
-          .then(function (response) {
+          .then((response) => {
+            this.errorMessage =
+              "Le statut de l'offre a été mis à jour, vous allez être redirigé";
             console.log(response.data);
-            router.push("/profile");
+            setTimeout(() => {
+              this.errorMessage = "";
+              this.$router.push("/profile");
+            }, 3000);
           })
           .catch((error) => {
             console.log(error);
             this.errorMessage = "Erreur de validation!";
           });
       } else if (this.user.username.startsWith("E")) {
-        console.log(this.user)
+        console.log(this.user);
         axios
           .post(
             "http://localhost:9090/add/internshipApplication/" +
@@ -255,9 +271,14 @@ export default {
               "/" +
               this.internshipOffer.id
           )
-          .then(function (response) {
+          .then((response) => {
+            this.errorMessage =
+              "Vous avez appliqué à une offre de stage, vous allez être redirigé";
             console.log(response.data);
-            router.push("/profile");
+            setTimeout(() => {
+              this.errorMessage = "";
+              this.$router.push("/profile");
+            }, 3000);
           })
           .catch((error) => {
             console.log(error);
@@ -265,8 +286,30 @@ export default {
           });
       }
     },
+    refuse() {
+      if (this.user.username.startsWith("G")) {
+        axios
+          .post(
+            "http://localhost:9090/refuse/internshipOffer/" +
+              this.internshipOffer.id
+          )
+          .then((response) => {
+            this.errorMessage =
+              "Le statut de l'offre a été mis à jour, vous allez être redirigé";
+            console.log(response.data);
+            setTimeout(() => {
+              this.errorMessage = "";
+              this.$router.push("/profile");
+            }, 3000);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errorMessage = "Erreur de validation!";
+          });
+      }
+    },
     logOut() {
-      router.push("/");
+      this.$router.push("/");
     },
     getUserInfo: function () {
       console.log(sessionStorage.getItem("user"));
@@ -328,6 +371,6 @@ export default {
 </script>
 
 <style>
-@import "./../styles/FormStyles.css";
-@import "./../styles/GeneralStyles.css";
+@import "./../../styles/FormStyles.css";
+@import "./../../styles/GeneralStyles.css";
 </style>

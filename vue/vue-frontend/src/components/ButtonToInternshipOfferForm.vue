@@ -1,24 +1,24 @@
 <template>
-    <button @click="goToForm()" class="btn btn1">Déposer une offre</button>
-    <br />
+  <button @click="goToForm()" class="btn btn1">Déposer une offre</button>
+  <br />
 </template>
 
 <script>
 import router from "./../router/index";
 
 export default {
-    name: 'ButtonToInternshipOfferForm',
-    methods: {
-        goToForm() {
-            router.push("/internshipOfferForm")
-        },
-    }
-}
+  name: "ButtonToInternshipOfferForm",
+  methods: {
+    goToForm() {
+      router.push("/internshipOfferForm");
+    },
+  },
+};
 </script>
 
 <style scoped>
 .btn {
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 8px 16px;
@@ -31,14 +31,14 @@ export default {
   cursor: pointer;
 }
 
-.btn1:hover  {
-  background-color: white; 
-  color: black; 
+.btn1:hover {
+  background-color: white;
+  color: black;
 }
 
-.btn1{
-  background-color: #4CAF50;
+.btn1 {
+  background-color: #4caf50;
   color: white;
-  border: 2px solid #4CAF50;
+  border: 2px solid #4caf50;
 }
 </style>

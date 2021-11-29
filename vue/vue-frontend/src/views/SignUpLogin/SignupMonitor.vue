@@ -86,7 +86,6 @@
 
 <script>
 import axios from "axios";
-import router from "./../router/index";
 
 export default {
   name: "SignupMonitor",
@@ -115,9 +114,13 @@ export default {
       } else {
         axios
           .post("http://localhost:9090/signUp/monitor", this.fields)
-          .then(function (response) {
+          .then((response) =>{
+            this.errorMessage = "Votre compte à été crée avec succès, vous allez être redirigé";
             console.log(response.data);
-            router.push("/");
+            setTimeout(() => {
+              this.errorMessage = "";
+              this.$router.push("/");
+            }, 3000);
           })
           .catch((error) => {
             console.log(error);
@@ -136,6 +139,6 @@ export default {
 </script>
 
 <style>
-@import "./../styles/FormStyles.css";
-@import "./../styles/GeneralStyles.css";
+@import "./../../styles/FormStyles.css";
+@import "./../../styles/GeneralStyles.css";
 </style>

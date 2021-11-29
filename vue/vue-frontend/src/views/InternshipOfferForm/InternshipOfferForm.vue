@@ -191,8 +191,7 @@
 
 <script>
 import axios from "axios";
-import router from "./../router/index";
-import ButtonGoBackToProfile from "../components/ButtonGoBackToProfile.vue";
+import ButtonGoBackToProfile from "../../components/ButtonGoBackToProfile.vue";
 
 export default {
   components: { ButtonGoBackToProfile },
@@ -237,7 +236,6 @@ export default {
       }
       var daysFromCheckboxes = [];
       for (const day in this.workDaysCheckboxes) {
-        console.log(`${day}: ${this.workDaysCheckboxes[day]}`);
         if (this.workDaysCheckboxes[day]) {
           daysFromCheckboxes.push(day);
         }
@@ -245,9 +243,14 @@ export default {
       this.fields.workDays = daysFromCheckboxes;
       axios
         .post("http://localhost:9090/add/internshipOffer", this.fields)
-        .then(function (response) {
+        .then((response) => {
+          this.errorMessage =
+            "Offre de stage déposée, vous allez être redirigé";
           console.log(response.data);
-          router.push("/profile");
+          setTimeout(() => {
+            this.errorMessage = "";
+            this.$router.push("/profile");
+          }, 3000);
         })
         .catch((error) => {
           console.log(error);
@@ -255,7 +258,7 @@ export default {
         });
     },
     logOut() {
-      router.push("/");
+      this.$router.push("/");
     },
     getUserInfo: function () {
       console.log(sessionStorage.getItem("user"));
@@ -284,6 +287,6 @@ export default {
 </script>
 
 <style>
-@import "./../styles/FormStyles.css";
-@import "./../styles/GeneralStyles.css";
+@import "./../../styles/FormStyles.css";
+@import "./../../styles/GeneralStyles.css";
 </style>
