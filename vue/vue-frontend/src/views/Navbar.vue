@@ -8,5 +8,5 @@
 </template>
 
 <style>
-@import './../styles/NavbarStyles.css';
+@import "./../styles/NavbarStyles.css";
 </style>

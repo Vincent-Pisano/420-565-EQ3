@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import router from "./../router/index";
 import ButtonToInternshipOfferForm from "./../components/ButtonToInternshipOfferForm.vue";
 import ButtonToInternshipOfferListToValidate from "./../components/ButtonToInternshipOfferListToValidate.vue";
 import ButtonToApplyToInternshipOffer from "./../components/ButtonToApplyToInternshipOffer.vue";
@@ -63,16 +62,12 @@ export default {
   inheritAttrs: false,
   methods: {
     logOut() {
-      router.push("/");
+      this.$router.push("/");
     },
     getDepartment() {
-      if (this.user.department == "COMPUTER_SCIENCE") {
-        return "Informatique";
-      } else if (this.user.department == "ARCHITECTURE") {
-        return "Architecture";
-      } else {
-        return "Infirmier";
-      }
+      if (this.user.department == "COMPUTER_SCIENCE") return "Informatique";
+      else if (this.user.department == "ARCHITECTURE") return "Architecture";
+      else return "Infirmier";
     },
     getUserInfo: function () {
       console.log(sessionStorage.getItem("user"));

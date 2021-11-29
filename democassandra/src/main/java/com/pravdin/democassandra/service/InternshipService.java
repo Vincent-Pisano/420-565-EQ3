@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class InternshipService {
     private StudentRepository studentRepository;
 
     @Autowired
-    private IntersnhipApplicationRepository intersnhipApplicationRepository;
+    private InternshipApplicationRepository intersnhipApplicationRepository;
 
     public Optional<InternshipOffer> postInternshipOffer(InternshipOffer internshipOffer) {
         Optional<InternshipOffer> optionalInternshipOffer = Optional.empty();
@@ -43,16 +44,21 @@ public class InternshipService {
     }
 
     public Optional<List<InternshipOffer>> getUnvalidatedInternshipOffers(){
-        Optional<List<InternshipOffer>> optionalInternshipOfferList;
-        optionalInternshipOfferList = internshipOfferRepository.getInternshipOffersByIsValidFalse();
-        return optionalInternshipOfferList;
+        List<InternshipOffer> internshipOfferList;
+        List<InternshipOffer> internshipOfferListWaiting = new ArrayList<>();
+        internshipOfferList = internshipOfferRepository.findAll();
+        for (InternshipOffer internshipOffer : internshipOfferList){
+            if (internshipOffer.getStatus().equals(InternshipOffer.OfferStatus.WAITING))
+                internshipOfferListWaiting.add(internshipOffer);
+        }
+        return Optional.of(internshipOfferListWaiting);
     }
 
     public Optional<InternshipOffer> validateInternshipOffer(String id){
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
         if(optionalInternshipOffer.isPresent()){
             InternshipOffer internshipOffer = optionalInternshipOffer.get();
-            internshipOffer.setIsValid(true);
+            internshipOffer.setStatus(InternshipOffer.OfferStatus.ACCEPTED);
             optionalInternshipOffer = Optional.of(internshipOfferRepository.save(internshipOffer));
             return optionalInternshipOffer;
         }
@@ -60,14 +66,27 @@ public class InternshipService {
         return Optional.empty();
     }
 
+    public Optional<InternshipOffer> refuseInternshipOffer(String id){
+        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(id);
+        if(optionalInternshipOffer.isPresent()){
+            InternshipOffer internshipOffer = optionalInternshipOffer.get();
+            internshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED);
+            optionalInternshipOffer = Optional.of(internshipOfferRepository.save(internshipOffer));
+            return optionalInternshipOffer;
+        }
+
+        return Optional.empty();
+    }
+
+
     public Optional<InternshipApplication> postInternshipApplication(String student_id, String offer_id) {
         Optional<InternshipApplication> optionalInternshipApplication = Optional.empty();
         try{
             Optional<Student> optionalStudent = studentRepository.findById(student_id);
             Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(offer_id);
             if(optionalStudent.isPresent() && optionalInternshipOffer.isPresent()){
-                Boolean isValidated = optionalInternshipOffer.get().getIsValid();
-                if(isValidated)
+                InternshipOffer.OfferStatus isValidated = optionalInternshipOffer.get().getStatus();
+                if(isValidated.equals(InternshipOffer.OfferStatus.ACCEPTED))
                     optionalInternshipApplication = Optional.of(intersnhipApplicationRepository.save(
                         new InternshipApplication(student_id, offer_id)));
                 else
@@ -82,8 +101,13 @@ public class InternshipService {
     }
 
     public Optional<List<InternshipOffer>> getValidatedInternshipOffers(){
-        Optional<List<InternshipOffer>> optionalInternshipOfferList;
-        optionalInternshipOfferList = internshipOfferRepository.getInternshipOffersByIsValidTrue();
-        return optionalInternshipOfferList;
+        List<InternshipOffer> internshipOfferList;
+        List<InternshipOffer> internshipOfferListAccepted = new ArrayList<>();
+        internshipOfferList = internshipOfferRepository.findAll();
+        for (InternshipOffer internshipOffer : internshipOfferList){
+            if (internshipOffer.getStatus().equals(InternshipOffer.OfferStatus.ACCEPTED))
+                internshipOfferListAccepted.add(internshipOffer);
+        }
+        return Optional.of(internshipOfferListAccepted);
     }
 }

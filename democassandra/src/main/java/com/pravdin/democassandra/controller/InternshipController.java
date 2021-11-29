@@ -40,6 +40,13 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @PostMapping("/refuse/internshipOffer/{id}")
+    public ResponseEntity<InternshipOffer> refuseInternshipOffer(@PathVariable String id) {
+        return service.refuseInternshipOffer(id)
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.CREATED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @PostMapping("/add/internshipApplication/{student_id}/{offer_id}")
     public ResponseEntity<InternshipApplication> postInternshipApplication(@PathVariable String student_id, @PathVariable String offer_id) {
         return service.postInternshipApplication(student_id, offer_id)

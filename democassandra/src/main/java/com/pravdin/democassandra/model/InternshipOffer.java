@@ -24,6 +24,12 @@ public class InternshipOffer{
         FLEXIBLE
     }
 
+    public enum OfferStatus {
+        WAITING,
+        ACCEPTED,
+        REFUSED
+    }
+
     @PrimaryKey
     private String id = UUID.randomUUID().toString();
 
@@ -46,12 +52,17 @@ public class InternshipOffer{
 
     private Department workField;
 
+    /*@Builder.Default
+    @Indexed
+    protected Boolean isValid = false;*/
+
     @Builder.Default
     @Indexed
-    protected Boolean isValid = false;
+    protected OfferStatus status = OfferStatus.WAITING;
 
     public InternshipOffer() {
         super();
-        this.isValid = false;
+        //this.isValid = false;
+        this.status = OfferStatus.WAITING;
     }
 }

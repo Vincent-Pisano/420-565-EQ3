@@ -5,6 +5,6 @@ import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IntersnhipApplicationRepository extends CassandraRepository<InternshipApplication, String> {
+public interface InternshipApplicationRepository extends CassandraRepository<InternshipApplication, String> {
 
 }

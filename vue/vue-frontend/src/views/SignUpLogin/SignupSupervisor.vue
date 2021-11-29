@@ -100,8 +100,9 @@ export default {
       } else {
         axios
           .post("http://localhost:9090/signUp/supervisor", this.fields)
-          .then((response) =>{
-            this.errorMessage = "Votre compte à été crée avec succès, vous allez être redirigé";
+          .then((response) => {
+            this.errorMessage =
+              "Votre compte à été crée avec succès, vous allez être redirigé";
             console.log(response.data);
             setTimeout(() => {
               this.errorMessage = "";

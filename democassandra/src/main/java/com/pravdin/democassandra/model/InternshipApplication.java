@@ -25,18 +25,8 @@ public class InternshipApplication {
     @Indexed
     private String offer_id;
 
-    @Builder.Default
-    @Indexed
-    protected Boolean isValid = false;
-
-    public InternshipApplication() {
-        super();
-        this.isValid = false;
-    }
-
     public InternshipApplication(String student_id, String offer_id) {
         super();
-        this.isValid = false;
         this.student_id = student_id;
         this.offer_id = offer_id;
     }
