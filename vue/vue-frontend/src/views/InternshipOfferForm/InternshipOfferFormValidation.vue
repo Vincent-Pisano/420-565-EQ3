@@ -205,9 +205,9 @@
             <p>{{ errorMessage }}</p>
           </div>
 
-          <input type="submit" value="Confirmer" class="btn btn-block" />
+          <input type="submit" value="Confirmer" style="background: green" class="btn btn-block" />
           <div v-if="this.user.username.startsWith('G')">
-            <button @click="refuse()" class="btn btn-block">Refuser</button>
+            <button @click="refuse()" style="background: red" class="btn btn-block">Refuser</button>
           </div>
         </div>
       </form>

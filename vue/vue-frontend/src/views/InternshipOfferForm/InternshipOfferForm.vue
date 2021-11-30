@@ -182,7 +182,12 @@
         <div class="form-control">
           <p>{{ errorMessage }}</p>
         </div>
-        <input type="submit" value="Ajouter" class="btn btn-block" />
+        <input
+          type="submit"
+          value="Ajouter"
+          style="background: green"
+          class="btn btn-block"
+        />
       </form>
       <ButtonGoBackToProfile />
     </div>
@@ -234,12 +239,35 @@ export default {
       if (this.user.username.startsWith("M")) {
         this.fields.monitor = this.user.username;
       }
+
+      var dateStart = Date.parse(this.fields.startDate);
+      var dateEnd = Date.parse(this.fields.endDate);
+      if (dateStart > dateEnd) {
+        this.errorMessage =
+          "La date de fin doit être après la date de début du stage";
+        return;
+      }
+
+      var dayCheck = false;
+      for (const day in this.workDaysCheckboxes) {
+        if (this.workDaysCheckboxes[day]) {
+          dayCheck = true;
+          break;
+        }
+      }
+      if (!dayCheck) {
+        this.errorMessage =
+          "SVP Choissisez au moins une journée de travail pour le stage";
+        return;
+      }
+
       var daysFromCheckboxes = [];
       for (const day in this.workDaysCheckboxes) {
         if (this.workDaysCheckboxes[day]) {
           daysFromCheckboxes.push(day);
         }
       }
+
       this.fields.workDays = daysFromCheckboxes;
       axios
         .post("http://localhost:9090/add/internshipOffer", this.fields)

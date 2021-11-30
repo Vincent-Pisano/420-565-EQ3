@@ -2,7 +2,7 @@
   <div v-if="this.user != null">
     <div class="container">
       <h1 class="title">Liste des offres de stages à valider</h1>
-
+      <br />
       <div v-if="this.unvalidatedInternshipOfferList.length > 0">
         <div :key="offer.id" v-for="offer in unvalidatedInternshipOfferList">
           <InternshipOffer :internshipOffer="offer" :username="user.username" />

@@ -10,7 +10,6 @@ import com.pravdin.democassandra.repositories.StudentRepository;
 import com.pravdin.democassandra.repositories.SupervisorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -111,7 +111,7 @@ export default {
           })
           .catch((error) => {
             console.log(error);
-            this.errorMessage = "Erreur d'insription!";
+            this.errorMessage = "Erreur d'insription! SVP vérifiez les champs!";
           });
       }
     },
