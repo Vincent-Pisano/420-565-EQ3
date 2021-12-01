@@ -420,9 +420,9 @@
   }
 }
 
-@media only screen and (min-width: 2000px) {
+@media only screen and (width > 2000px) {
   .cont_central_auth {
-    width: 10%;
+    width: 25%;
   }
 
   .cont_central_signUp {
