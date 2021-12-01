@@ -4,51 +4,38 @@
   align-items: center;
   text-align: center;
   min-height: 100vh;
-  width: 100%;
 }
 
 .cont_central {
   padding: 2%;
-  margin: 2%;
   background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
   border-radius: 8px;
   transition: all 0.5s;
-  width: 100%;
-  height: 100%;
+  width: 95%;
+  margin: 5% auto;
 }
 
 .cont_central_auth {
   padding: 2%;
-  background-color : #2e578c;
+  background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
   border-radius: 8px;
   transition: all 0.5s;
   width: 30%;
   margin: 5% auto;
-
-  background: linear-gradient(to right, #4E5C71 20%, #829ABD 40%, #829ABD 50%, #829ABD 55%, #829ABD 70%, #4E5C71 100%);
-  background-size: 200% auto;
-  
-  animation: shine 3s linear infinite;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
 }
 
 .cont_central_signUp {
   padding: 2%;
+  background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
   border-radius: 8px;
   transition: all 0.5s;
   width: 30%;
   margin: 5% auto;
-  background: #2e578c;
 }
 
 .cont_central_internship_offer {
   padding: 2%;
-  background: #bfbdbd;
+  background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
   border-radius: 8px;
   transition: all 0.5s;
   width: 50%;
@@ -57,7 +44,6 @@
 
 .cont_form {
   min-width: 100%;
-  color: #000;
 }
 
 .cont_tabs_login {
@@ -75,7 +61,7 @@
 }
 
 .cont_text_inputs label {
-  color: black;
+  color: #999;
   font-size: small;
   position: relative;
   float: left;
@@ -128,19 +114,16 @@
 .cont_title_form {
   width: 100%;
   box-shadow: none !important;
-  font-family: "Lucida Console", "Courier New", monospace;
-  color: black;
+  color: rgba(255, 64, 88, 0.74);
 }
 
 .cont_title_form h2 {
   font-weight: bold;
   font-size: 2.5rem;
-  font-family: "Lucida Console", "Courier New", monospace;
-  color: black;
 }
 
 .discret {
-  color: #e6e6e6;
+  color: #9bacb3;
 }
 
 .cont_inputs {
@@ -150,13 +133,14 @@
 
 .input_form {
   width: 90%;
-  font-size: 20px;
-  transition: all 0.5s;
-  color: black;
+  border: none;
+  border-bottom: 1px solid #b0bec5;
   background-color: transparent;
+  font-size: 20px;
+  outline: none;
+  transition: all 0.5s;
+  border-radius: 0%;
 
-  border: 1px solid;
-  
   margin: 5% 5%;
   padding: 4% 2%;
   opacity: 1;
@@ -172,23 +156,23 @@
 .input_form:focus {
   box-shadow: none;
   background-color: transparent;
-  color: black;
 }
 
 .select_form {
   width: 90%;
+  border: none;
+  border: 1px solid #b0bec5;
   background-color: transparent;
   font-size: 20px;
   outline: none;
   transition: all 0.5s;
-  border: 1px solid;
+
   margin: 5% 5%;
   padding: 0% 2%;
   opacity: 1;
   height: 50px;
   font-size: 20px;
   display: block;
-  color: black;
 }
 
 .cont_file_form {
@@ -252,6 +236,7 @@
 }
 
 .btn_submit {
+  cursor: pointer;
   height: fit-content;
   padding: 20px;
   margin: 5px;
@@ -269,7 +254,6 @@
   color: white;
   background-color: #243abd;
 }
-
 
 .checkboxes {
   display: inline-block;
@@ -290,7 +274,7 @@
   padding-left: 22px;
   text-indent: -22px;
   margin-bottom: 5px;
-  color: black;
+  color: #999;
 }
 .checkboxes input {
   vertical-align: middle;
@@ -311,7 +295,7 @@
 
 .labelFields {
   font-size: 1rem;
-  color: black;
+  color: #999;
   margin-bottom: -2%;
 }
 
@@ -346,9 +330,6 @@
   display: block;
 }
 
-::placeholder {
-  color: white !important;
-}
 
 @media only screen and (max-width: 766px) {
   .cont_central_auth {
@@ -356,7 +337,7 @@
   }
 
   .cont_central_internship_offer {
-    width: 98%;
+    width: 95%;
   }
 
   .input_form {
@@ -373,7 +354,7 @@
   }
 
   .cont_central_internship_offer {
-    width: 98%;
+    width: 90%;
   }
 
   .input_form {
@@ -381,7 +362,7 @@
   }
 
   .cont_central_signUp {
-    width: 70%;
+    width: 80%;
   }
 }
 
@@ -391,7 +372,7 @@
   }
 
   .cont_central_internship_offer {
-    width: 98%;
+    width: 55%;
   }
 
   .input_form {
@@ -426,6 +407,6 @@
   }
 
   .cont_central_signUp {
-    width: 10%;
+    width: 25%;
   }
 }

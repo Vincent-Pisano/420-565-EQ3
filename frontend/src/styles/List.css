@@ -114,7 +114,6 @@
   transition-duration: 3s;
   box-shadow: 0px 2px 20px 2px #babdcc;
   transition: 0.5s;
-  background: #2e578c;
   color: black;
   transition-duration: 3s;
   box-shadow: 0px 2px 20px 2px #babdcc;
@@ -165,4 +164,10 @@
   font-size: 12px !important;
 }
 
+
+@media only screen and (width < 630px) {
+ .list_node_text_internship {
+  font-size: 1.5rem;
+ }
+}
 

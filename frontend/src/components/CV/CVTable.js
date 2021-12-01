@@ -25,7 +25,7 @@ const CVTable = ({ cvlist }) => {
 
   return (
     <div className="cvTable" >
-    <Table className="table table-striped">
+    <Table className="table table-striped" responsive="xxl">
       <thead>
         <tr>
           <th>Nom de fichier</th>
