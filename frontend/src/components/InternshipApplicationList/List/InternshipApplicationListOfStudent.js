@@ -15,7 +15,8 @@ function InternshipApplicationListOfStudent() {
   let history = useHistory();
   let state = history.location.state;
   let session = state !== undefined ? state.session : undefined;
-  let sessions = auth.isStudent() ? user.sessions : session;
+
+  let sessions = auth.isStudent() ? user.sessions.reverse() : session;
 
   let title = TITLE_INTERNSHIP_APPLICATION_LIST_OF_USER;
 
@@ -27,9 +28,7 @@ function InternshipApplicationListOfStudent() {
     useState({});
   const [internshipApplications, setInternshipApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [currentSession, setCurrentSession] = useState(
-    sessions.length > 0 ? sessions[sessions.length - 1] : sessions[0]
-  );
+  const [currentSession, setCurrentSession] = useState(sessions[0]);
 
   useEffect(() => {
     axios

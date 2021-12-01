@@ -15,7 +15,8 @@ import "../../../styles/Form.css";
 import {
   STATUS_COMPLETED,
   STATUS_VALIDATED,
-  APPLICATION_STATUSES
+  APPLICATION_STATUSES,
+  STATUS_NOT_ACCEPTED
 } from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationStudentModal = ({
@@ -95,10 +96,11 @@ const InternshipApplicationStudentModal = ({
       });
   }
 
-  function isValidatedOrCompleted() {
+  function isValidatedOrCompletedOrRefused() {
     return (
       currentInternshipApplication.status === STATUS_VALIDATED ||
-      currentInternshipApplication.status === STATUS_COMPLETED
+      currentInternshipApplication.status === STATUS_COMPLETED ||
+      currentInternshipApplication.status === STATUS_NOT_ACCEPTED
     );
   }
 
@@ -157,7 +159,7 @@ const InternshipApplicationStudentModal = ({
                     onChange={handleFieldChange}
                     className="select_form d_block"
                     required
-                    disabled={isValidatedOrCompleted()}
+                    disabled={isValidatedOrCompletedOrRefused()}
                   >
                     {APPLICATION_STATUSES.map((status) => {
                       return (
@@ -184,7 +186,7 @@ const InternshipApplicationStudentModal = ({
                         : ""
                     }
                     onChange={handleFieldChange}
-                    disabled={isValidatedOrCompleted()}
+                    disabled={isValidatedOrCompletedOrRefused()}
                   />
                 </Form.Group>
               </Container>

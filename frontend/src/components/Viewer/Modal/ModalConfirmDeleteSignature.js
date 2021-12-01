@@ -48,7 +48,7 @@ const ModalConfirmDeleteSignature = ({
               className="btn_sub"
               onClick={deleteSignature}
             >
-              Valider
+              Oui
             </Button>
           </Col>
           <Col md={3}>

@@ -10,9 +10,7 @@ import InternshipOfferButtonApply from "./InternshipOfferButtonApply";
 import "../../styles/Form.css";
 import { DEPARTMENTS } from "../../Utils/DEPARTMENTS";
 import { SCHEDULES } from "../../Utils/SCHEDULES";
-import {
-  URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT,
-} from "../../Utils/URL";
+import { URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT } from "../../Utils/URL";
 import {
   GET_ALL_INTERNSHIP_APPLICATIONS_OF_STUDENT,
   GET_MONITOR,
@@ -28,7 +26,7 @@ import {
   ERROR_MONITOR_NOT_FOUND,
   ERROR_NO_PDF_FOUND,
   ERROR_NO_WORK_DAYS,
-  ERROR_NO_ACTIVE_CV_VALID
+  ERROR_NO_ACTIVE_CV_VALID,
 } from "../../Utils/Errors_Utils";
 
 const InternshipOfferForm = () => {
@@ -101,7 +99,7 @@ const InternshipOfferForm = () => {
           setErrorMessage(ERROR_INTERNSHIP_OFFER_FORM_ACCEPTED);
           setHasApplied(true);
           setTimeout(() => {
-            history.push(URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT)
+            history.push(URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT);
           }, 3000);
         })
         .catch((error) => {
@@ -202,7 +200,11 @@ const InternshipOfferForm = () => {
   }
 
   function checkIfDocumentExist() {
-    if (internshipOffer !== undefined && internshipOffer.pdfdocument !== null) {
+    if (
+      internshipOffer !== undefined &&
+      internshipOffer.pdfdocument !== null &&
+      internshipOffer.pdfdocument !== undefined
+    ) {
       return (
         <InternshipOfferButtonDownload
           internshipOfferID={internshipOffer.id}
@@ -237,11 +239,7 @@ const InternshipOfferForm = () => {
               </p>
             );
           }
-        } else {
-          return (
-            <p style={{ color: "red" }}>Vous avez déja appliqué à ce stage</p>
-          );
-        }
+        } 
       } else {
         return (
           <>
