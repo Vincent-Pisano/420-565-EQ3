@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./../../../styles/CV.css";
 import CVModalActive from "../Modal/CVModalActive";
 
-const CVButtonActive = ({ documentId, documentActive }) => {
+const CVButtonActive = ({ cv }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -16,16 +16,16 @@ const CVButtonActive = ({ documentId, documentActive }) => {
       <button
         className="btn btn-warning btn-sm"
         onClick={reset}
-        disabled={documentActive}
+        disabled={cv.isActive || cv.status === "REFUSED"}
       >
-        {documentActive ? "Déjà Actif" : "Mettre Actif"}
+        {cv.status === "REFUSED"
+          ? "Refusé"
+          : cv.isActive
+          ? "Déjà Actif"
+          : "Mettre Actif"}
       </button>
 
-      <CVModalActive
-        handleClose={handleClose}
-        show={show}
-        documentId={documentId}
-      />
+      <CVModalActive handleClose={handleClose} show={show} documentId={cv.id} />
     </>
   );
 };

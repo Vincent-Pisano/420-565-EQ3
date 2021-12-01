@@ -14,16 +14,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.*;
 
 import static com.eq3.backend.utils.UtilsTest.*;
+import static com.eq3.backend.utils.UtilsURL.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(MockitoExtension.class)
 class BackendServiceTest {
@@ -41,9 +46,6 @@ class BackendServiceTest {
     private SupervisorRepository supervisorRepository;
 
     @Mock
-    private InternshipApplicationRepository internshipApplicationRepository;
-
-    @Mock
     private InternshipManagerRepository internshipManagerRepository;
 
     @Mock
@@ -55,12 +57,6 @@ class BackendServiceTest {
     @Mock
     private DistinctIterable distinctIterable;
 
-    @Mock
-    private InternshipOfferRepository internshipOfferRepository;
-
-    @Mock
-    private InternshipRepository internshipRepository;
-
     //global variables
     private Student expectedStudent;
     private InternshipManager expectedInternshipManager;
@@ -68,17 +64,11 @@ class BackendServiceTest {
     private List<Supervisor> expectedSupervisorList;
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
-    private InternshipOffer expectedInternshipOffer;
-    private List<InternshipApplication> expectedInternshipApplicationList;
     private List<String> expectedSessionList;
     private TreeSet<String> expectedSessionTreeSet;
-    private Evaluation expectedEvaluation;
     private CV expectedCV;
     private PDFDocument expectedPDFDocument;
     private Binary expectedImage;
-    private Internship expectedInternship;
-    private List<Internship> expectedInternshipList;
-    private List<InternshipOffer> expectedInternshipOfferList;
 
     @Test
     //@Disabled
@@ -194,7 +184,7 @@ class BackendServiceTest {
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudents(Department.COMPUTER_SCIENCE, SESSION);
+                service.getAllStudentsByDepartment(Department.COMPUTER_SCIENCE, SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -235,7 +225,7 @@ class BackendServiceTest {
 
         //Act
         final Optional<List<Student>> optionalStudents =
-                service.getAllStudents(SESSION);
+                service.getAllStudentsByDepartment(SESSION);
 
         //Assert
         List<Student> actualStudents = optionalStudents.orElse(null);
@@ -305,155 +295,6 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudentsWithoutInterviewDate() {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(studentRepository.findAllByIsDisabledFalseAndSessionsContains(SESSION))
-                .thenReturn(expectedStudentList);
-        when(internshipApplicationRepository.findAllByInterviewDateIsNotNull())
-                .thenReturn(new ArrayList<>());
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutInterviewDate(SESSION);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWaitingInterview() {
-        //Arrange
-        expectedInternshipApplicationList = getListOfInternshipApplicationWithDifferentStudent();
-        expectedInternshipApplicationList.forEach(internshipApplication -> {
-            Student student = internshipApplication.getStudent();
-            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-            student.setSessions(Collections.singletonList(SESSION));
-            internshipOffer.setSession(SESSION);
-        });
-        expectedStudentList = getListOfStudentsWithSessions();
-        when(internshipApplicationRepository.findAllByStatusWaitingAndInterviewDateIsAfterNowAndIsDisabledFalse())
-                .thenReturn(expectedInternshipApplicationList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWaitingInterview(SESSION);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithInternship() {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        expectedInternshipApplicationList = getListOfCompletedInternshipApplication();
-        expectedInternshipApplicationList.forEach(internshipApplication -> {
-            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-            internshipOffer.setSession(SESSION);
-        });
-        when(internshipApplicationRepository.findAllByIsDisabledFalse())
-                .thenReturn(expectedInternshipApplicationList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithInternship(SESSION);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws ParseException {
-        //Arrange
-        expectedInternshipApplicationList = getListOfInternshipApplicationWithInterviewDate();
-        expectedInternshipApplicationList.forEach(internshipApplication -> {
-            Student student = internshipApplication.getStudent();
-            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-            internshipOffer.setSession(SESSION);
-            student.setSessions(Collections.singletonList(SESSION));
-        });
-        expectedStudentList = Collections.singletonList(getStudentWithIdAndSession());
-        when( internshipApplicationRepository.findAllByInterviewDateIsNotNull()
-        ).thenReturn(expectedInternshipApplicationList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(SESSION);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithoutStudentEvaluation() throws IOException {
-        //Arrange
-        expectedInternshipList = getInternshipListCompleted();
-        expectedInternshipList.forEach(internship -> {
-            InternshipApplication internshipApplication = internship.getInternshipApplication();
-            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-            internshipOffer.setSession(SESSION);
-        });
-        expectedStudentList = getListOfStudentsWithoutStudentEvaluation();
-
-        when(internshipRepository.findByStudentEvaluationNullAndIsDisabledFalse()
-        ).thenReturn(expectedInternshipList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutStudentEvaluation(SESSION);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithoutEnterpriseEvaluation() throws IOException {
-        //Arrange
-        expectedInternshipList = getInternshipListCompleted();
-        expectedInternshipList.forEach(internship -> {
-            InternshipApplication internshipApplication = internship.getInternshipApplication();
-            InternshipOffer internshipOffer = internshipApplication.getInternshipOffer();
-            internshipOffer.setSession(SESSION);
-        });
-        expectedStudentList = getListOfStudentsWithoutEnterpriseEvaluation();
-
-        when(internshipRepository.findByEnterpriseEvaluationNullAndIsDisabledFalse()
-        ).thenReturn(expectedInternshipList);
-
-        //Act
-        final Optional<List<Student>> optionalStudents =
-                service.getAllStudentsWithoutEnterpriseEvaluation(SESSION);
-
-        //Assert
-        List<Student> actualStudents = optionalStudents.orElse(null);
-
-        assertThat(optionalStudents.isPresent()).isTrue();
-        assertThat(actualStudents.size()).isEqualTo(expectedStudentList.size());
-    }
-
-    @Test
-    //@Disabled
     public void getAllSupervisorsOfSession() {
         //Arrange
         expectedSupervisorList = getListOfSupervisors();
@@ -496,96 +337,6 @@ class BackendServiceTest {
 
         assertThat(optionalSessions.isPresent()).isTrue();
         assertThat(actualSessions.size()).isEqualTo(expectedSessionList.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllNextSessionsOfInternshipOffers() {
-        //Arrange
-        expectedInternshipOfferList = getListOfInternshipOfferWithDifferentSession();
-        expectedSessionTreeSet = new TreeSet<>();
-        expectedInternshipOfferList.forEach(internshipOffer ->
-                expectedSessionTreeSet.add(internshipOffer.getSession()));
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
-                .thenReturn(expectedInternshipOfferList);
-
-        //Act
-        final Optional<TreeSet<String>> optionalSessions =
-                service.getAllNextSessionsOfInternshipOffersValidated();
-
-        //Assert
-        TreeSet<String> actualSessions = optionalSessions.orElse(null);
-
-        assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions.size()).isEqualTo(expectedSessionTreeSet.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllNextSessionsOfInternshipOffersUnvalidated() {
-        //Arrange
-        expectedInternshipOfferList = getListOfInternshipOfferWithDifferentSession();
-        expectedSessionTreeSet = new TreeSet<>();
-        expectedInternshipOfferList.forEach(internshipOffer ->
-                expectedSessionTreeSet.add(internshipOffer.getSession()));
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
-                .thenReturn(expectedInternshipOfferList);
-
-        //Act
-        final Optional<TreeSet<String>> optionalSessions =
-                service.getAllNextSessionsOfInternshipOffersUnvalidated();
-
-        //Assert
-        TreeSet<String> actualSessions = optionalSessions.orElse(null);
-
-        assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions.size()).isEqualTo(expectedSessionTreeSet.size());
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllSessionsOfInvalidInternshipOffers() {
-        //Arrange
-        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
-        expectedInternshipOfferList = getListOfInternshipOffer();
-        expectedInternshipOfferList.forEach(internshipOffer ->
-                internshipOffer.setSession(SESSION));
-
-        when(internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse())
-                .thenReturn(expectedInternshipOfferList);
-
-        //Act
-        final Optional<TreeSet<String>> optionalSessions =
-                service.getAllSessionsOfInvalidInternshipOffers();
-
-        //Assert
-        TreeSet<String> actualSessions = optionalSessions.orElse(null);
-
-        assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllSessionsOfValidInternshipOffers() {
-        //Arrange
-        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
-        expectedInternshipOfferList = getListOfInternshipOffer();
-        expectedInternshipOfferList.forEach(internshipOffer ->
-                internshipOffer.setSession(SESSION));
-
-        when(internshipOfferRepository.findAllByIsValidTrueAndIsDisabledFalse())
-                .thenReturn(expectedInternshipOfferList);
-
-        //Act
-        final Optional<TreeSet<String>> optionalSessions =
-                service.getAllSessionsOfValidInternshipOffers();
-
-        //Assert
-        TreeSet<String> actualSessions = optionalSessions.orElse(null);
-
-        assertThat(optionalSessions.isPresent()).isTrue();
-        assertThat(actualSessions).isEqualTo(expectedSessionTreeSet);
     }
 
     @Test
@@ -636,30 +387,6 @@ class BackendServiceTest {
 
     @Test
     //Disabled
-    public void testDownloadInternshipOfferDocument() throws IOException {
-        //Arrange
-        expectedInternshipOffer = getInternshipOfferWithId();
-        expectedInternshipOffer.setMonitor(getMonitorWithId());
-        expectedPDFDocument = getDocument();
-        expectedInternshipOffer.setPDFDocument(getDocument());
-
-        when(internshipOfferRepository.findById(expectedInternshipOffer.getId()))
-                .thenReturn(Optional.ofNullable(expectedInternshipOffer));
-
-        //Act
-        Optional<PDFDocument> optionalDocument = service.downloadInternshipOfferDocument(
-                expectedInternshipOffer.getId()
-        );
-
-        //Assert
-        PDFDocument actualPDFDocument = optionalDocument.orElse(null);
-
-        assertThat(optionalDocument.isPresent()).isTrue();
-        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
-    }
-
-    @Test
-    //Disabled
     public void testDownloadStudentCVDocument() throws IOException {
         //Arrange
         expectedStudent = getStudentWithId();
@@ -684,83 +411,139 @@ class BackendServiceTest {
 
     @Test
     //@Disabled
-    public void testDownloadEvaluationDocument() throws IOException {
+    public void testGetSignatureStudent() throws Exception {
         //Arrange
-        expectedEvaluation = getEvaluation("student");
+        expectedImage = getImage();
+        Student givenStudent = getStudentWithId();
+        givenStudent.setSignature(expectedImage);
+
+        when(studentRepository.findByUsernameAndIsDisabledFalse(givenStudent.getUsername()))
+                .thenReturn(Optional.of(givenStudent));
 
         //Act
-        Optional<PDFDocument> optionalDocument = service.downloadEvaluationDocument(DOCUMENT_NAME);
+        final Optional<byte[]> optionalSignature =
+                service.getSignature(givenStudent.getUsername());
 
         //Assert
-        PDFDocument actualPDFDocument = optionalDocument.orElse(null);
+        byte[] actualSignature = optionalSignature.orElse(null);
 
-        assertThat(optionalDocument.isPresent()).isTrue();
-        assertThat(actualPDFDocument).isEqualTo(expectedEvaluation.getDocument());
+        assertThat(actualSignature).isNotNull();
+        assertThat(actualSignature).isEqualTo(expectedImage.getData());
     }
 
     @Test
     //@Disabled
-    public void testDownloadInternshipContractDocument() throws IOException {
+    public void testGetSignatureMonitor() throws Exception {
         //Arrange
-        expectedPDFDocument = getDocument();
-        expectedInternship = getInternship();
-        expectedInternship.setInternshipContract(expectedPDFDocument);
+        expectedImage = getImage();
+        Monitor givenMonitor = getMonitorWithId();
+        givenMonitor.setSignature(expectedImage);
 
-        when(internshipRepository.findById(expectedInternship.getId()))
-                .thenReturn(Optional.ofNullable(expectedInternship));
+        when(monitorRepository.findByUsernameAndIsDisabledFalse(givenMonitor.getUsername()))
+                .thenReturn(Optional.of(givenMonitor));
 
         //Act
-        Optional<PDFDocument> optionalContract = service.downloadInternshipContractDocument(
-                expectedInternship.getId());
+        final Optional<byte[]> optionalSignature =
+                service.getSignature(givenMonitor.getUsername());
 
         //Assert
-        PDFDocument actualPDFDocument = optionalContract.orElse(null);
+        byte[] actualSignature = optionalSignature.orElse(null);
 
-        assertThat(optionalContract.isPresent()).isTrue();
-        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+        assertThat(actualSignature).isNotNull();
+        assertThat(actualSignature).isEqualTo(expectedImage.getData());
     }
 
     @Test
     //@Disabled
-    public void testDownloadInternshipStudentEvaluationDocument() throws IOException {
+    public void testGetSignatureInternshipManager() throws Exception {
         //Arrange
-        expectedPDFDocument = getDocument();
-        expectedInternship = getInternship();
-        expectedInternship.setStudentEvaluation(expectedPDFDocument);
+        expectedImage = getImage();
+        InternshipManager givenInternshipManager = getInternshipManagerWithId();
+        givenInternshipManager.setSignature(expectedImage);
 
-        when(internshipRepository.findById(expectedInternship.getId()))
-                .thenReturn(Optional.ofNullable(expectedInternship));
+        when(internshipManagerRepository.findByUsernameAndIsDisabledFalse(givenInternshipManager.getUsername()))
+                .thenReturn(Optional.of(givenInternshipManager));
 
         //Act
-        Optional<PDFDocument> optionalContract = service.downloadInternshipStudentEvaluationDocument(
-                expectedInternship.getId());
+        final Optional<byte[]> optionalSignature =
+                service.getSignature(givenInternshipManager.getUsername());
 
         //Assert
-        PDFDocument actualPDFDocument = optionalContract.orElse(null);
+        byte[] actualSignature = optionalSignature.orElse(null);
 
-        assertThat(optionalContract.isPresent()).isTrue();
-        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+        assertThat(actualSignature).isNotNull();
+        assertThat(actualSignature).isEqualTo(expectedImage.getData());
     }
 
     @Test
     //@Disabled
-    public void testDownloadInternshipEnterpriseEvaluationDocument() throws IOException {
+    public void testDeleteSignatureStudent() throws Exception {
         //Arrange
-        expectedPDFDocument = getDocument();
-        expectedInternship = getInternship();
-        expectedInternship.setEnterpriseEvaluation(expectedPDFDocument);
+        expectedStudent = getStudentWithId();
+        Student givenStudent = getStudentWithId();
+        givenStudent.setSignature(getImage());
 
-        when(internshipRepository.findById(expectedInternship.getId()))
-                .thenReturn(Optional.ofNullable(expectedInternship));
+        when(studentRepository.findByUsernameAndIsDisabledFalse(givenStudent.getUsername()))
+                .thenReturn(Optional.of(givenStudent));
+        when(studentRepository.save(any()))
+                .thenReturn(expectedStudent);
 
         //Act
-        Optional<PDFDocument> optionalContract = service.downloadInternshipEnterpriseEvaluationDocument(
-                expectedInternship.getId());
+        final Optional<Student> optionalStudent =
+                service.deleteSignatureStudent(givenStudent.getUsername());
 
         //Assert
-        PDFDocument actualPDFDocument = optionalContract.orElse(null);
+        Student actualStudent = optionalStudent.orElse(null);
 
-        assertThat(optionalContract.isPresent()).isTrue();
-        assertThat(actualPDFDocument).isEqualTo(expectedPDFDocument);
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualStudent.getSignature()).isNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureMonitor() throws Exception {
+        //Arrange
+        expectedMonitor = getMonitorWithId();
+        Monitor givenMonitor = getMonitorWithId();
+        givenMonitor.setSignature(getImage());
+
+        when(monitorRepository.findByUsernameAndIsDisabledFalse(givenMonitor.getUsername()))
+                .thenReturn(Optional.of(givenMonitor));
+        when(monitorRepository.save(any()))
+                .thenReturn(expectedMonitor);
+
+        //Act
+        final Optional<Monitor> optionalMonitor =
+                service.deleteSignatureMonitor(givenMonitor.getUsername());
+
+        //Assert
+        Monitor actualMonitor = optionalMonitor.orElse(null);
+
+        assertThat(actualMonitor).isNotNull();
+        assertThat(actualMonitor.getSignature()).isNull();
+    }
+
+    @Test
+    //@Disabled
+    public void testDeleteSignatureInternshipManager() throws Exception {
+        //Arrange
+        expectedInternshipManager = getInternshipManagerWithId();
+        InternshipManager givenInternshipManager = getInternshipManagerWithId();
+        givenInternshipManager.setSignature(getImage());
+
+        when(internshipManagerRepository.findByUsernameAndIsDisabledFalse(givenInternshipManager.getUsername()))
+                .thenReturn(Optional.of(givenInternshipManager));
+        when(internshipManagerRepository.save(any()))
+                .thenReturn(expectedInternshipManager);
+
+        //Act
+        final Optional<InternshipManager> optionalInternshipManager =
+                service.deleteSignatureInternshipManager(givenInternshipManager.getUsername());
+
+        //Assert
+        InternshipManager actualInternshipManager= optionalInternshipManager.orElse(null);
+
+        assertThat(actualInternshipManager).isNotNull();
+        assertThat(actualInternshipManager.getSignature()).isNull();
     }
 }

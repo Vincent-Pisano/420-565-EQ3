@@ -11,8 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -197,5 +195,38 @@ public class CVServiceTest {
         assertThat(actualStudent).isNotNull();
         assertThat(actualCV).isNotNull();
         assertThat(actualCV.getStatus()).isEqualTo(CV.CVStatus.VALID);
+    }
+
+    @Test
+    //@Disabled
+    public void testRefuseCVOfStudent() throws IOException {
+        //Arrange
+        expectedStudent = getStudentWithId();
+        expectedCV = getCV();
+        expectedCV.getPDFDocument().setContent(null);
+        expectedStudent.getCVList().add(expectedCV);
+        expectedCV.setIsActive(true);
+        expectedCV.setStatus(CV.CVStatus.REFUSED);
+
+        Student givenStudent = getStudentWithId();
+        CV givenCV = getCV();
+        givenCV.getPDFDocument().setContent(null);
+        givenStudent.getCVList().add(givenCV);
+        givenCV.setIsActive(true);
+
+        when(studentRepository.findById(expectedStudent.getId())).thenReturn(Optional.of(givenStudent));
+        lenient().when(studentRepository.save(expectedStudent)).thenReturn(expectedStudent);
+
+        //Act
+        final Optional<Student> optionalStudent =
+                service.refuseCVOfStudent(givenStudent.getId());
+
+        //Assert
+        Student actualStudent = optionalStudent.orElse(null);
+        CV actualCV = actualStudent != null ? actualStudent.getCVList().get(0) : null;
+
+        assertThat(actualStudent).isNotNull();
+        assertThat(actualCV).isNotNull();
+        assertThat(actualCV.getStatus()).isEqualTo(CV.CVStatus.REFUSED);
     }
 }

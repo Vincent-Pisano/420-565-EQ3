@@ -8,6 +8,7 @@ import { UPDATE_ACTIVE_CV } from "../../../Utils/API";
 import {
   ERROR_ACTIVE_CV,
   CONFIRM_ACTIVE_CV,
+  WAIT_SENDING_EMAIL_ACTIVE_CV,
 } from "../../../Utils/Errors_Utils";
 
 const CVModalActive = ({ handleClose, show, documentId }) => {
@@ -17,6 +18,7 @@ const CVModalActive = ({ handleClose, show, documentId }) => {
 
   function onCreatePost(e) {
     e.preventDefault();
+    setErrorMessage(WAIT_SENDING_EMAIL_ACTIVE_CV);
     axios
       .post(UPDATE_ACTIVE_CV + user.id + "/" + documentId)
       .then((response) => {
@@ -66,7 +68,7 @@ const CVModalActive = ({ handleClose, show, documentId }) => {
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Row>
+        <Row style={{ textAlign: "center" }}>
           <Col>
             <p
               className="error_p"

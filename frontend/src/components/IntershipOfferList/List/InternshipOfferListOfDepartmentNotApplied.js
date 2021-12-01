@@ -6,7 +6,7 @@ import InternshipOfferListTemplate from "../InternshipOfferListTemplate";
 import { TITLE_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT } from "../../../Utils/TITLE";
 import {
   GET_ALL_NEXT_SESSIONS_OF_VALIDATED_INTERNSHIP_OFFERS,
-  GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT,
+  GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT_NOT_APPLIED,
 } from "../../../Utils/API";
 import {
   ERROR_NO_INTERNSHIP_OFFER_FOUND,
@@ -14,7 +14,7 @@ import {
 } from "../../../Utils/Errors_Utils";
 import { URL_INTERNSHIP_OFFER_FORM } from "../../../Utils/URL";
 
-function InternshipOfferListOfDepartment() {
+function InternshipOfferListOfDepartmentNotApplied() {
   let history = useHistory();
   let user = auth.user;
 
@@ -38,10 +38,10 @@ function InternshipOfferListOfDepartment() {
     } else if (currentSession !== undefined) {
       axios
         .get(
-          GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT +
+          GET_ALL_SESSIONS_INTERNSHIP_OFFERS_OF_DEPARTMENT_NOT_APPLIED +
             currentSession +
             "/" +
-            user.department
+            user.username
         )
         .then((response) => {
           setInternshipOffers(response.data);
@@ -50,7 +50,7 @@ function InternshipOfferListOfDepartment() {
           setErrorMessage(ERROR_NO_INTERNSHIP_OFFER_VALIDATED_YET);
         });
     }
-  }, [currentSession, sessions.length, user.department]);
+  }, [currentSession, sessions.length, user.username]);
 
   function showInternshipOffer(internshipOffer) {
     history.push({
@@ -74,4 +74,4 @@ function InternshipOfferListOfDepartment() {
   );
 }
 
-export default InternshipOfferListOfDepartment;
+export default InternshipOfferListOfDepartmentNotApplied;

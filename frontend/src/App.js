@@ -21,10 +21,11 @@ function App() {
               path={route.link}
               exact
               component={route.component}
+              accessValid={route.accessValid}
             />
           ))}
 
-          <Route path="*" exact component={Login} />
+          <ProtectedRoute path="*" exact component={Login} />
         </Switch>
       </div>
     </Router>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-
 import { Container, Button } from "react-bootstrap";
 import PDFViewer from "../Viewer/PDFViewer";
+import { DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT } from "../../Utils/API"
 
 const InternshipOfferButtonDownload = ({ internshipOfferID, document }) => {
   const [show, setShow] = useState(false);
@@ -15,7 +15,7 @@ const InternshipOfferButtonDownload = ({ internshipOfferID, document }) => {
         <Container className="pdf-container mb-5">
           <PDFViewer
             url={
-              "http://localhost:9090/get/internshipOffer/document/" +
+              DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT +
               internshipOfferID
             }
             documentName={document.name}

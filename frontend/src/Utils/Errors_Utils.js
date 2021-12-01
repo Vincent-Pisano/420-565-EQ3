@@ -8,11 +8,14 @@ export const ERROR_NO_MORE_STUDENT_TO_ASSIGN = "Plus aucun étudiant à assigner
 export const ERROR_NO_MORE_CV_TO_VALID = "Plus aucun CV à valider, vous allez être redirigé";
 export const ERROR_ASSIGN_SUPERVISOR = "Erreur durant l'assignation du Superviseur";
 export const ERROR_VALID_CV = "Erreur durant la validation du CV";
+export const ERROR_REFUSE_CV = "Erreur durant le refus du CV";
 
 export const CONFIRM_ASSIGN_SUPERVISOR = "Confirmation de l'assignation";
-export const CONFIRM_VALID_CV = "Confirmation de la validation";
+export const CONFIRM_VALID_CV = "Confirmation de la validation du CV";
+export const CONFIRM_REFUSE_CV = "Confirmation du refus du CV";
 
 //INTERNSHIP APPLICATION LIST
+export const ERROR_NO_MORE_INTERNSHIP_APPLICATION_TO_VALIDATE = "Plus aucune application à valider, vous allez être redirigé";
 export const ERROR_NO_INTERNSHIP_APPLICATION_OF_STUDENT_THIS_SESSION = "Aucune Application enregistrée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_ACCEPTED_THIS_SESSION = "Aucune Application d'offre de stage acceptée pour cette session"
 export const ERROR_NO_INTERNSHIP_APPLICATION_VALIDATED_THIS_SESSION = "Aucune Application validée pour cette session"
@@ -24,6 +27,8 @@ export const ERROR_WAITING_MONITOR_SIGNATURE = "Erreur ! En attente de la signat
 export const ERROR_WAITING_STUDENT_SIGNATURE = "Erreur ! En attente de la signature de l'Étudiant"
 export const ERROR_NO_SIGNATURE = "Erreur ! La signature n'a pas été déposé!"
 export const ERROR_UPDATE = "Erreur lors de la mise à jour"
+export const ERROR_NO_UPDATE = "Aucune modification effectuée"
+export const ERROR_ENGAGEMENTS = "Erreur lors de la requête des engagements"
 
 export const CONFIRM_DEPOSIT = "Confirmation du dépôt";
 export const CONFIRM_SIGNATURE = "Confirmation de la signature";
@@ -37,8 +42,13 @@ export const ERROR_NO_PDF_FOUND = "Erreur! Veuillez soumettre un document .pdf";
 export const ERROR_INVALID_DURATION = "Erreur! Durée de stage invalide !";
 export const ERROR_NO_WORK_DAYS = "Erreur! Choisissez au moins une journée de travail !";
 export const ERROR_INVALID_INTERNSHIP_OFFER = "Erreur! L'offre de stage est invalide";
+export const ERROR_VALIDATION_INTERNSHIP_OFFER = "Erreur lors de la validation";
+export const ERROR_REFUSING_INTERNSHIP_OFFER = "Erreur lors du refus ";
+export const ERROR_NO_ACTIVE_CV_VALID = "Erreur ! aucun CV actif n'est valide";
 
 export const CONFIRM_SAVE_INTERNSHIP_OFFER = "L'offre de stage a été sauvegardé, vous allez être redirigé";
+export const CONFIRM_VALIDATION_INTERNSHIP_OFFER = "L'offre de stage a été validée, vous allez être redirigé";
+export const CONFIRM_REFUSING_INTERNSHIP_OFFER = "L'offre de stage a été refusée, vous allez être redirigé";
 
 //INTERNSHIP OFFER LIST
 export const ERROR_NO_INTERNSHIP_OFFER_FOUND = "Aucune offre de stage déposée...";
@@ -65,6 +75,8 @@ export const ERROR_SAVE_CV = "Erreur d'envoi de fichier";
 export const ERROR_CV_LIST_MAX_SIZE = "Erreur! Taille maximale de fichiers atteinte(10)";
 export const ERROR_CV_INVALID_FORMAT = "Erreur! veuillez soumettre un fichier sous format .pdf";
 
+export const WAIT_SENDING_EMAIL_ACTIVE_CV = "Envoie de l'email d'activation de CV en cours, veuillez patientez";
+
 export const CONFIRM_ACTIVE_CV = "Le CV est maintenant actif";
 export const CONFIRM_DELETE_CV = "Le fichier a été supprimé";
 export const CONFIRM_SAVE_CV = "Le fichier a été déposé";
@@ -89,4 +101,8 @@ export const ERROR_USERNAME_EMAIL_ALREADY_EXISTS = "Le nom d'utilisateur ou le c
 //HOME
 export const ERROR_SAVE_SIGNATURE = "Erreur lors de la sauvegarde de la signature";
 export const ERROR_SELECT_PNG = "Sélectionnez une image PNG";
+export const ERROR_DELETE_SIGNATURE = "Erreur durant la suppression de la signature...";
+
+export const CONFIRM_DELETE_SIGNATURE = "Confirmation de la suppression de la signature";
+export const CONFIRM_SAVE_SIGNATURE = "Confirmation du dépôt de la signature";
 

@@ -1,26 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-  faLaptopCode,
-  faLandmark,
-  faStethoscope,
-} from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
-import {
-  ARCHITECTURE_DEPT,
-  COMPUTER_SCIENCE_DEPT,
-  NURSING_DEPT,
-} from "../../Utils/DEPARTMENTS";
+import { DEPARTMENTS } from "../../Utils/DEPARTMENTS";
 
 const Student = ({ student, onClick }) => {
-  let icon =
-    student.department === COMPUTER_SCIENCE_DEPT
-      ? faLaptopCode
-      : student.department === ARCHITECTURE_DEPT
-      ? faLandmark
-      : student.department === NURSING_DEPT
-      ? faStethoscope
-      : faUserCircle;
+  let icon = DEPARTMENTS.find(
+    (department) => department.key === student.department
+  ).icon;
 
   return (
     <>

@@ -43,13 +43,9 @@ class BackendControllerTest {
     private List<Supervisor> expectedSupervisorList;
     private Monitor expectedMonitor;
     private Supervisor expectedSupervisor;
-    private InternshipOffer expectedInternshipOffer;
-    private Internship expectedInternship;
     private CV expectedCV;
     private List<String> expectedSessionList;
     private TreeSet<String> expectedSessionTreeSet;
-    private PDFDocument expectedPDFDocument;
-    private String expectedDocumentName;
     private Binary expectedImage;
 
     @Test
@@ -181,7 +177,7 @@ class BackendControllerTest {
     public void testGetAllStudentsFromDepartment() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudents(Department.COMPUTER_SCIENCE, SESSION))
+        when(service.getAllStudentsByDepartment(Department.COMPUTER_SCIENCE, SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_FROM_DEPARTMENT +
@@ -201,7 +197,7 @@ class BackendControllerTest {
     public void testGetAllStudents() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
-        when(service.getAllStudents(SESSION))
+        when(service.getAllStudentsByDepartment(SESSION))
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS + SESSION)
@@ -257,25 +253,6 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testGetAllStudentsWithInternship() throws Exception {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithInternship(SESSION))
-                .thenReturn(Optional.of(expectedStudentList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITH_INTERNSHIP + SESSION)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudentList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
     public void testGetAllStudentsWithSupervisor() throws Exception {
         //Arrange
         expectedStudentList = getListOfStudents();
@@ -304,179 +281,6 @@ class BackendControllerTest {
                 .thenReturn(Optional.of(expectedStudentList));
         //Act
         MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_CV + SESSION)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudentList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithoutInterviewDate() throws Exception {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutInterviewDate(SESSION))
-                .thenReturn(Optional.of(expectedStudentList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_INTERVIEW_DATE + SESSION)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudentList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWaitingInterview() throws Exception {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWaitingInterview(SESSION))
-                .thenReturn(Optional.of(expectedStudentList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WAITING_INTERVIEW + SESSION)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudentList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithoutStudentEvaluation() throws Exception {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutStudentEvaluation(SESSION))
-                .thenReturn(Optional.of(expectedStudentList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_STUDENT_EVALUATION + SESSION)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudentList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed() throws Exception {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithApplicationStatusWaitingAndInterviewDatePassed(SESSION))
-                .thenReturn(Optional.of(expectedStudentList));
-        //Act
-        MvcResult result = mockMvc.perform(get(
-                URL_GET_ALL_STUDENTS_WITH_APPLICATION_STATUS_WAITING_AND_INTERVIEW_DATE_PASSED_TODAY + SESSION
-        )
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualStudentList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualStudentList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllSessionsOfInternshipOffers() throws Exception {
-        //Arrange
-        expectedSessionList = getListOfSessions();
-        when(service.getAllNextSessionsOfInternshipOffersValidated())
-                .thenReturn(Optional.of(new TreeSet<>(expectedSessionList)));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualSessionList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllSessionsOfInternshipOffersUnvalidated() throws Exception {
-        //Arrange
-        expectedSessionList = getListOfSessions();
-        when(service.getAllNextSessionsOfInternshipOffersUnvalidated())
-                .thenReturn(Optional.of(new TreeSet<>(expectedSessionList)));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS_UNVALIDATED)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualSessionList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllSessionsOfInvalidInternshipOffers() throws Exception {
-        //Arrange
-        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
-
-        when(service.getAllSessionsOfInvalidInternshipOffers())
-                .thenReturn(Optional.of(expectedSessionTreeSet));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_INVALID_INTERNSHIP_OFFERS)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualSessionList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllSessionsOfValidInternshipOffers() throws Exception {
-        //Arrange
-        expectedSessionTreeSet = new TreeSet<>(Collections.singleton(SESSION));
-
-        when(service.getAllSessionsOfValidInternshipOffers())
-                .thenReturn(Optional.of(expectedSessionTreeSet));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_SESSION_OF_VALID_INTERNSHIP_OFFERS)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-        var actualSessionList = new ObjectMapper().readValue(response.getContentAsString(), List.class);
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(actualSessionList).isNotNull();
-    }
-
-    @Test
-    //@Disabled
-    public void testGetAllStudentsWithoutEnterpriseEvaluation() throws Exception {
-        //Arrange
-        expectedStudentList = getListOfStudents();
-        when(service.getAllStudentsWithoutEnterpriseEvaluation(SESSION))
-                .thenReturn(Optional.of(expectedStudentList));
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_GET_ALL_STUDENTS_WITHOUT_ENTERPRISE_EVALUATION + SESSION)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
@@ -573,28 +377,6 @@ class BackendControllerTest {
 
     @Test
     //Disabled
-    public void testDownloadInternshipOfferDocument() throws Exception {
-        // Arrange
-        expectedInternshipOffer = getInternshipOfferWithId();
-        expectedInternshipOffer.setPDFDocument(getDocument());
-
-        when(service.downloadInternshipOfferDocument(expectedInternshipOffer.getId()))
-                .thenReturn(Optional.of(expectedInternshipOffer.getPDFDocument()));
-
-        //Act
-        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_OFFER_DOCUMENT +
-                expectedInternshipOffer.getId())
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Assert
-        MockHttpServletResponse response = result.getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(response.getContentLength()).isGreaterThan(0);
-    }
-
-    @Test
-    //Disabled
     public void testDownloadStudentCVDocument() throws Exception {
         //Arrange
         expectedStudent = getStudentWithId();
@@ -618,84 +400,83 @@ class BackendControllerTest {
 
     @Test
     //@Disabled
-    public void testDownloadEvaluationDocument() throws Exception {
+    public void testGetSignature() throws Exception {
         //Arrange
-        expectedPDFDocument = getDocument();
-        expectedDocumentName = DOCUMENT_NAME;
+        expectedImage = getImage();
+        expectedStudent = getStudentWithId();
 
-        when(service.downloadEvaluationDocument(expectedDocumentName))
-                .thenReturn(Optional.of(expectedPDFDocument));
+        when(service.getSignature(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedImage.getData()));
+
         //Act
-        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_EVALUATION_DOCUMENT)
+        MvcResult result = mockMvc.perform(get(URL_GET_SIGNATURE +
+                expectedStudent.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(response.getContentLength()).isGreaterThan(0);
     }
 
     @Test
     //@Disabled
-    public void testDownloadInternshipContractDocument() throws Exception {
+    public void testDeleteSignatureStudent() throws Exception {
         //Arrange
-        expectedPDFDocument = getDocument();
-        expectedInternship = getInternship();
+        expectedStudent = getStudentWithId();
 
-        when(service.downloadInternshipContractDocument(expectedInternship.getId()))
-                .thenReturn(Optional.ofNullable(expectedPDFDocument));
+        when(service.deleteSignatureStudent(expectedStudent.getUsername()))
+                .thenReturn(Optional.of(expectedStudent));
 
         //Act
-        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_CONTRACT + expectedInternship.getId())
+        MvcResult result = mockMvc.perform(post(URL_DELETE_SIGNATURE_STUDENT +
+                expectedStudent.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(response.getContentLength()).isGreaterThan(0);
     }
 
     @Test
     //@Disabled
-    public void testDownloadInternshipStudentEvaluationDocument() throws Exception {
+    public void testDeleteSignatureMonitor() throws Exception {
         //Arrange
-        expectedPDFDocument = getDocument();
-        expectedInternship = getInternship();
+        expectedMonitor = getMonitorWithId();
 
-        when(service.downloadInternshipStudentEvaluationDocument(expectedInternship.getId()))
-                .thenReturn(Optional.ofNullable(expectedPDFDocument));
+        when(service.deleteSignatureMonitor(expectedMonitor.getUsername()))
+                .thenReturn(Optional.of(expectedMonitor));
 
         //Act
-        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_STUDENT_EVALUATION + expectedInternship.getId())
+        MvcResult result = mockMvc.perform(post(URL_DELETE_SIGNATURE_MONITOR +
+                expectedMonitor.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(response.getContentLength()).isGreaterThan(0);
     }
 
     @Test
     //@Disabled
-    public void testDownloadInternshipEnterpriseEvaluationDocument() throws Exception {
+    public void testDeleteSignatureInternshipManager() throws Exception {
         //Arrange
-        expectedPDFDocument = getDocument();
-        expectedInternship = getInternship();
+        expectedInternshipManager = getInternshipManagerWithId();
 
-        when(service.downloadInternshipEnterpriseEvaluationDocument(expectedInternship.getId()))
-                .thenReturn(Optional.ofNullable(expectedPDFDocument));
+        when(service.deleteSignatureInternshipManager(expectedInternshipManager.getUsername()))
+                .thenReturn(Optional.of(expectedInternshipManager));
 
         //Act
-        MvcResult result = mockMvc.perform(get(URL_DOWNLOAD_INTERNSHIP_ENTERPRISE_EVALUATION + expectedInternship.getId())
+        MvcResult result = mockMvc.perform(post(URL_DELETE_SIGNATURE_INTERNSHIP_MANAGER +
+                expectedInternshipManager.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         //Assert
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(response.getContentLength()).isGreaterThan(0);
     }
+
 }

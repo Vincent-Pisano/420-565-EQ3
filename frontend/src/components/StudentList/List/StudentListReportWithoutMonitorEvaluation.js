@@ -10,7 +10,7 @@ import {
   GET_ALL_SESSIONS_OF_STUDENTS,
   GET_ALL_STUDENTS_WITHOUT_MONITOR_EVALUATION,
 } from "../../../Utils/API";
-import { URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT } from "../../../Utils/URL";
+import { URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT } from "../../../Utils/URL";
 import { TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED } from "../../../Utils/TITLE";
 
 function StudentListReportWithoutMonitorEvaluation() {
@@ -52,7 +52,8 @@ function StudentListReportWithoutMonitorEvaluation() {
   function showInternshipApplications(student) {
     history.push({
       pathname:
-        URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT + student.username,
+        URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT +
+        student.username,
       state: {
         title: TITLE_INTERNSHIP_APPLICATION_LIST_COMPLETED(
           student,

@@ -4,6 +4,7 @@ import {
   URL_STUDENT_LIST_OF_DEPARTMENT,
   URL_STUDENT_LIST_ASSIGNED_SUPERVISOR,
 } from "../../Utils/URL";
+import { DOWNLOAD_ENTERPRISE_EVALUATION_DOCUMENT } from "../../Utils/API";
 
 const NavUserSupervisor = () => {
   return (
@@ -21,7 +22,7 @@ const NavUserSupervisor = () => {
       </NavDropdown.Item>
 
       <NavDropdown.Item
-        href={`http://localhost:9090/get/enterprise/evaluation/document`}
+        href={DOWNLOAD_ENTERPRISE_EVALUATION_DOCUMENT}
         target="_blank"
       >
         Document d'évalution d'entreprise

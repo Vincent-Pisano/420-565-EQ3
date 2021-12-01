@@ -4,6 +4,7 @@ import {
   URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
   URL_INTERNSHIP_OFFER_FORM,
 } from "../../Utils/URL";
+import { DOWNLOAD_STUDENT_EVALUATION_DOCUMENT } from "../../Utils/API";
 
 const NavUserMonitor = () => {
   return (
@@ -20,7 +21,7 @@ const NavUserMonitor = () => {
       </NavDropdown.Item>
 
       <NavDropdown.Item
-        href={`http://localhost:9090/get/student/evaluation/document`}
+        href={DOWNLOAD_STUDENT_EVALUATION_DOCUMENT}
         target="_blank"
       >
         Document d'évalution d'étudiant

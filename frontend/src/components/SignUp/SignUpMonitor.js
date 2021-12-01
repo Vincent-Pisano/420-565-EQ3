@@ -6,7 +6,10 @@ import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
 import { SIGN_UP_MONITOR } from "../../Utils/API";
-import { ERROR_INVALID_MONITOR_USERNAME, ERROR_USERNAME_EMAIL_ALREADY_EXISTS } from "../../Utils/Errors_Utils";
+import {
+  ERROR_INVALID_MONITOR_USERNAME,
+  ERROR_USERNAME_EMAIL_ALREADY_EXISTS,
+} from "../../Utils/Errors_Utils";
 
 const SignUpMonitor = () => {
   let history = useHistory();
@@ -32,7 +35,7 @@ const SignUpMonitor = () => {
     }
 
     axios
-      .post(SIGN_UP_MONITOR, fields) 
+      .post(SIGN_UP_MONITOR, fields)
       .then((response) => {
         auth.login(() => {
           history.push({

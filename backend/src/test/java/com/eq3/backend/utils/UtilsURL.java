@@ -43,6 +43,10 @@ public class UtilsURL {
     public final static String URL_DOWNLOAD_INTERNSHIP_ENTERPRISE_EVALUATION = "/get/internship/enterprise/evaluation/document/";
     public final static String URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS = "/getAll/next/sessions/internshipOffer";
     public final static String URL_GET_ALL_NEXT_SESSIONS_INTERNSHIP_OFFERS_UNVALIDATED = "/getAll/next/sessions/internshipOffer/unvalidated";
+    public final static String URL_GET_SIGNATURE = "/get/signature/";
+    public final static String URL_DELETE_SIGNATURE_STUDENT = "/delete/signature/student/";
+    public final static String URL_DELETE_SIGNATURE_MONITOR = "/delete/signature/monitor/";
+    public final static String URL_DELETE_SIGNATURE_INTERNSHIP_MANAGER = "/delete/signature/internshipManager/";
 
     // CVController
     public final static String URL_SAVE_CV = "/save/CV/";
@@ -50,6 +54,7 @@ public class UtilsURL {
     public final static String URL_UPDATE_ACTIVE_CV = "/update/ActiveCV/";
     public final static String URL_GET_ALL_STUDENTS_CV_ACTIVE_NOT_VALID = "/getAll/student/CVActiveNotValid/";
     public final static String URL_VALIDATE_CV = "/validate/CV/";
+    public final static String URL_REFUSE_CV = "/refuse/CV/";
 
     // InternshipController
     public final static String URL_SAVE_INTERNSHIP_OFFER = "/save/internshipOffer";
@@ -68,8 +73,10 @@ public class UtilsURL {
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_CURRENT_FUTURE_SESSIONS = "/getAll/accepted/internshipApplications/current/and/next/sessions";
     public final static String URL_GET_ALL_VALIDATED_INTERNSHIP_APPLICATIONS = "/getAll/validated/internshipApplication";
     public final static String URL_GET_ALL_INTERNSHIP_APPLICATIONS_BY_INTERNSHIP_OFFER = "/getAll/internshipApplication/internshipOffer/";
+    public final static String URL_GET_ALL_INTERNSHIP_OFFERS_NOT_APPLIED_OF_STUDENT_BY_SESSION = "/getAll/internshipOffer/not/applied/";
     public final static String URL_APPLY_INTERNSHIP_OFFER = "/apply/internshipOffer/";
     public final static String URL_VALIDATE_INTERNSHIP_OFFER = "/validate/internshipOffer/";
+    public final static String URL_REFUSE_INTERNSHIP_OFFER = "/refuse/internshipOffer/";
     public final static String URL_UPDATE_INTERNSHIP_APPLICATION = "/update/internshipApplication";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_MONITOR = "/sign/internshipContract/monitor/";
     public final static String URL_SIGN_INTERNSHIP_CONTRACT_STUDENT = "/sign/internshipContract/student/";

@@ -18,7 +18,7 @@ const CV = ({ cv }) => {
         <CVButtonDelete documentId={cv.id} />
       </td>
       <td>
-        <CVButtonActive documentId={cv.id} documentActive={cv.isActive} />
+        <CVButtonActive cv={cv} />
       </td>
       <td>
         <FontAwesomeIcon
@@ -26,7 +26,7 @@ const CV = ({ cv }) => {
           icon={
             cv.status === "VALID"
               ? faCheck
-              : cv.status === "INVALID"
+              : cv.status === "INVALID" || cv.status === "REFUSED"
               ? faTimes
               : faSyncAlt
           }
@@ -34,7 +34,7 @@ const CV = ({ cv }) => {
             color:
               cv.status === "VALID"
                 ? "green"
-                : cv.status === "INVALID"
+                : cv.status === "INVALID" || cv.status === "REFUSED"
                 ? "red"
                 : "#ffc107",
           }}

@@ -1,32 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-  faLaptop,
-  faBriefcaseMedical,
-  faHome,
-} from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
-import {
-  ARCHITECTURE_DEPT,
-  COMPUTER_SCIENCE_DEPT,
-  NURSING_DEPT,
-} from "../../Utils/DEPARTMENTS";
+import { DEPARTMENTS } from "../../Utils/DEPARTMENTS";
 
 const Supervisor = ({ supervisor, onClick }) => {
+
+  let icon = DEPARTMENTS.find(
+    (department) => department.key === supervisor.department
+  ).icon;
+
   return (
     <Row className="list_node" onClick={() => onClick(supervisor)}>
       <Col xs={3}>
         <FontAwesomeIcon
           className="fa-3x"
-          icon={
-            supervisor.department === COMPUTER_SCIENCE_DEPT
-              ? faLaptop
-              : supervisor.department === NURSING_DEPT
-              ? faBriefcaseMedical
-              : supervisor.department === ARCHITECTURE_DEPT
-              ? faHome
-              : faUserCircle
-          }
+          icon={icon}
         />
       </Col>
       <Col xs={9} className="list_node_text">

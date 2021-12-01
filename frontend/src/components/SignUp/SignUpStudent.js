@@ -5,8 +5,11 @@ import { useState } from "react";
 import { useFormFields } from "../../lib/hooksLib";
 import { useHistory } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
-import { ARCHITECTURE_DEPT, COMPUTER_SCIENCE_DEPT, NURSING_DEPT } from "../../Utils/DEPARTMENTS";
-import { ERROR_INVALID_STUDENT_USERNAME, ERROR_USERNAME_EMAIL_ALREADY_EXISTS } from "../../Utils/Errors_Utils";
+import { DEPARTMENTS } from "../../Utils/DEPARTMENTS";
+import {
+  ERROR_INVALID_STUDENT_USERNAME,
+  ERROR_USERNAME_EMAIL_ALREADY_EXISTS,
+} from "../../Utils/Errors_Utils";
 import { SIGN_UP_STUDENT } from "../../Utils/API";
 
 const SignUpStudent = () => {
@@ -15,7 +18,7 @@ const SignUpStudent = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [fields, handleFieldChange] = useFormFields({
-    department: COMPUTER_SCIENCE_DEPT,
+    department: DEPARTMENTS[0] !== undefined ? DEPARTMENTS[0].key : undefined,
     username: "",
     password: "",
     email: "",
@@ -32,7 +35,7 @@ const SignUpStudent = () => {
     }
 
     axios
-      .post(SIGN_UP_STUDENT , fields)
+      .post(SIGN_UP_STUDENT, fields)
       .then((response) => {
         auth.login(() => {
           history.push({
@@ -110,9 +113,13 @@ const SignUpStudent = () => {
             className="select_form active_select "
             required
           >
-            <option value={COMPUTER_SCIENCE_DEPT}>Informatique</option>
-            <option value={ARCHITECTURE_DEPT}>Architecture</option>
-            <option value={NURSING_DEPT}>Infirmier</option>
+            {DEPARTMENTS.map((department) => {
+              return (
+                <option key={department.key} value={department.key}>
+                  {department.name}
+                </option>
+              );
+            })}
           </Form.Control>
         </Form.Group>
         <Container className="cont_btn">

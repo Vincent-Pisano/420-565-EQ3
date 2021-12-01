@@ -126,6 +126,7 @@ public class CVService {
         if (cvActive != null) {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
             helper.addTo(internshipManager.getEmail());
             helper.setSubject(EMAIL_SUBJECT_ACTIVE_CV);
             helper.setText(getEmailTextActiveCV(student, cvActive));
@@ -155,6 +156,22 @@ public class CVService {
             CVList.forEach(cv -> {
                 if (cv.getIsActive()) {
                     cv.setStatus(CV.CVStatus.VALID);
+                }
+            });
+            studentRepository.save(student);
+        });
+
+        return cleanUpStudentCVList(optionalStudent);
+    }
+
+    public Optional<Student> refuseCVOfStudent(String idStudent) {
+        Optional<Student> optionalStudent = studentRepository.findById(idStudent);
+
+        optionalStudent.ifPresent(student -> {
+            List<CV> CVList = student.getCVList();
+            CVList.forEach(cv -> {
+                if (cv.getIsActive()) {
+                    cv.setStatus(CV.CVStatus.REFUSED);
                 }
             });
             studentRepository.save(student);

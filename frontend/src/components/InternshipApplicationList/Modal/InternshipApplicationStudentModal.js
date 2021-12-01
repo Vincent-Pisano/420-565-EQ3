@@ -1,14 +1,23 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Button, Container, Modal, Row, Col, Form } from "react-bootstrap";
 import { useFormFields } from "../../../lib/hooksLib";
-import { UPDATE_INTERNSHIP_APPLICATION } from "../../../Utils/API";
+import {
+  UPDATE_INTERNSHIP_APPLICATION,
+  GET_CONTRACT_OF_INTERNSHIP,
+  GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION,
+} from "../../../Utils/API";
 import {
   ERROR_UPDATE,
   CONFIRM_MODIFICATIONS,
 } from "../../../Utils/Errors_Utils";
 import axios from "axios";
 import "../../../styles/Form.css";
-import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_NOT_ACCEPTED, STATUS_VALIDATED, STATUS_WAITING } from "../../../Utils/APPLICATION_STATUSES";
+import {
+  STATUS_COMPLETED,
+  STATUS_VALIDATED,
+  APPLICATION_STATUSES,
+  STATUS_NOT_ACCEPTED
+} from "../../../Utils/APPLICATION_STATUSES";
 
 const InternshipApplicationStudentModal = ({
   show,
@@ -18,11 +27,26 @@ const InternshipApplicationStudentModal = ({
 }) => {
   let currentInternshipOffer = currentInternshipApplication.internshipOffer;
 
+  const [internship, setInternship] = useState(undefined);
   const [errorMessageModal, setErrorMessageModal] = useState("");
   const [fields, handleFieldChange] = useFormFields({
     status: currentInternshipApplication.status,
     interviewDate: currentInternshipApplication.interviewDate,
   });
+
+  useEffect(() => {
+    axios
+      .get(
+        GET_INTERNSHIP_BY_INTERNSHIP_APPLICATION +
+          currentInternshipApplication.id
+      )
+      .then((response) => {
+        setInternship(response.data);
+      })
+      .catch((err) => {
+        setInternship(undefined);
+      });
+  }, [currentInternshipApplication.id]);
 
   function onConfirmModal(e) {
     e.preventDefault();
@@ -41,8 +65,10 @@ const InternshipApplicationStudentModal = ({
         : currentInternshipApplication.interviewDate;
     currentInternshipApplication.student.cvlist = [];
     currentInternshipApplication.student.signature = undefined;
-    if (currentInternshipApplication.student.supervisorMap !== null && 
-      currentInternshipApplication.student.supervisorMap !== undefined)
+    if (
+      currentInternshipApplication.student.supervisorMap !== null &&
+      currentInternshipApplication.student.supervisorMap !== undefined
+    )
       currentInternshipApplication.student.supervisorMap = undefined;
     currentInternshipApplication.internshipOffer.pdfdocument = undefined;
     currentInternshipApplication.internshipOffer.monitor.signature = undefined;
@@ -70,11 +96,45 @@ const InternshipApplicationStudentModal = ({
       });
   }
 
-  function isValidatedOrCompleted() {
+  function isValidatedOrCompletedOrRefused() {
     return (
       currentInternshipApplication.status === STATUS_VALIDATED ||
-      currentInternshipApplication.status === STATUS_COMPLETED
+      currentInternshipApplication.status === STATUS_COMPLETED ||
+      currentInternshipApplication.status === STATUS_NOT_ACCEPTED
     );
+  }
+
+  function checkIfCompleted() {
+    if (
+      currentInternshipApplication.status === STATUS_COMPLETED &&
+      internship !== undefined
+    ) {
+      return (
+        <Col md={4}>
+          <a
+            className="btn btn-lg btn-success mt-3"
+            href={GET_CONTRACT_OF_INTERNSHIP + internship.id}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Contrat de stage
+          </a>
+        </Col>
+      );
+    } else {
+      return (
+        <Col md={4}>
+          <Button
+            variant="success"
+            size="lg"
+            className="mt-3"
+            onClick={(e) => onConfirmModal(e)}
+          >
+            Confirmer
+          </Button>
+        </Col>
+      );
+    }
   }
 
   return (
@@ -99,17 +159,15 @@ const InternshipApplicationStudentModal = ({
                     onChange={handleFieldChange}
                     className="select_form d_block"
                     required
-                    disabled={isValidatedOrCompleted()}
+                    disabled={isValidatedOrCompletedOrRefused()}
                   >
-                    <option value={STATUS_ACCEPTED}>Acceptée</option>
-                    <option value={STATUS_NOT_ACCEPTED}>Refusée</option>
-                    <option value={STATUS_WAITING}>En attente</option>
-                    <option disabled value={STATUS_VALIDATED}>
-                      Validée
-                    </option>
-                    <option disabled value={STATUS_COMPLETED}>
-                      Complétée
-                    </option>
+                    {APPLICATION_STATUSES.map((status) => {
+                      return (
+                        <option key={status.key} value={status.key} disabled={status.disabled}>
+                          {status.name}
+                        </option>
+                      );
+                    })}
                   </Form.Select>
                 </Form.Group>
                 <Form.Group controlId="interviewDate">
@@ -123,12 +181,12 @@ const InternshipApplicationStudentModal = ({
                     className="select_form d_block"
                     defaultValue={
                       currentInternshipApplication.interviewDate !== null &&
-                        currentInternshipApplication.interviewDate !== undefined
+                      currentInternshipApplication.interviewDate !== undefined
                         ? formatDate(currentInternshipApplication.interviewDate)
                         : ""
                     }
                     onChange={handleFieldChange}
-                    disabled={isValidatedOrCompleted()}
+                    disabled={isValidatedOrCompletedOrRefused()}
                   />
                 </Form.Group>
               </Container>
@@ -137,16 +195,7 @@ const InternshipApplicationStudentModal = ({
           <hr className="modal_separator mx-auto" />
         </Row>
         <Row style={{ textAlign: "center" }}>
-          <Col md={4}>
-            <Button
-              variant="success"
-              size="lg"
-              className="btn_sub"
-              onClick={(e) => onConfirmModal(e)}
-            >
-              Confirmer
-            </Button>
-          </Col>
+          {checkIfCompleted()}
           <Col md={4}>
             <Button
               variant="warning"

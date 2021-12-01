@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import auth from "../services/Auth";
-import axios from "axios";
 import { session } from "../Utils/Store";
-import { Container, Row, Col, Card, Form } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import pfp from "./../assets/img/pfp.png";
 import CVList from "../components/CV/CVList";
 import ConfirmSubscribeModal from "./Readmission/ConfirmReadmissionModal";
@@ -10,14 +9,13 @@ import Readmission from "./Readmission/Readmission";
 import "./../styles/Home.css";
 import "./../styles/Form.css";
 import "../App.css";
-import { SAVE_SIGNATURE } from "../Utils/API";
-import { ERROR_SAVE_SIGNATURE, ERROR_SELECT_PNG } from "../Utils/Errors_Utils";
+import IMGViewer from "./Viewer/IMGViewer";
+import ModalDepositSignature from "./Viewer/Modal/ModalDepositSignature";
 
 function Home() {
   let user = auth.user;
 
   let dateFormat = formatDate(user.creationDate);
-  const [errorMessage, setErrorMessage] = useState("");
   const [hasASignature, setHasASignature] = useState(
     user.signature !== undefined && user.signature !== null
   );
@@ -59,7 +57,7 @@ function Home() {
   }
 
   function checkForModal() {
-    if (auth.isSupervisor() || auth.isStudent()) {
+    if ((auth.isSupervisor() || auth.isStudent()) && !user.sessions.includes(session)) {
       return (
         <>
           <ConfirmSubscribeModal
@@ -72,58 +70,33 @@ function Home() {
     }
   }
 
-  function saveSignature(signature) {
-    if (signature.type === "image/png") {
-      let formData = new FormData();
-      formData.append("signature", signature);
-      axios
-        .post(SAVE_SIGNATURE + user.username, formData) 
-        .then((response) => {
-          user.signature = response.data;
-          auth.user = user;
-          setHasASignature(true);
-        })
-        .catch((error) => {
-          setErrorMessage(ERROR_SAVE_SIGNATURE);
-        });
-    } else {
-      setErrorMessage(ERROR_SELECT_PNG);
-    }
-  }
-
   function checkSignature() {
     if (!auth.isSupervisor()) {
       if (hasASignature) {
         return (
-          <Container className="cont_btn_file">
-            <p className="btn_submit" disabled>
-              Signature déposée
-            </p>
-          </Container>
+          <IMGViewer
+            username={user.username}
+            setHasASignature={setHasASignature}
+          />
         );
       } else {
         return (
           <>
-            <Form className="mb-5 mt-2">
-              <Form.Group controlId="document" className="cont_file_form">
-                <Form.Label className="labelFields">Signature</Form.Label>
-                <Form.Control
-                  type="file"
-                  onChange={(e) => {
-                    saveSignature(e.target.files[0]);
-                  }}
-                  className="input_file_form"
-                  accept="image/png"
-                />
-              </Form.Group>
-            </Form>
-            <p
-              style={{
-                color: "red",
-              }}
-            >
-              {errorMessage}
-            </p>
+            <Container className="cont_btn_file">
+              <Row>
+                <Col md={12}>
+                  <Button className="btn_link mb-3" onClick={handleShow}>
+                    Déposer la signature
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+            <ModalDepositSignature
+              show={show}
+              handleClose={handleClose}
+              username={user.username}
+              setHasASignature={setHasASignature}
+            />
           </>
         );
       }

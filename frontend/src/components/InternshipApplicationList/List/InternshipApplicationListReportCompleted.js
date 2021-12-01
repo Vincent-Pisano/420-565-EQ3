@@ -39,7 +39,7 @@ function InternshipApplicationListReportCompleted() {
         setErrorMessage(ERROR_NO_INTERNSHIP_APPLICATION_YET);
         setInternshipApplications([]);
       });
-  }, [session, title, username]);
+  }, [session, username]);
 
   function showModal(internshipApplication) {
     setCurrentInternshipApplication(internshipApplication);
