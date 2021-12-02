@@ -1,5 +1,3 @@
-import auth from "../services/Auth";
-
 //STUDENT LIST
 export const URL_STUDENT_LIST_CV_TO_VALIDATE = "/studentList/validate/cv";
 export const URL_STUDENT_LIST_OF_DEPARTMENT = "/studentList/department";
@@ -43,14 +41,10 @@ export const URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT = REPORT_LINK + "/
 export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_ENTERPRISE_EVALUATION_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/enterprise/evaluation/";
 export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/student/evaluation/";
 
-function getPathHome() {
-  return "/home/" + auth.user.username;
-}
-
 export const INTERNSHIP_MANAGER_URL = [
   {
     key: "HOME",
-    link: () => getPathHome(),
+    link: "/home",
     name: "Accueil",
   },
   {
@@ -93,7 +87,7 @@ export const INTERNSHIP_MANAGER_URL = [
 export const STUDENT_URL = [
   {
     key: "HOME",
-    link: () => getPathHome(),
+    link: "/home",
     name: "Accueil",
   },
   {
@@ -111,7 +105,7 @@ export const STUDENT_URL = [
 export const MONITOR_URL = [
   {
     key: "HOME",
-    link: () => getPathHome(),
+    link: "/home",
     name: "Accueil",
   },
   {
@@ -129,7 +123,7 @@ export const MONITOR_URL = [
 export const SUPERVISOR_URL = [
   {
     key: "HOME",
-    link: () => getPathHome(),
+    link: "/home",
     name: "Accueil",
   },
   {
