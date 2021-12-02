@@ -11,6 +11,19 @@
   justify-content: center;
 }
 
+.menu-navbar {
+  width: 30rem;
+  font-size: small;
+}
+
+.menu-navbar p {
+  font-size: 20px;
+}
+
+.menu-navbar ul li:last-child {
+  margin-bottom: 20px;
+}
+
 .menu-item ul {
   margin-top: 5px;
   list-style-type: none;
@@ -73,6 +86,19 @@
   margin-left: -2rem;
 }
 
+.menu-item-a {
+  display: block;
+  margin-left: 1.2%;
+  text-decoration: none;
+  color: black !important;
+}
+
+.menu-item-a {
+  display: block;
+  margin-left: 1.2%;
+  text-decoration: none;
+}
+
 .menu-item-button-selected {
   background: #0d51ff;
   color: white;
@@ -82,7 +108,15 @@ div.home-container {
   clear: left;
 }
 
+@media only screen and (max-width: 992px) {
+  .menu-navbar {
+    margin: 0px 0px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
+  
+
   .menu-item {
     width: 80%;
   }

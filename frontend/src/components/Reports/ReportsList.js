@@ -5,8 +5,8 @@ import { TITLE_REPORT } from "../../Utils/TITLE";
 
 const ReportsList = () => {
   return (
-    <Container className="cont_principal mt-5">
-      <Container className="cont_list_centrar">
+    <Container className="cont_principal ">
+      <Container className="cont_list_centrar my-5">
         <h2 className="cont_title_form">{TITLE_REPORT}</h2>
         <Container className="cont_list">
           <ul>

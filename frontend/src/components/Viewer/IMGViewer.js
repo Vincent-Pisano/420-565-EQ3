@@ -17,7 +17,7 @@ const ImgViewer = ({ username, setHasASignature }) => {
     <div>
       <Container className="cont_btn_file">
         <Row>
-          <Col md={9}>
+          <Col lg={9} md={12}>
             <Button
               className="btn_submit mb-3"
               onClick={() => {
@@ -27,9 +27,9 @@ const ImgViewer = ({ username, setHasASignature }) => {
               Visualiser la signature
             </Button>
           </Col>
-          <Col md={3}>
+          <Col lg={3} md={12}>
             <FontAwesomeIcon
-              className="fa-3x text-danger"
+              className="fa-3x text-danger mt-2"
               icon={faTrashAlt}
               onClick={handleShow}
             />

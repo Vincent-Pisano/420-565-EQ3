@@ -105,8 +105,8 @@ function Home() {
 
   return (
     <>
-      <Container className="cont_home mb-5">
-        <Row className="cont_central">
+      <Container className="cont_principal">
+        <Row className="cont_central mb-5">
           <Col xs={12} md={4}>
             <Row>
               <Card bg="secondary" text="white" className="pfp_card">

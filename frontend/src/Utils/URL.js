@@ -1,3 +1,5 @@
+import auth from "../services/Auth";
+
 //STUDENT LIST
 export const URL_STUDENT_LIST_CV_TO_VALIDATE = "/studentList/validate/cv";
 export const URL_STUDENT_LIST_OF_DEPARTMENT = "/studentList/department";
@@ -41,32 +43,103 @@ export const URL_INTERNSHIP_APPLICATION_LIST_COMPLETED_REPORT = REPORT_LINK + "/
 export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_ENTERPRISE_EVALUATION_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/enterprise/evaluation/";
 export const URL_INTERNSHIP_APPLICATION_LIST_WAITING_STUDENT_EVALUATION_REPORT = REPORT_LINK + "/internshipApplicationList/waiting/student/evaluation/";
 
+function getPathHome() {
+  return "/home/" + auth.user.username;
+}
 
-
-
-/*const HOME_PAGE_URL = [
+export const INTERNSHIP_MANAGER_URL = [
   {
-    key: "LOGIN",
-    link: "/",
-    name: "Connexion",
+    key: "HOME",
+    link: () => getPathHome(),
+    name: "Accueil",
   },
   {
-    key: "SUBSCRIBE",
-    link: "/subscribe",
-    name: "Inscription",
+    key: "URL_INTERNSHIP_OFFER_FORM",
+    link: URL_INTERNSHIP_OFFER_FORM,
+    name: "Dépôt d'offre de stage",
+  },
+  {
+    key: "URL_INTERNSHIP_OFFER_LIST_UNVALIDATED",
+    link: URL_INTERNSHIP_OFFER_LIST_UNVALIDATED,
+    name: "Liste des offres non validées",
+  },
+  {
+    key: "URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED",
+    link: URL_INTERNSHIP_APPLICATION_LIST_ACCEPTED,
+    name: "Liste des applications acceptées",
+  },
+  {
+    key: "URL_STUDENT_LIST_CV_TO_VALIDATE",
+    link: URL_STUDENT_LIST_CV_TO_VALIDATE,
+    name: "Liste des CV à valider",
+  },
+  {
+    key: "URL_SUPERVISOR_LIST",
+    link: URL_SUPERVISOR_LIST,
+    name: "Assignation de Superviseur",
+  },
+  {
+    key: "URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE",
+    link: URL_INTERNSHIP_APPLICATION_LIST_SIGNATURE,
+    name: "Signature d'applications validées",
+  },
+  {
+    key: "REPORT_LINK",
+    link: REPORT_LINK,
+    name: "Rapports",
+  }
+];
+
+export const STUDENT_URL = [
+  {
+    key: "HOME",
+    link: () => getPathHome(),
+    name: "Accueil",
+  },
+  {
+    key: "INTERNSHIP_OFFER_LIST",
+    link: URL_INTERNSHIP_OFFER_LIST_OF_DEPARTMENT_NOT_APPLIED,
+    name: "Liste d'offres de stage",
+  },
+  {
+    key: "INTERNSHIP_APPLICATION_LIST",
+    link: URL_INTERNSHIP_APPLICATION_LIST_OF_STUDENT,
+    name: "Liste de vos applications de stage",
   },
 ];
 
-const INTERNSHIP_MANAGER_URL = [
+export const MONITOR_URL = [
   {
-    key: "VALID_CV",
-    link: "/studentList/validation/cv",
-    name: "Validation CV étudiant",
+    key: "HOME",
+    link: () => getPathHome(),
+    name: "Accueil",
   },
+  {
+    key: "INTERNSHIP_OFFER_DEPOSIT",
+    link: URL_INTERNSHIP_OFFER_FORM,
+    name: "Dépôt d'offres de stage",
+  },
+  {
+    key: "INTERNSHIP_OFFER_LIST_OF_MONITOR",
+    link: URL_INTERNSHIP_OFFER_LIST_OF_MONITOR,
+    name: "Liste de vos offres de stage",
+  }
 ];
 
-const STUDENT_URL = [];
-
-const MONITOR_URL = [];
-
-const SUPERVISOR_URL = [];*/
+export const SUPERVISOR_URL = [
+  {
+    key: "HOME",
+    link: () => getPathHome(),
+    name: "Accueil",
+  },
+  {
+    key: "STUDENT_LIST_DEPARTMENT",
+    link: URL_STUDENT_LIST_OF_DEPARTMENT,
+    name: "Liste des étudiants du département",
+  },
+  {
+    key: "STUDENT_LIST_ASSIGNED",
+    link: URL_STUDENT_LIST_ASSIGNED_SUPERVISOR,
+    name: "Liste de vos étudiant",
+  }
+];
